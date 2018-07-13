@@ -1,15 +1,18 @@
 package com.platform.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.platform.annotation.SysLog;
 import com.platform.entity.SysMenuEntity;
 import com.platform.service.SysMenuService;
 import com.platform.utils.*;
 import com.platform.utils.Constant.MenuType;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -136,8 +139,46 @@ public class SysMenuController extends AbstractController {
                 return R.error("系统菜单，不能删除");
             }
         }
+        Long menuId = menuIds[0];
+        List<Long> ids = new ArrayList<Long>();
+        ids.add(menuId);
+
+        List<SysMenuEntity> menuList = sysMenuService.queryListParentId(menuId,null);
+        List<SysMenuEntity> menuTreeList = getMenuTreeList(menuList, null);
+        for (SysMenuEntity menuEntity : menuTreeList) {
+            ids.add(menuEntity.getMenuId());
+            List<SysMenuEntity> sub = menuEntity.getList();
+            if (CollectionUtils.isNotEmpty(sub)) {
+                for (SysMenuEntity entity : sub) {
+                    ids.add(entity.getMenuId());
+                }
+            }
+        }
+
+        Long[] temp = new Long[ids.size()];
+        for (int i = 0; i < ids.size(); i++) {
+            temp[i] = ids.get(i);
+        }
+        menuIds = temp;
+       //删除级联菜单
         sysMenuService.deleteBatch(menuIds);
         return R.ok();
+    }
+
+    /**
+     * 递归
+     */
+    private List<SysMenuEntity> getMenuTreeList(List<SysMenuEntity> menuList, List<Long> menuIdList){
+        List<SysMenuEntity> subMenuList = new ArrayList<SysMenuEntity>();
+
+        for(SysMenuEntity entity : menuList){
+            if(entity.getType() == MenuType.CATALOG.getValue()){//目录
+                entity.setList(getMenuTreeList(sysMenuService.queryListParentId(entity.getMenuId(), menuIdList), menuIdList));
+            }
+            subMenuList.add(entity);
+        }
+
+        return subMenuList;
     }
 
     /**
