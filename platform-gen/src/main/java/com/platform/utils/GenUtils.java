@@ -109,7 +109,6 @@ public class GenUtils {
             }
         }
 
-
         //设置velocity资源加载器
         Properties prop = new Properties();
         prop.put("file.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");

@@ -1,6 +1,5 @@
 package com.platform.entity;
 
-
 import org.hibernate.validator.constraints.NotBlank;
 
 import javax.validation.constraints.NotNull;
@@ -10,9 +9,7 @@ import java.util.List;
 
 /**
  * 角色
- *
  * @author admin
- *
  * @date 2016年9月18日 上午9:27:38
  */
 public class SysRoleEntity implements Serializable {
