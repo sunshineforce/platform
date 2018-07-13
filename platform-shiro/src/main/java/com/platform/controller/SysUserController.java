@@ -20,14 +20,13 @@ import java.util.Map;
 
 /**
  * 系统用户
- *
  * @author admin
- *
  * @date 2016年10月31日 上午10:40:10
  */
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends AbstractController {
+
     @Autowired
     private SysUserService sysUserService;
     @Autowired

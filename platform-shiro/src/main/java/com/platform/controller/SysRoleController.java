@@ -20,14 +20,13 @@ import java.util.Map;
 
 /**
  * 角色管理
- *
  * @author admin
- *
  * @date 2016年11月8日 下午2:18:33
  */
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController extends AbstractController {
+
     @Autowired
     private SysRoleService sysRoleService;
     @Autowired

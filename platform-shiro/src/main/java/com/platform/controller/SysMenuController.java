@@ -16,9 +16,7 @@ import java.util.Map;
 
 /**
  * 系统菜单
- *
  * @author admin
- *
  * @date 2016年10月27日 下午9:58:15
  */
 @RestController
@@ -50,7 +48,6 @@ public class SysMenuController extends AbstractController {
     public R queryAll(@RequestParam Map<String, Object> params) {
         //查询列表数据
         List<SysMenuEntity> menuList = sysMenuService.queryList(params);
-
         return R.ok().put("list", menuList);
     }
 
@@ -82,14 +79,12 @@ public class SysMenuController extends AbstractController {
     public R perms() {
         //查询列表数据
         List<SysMenuEntity> menuList = null;
-
         //只有超级管理员，才能查看所有管理员列表
         if (getUserId() == Constant.SUPER_ADMIN) {
             menuList = sysMenuService.queryList(new HashMap<String, Object>());
         } else {
             menuList = sysMenuService.queryUserList(getUserId());
         }
-
         return R.ok().put("menuList", menuList);
     }
 
@@ -112,9 +107,7 @@ public class SysMenuController extends AbstractController {
     public R save(@RequestBody SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
-
         sysMenuService.save(menu);
-
         return R.ok();
     }
 
@@ -127,9 +120,7 @@ public class SysMenuController extends AbstractController {
     public R update(@RequestBody SysMenuEntity menu) {
         //数据校验
         verifyForm(menu);
-
         sysMenuService.update(menu);
-
         return R.ok();
     }
 
@@ -146,7 +137,6 @@ public class SysMenuController extends AbstractController {
             }
         }
         sysMenuService.deleteBatch(menuIds);
-
         return R.ok();
     }
 
@@ -156,7 +146,6 @@ public class SysMenuController extends AbstractController {
     @RequestMapping("/user")
     public R user() {
         List<SysMenuEntity> menuList = sysMenuService.getUserMenuList(getUserId());
-
         return R.ok().put("menuList", menuList);
     }
 
