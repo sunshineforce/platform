@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  * Service接口
  *
- * @author lipengjun
+ * @author admin
  * @date 2017-12-16 23:38:05
  */
 public interface SysSmsLogService {

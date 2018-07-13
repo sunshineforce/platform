@@ -12,7 +12,7 @@ import java.math.BigDecimal;
  * 表名 ${tableName}
  *
  * @author ${author}
- * @email ${email}
+ *  ${email}
  * @date ${datetime}
  */
 public class ${className}Entity implements Serializable {

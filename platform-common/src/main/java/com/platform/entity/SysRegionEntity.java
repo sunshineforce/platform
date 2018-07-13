@@ -1,8 +1,8 @@
 package com.platform.entity;
 
 /**
- * @author lipengjun
- * @email 939961241@qq.com
+ * @author admin
+ *
  * @date 2017-11-04 11:19:31
  */
 public class SysRegionEntity extends Tree<SysRegionEntity> {

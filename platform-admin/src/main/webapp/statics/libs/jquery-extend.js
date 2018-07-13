@@ -36,7 +36,7 @@
     /**
      * 功能描述:对String 类型原型扩展
      *
-     * @author 李鹏军
+     * @author admin
      */
     jQuery.extend(String.prototype, {
 
@@ -330,7 +330,7 @@
     /**
      * 功能描述:对Array 类型原型扩展
      *
-     * @author 李鹏军
+     * @author admin
      */
     jQuery.extend(Array.prototype, {
 

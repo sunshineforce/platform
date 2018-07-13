@@ -21,7 +21,7 @@ import ${package}.utils.R;
  * ${comments}Controller
  *
  * @author ${author}
- * @email ${email}
+ *  ${email}
  * @date ${datetime}
  */
 @Controller

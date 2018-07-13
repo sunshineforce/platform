@@ -14,7 +14,7 @@ import ${package}.service.${className}Service;
  * ${comments}Service实现类
  *
  * @author ${author}
- * @email ${email}
+ *  ${email}
  * @date ${datetime}
  */
 @Service("${classname}Service")

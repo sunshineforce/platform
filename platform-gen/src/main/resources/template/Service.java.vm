@@ -9,7 +9,7 @@ import java.util.Map;
  * ${comments}Service接口
  *
  * @author ${author}
- * @email ${email}
+ *  ${email}
  * @date ${datetime}
  */
 public interface ${className}Service {

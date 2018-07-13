@@ -7,7 +7,7 @@ import java.util.Date;
  * 实体
  * 表名 sys_sms_log
  *
- * @author lipengjun
+ * @author admin
  * @date 2017-12-16 23:38:05
  */
 public class SysSmsLogEntity implements Serializable {

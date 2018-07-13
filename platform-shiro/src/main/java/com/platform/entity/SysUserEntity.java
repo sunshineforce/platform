@@ -12,8 +12,8 @@ import java.util.List;
 /**
  * 系统用户
  *
- * @author lipengjun
- * @email 939961241@qq.com
+ * @author admin
+ *
  * @date 2016年9月18日 上午9:28:55
  */
 public class SysUserEntity implements Serializable {
@@ -39,7 +39,7 @@ public class SysUserEntity implements Serializable {
      * 邮箱
      */
     @NotBlank(message = "邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
-    @Email(message = "邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
+    (message = "邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
     private String email;
 
     /**
