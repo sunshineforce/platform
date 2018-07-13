@@ -3,7 +3,6 @@ package com.platform.service.impl;
 import com.platform.dao.SysMenuDao;
 import com.platform.entity.SysMenuEntity;
 import com.platform.service.SysMenuService;
-import com.platform.service.SysRoleMenuService;
 import com.platform.service.SysUserService;
 import com.platform.utils.Constant.MenuType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +20,6 @@ public class SysMenuServiceImpl implements SysMenuService {
 	private SysMenuDao sysMenuDao;
 	@Autowired
 	private SysUserService sysUserService;
-	@Autowired
-	private SysRoleMenuService sysRoleMenuService;
 	
 	@Override
 	public List<SysMenuEntity> queryListParentId(Long parentId, List<Long> menuIdList) {
