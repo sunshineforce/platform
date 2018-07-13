@@ -20,11 +20,10 @@ import java.util.Map;
 
 /**
  * 数据过滤，切面处理类
- *
  * @author admin
- *
  * @date 2017年10月23日 下午13:33:35
  */
+
 @Aspect
 @Component
 public class DataFilterAspect {
@@ -109,7 +108,6 @@ public class DataFilterAspect {
      * @return 权限
      */
     private String getAliasByUser(Long userId) {
-        @SuppressWarnings("unchecked")
         List<Long> roleOrglist = sysRoleDeptService.queryDeptIdListByUserId(userId);
         StringBuilder roleStr = new StringBuilder();
         String alias = "";
