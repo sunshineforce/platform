@@ -1,7 +1,7 @@
 package com.platform.constants;
 
 /**
- * Created by zuimeideshiguang on 18/2/13.
+ * Created on 2018/2/13.
  * 通用常亮声明
  */
 public class CommonConstant {

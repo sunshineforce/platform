@@ -6,7 +6,6 @@ import java.util.List;
 /**
  * @ClassName PageVo
  * @Description 分页vo
- * @author bjlisuxiao
  * @date 2017/3/13 18:17
  */
 public class PageVo implements Serializable {
