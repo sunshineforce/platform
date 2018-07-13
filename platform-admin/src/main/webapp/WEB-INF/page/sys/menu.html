@@ -62,9 +62,9 @@
             <Form-item v-if="menu.type != 2" label="排序号" prop="orderNum">
                 <Input-number :min="0" :step="1" v-model="menu.orderNum" placeholder="排序号" style="width: 188px;"/>
             </Form-item>
-            <Form-item v-if="menu.type != 2" label="图标" prop="icon">
-                <i-input v-model="menu.icon" placeholder="图标，点击右边按钮选取图标" @on-click="selectIcon" icon="eye"/>
-            </Form-item>
+            <!--<Form-item v-if="menu.type != 2" label="图标" prop="icon">-->
+                <!--<i-input v-model="menu.icon" placeholder="图标，点击右边按钮选取图标" @on-click="selectIcon" icon="eye"/>-->
+            <!--</Form-item>-->
             <Form-item label="状态" prop="status">
                 <Radio-group v-model="menu.status">
                     <Radio label="0">

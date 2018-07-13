@@ -37,16 +37,16 @@ TreeGrid.initColumn = function () {
         {title: '编号', field: 'menuId', visitable: false, align: 'center', valign: 'middle', width: '50px'},
         {title: '名称', field: 'name', align: 'center', valign: 'middle', width: '180px'},
         {title: '上级菜单', field: 'parentName', align: 'center', valign: 'middle', width: '100px'},
-        {
-            title: '图标',
-            field: 'icon',
-            align: 'center',
-            valign: 'middle',
-            width: '50px',
-            formatter: function (item, index) {
-                return item.icon == null ? '' : '<i class="' + item.icon + ' fa-lg"></i>';
-            }
-        },
+        // {
+        //     title: '图标',
+        //     field: 'icon',
+        //     align: 'center',
+        //     valign: 'middle',
+        //     width: '50px',
+        //     formatter: function (item, index) {
+        //         return item.icon == null ? '' : '<i class="' + item.icon + ' fa-lg"></i>';
+        //     }
+        // },
         {
             title: '类型',
             field: 'type',
@@ -124,15 +124,6 @@ var vm = new Vue({
         }
     },
     methods: {
-        selectIcon: function () {
-            openWindow({
-                type: 2,
-                title: '选取图标',
-                area: ['1030px', '500px'],
-                content: ['icon.html'],
-                btn: false
-            });
-        },
         getMenu: function (menuId) {
             //加载菜单树
             $.get("../sys/menu/select", function (r) {
