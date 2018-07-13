@@ -2,7 +2,7 @@ package com.platform.constants;
 
 /**
  * Created on 2018/2/13.
- * 通用常亮声明
+ * 通用常量声明
  */
 public class CommonConstant {
 
