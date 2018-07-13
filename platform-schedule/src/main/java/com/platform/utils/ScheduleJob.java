@@ -29,8 +29,7 @@ public class ScheduleJob extends QuartzJobBean {
 
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
-        ScheduleJobEntity scheduleJob = (ScheduleJobEntity) context.getMergedJobDataMap()
-                .get(ScheduleJobEntity.JOB_PARAM_KEY);
+        ScheduleJobEntity scheduleJob = (ScheduleJobEntity) context.getMergedJobDataMap().get(ScheduleJobEntity.JOB_PARAM_KEY);
 
         //获取spring bean
         ScheduleJobLogService scheduleJobLogService = (ScheduleJobLogService) SpringContextUtils.getBean("scheduleJobLogService");
@@ -49,8 +48,7 @@ public class ScheduleJob extends QuartzJobBean {
         try {
             //执行任务
             logger.info("任务准备执行，任务ID：" + scheduleJob.getJobId());
-            ScheduleRunnable task = new ScheduleRunnable(scheduleJob.getBeanName(),
-                    scheduleJob.getMethodName(), scheduleJob.getParams());
+            ScheduleRunnable task = new ScheduleRunnable(scheduleJob.getBeanName(),scheduleJob.getMethodName(), scheduleJob.getParams());
             Future<?> future = service.submit(task);
 
             future.get();
