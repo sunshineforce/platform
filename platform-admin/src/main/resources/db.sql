@@ -88,7 +88,7 @@ CREATE TABLE t_check_specific(
 id INT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
 specific_name VARCHAR(30) NOT NULL COMMENT '规范名称',
 remark VARCHAR(100) COMMENT '备注',
-check_item VARCHAR(2000) COMMENT '检查项',
+check_item VARCHAR(3000) COMMENT '检查项',
 create_time DATETIME COMMENT '创建时间',
 creator INT COMMENT '创建者',
 update_time DATETIME COMMENT '最后修改人',
@@ -96,3 +96,189 @@ updator INT COMMENT '最后修改人',
 PRIMARY KEY(id),
 KEY idx_specific_name(specific_name)
 )ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='检查规范表';
+
+
+DROP TABLE IF EXISTS t_expert;
+
+/*==============================================================*/
+/* Table: t_expert                                              */
+/*==============================================================*/
+CREATE TABLE t_expert
+(
+   id                   INT NOT NULL AUTO_INCREMENT COMMENT '主键',
+   expert_name          VARCHAR(5) COMMENT '专家名称',
+   job_title            VARCHAR(20) COMMENT '职称',
+   mobile               VARCHAR(13) COMMENT '手机号',
+   skill                VARCHAR(50) COMMENT '擅长领域',
+   avatar               VARCHAR(200) COMMENT '头像',
+   create_time          DATETIME COMMENT '创建时间',
+   creator              INT COMMENT '创建人',
+   update_time          DATETIME COMMENT '修改时间',
+   updator              INT COMMENT '修改人',
+   PRIMARY KEY (id),
+   KEY idx_expert_name(expert_name)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='专家库表';
+
+
+DROP TABLE IF EXISTS t_regulation;
+
+/*==============================================================*/
+/* Table: t_regulation                                          */
+/*==============================================================*/
+CREATE TABLE t_regulation
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+   knowledge_name       VARCHAR(30) COMMENT '知识名称',
+   description          VARCHAR(50) COMMENT '描述',
+   url                  VARCHAR(200) COMMENT '预览图片url',
+   TYPE                 TINYINT COMMENT '知识内容方式(0：自主编辑；1：外部链接)',
+   content              TEXT COMMENT '自主编辑知识内容',
+   link                 VARCHAR(200) COMMENT '知识外部链接地址',
+   relation             VARCHAR(200) COMMENT '关联考试',
+   create_time          DATETIME COMMENT '创建时间',
+   creator              INT COMMENT '创建人',
+   update_time          DATETIME COMMENT '更改时间',
+   updator              INT COMMENT '修改人',
+   PRIMARY KEY (id),
+   KEY idx_knowledge_name(knowledge_name)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='法规管理表';
+
+
+DROP TABLE IF EXISTS t_exam;
+
+/*==============================================================*/
+/* Table: t_exam                                                */
+/*==============================================================*/
+CREATE TABLE t_exam
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+   exam_name            VARCHAR(300) NOT NULL COMMENT '试题名称',
+   introduce            VARCHAR(300) COMMENT '试题介绍',
+   begin_time           DATETIME COMMENT '开始时间',
+   end_time             DATETIME COMMENT '结束时间',
+   member               INT COMMENT '参考人员',
+   create_time          DATETIME COMMENT '创建时间',
+   creator              INT COMMENT '创建人',
+   update_time          DATETIME COMMENT '修改时间',
+   updator              INT COMMENT '修改人',
+   enabled              TINYINT COMMENT '是否启用（0：启用；1：禁用）',
+   PRIMARY KEY (id),
+   KEY idx_exam_name(exam_name)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='试题管理表';
+
+
+DROP TABLE IF EXISTS t_exam_member;
+
+/*==============================================================*/
+/* Table: t_exam_member                                         */
+/*==============================================================*/
+CREATE TABLE t_exam_member
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+   exam_id              INT COMMENT '试题Id',
+   member_id            INT COMMENT '参考人员Id',
+   PRIMARY KEY (id)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='考试参考人员';
+
+
+DROP TABLE IF EXISTS t_exam_question;
+
+/*==============================================================*/
+/* Table: t_exam_question                                       */
+/*==============================================================*/
+CREATE TABLE t_exam_question
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键',
+   exam_id              INT COMMENT '试题Id',
+   score                DOUBLE COMMENT '题目分值',
+   question             TEXT COMMENT '题目',
+   answer               VARCHAR(20) COMMENT '答案',
+   item                 INT COMMENT '题目选项',
+   create_time          DATETIME COMMENT '创建时间',
+   creator              INT COMMENT '创建人',
+   PRIMARY KEY (id)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='试题题目表';
+
+
+
+DROP TABLE IF EXISTS t_question_item;
+
+/*==============================================================*/
+/* Table: t_question_item                                       */
+/*==============================================================*/
+CREATE TABLE t_question_item
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+   question_id          BIGINT COMMENT '题目Id',
+   item                 VARCHAR(50) COMMENT '题目选项',
+   PRIMARY KEY (id)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='试题选项表';
+
+
+
+DROP TABLE IF EXISTS t_enterprice;
+
+/*==============================================================*/
+/* Table: t_enterprice                                          */
+/*==============================================================*/
+CREATE TABLE t_enterprice
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+   enterprice_name      VARCHAR(50) NOT NULL COMMENT '企业名称',
+   mobile               VARCHAR(13) NOT NULL COMMENT '联系电话',
+   OWNER                INT COMMENT '负责人',
+   address              VARCHAR(50) COMMENT '地址',
+   account              VARCHAR(20) COMMENT '账号',
+   PASSWORD             VARCHAR(20) COMMENT '密码',
+   create_time          DATETIME COMMENT '创建时间',
+   creator              INT COMMENT '创建人',
+   update_time          DATETIME COMMENT '更新时间',
+   updator              INT COMMENT '更新人',
+   enabled               TINYINT COMMENT '是否启用（0：启用；1：禁用）',
+   PRIMARY KEY(id)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='企业信息表';
+
+
+DROP TABLE IF EXISTS t_report_log;
+
+/*==============================================================*/
+/* Table: t_report_log                                          */
+/*==============================================================*/
+CREATE TABLE t_report_log
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+   event_no             VARCHAR(20) COMMENT '事件编号',
+   result               TINYINT COMMENT '推送结果(0:成功;1:失败;3:异常)',
+   alarm_location       VARCHAR(30) COMMENT '告警位置',
+   localtion_tag        VARCHAR(10) COMMENT '位置标签',
+   device_type          INT COMMENT '设备类型',
+   customer_id          INT COMMENT '客户id',
+   send_time            DATETIME COMMENT '发送时间/告警时间',
+   alarm_floor          VARCHAR(10) COMMENT '所在楼层',
+   install_local        VARCHAR(1000) COMMENT '安装位置',
+   send_text            TEXT COMMENT '发起内容',
+   classify             INT COMMENT '上报类型',
+   create_time          DATETIME COMMENT '创建时间',
+   PRIMARY KEY (id),
+   KEY idx_device_type(device_type)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='上报记录表';
+
+
+DROP TABLE IF EXISTS t_check_details;
+
+/*==============================================================*/
+/* Table: t_check_details                                       */
+/*==============================================================*/
+CREATE TABLE t_check_details
+(
+   id                   BIGINT NOT NULL AUTO_INCREMENT COMMENT '主键Id',
+   matetial_id          BIGINT COMMENT '物品Id',
+   check_time           DATETIME COMMENT '检查时间',
+   checkor              INT COMMENT '检查人',
+   result               TINYINT COMMENT '检查结果(0:正常;1:异常;2:报废)',
+   description          VARCHAR(100) COMMENT '检查描述',
+   sit_photos_url       VARCHAR(200) COMMENT '现场照片url',
+   create_time          DATETIME COMMENT '创建时间',
+   PRIMARY KEY (id),
+   idx_result(result)
+)ENGINE=INNODB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='检查情况信息表';
