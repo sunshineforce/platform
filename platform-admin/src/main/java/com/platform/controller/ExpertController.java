@@ -20,7 +20,7 @@ import com.platform.utils.R;
  * @date 2018-07-20 18:08:44
  */
 @Controller
-@RequestMapping("texpert")
+@RequestMapping("expert")
 public class ExpertController {
     @Autowired
     private IExpertService expertService;
@@ -29,7 +29,7 @@ public class ExpertController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("texpert:list")
+    @RequiresPermissions("expert:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
@@ -47,7 +47,7 @@ public class ExpertController {
      * 查看信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("texpert:info")
+    @RequiresPermissions("expert:info")
     @ResponseBody
     public R info(@PathVariable("id") Integer id) {
         ExpertEntity tExpert = expertService.queryObject(id);
@@ -59,7 +59,7 @@ public class ExpertController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("texpert:save")
+    @RequiresPermissions("expert:save")
     @ResponseBody
     public R save(@RequestBody ExpertEntity tExpert) {
         expertService.save(tExpert);
@@ -71,7 +71,7 @@ public class ExpertController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("texpert:update")
+    @RequiresPermissions("expert:update")
     @ResponseBody
     public R update(@RequestBody ExpertEntity tExpert) {
         expertService.update(tExpert);
@@ -83,7 +83,7 @@ public class ExpertController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("texpert:delete")
+    @RequiresPermissions("expert:delete")
     @ResponseBody
     public R delete(@RequestBody Integer[]ids) {
         expertService.deleteBatch(ids);
