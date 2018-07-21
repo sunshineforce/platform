@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.enterprise.EnterpriseDao">
+
+    <resultMap type="com.platform.entity.enterprise.EnterpriseEntity" id="enterpriseMap">
+        <result property="id" column="id"/>
+        <result property="enterpriseName" column="enterprise_name"/>
+        <result property="mobile" column="mobile"/>
+        <result property="owner" column="owner"/>
+        <result property="address" column="address"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updator" column="updator"/>
+        <result property="enabled" column="enabled"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.enterprise.EnterpriseEntity">
+		select
+			`id`,
+			`enterprise_name`,
+			`mobile`,
+			`owner`,
+			`address`,
+			`account`,
+			`password`,
+			`create_time`,
+			`creator`,
+			`update_time`,
+			`updator`,
+			`enabled`
+		from enterprise
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.enterprise.EnterpriseEntity">
+		select
+    		`id`,
+    		`enterprise_name`,
+    		`mobile`,
+    		`owner`,
+    		`address`,
+    		`account`,
+    		`password`,
+    		`create_time`,
+    		`creator`,
+    		`update_time`,
+    		`updator`,
+    		`enabled`
+		from enterprise
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from enterprise
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.enterprise.EnterpriseEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into enterprise(
+			`enterprise_name`,
+			`mobile`,
+			`owner`,
+			`address`,
+			`account`,
+			`password`,
+			`create_time`,
+			`creator`,
+			`update_time`,
+			`updator`,
+			`enabled`)
+		values(
+			#{enterpriseName},
+			#{mobile},
+			#{owner},
+			#{address},
+			#{account},
+			#{password},
+			#{createTime},
+			#{creator},
+			#{updateTime},
+			#{updator},
+			#{enabled})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.enterprise.EnterpriseEntity">
+		update enterprise 
+		<set>
+			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="owner != null">`owner` = #{owner}, </if>
+			<if test="address != null">`address` = #{address}, </if>
+			<if test="account != null">`account` = #{account}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="creator != null">`creator` = #{creator}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updator != null">`updator` = #{updator}, </if>
+			<if test="enabled != null">`enabled` = #{enabled}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from enterprise where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from enterprise where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

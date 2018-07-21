@@ -3,6 +3,7 @@ package com.platform.service.expert.impl;
 import com.platform.constants.CommonConstant;
 import com.platform.dao.expert.ExpertDao;
 import com.platform.entity.SysUserEntity;
+import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.entity.expert.ExpertEntity;
 import com.platform.service.expert.IExpertService;
 import org.apache.shiro.SecurityUtils;
@@ -42,17 +43,13 @@ public class ExpertServiceImpl implements IExpertService {
 
     @Override
     public int save(ExpertEntity expert) {
-        expert.setCreateTime(new Date());
-        SysUserEntity sessionUser = (SysUserEntity) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.LOGIN_USER);
-        expert.setCreator(sessionUser.getUsername());
+        setDefaultValue(expert);
         return expertDao.save(expert);
     }
 
     @Override
     public int update(ExpertEntity expert) {
-        expert.setUpdateTime(new Date());
-        SysUserEntity sessionUser = (SysUserEntity) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.LOGIN_USER);
-        expert.setUpdator(sessionUser.getUsername());
+        setDefaultValue(expert);
         return expertDao.update(expert);
     }
 
@@ -64,5 +61,16 @@ public class ExpertServiceImpl implements IExpertService {
     @Override
     public int deleteBatch(Integer[]ids) {
         return expertDao.deleteBatch(ids);
+    }
+
+    private void setDefaultValue(ExpertEntity entity){
+        Date currDate = new Date();
+        SysUserEntity sessionUser = (SysUserEntity) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.LOGIN_USER);
+        if (entity.getId() == null) {
+            entity.setCreateTime(currDate);
+            entity.setCreator(sessionUser.getUsername());
+        }
+        entity.setUpdateTime(currDate);
+        entity.setUpdator(sessionUser.getUsername());
     }
 }
