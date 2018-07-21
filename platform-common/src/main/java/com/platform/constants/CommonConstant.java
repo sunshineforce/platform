@@ -17,4 +17,7 @@ public class CommonConstant {
     public static final  int  GENDER_MAN = 0;
     //女
     public static final  int  GENDER_WOMAN = 1;
+
+
+    public static final String LOGIN_USER = "";
 }

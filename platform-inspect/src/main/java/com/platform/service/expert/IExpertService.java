@@ -1,6 +1,6 @@
-package com.platform.service;
+package com.platform.service.expert;
 
-import com.platform.entity.ExpertEntity;
+import com.platform.entity.expert.ExpertEntity;
 
 import java.util.List;
 import java.util.Map;

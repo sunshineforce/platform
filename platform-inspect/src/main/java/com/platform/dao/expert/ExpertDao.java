@@ -1,6 +1,7 @@
-package com.platform.dao;
+package com.platform.dao.expert;
 
-import com.platform.entity.ExpertEntity;
+import com.platform.dao.BaseDao;
+import com.platform.entity.expert.ExpertEntity;
 
 /**
  * 专家库表Dao

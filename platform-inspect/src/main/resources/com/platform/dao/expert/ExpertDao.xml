@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.expert.ExpertDao">
+
+    <resultMap type="com.platform.entity.expert.ExpertEntity" id="tExpertMap">
+        <result property="id" column="id"/>
+        <result property="expertName" column="expert_name"/>
+        <result property="jobTitle" column="job_title"/>
+        <result property="mobile" column="mobile"/>
+        <result property="skill" column="skill"/>
+        <result property="avatar" column="avatar"/>
+        <result property="createTime" column="create_time"/>
+        <result property="creator" column="creator"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updator" column="updator"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.expert.ExpertEntity">
+		select id,expert_name,job_title,mobile,skill,avatar,create_time,creator,update_time,updator from expert where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.expert.ExpertEntity">
+		select id,expert_name,job_title,mobile,skill,avatar,create_time,creator,update_time,updator
+		from expert
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND expert_name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(1) from expert
+		WHERE 1=1
+        <if test="expertName != null and expertName.trim() != ''">
+            AND expert_name LIKE concat('%',#{expertName},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.expert.ExpertEntity" useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO expert(expert_name,job_title,mobile,skill,avatar,create_time,creator,update_time,updator)
+		values(#{expertName},#{jobTitle},#{mobile},#{skill},#{avatar},#{createTime},#{creator},#{updateTime},#{updator})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.expert.ExpertEntity">
+		update expert 
+		<set>
+			<if test="expertName != null">expert_name = #{expertName}, </if>
+			<if test="jobTitle != null">job_title = #{jobTitle}, </if>
+			<if test="mobile != null">mobile = #{mobile}, </if>
+			<if test="skill != null">skill = #{skill}, </if>
+			<if test="avatar != null">avatar = #{avatar}, </if>
+			<if test="createTime != null">create_time = #{createTime}, </if>
+			<if test="creator != null">creator = #{creator}, </if>
+			<if test="updateTime != null">update_time = #{updateTime}, </if>
+			<if test="updator != null">updator = #{updator}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from expert where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from expert where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
