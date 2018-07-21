@@ -1,15 +1,14 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '../${pathName}/list',
+        url: '../taskgroup/list',
         datatype: "json",
         colModel: [
-#foreach($column in $columns)
-#if($column.columnName == $pk.columnName)
-			{label: '${column.attrname}', name: '${column.attrname}', index: '${column.columnName}', key: true, hidden: true},
-#else
-			{label: '${column.comments}', name: '${column.attrname}', index: '${column.columnName}', width: 80}#if($velocityCount != $columns.size()),
-#end#end#end
-],
+			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+			{label: '任务组名称', name: 'name', index: 'name', width: 80},
+			{label: '备注', name: 'remark', index: 'remark', width: 80},
+			{label: '创建时间', name: 'createTime', index: 'create_time', width: 80},
+			{label: '更新时间', name: 'updateTime', index: 'update_time', width: 80},
+			{label: '数据状态 0 正常 1 删除', name: 'dataStatus', index: 'data_status', width: 80}],
 		viewrecords: true,
         height: 385,
         rowNum: 10,
@@ -41,7 +40,7 @@ var vm = new Vue({
 	data: {
         showList: true,
         title: null,
-		${classname}: {},
+		taskGroup: {},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
@@ -58,25 +57,25 @@ var vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
-			vm.${classname} = {};
+			vm.taskGroup = {};
 		},
 		update: function (event) {
-            var $pk.attrname = getSelectedRow();
-			if ($pk.attrname == null) {
+            var id = getSelectedRow();
+			if (id == null) {
 				return;
 			}
 			vm.showList = false;
             vm.title = "修改";
 
-            vm.getInfo(${pk.attrname})
+            vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-            var url = vm.${classname}.${pk.attrname} == null ? "../${pathName}/save" : "../${pathName}/update";
+            var url = vm.taskGroup.id == null ? "../taskgroup/save" : "../taskgroup/update";
 			$.ajax({
 				type: "POST",
 			    url: url,
 			    contentType: "application/json",
-			    data: JSON.stringify(vm.${classname}),
+			    data: JSON.stringify(vm.taskGroup),
                 success: function (r) {
                     if (r.code === 0) {
                         alert('操作成功', function (index) {
@@ -89,17 +88,17 @@ var vm = new Vue({
 			});
 		},
 		del: function (event) {
-            var ${pk.attrname}s = getSelectedRows();
-			if (${pk.attrname}s == null){
+            var ids = getSelectedRows();
+			if (ids == null){
 				return;
 			}
 
 			confirm('确定要删除选中的记录？', function () {
 				$.ajax({
 					type: "POST",
-				    url: "../${pathName}/delete",
+				    url: "../taskgroup/delete",
 				    contentType: "application/json",
-				    data: JSON.stringify(${pk.attrname}s),
+				    data: JSON.stringify(ids),
 				    success: function (r) {
 						if (r.code == 0) {
 							alert('操作成功', function (index) {
@@ -112,9 +111,9 @@ var vm = new Vue({
 				});
 			});
 		},
-		getInfo: function(${pk.attrname}){
-			$.get("../${pathName}/info/"+${pk.attrname}, function (r) {
-                vm.${classname} = r.${classname};
+		getInfo: function(id){
+			$.get("../taskgroup/info/"+id, function (r) {
+                vm.taskGroup = r.taskGroup;
             });
 		},
 		reload: function (event) {
