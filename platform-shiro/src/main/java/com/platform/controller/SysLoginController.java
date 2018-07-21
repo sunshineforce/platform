@@ -3,6 +3,8 @@ package com.platform.controller;
 import com.google.code.kaptcha.Constants;
 import com.google.code.kaptcha.Producer;
 import com.platform.annotation.SysLog;
+import com.platform.constants.CommonConstant;
+import com.platform.entity.SysUserEntity;
 import com.platform.utils.R;
 import com.platform.utils.ShiroUtils;
 import org.apache.shiro.authc.*;
@@ -70,6 +72,8 @@ public class SysLoginController {
             password = new Sha256Hash(password).toHex();
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             subject.login(token);
+            SysUserEntity userEntity = (SysUserEntity) subject.getPrincipal();
+            subject.getSession().setAttribute(CommonConstant.LOGIN_USER,userEntity);
         } catch (UnknownAccountException e) {
             return R.error(e.getMessage());
         } catch (IncorrectCredentialsException e) {

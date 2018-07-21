@@ -8,11 +8,9 @@ $(function () {
 			{label: '职称', name: 'jobTitle', index: 'job_title', width: 80},
 			{label: '手机号', name: 'mobile', index: 'mobile', width: 80},
 			{label: '擅长领域', name: 'skill', index: 'skill', width: 80},
-			{label: '头像', name: 'avatar', index: 'avatar', width: 80},
 			{label: '创建时间', name: 'createTime', index: 'create_time', width: 80},
-			{label: '创建人', name: 'creator', index: 'creator', width: 80},
-			{label: '修改时间', name: 'updateTime', index: 'update_time', width: 80},
-			{label: '修改人', name: 'updator', index: 'updator', width: 80}],
+			{label: '创建人', name: 'creator', index: 'creator', width: 80}
+			],
 		viewrecords: true,
         height: 385,
         rowNum: 10,
@@ -47,7 +45,7 @@ var vm = new Vue({
 		expert: {},
 		ruleValidate: {
 			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
+				{required: true, message: '专家名称不能为空', trigger: 'blur'}
 			]
 		},
 		q: {
@@ -74,12 +72,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-            var url = vm.tExpert.id == null ? "../expert/save" : "../expert/update";
+            var url = vm.expert.id == null ? "../expert/save" : "../expert/update";
 			$.ajax({
 				type: "POST",
 			    url: url,
 			    contentType: "application/json",
-			    data: JSON.stringify(vm.tExpert),
+			    data: JSON.stringify(vm.expert),
                 success: function (r) {
                     if (r.code === 0) {
                         alert('操作成功', function (index) {
@@ -117,7 +115,7 @@ var vm = new Vue({
 		},
 		getInfo: function(id){
 			$.get("../expert/info/"+id, function (r) {
-                vm.tExpert = r.tExpert;
+                vm.expert = r.expert;
             });
 		},
 		reload: function (event) {

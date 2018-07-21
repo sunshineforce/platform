@@ -1,18 +1,17 @@
-package com.platform.controller;
+package com.platform.controller.expert;
 
-import java.util.List;
-import java.util.Map;
-
+import com.platform.entity.expert.ExpertEntity;
+import com.platform.service.expert.IExpertService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
+import com.platform.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.platform.entity.ExpertEntity;
-import com.platform.service.IExpertService;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 专家库Controller *
@@ -35,10 +34,10 @@ public class ExpertController {
         //查询列表数据
         Query query = new Query(params);
 
-        List<ExpertEntity> tExpertList = expertService.queryList(query);
+        List<ExpertEntity> expertList = expertService.queryList(query);
         int total = expertService.queryTotal(query);
 
-        PageUtils pageUtil = new PageUtils(tExpertList, total, query.getLimit(), query.getPage());
+        PageUtils pageUtil = new PageUtils(expertList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
     }
@@ -50,9 +49,9 @@ public class ExpertController {
     @RequiresPermissions("expert:info")
     @ResponseBody
     public R info(@PathVariable("id") Integer id) {
-        ExpertEntity tExpert = expertService.queryObject(id);
+        ExpertEntity expert = expertService.queryObject(id);
 
-        return R.ok().put("tExpert", tExpert);
+        return R.ok().put("expert", expert);
     }
 
     /**
@@ -61,8 +60,8 @@ public class ExpertController {
     @RequestMapping("/save")
     @RequiresPermissions("expert:save")
     @ResponseBody
-    public R save(@RequestBody ExpertEntity tExpert) {
-        expertService.save(tExpert);
+    public R save(@RequestBody ExpertEntity expert) {
+        expertService.save(expert);
 
         return R.ok();
     }
@@ -73,8 +72,8 @@ public class ExpertController {
     @RequestMapping("/update")
     @RequiresPermissions("expert:update")
     @ResponseBody
-    public R update(@RequestBody ExpertEntity tExpert) {
-        expertService.update(tExpert);
+    public R update(@RequestBody ExpertEntity expert) {
+        expertService.update(expert);
 
         return R.ok();
     }

@@ -1,4 +1,4 @@
-package com.platform.entity;
+package com.platform.entity.expert;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -30,11 +30,11 @@ public class ExpertEntity implements Serializable {
     //创建时间
     private Date createTime;
     //创建人
-    private Integer creator;
+    private String creator;
     //修改时间
     private Date updateTime;
     //修改人
-    private Integer updator;
+    private String updator;
 
     /**
      * 设置：主键
@@ -130,14 +130,14 @@ public class ExpertEntity implements Serializable {
     /**
      * 设置：创建人
      */
-    public void setCreator(Integer creator) {
+    public void setCreator(String creator) {
         this.creator = creator;
     }
 
     /**
      * 获取：创建人
      */
-    public Integer getCreator() {
+    public String getCreator() {
         return creator;
     }
     /**
@@ -156,14 +156,14 @@ public class ExpertEntity implements Serializable {
     /**
      * 设置：修改人
      */
-    public void setUpdator(Integer updator) {
+    public void setUpdator(String updator) {
         this.updator = updator;
     }
 
     /**
      * 获取：修改人
      */
-    public Integer getUpdator() {
+    public String getUpdator() {
         return updator;
     }
 
