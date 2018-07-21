@@ -38,6 +38,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskEntity> queryTaskList(Map<String, Object> map) {
+        return taskDao.selectTaskList(map);
+    }
+
+    @Override
+    public int queryTaskTotal(Map<String, Object> map) {
+        return taskDao.selectTaskTotal(map);
+    }
+
+    @Override
     public int save(TaskEntity task) {
         return taskDao.save(task);
     }

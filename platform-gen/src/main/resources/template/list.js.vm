@@ -7,11 +7,11 @@ $(function () {
 #if($column.columnName == $pk.columnName)
 			{label: '${column.attrname}', name: '${column.attrname}', index: '${column.columnName}', key: true, hidden: true},
 #else
-			{label: '${column.comments}', name: '${column.attrname}', index: '${column.columnName}', width: 80}#if($velocityCount != $columns.size()),
+			{label: '${column.comments}', name: '${column.attrname}', index: '${column.columnName}', align: 'center', width:'80px'}#if($velocityCount != $columns.size()),
 #end#end#end
 ],
 		viewrecords: true,
-        height: 385,
+        height: 555,
         rowNum: 10,
         rowList: [10, 30, 50],
         rownumbers: true,

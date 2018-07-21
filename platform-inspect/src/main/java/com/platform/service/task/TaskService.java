@@ -39,6 +39,21 @@ public interface TaskService {
      */
     int queryTotal(Map<String, Object> map);
 
+
+    /**
+     * 查询任务信息
+     * @param map
+     * @return
+     */
+    List<TaskEntity> queryTaskList(Map<String, Object> map);
+
+    /**
+     * 总条数
+     * @param map
+     * @return
+     */
+    int queryTaskTotal(Map<String, Object> map);
+
     /**
      * 保存实体
      *

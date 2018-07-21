@@ -19,6 +19,10 @@ public class TaskEntity implements Serializable {
     private Integer id;
     //任务组id
     private Integer taskGroupId;
+    //任务名称
+    private String name;
+    //备注
+    private String remark;
     //任务类型 0 单次任务 1 循环任务
     private Integer type;
     //任务状态  0 
@@ -41,6 +45,20 @@ public class TaskEntity implements Serializable {
     private Date updateTime;
     //数据状态 0  正常 1 删除
     private Integer dataStatus;
+
+
+    ////业务属性
+    //任务组名称
+    private String taskGroupName;
+
+    //检查区域
+    private String chekArea;
+    //检查企业
+    private String checkCompany;
+    //最后执行时间
+    private Date lastCheckTime;
+
+
 
     /**
      * 设置：主键id
@@ -210,5 +228,53 @@ public class TaskEntity implements Serializable {
      */
     public Integer getDataStatus() {
         return dataStatus;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
+    }
+
+    public String getTaskGroupName() {
+        return taskGroupName;
+    }
+
+    public void setTaskGroupName(String taskGroupName) {
+        this.taskGroupName = taskGroupName;
+    }
+
+    public String getChekArea() {
+        return chekArea;
+    }
+
+    public void setChekArea(String chekArea) {
+        this.chekArea = chekArea;
+    }
+
+    public String getCheckCompany() {
+        return checkCompany;
+    }
+
+    public void setCheckCompany(String checkCompany) {
+        this.checkCompany = checkCompany;
+    }
+
+    public Date getLastCheckTime() {
+        return lastCheckTime;
+    }
+
+    public void setLastCheckTime(Date lastCheckTime) {
+        this.lastCheckTime = lastCheckTime;
     }
 }

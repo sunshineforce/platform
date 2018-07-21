@@ -1,5 +1,6 @@
 package com.platform.controller.task;
 
+import com.platform.constants.CommonConstant;
 import com.platform.entity.task.TaskEntity;
 import com.platform.service.task.TaskService;
 import com.platform.utils.PageUtils;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,11 +35,12 @@ public class TaskController {
     @RequiresPermissions("task:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        params.put("dataStatus",CommonConstant.USEABLE_STATUS);
         //查询列表数据
         Query query = new Query(params);
 
-        List<TaskEntity> taskList = taskService.queryList(query);
-        int total = taskService.queryTotal(query);
+        List<TaskEntity> taskList = taskService.queryTaskList(query);
+        int total = taskService.queryTaskTotal(query);
 
         PageUtils pageUtil = new PageUtils(taskList, total, query.getLimit(), query.getPage());
 
@@ -63,6 +66,10 @@ public class TaskController {
     @RequiresPermissions("task:save")
     @ResponseBody
     public R save(@RequestBody TaskEntity task) {
+        Date time = new Date();
+        task.setUpdateTime(time);
+        task.setCreateTime(time);
+        task.setDataStatus(CommonConstant.USEABLE_STATUS);
         taskService.save(task);
 
         return R.ok();
@@ -75,6 +82,9 @@ public class TaskController {
     @RequiresPermissions("task:update")
     @ResponseBody
     public R update(@RequestBody TaskEntity task) {
+        Date time = new Date();
+        task.setUpdateTime(time);
+        task.setDataStatus(CommonConstant.USEABLE_STATUS);
         taskService.update(task);
 
         return R.ok();
@@ -87,7 +97,18 @@ public class TaskController {
     @RequiresPermissions("task:delete")
     @ResponseBody
     public R delete(@RequestBody Integer[]ids) {
-        taskService.deleteBatch(ids);
+        //taskService.deleteBatch(ids);
+        if (ids.length > 0 ){
+            TaskEntity task = null;
+            for (Integer id : ids) {
+                task = new TaskEntity();
+                task.setId(id);
+                Date time = new Date();
+                task.setUpdateTime(time);
+                task.setDataStatus(CommonConstant.UN_USEABLE_STATUS);
+                taskService.update(task);
+            }
+        }
 
         return R.ok();
     }

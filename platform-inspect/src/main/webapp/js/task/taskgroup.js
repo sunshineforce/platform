@@ -4,13 +4,15 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '任务组名称', name: 'name', index: 'name', width: 80},
-			{label: '备注', name: 'remark', index: 'remark', width: 80},
-			{label: '创建时间', name: 'createTime', index: 'create_time', width: 80},
-			{label: '更新时间', name: 'updateTime', index: 'update_time', width: 80},
-			{label: '数据状态 0 正常 1 删除', name: 'dataStatus', index: 'data_status', width: 80}],
+			{label: '任务组名称', name: 'name', index: 'name', align: 'center',width: 80},
+			{label: '备注', name: 'remark', index: 'remark', align: 'center',width: 80},
+			{label: '创建时间', name: 'createTime', index: 'create_time',align: 'center', width: 80},
+			{label: '更新时间', name: 'updateTime', index: 'update_time', align: 'center',width: 80},
+            {label: '操作', name: 'id', index: 'id', align: 'center',width: 80,formatter:function (t) {
+				return "<a href='#'>添加物品</a>";
+            }}],
 		viewrecords: true,
-        height: 385,
+        height: 555,
         rowNum: 10,
         rowList: [10, 30, 50],
         rownumbers: true,

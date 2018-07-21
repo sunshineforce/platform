@@ -7,6 +7,8 @@
         <result property="id" column="id"/>
         <result property="taskGroupId" column="task_group_id"/>
         <result property="type" column="type"/>
+		<result property="name" column="name"/>
+		<result property="remark" column="remark"/>
         <result property="status" column="status"/>
         <result property="userIds" column="user_ids"/>
         <result property="userNames" column="user_names"/>
@@ -22,6 +24,8 @@
 	<select id="queryObject" resultType="com.platform.entity.task.TaskEntity">
 		select
 			`id`,
+			`name`,
+			`remark`,
 			`task_group_id`,
 			`type`,
 			`status`,
@@ -37,10 +41,77 @@
 		from task
 		where id = #{id}
 	</select>
+	<select id="selectTaskList" resultType="com.platform.entity.task.TaskEntity">
+		select
+			t.`id`,
+			t.`name`,
+			t.`remark`,
+			t.`task_group_id`,
+			t.`type`,
+			t.`status`,
+			t.`user_ids`,
+			t.`user_names`,
+			t.`start_time`,
+			t.`end_time`,
+			t.`schedule`,
+			t.`schedule_cycle`,
+			t.`create_time`,
+			t.`update_time`,
+			t.`data_status`,
+			tg.`name` AS taskGroupName
+		from task AS t
+		LEFT JOIN task_group AS tg ON t.task_group_id = tg.id
+		WHERE 1=1 AND t.data_status = 0
+		<if test="name != null and name.trim() != ''">
+			AND t.name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="taskGroupId != null and taskGroupId.trim() != ''">
+			AND t.`task_group_id` = #{taskGroupId}
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND t.`status` = #{status}
+		</if>
+		<if test="type != null  and type.trim() != ''">
+			AND t.`type` = #{type}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="selectTaskTotal" resultType="int">
+		select
+		  COUNT(*)
+		from task AS t
+		LEFT JOIN task_group AS tg ON t.task_group_id = tg.id
+		WHERE 1=1 AND t.data_status = 0
+		<if test="name != null and name.trim() != ''">
+			AND t.name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="taskGroupId != null and taskGroupId.trim() != ''">
+			AND t.`task_group_id` = #{taskGroupId}
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND t.`status` = #{status}
+		</if>
+		<if test="type != null  and type.trim() != ''">
+			AND t.`type` = #{type}
+		</if>
+	</select>
 
 	<select id="queryList" resultType="com.platform.entity.task.TaskEntity">
 		select
     		`id`,
+			`name`,
+			`remark`,
     		`task_group_id`,
     		`type`,
     		`status`,
@@ -54,7 +125,7 @@
     		`update_time`,
     		`data_status`
 		from task
-		WHERE 1=1
+		WHERE 1=1 AND data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
@@ -73,7 +144,7 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from task
-		WHERE 1=1
+		WHERE 1=1 AND data_status = 0
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
@@ -82,6 +153,8 @@
 	<insert id="save" parameterType="com.platform.entity.task.TaskEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into task(
 			`task_group_id`,
+			`name`,
+			`remark`,
 			`type`,
 			`status`,
 			`user_ids`,
@@ -95,6 +168,8 @@
 			`data_status`)
 		values(
 			#{taskGroupId},
+			#{name},
+			#{remark},
 			#{type},
 			#{status},
 			#{userIds},
@@ -112,6 +187,8 @@
 		update task 
 		<set>
 			<if test="taskGroupId != null">`task_group_id` = #{taskGroupId}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="type != null">`type` = #{type}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="userIds != null">`user_ids` = #{userIds}, </if>

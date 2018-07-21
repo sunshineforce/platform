@@ -4,8 +4,14 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '任务组id', name: 'taskGroupId', index: 'task_group_id', width: 80},
-			{label: '物料id', name: 'materialId', index: 'material_id', width: 80}],
+			{label: '任务组', name: 'taskGroupId', index: 'task_group_id',  align: 'center', width: 80},
+            {label: '物品名称', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
+            {label: '物品类型', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
+            {label: '二维码', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
+            {label: '位置', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
+			{label: '状态', name: 'materialId', index: 'material_id', align: 'center',width: 80},
+            {label: '最近检查时间', name: 'materialId', index: 'material_id', align: 'center',width: 80}
+		],
 		viewrecords: true,
         height: 385,
         rowNum: 10,
