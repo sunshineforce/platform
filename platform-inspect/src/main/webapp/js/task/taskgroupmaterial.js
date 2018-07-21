@@ -4,13 +4,13 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '任务组', name: 'taskGroupId', index: 'task_group_id',  align: 'center', width: 80},
-            {label: '物品名称', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
-            {label: '物品类型', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
-            {label: '二维码', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
-            {label: '位置', name: 'taskGroupId', index: 'task_group_id', align: 'center',width: 80},
-			{label: '状态', name: 'materialId', index: 'material_id', align: 'center',width: 80},
-            {label: '最近检查时间', name: 'materialId', index: 'material_id', align: 'center',width: 80}
+			{label: '任务组', name: 'groupName', index: 'task_group_id',  align: 'center', width: '100px'},
+            {label: '物品名称', name: 'materialName', index: 'name', align: 'center',width: '120px'},
+            {label: '物品类型', name: 'materialTypeName', index: 'material_type_name', align: 'center',width: '60px'},
+            {label: '二维码', name: 'qrCode', index: '', align: 'center',width: '160px'},
+            {label: '位置', name: 'location', index: 'location', align: 'center',width: '80px'},
+			{label: '状态', name: 'materialStatus', index: 'materialStatus', align: 'center',width: '60px',formatter:formatStatus},
+            {label: '最近检查时间', name: 'updateTime', index: 'update_time', align: 'center'}
 		],
 		viewrecords: true,
         height: 385,
@@ -37,7 +37,12 @@ $(function () {
         }
     });
 });
-
+//0：正常；1：报废；2：异常
+///格式化任务状态
+const Status = ["正常","报废","异常"];
+function formatStatus(t) {
+    return '<span>' + Status[t] + '</span>';
+}
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -51,8 +56,17 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        taskGroupList:[
+            {id:"",name:"任务组"}
+        ], //查询使用
 	},
+    created:function () {
+        //console.log("created..........")
+        $.get("../taskgroup/queryAll", function (r) {
+            vm.taskGroupList = vm.taskGroupList.concat(r.list);
+        });
+    },
 	methods: {
 		query: function () {
 			vm.reload();

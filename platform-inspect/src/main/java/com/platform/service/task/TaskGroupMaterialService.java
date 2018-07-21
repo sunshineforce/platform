@@ -32,6 +32,20 @@ public interface TaskGroupMaterialService {
     List<TaskGroupMaterialEntity> queryList(Map<String, Object> map);
 
     /**
+     * 分页查询组物料信息
+     * @param map
+     * @return
+     */
+    List<TaskGroupMaterialEntity> queryTaskGroupMaterialList(Map<String, Object> map);
+
+    /**
+     * 条数
+     * @param map
+     * @return
+     */
+    int queryTaskGroupMaterialTotal(Map<String, Object> map);
+
+    /**
      * 分页统计总数
      *
      * @param map 参数

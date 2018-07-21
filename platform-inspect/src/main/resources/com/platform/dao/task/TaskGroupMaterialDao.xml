@@ -18,6 +18,72 @@
 		where id = #{id}
 	</select>
 
+	<select id="selectTaskGroupMaterialList" resultType="com.platform.entity.task.TaskGroupMaterialEntity">
+		SELECT
+		    r.id AS id,
+			r.material_id AS materialId,
+			r.task_group_id AS taskGroupId,
+			g.`name` AS groupName,
+			m.material_name AS materialName,
+			m.qr_code AS qrCode,
+			m.location AS location,
+			m.material_status AS materialStatus,
+			m.update_time AS updateTime,
+			t.material_type_name AS materialTypeName
+		FROM
+		material AS m,
+		material_type AS t,
+		task_group_material AS r,
+		task_group AS g
+		WHERE
+		m.id = r.material_id
+		AND m.material_type_id = t.id
+		AND r.task_group_id = g.id
+		<if test="materialName != null and materialName.trim() != ''">
+			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="taskGroupId != null and taskGroupId.trim() != ''">
+			AND r.task_group_id = #{taskGroupId}
+		</if>
+		<if test="typeId != null and typeId.trim() != ''">
+			AND t.id = #{typeId}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="selectTaskGroupMaterialTotal" resultType="int">
+		SELECT
+	      COUNT(*)
+		FROM
+		material AS m,
+		material_type AS t,
+		task_group_material AS r,
+		task_group AS g
+		WHERE
+		m.id = r.material_id
+		AND m.material_type_id = t.id
+		AND r.task_group_id = g.id
+		<if test="materialName != null and materialName.trim() != ''">
+			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="taskGroupId != null and taskGroupId.trim() != ''">
+			AND r.task_group_id = #{taskGroupId}
+		</if>
+		<if test="typeId != null and typeId.trim() != ''">
+			AND t.id = #{typeId}
+		</if>
+	</select>
+
 	<select id="queryList" resultType="com.platform.entity.task.TaskGroupMaterialEntity">
 		select
     		`id`,

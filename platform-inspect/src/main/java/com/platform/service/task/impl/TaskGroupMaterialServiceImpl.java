@@ -34,6 +34,16 @@ public class TaskGroupMaterialServiceImpl implements TaskGroupMaterialService {
     }
 
     @Override
+    public List<TaskGroupMaterialEntity> queryTaskGroupMaterialList(Map<String, Object> map) {
+        return taskGroupMaterialDao.selectTaskGroupMaterialList(map);
+    }
+
+    @Override
+    public int queryTaskGroupMaterialTotal(Map<String, Object> map) {
+        return taskGroupMaterialDao.selectTaskGroupMaterialTotal(map);
+    }
+
+    @Override
     public int queryTotal(Map<String, Object> map) {
         return taskGroupMaterialDao.queryTotal(map);
     }

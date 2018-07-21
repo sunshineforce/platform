@@ -36,8 +36,8 @@ public class TaskGroupMaterialController {
         //查询列表数据
         Query query = new Query(params);
 
-        List<TaskGroupMaterialEntity> taskGroupMaterialList = taskGroupMaterialService.queryList(query);
-        int total = taskGroupMaterialService.queryTotal(query);
+        List<TaskGroupMaterialEntity> taskGroupMaterialList = taskGroupMaterialService.queryTaskGroupMaterialList(query);
+        int total = taskGroupMaterialService.queryTaskGroupMaterialTotal(query);
 
         PageUtils pageUtil = new PageUtils(taskGroupMaterialList, total, query.getLimit(), query.getPage());
 
