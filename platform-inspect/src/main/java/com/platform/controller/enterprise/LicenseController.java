@@ -1,5 +1,6 @@
 package com.platform.controller.enterprise;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -73,6 +74,7 @@ public class LicenseController {
     @ResponseBody
     public R save(@RequestBody LicenseEntity license) {
         license.setLicenseTypeId(loadLicenseType().get(license.getLicenseType()));
+        license.setCreateTime(new Date());
         licenseService.save(license);
 
         return R.ok();
