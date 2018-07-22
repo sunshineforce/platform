@@ -1,11 +1,14 @@
 package com.platform.controller.enterprise;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import com.platform.entity.enterprise.LicenseEntity;
+import com.platform.entity.enterprise.LicenseTypeEntity;
 import com.platform.entity.enterprise.LicenseVo;
 import com.platform.service.enterprise.ILicenseService;
+import com.platform.service.enterprise.ILicenseTypeService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +28,12 @@ import com.platform.utils.R;
 @Controller
 @RequestMapping("license")
 public class LicenseController {
+
     @Autowired
     private ILicenseService licenseService;
+
+    @Autowired
+    private ILicenseTypeService licenseTypeService;
 
     /**
      * 查看列表
@@ -65,6 +72,7 @@ public class LicenseController {
     @RequiresPermissions("license:save")
     @ResponseBody
     public R save(@RequestBody LicenseEntity license) {
+        license.setLicenseTypeId(loadLicenseType().get(license.getLicenseType()));
         licenseService.save(license);
 
         return R.ok();
@@ -77,6 +85,7 @@ public class LicenseController {
     @RequiresPermissions("license:update")
     @ResponseBody
     public R update(@RequestBody LicenseEntity license) {
+        license.setLicenseTypeId(loadLicenseType().get(license.getLicenseType()));
         licenseService.update(license);
 
         return R.ok();
@@ -104,5 +113,14 @@ public class LicenseController {
         List<LicenseEntity> list = licenseService.queryList(params);
 
         return R.ok().put("list", list);
+    }
+
+    private Map<String,Integer> loadLicenseType(){
+        List<LicenseTypeEntity> list = licenseTypeService.queryList(null);
+        Map<String,Integer> map = new HashMap<String,Integer>();
+        for (LicenseTypeEntity licenseType : list) {
+            map.put(licenseType.getLicenseType(),licenseType.getId());
+        }
+        return map;
     }
 }

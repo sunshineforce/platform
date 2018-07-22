@@ -28,10 +28,10 @@
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
-		<i-form ref="formValidate" :model="license" :rules="ruleValidate" :label-width="80">
-            <Form-item label="证照类型" prop="licenseTypeId">
-                <i-select v-model="license.licenseTypeId" placeholder="请选择证照类型">
-                    <i-option v-for="licenseType in licenseTypeList" :value="licenseType.id" :key="licenseType.id">{{licenseType.licenseType}}</i-option>
+		<i-form ref="formValidate" :model="license" :rules="rules" :label-width="80">
+            <Form-item label="证照类型" prop="licenseType">
+                <i-select v-model="license.licenseType" placeholder="请选择证照类型">
+                    <i-option v-for="licenseType in licenseTypeList" :value="licenseType.licenseType" :key="licenseType.id">{{licenseType.licenseType}}</i-option>
                 </i-select>
             </Form-item>
 

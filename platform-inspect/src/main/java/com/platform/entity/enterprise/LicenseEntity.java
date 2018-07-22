@@ -17,8 +17,11 @@ public class LicenseEntity implements Serializable {
 
     //主键Id
     private Integer id;
+
     //证照类型Id
     private Integer licenseTypeId;
+    //证照类型名称
+    private String licenseType;
     //证件名称
     private String licenseName;
     //证件编号
@@ -45,6 +48,7 @@ public class LicenseEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
     /**
      * 设置：证照类型Id
      */
@@ -57,6 +61,14 @@ public class LicenseEntity implements Serializable {
      */
     public Integer getLicenseTypeId() {
         return licenseTypeId;
+    }
+
+    public String getLicenseType() {
+        return licenseType;
+    }
+
+    public void setLicenseType(String licenseType) {
+        this.licenseType = licenseType;
     }
     /**
      * 设置：证件名称

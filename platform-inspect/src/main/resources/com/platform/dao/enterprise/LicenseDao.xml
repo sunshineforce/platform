@@ -6,6 +6,7 @@
     <resultMap type="com.platform.entity.enterprise.LicenseEntity" id="licenseMap">
         <result property="id" column="id"/>
         <result property="licenseTypeId" column="license_type_id"/>
+        <result property="licenseType" column="license_type"/>
         <result property="licenseName" column="license_name"/>
         <result property="number" column="number"/>
         <result property="expireDate" column="expire_date"/>
@@ -18,6 +19,7 @@
 		select
 			`id`,
 			`license_type_id`,
+			`license_type`,
 			`license_name`,
 			`number`,
 			`expire_date`,
@@ -29,19 +31,11 @@
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.enterprise.LicenseVo">
-		select
-    		`id`,
-    		`license_type_id`,
-    		`license_name`,
-    		`number`,
-    		`expire_date`,
-    		`url`,
-    		`create_time`,
-    		`creator`
-		from license
+		select m.id,m.license_type_id as licenseTypeId,s.license_type AS licenseType, m.license_name as licenseName,m.number,m.expire_date as expireDate,m.creator
+		from license m left join license_type s on s.id = m. license_type_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND license_name LIKE concat('%',#{name},'%')
+			AND m.license_name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -57,7 +51,7 @@
 	</select>
 
 	<select id="selectList" resultType="com.platform.entity.enterprise.LicenseVo">
-		select m.id,m.license_type_id as licenseTypeId,s.license_type AS licenseTypeName, m.license_name as licenseName,m.number,m.expire_date as expireDate,m.creator
+		select m.id,m.license_type_id as licenseTypeId,s.license_type AS licenseType, m.license_name as licenseName,m.number,m.expire_date as expireDate,m.creator
 		from license m left join license_type s on s.id = m. license_type_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -87,6 +81,7 @@
 	<insert id="save" parameterType="com.platform.entity.enterprise.LicenseEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into license(
 			`license_type_id`,
+			`license_type`,
 			`license_name`,
 			`number`,
 			`expire_date`,
@@ -95,6 +90,7 @@
 			`creator`)
 		values(
 			#{licenseTypeId},
+			#{licenseType},
 			#{licenseName},
 			#{number},
 			#{expireDate},
@@ -107,6 +103,7 @@
 		update license 
 		<set>
 			<if test="licenseTypeId != null">`license_type_id` = #{licenseTypeId}, </if>
+			<if test="licenseType != null">`license_type_id` = #{licenseType}, </if>
 			<if test="licenseName != null">`license_name` = #{licenseName}, </if>
 			<if test="number != null">`number` = #{number}, </if>
 			<if test="expireDate != null">`expire_date` = #{expireDate}, </if>
