@@ -4,7 +4,7 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '证照类型', name: 'licenseTypeName', index: 'license_type', width: 80},
+			{label: '证照类型', name: 'licenseType', index: 'licenseType', width: 80},
 			{label: '证照名称', name: 'licenseName', index: 'license_name', width: 80},
 			{label: '证照号码', name: 'number', index: 'number', width: 80},
 			{label: '到期时间', name: 'expireDate', index: 'expire_date', width: 80},
@@ -41,32 +41,42 @@ var vm = new Vue({
         showList: true,
         title: null,
 		license: {},
-		licenseTypeId:'',
-		ruleValidate: {
-            licenseName: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
-			],
-            licenseTypeId: [
+        licenseTypeId: '',
+        formValidate: {
+            licenseType: '',
+            licenseName: '',
+            number:'',
+            expireDate:''
+        },
+		rules: {
+            licenseType: [
                 {required: true, message: '请选择证照类型', trigger: 'change'}
+            ],
+            licenseName: [
+                {required: true, message: '名称不能为空', trigger: 'blur'}
+            ],
+            number: [
+                {required: true, message: '证照编号不能为空', trigger: 'blur'}
+            ],
+            expireDate: [
+                {required: true, type: 'date', message: '请选择到期时间', trigger: 'change'}
             ]
+
 		},
 		q: {
 		    name: ''
 		},
-		licenseTypeList:[],
-		created(){
-            this.licenseTypeId = this.licenseTypeList[0].id;
-		}
+		licenseTypeList:[]
 	},
 	methods: {
 		query: function () {
 			vm.reload();
 		},
-		loadAllLicenseType(){
+        loadAllLicenseType: function () {
             $.get("../licenseType/queryAll", function (r) {
                 vm.licenseTypeList = r.list;
             });
-		},
+        },
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
@@ -82,7 +92,7 @@ var vm = new Vue({
 			vm.showList = false;
             vm.title = "修改";
             $.get("../licenseType/info/" + id[0].id, function (r) {
-                vm.licenseTypeId = r.id;
+                vm.licenseType = r.id;
             });
             vm.loadAllLicenseType();
 
@@ -111,7 +121,6 @@ var vm = new Vue({
 			if (ids == null){
 				return;
 			}
-
 			confirm('确定要删除选中的记录？', function () {
 				$.ajax({
 					type: "POST",
