@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.inspect.InspectOrderDao">
+
+    <resultMap type="com.platform.entity.inspect.InspectOrderEntity" id="inspectOrderMap">
+        <result property="id" column="id"/>
+        <result property="materialId" column="material_id"/>
+        <result property="status" column="status"/>
+        <result property="inspectTime" column="inspect_time"/>
+        <result property="userId" column="user_id"/>
+        <result property="userName" column="user_name"/>
+        <result property="inspectStatus" column="inspect_status"/>
+        <result property="chiefId" column="chief_id"/>
+        <result property="chiefName" column="chief_name"/>
+        <result property="photos" column="photos"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="dataStatus" column="data_status"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.inspect.InspectOrderEntity">
+		select
+			`id`,
+			`material_id`,
+			`status`,
+			`inspect_time`,
+			`user_id`,
+			`user_name`,
+			`inspect_status`,
+			`chief_id`,
+			`chief_name`,
+			`photos`,
+			`create_time`,
+			`update_time`,
+			`data_status`
+		from inspect_order
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.inspect.InspectOrderEntity">
+		select
+    		`id`,
+    		`material_id`,
+    		`status`,
+    		`inspect_time`,
+    		`user_id`,
+    		`user_name`,
+    		`inspect_status`,
+    		`chief_id`,
+    		`chief_name`,
+    		`photos`,
+    		`create_time`,
+    		`update_time`,
+    		`data_status`
+		from inspect_order
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from inspect_order
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into inspect_order(
+			`material_id`,
+			`status`,
+			`inspect_time`,
+			`user_id`,
+			`user_name`,
+			`inspect_status`,
+			`chief_id`,
+			`chief_name`,
+			`photos`,
+			`create_time`,
+			`update_time`,
+			`data_status`)
+		values(
+			#{materialId},
+			#{status},
+			#{inspectTime},
+			#{userId},
+			#{userName},
+			#{inspectStatus},
+			#{chiefId},
+			#{chiefName},
+			#{photos},
+			#{createTime},
+			#{updateTime},
+			#{dataStatus})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.inspect.InspectOrderEntity">
+		update inspect_order 
+		<set>
+			<if test="materialId != null">`material_id` = #{materialId}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="inspectTime != null">`inspect_time` = #{inspectTime}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="userName != null">`user_name` = #{userName}, </if>
+			<if test="inspectStatus != null">`inspect_status` = #{inspectStatus}, </if>
+			<if test="chiefId != null">`chief_id` = #{chiefId}, </if>
+			<if test="chiefName != null">`chief_name` = #{chiefName}, </if>
+			<if test="photos != null">`photos` = #{photos}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from inspect_order where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from inspect_order where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,19 +1,18 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '../taskgroupmaterial/list',
+        url: '../inspectorderflow/list',
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '任务组', name: 'groupName', index: 'task_group_id',  align: 'center', width: '100px'},
-            {label: '物品名称', name: 'materialName', index: 'name', align: 'center',width: '120px'},
-            {label: '物品类型', name: 'materialTypeName', index: 'material_type_name', align: 'center',width: '60px'},
-            {label: '二维码', name: 'qrCode', index: '', align: 'center',width: '160px',formatter:formatQR},
-            {label: '位置', name: 'location', index: 'location', align: 'center',width: '80px'},
-			{label: '状态', name: 'materialStatus', index: 'materialStatus', align: 'center',width: '60px',formatter:formatStatus},
-            {label: '最近检查时间', name: 'updateTime', index: 'update_time', align: 'center'}
-		],
+			{label: '工单id', name: 'orderId', index: 'order_id', align: 'center', width:'80px'},
+			{label: '处理类型  0 处理   1 报告上级  2 复查', name: 'type', index: 'type', align: 'center', width:'80px'},
+			{label: '操作人id', name: 'userId', index: 'user_id', align: 'center', width:'80px'},
+			{label: '操作人', name: 'userName', index: 'user_name', align: 'center', width:'80px'},
+			{label: '时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'},
+			{label: '描述', name: 'descr', index: 'descr', align: 'center', width:'80px'},
+			{label: '数据状态 0 正常  1 删除', name: 'dataStatus', index: 'data_status', align: 'center', width:'80px'}],
 		viewrecords: true,
-        height: 385,
+        height: 555,
         rowNum: 10,
         rowList: [10, 30, 50],
         rownumbers: true,
@@ -38,22 +37,12 @@ $(function () {
     });
 });
 
-///格式二维码
-function formatQR(t) {
-    return '<img alt="image"  style="height: 64px; width: 64px;" src="'+t+'">';
-}
-//0：正常；1：报废；2：异常
-///格式化任务状态
-const Status = ["正常","报废","异常"];
-function formatStatus(t) {
-    return '<span>' + Status[t] + '</span>';
-}
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
         showList: true,
         title: null,
-		taskGroupMaterial: {},
+		inspectOrderFlow: {},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
@@ -61,17 +50,8 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		},
-        taskGroupList:[
-            {id:"",name:"任务组"}
-        ], //查询使用
+		}
 	},
-    created:function () {
-        //console.log("created..........")
-        $.get("../taskgroup/queryAll", function (r) {
-            vm.taskGroupList = vm.taskGroupList.concat(r.list);
-        });
-    },
 	methods: {
 		query: function () {
 			vm.reload();
@@ -79,7 +59,7 @@ var vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
-			vm.taskGroupMaterial = {};
+			vm.inspectOrderFlow = {};
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -92,12 +72,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-            var url = vm.taskGroupMaterial.id == null ? "../taskgroupmaterial/save" : "../taskgroupmaterial/update";
+            var url = vm.inspectOrderFlow.id == null ? "../inspectorderflow/save" : "../inspectorderflow/update";
 			$.ajax({
 				type: "POST",
 			    url: url,
 			    contentType: "application/json",
-			    data: JSON.stringify(vm.taskGroupMaterial),
+			    data: JSON.stringify(vm.inspectOrderFlow),
                 success: function (r) {
                     if (r.code === 0) {
                         alert('操作成功', function (index) {
@@ -118,7 +98,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function () {
 				$.ajax({
 					type: "POST",
-				    url: "../taskgroupmaterial/delete",
+				    url: "../inspectorderflow/delete",
 				    contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function (r) {
@@ -134,8 +114,8 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get("../taskgroupmaterial/info/"+id, function (r) {
-                vm.taskGroupMaterial = r.taskGroupMaterial;
+			$.get("../inspectorderflow/info/"+id, function (r) {
+                vm.inspectOrderFlow = r.inspectOrderFlow;
             });
 		},
 		reload: function (event) {

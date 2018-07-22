@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.inspect.InspectOrderRelSpecificDao">
+
+    <resultMap type="com.platform.entity.inspect.InspectOrderRelSpecificEntity" id="inspectOrderRelSpecificMap">
+        <result property="id" column="id"/>
+        <result property="orderId" column="order_id"/>
+        <result property="specificId" column="specific_id"/>
+        <result property="status" column="status"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.inspect.InspectOrderRelSpecificEntity">
+		select
+			`id`,
+			`order_id`,
+			`specific_id`,
+			`status`
+		from inspect_order_rel_specific
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.inspect.InspectOrderRelSpecificEntity">
+		select
+    		`id`,
+    		`order_id`,
+    		`specific_id`,
+    		`status`
+		from inspect_order_rel_specific
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from inspect_order_rel_specific
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderRelSpecificEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into inspect_order_rel_specific(
+			`order_id`,
+			`specific_id`,
+			`status`)
+		values(
+			#{orderId},
+			#{specificId},
+			#{status})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.inspect.InspectOrderRelSpecificEntity">
+		update inspect_order_rel_specific 
+		<set>
+			<if test="orderId != null">`order_id` = #{orderId}, </if>
+			<if test="specificId != null">`specific_id` = #{specificId}, </if>
+			<if test="status != null">`status` = #{status}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from inspect_order_rel_specific where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from inspect_order_rel_specific where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,19 +1,14 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '../taskgroupmaterial/list',
+        url: '../inspectorderrelspecific/list',
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '任务组', name: 'groupName', index: 'task_group_id',  align: 'center', width: '100px'},
-            {label: '物品名称', name: 'materialName', index: 'name', align: 'center',width: '120px'},
-            {label: '物品类型', name: 'materialTypeName', index: 'material_type_name', align: 'center',width: '60px'},
-            {label: '二维码', name: 'qrCode', index: '', align: 'center',width: '160px',formatter:formatQR},
-            {label: '位置', name: 'location', index: 'location', align: 'center',width: '80px'},
-			{label: '状态', name: 'materialStatus', index: 'materialStatus', align: 'center',width: '60px',formatter:formatStatus},
-            {label: '最近检查时间', name: 'updateTime', index: 'update_time', align: 'center'}
-		],
+			{label: '工单id', name: 'orderId', index: 'order_id', align: 'center', width:'80px'},
+			{label: '检查项id', name: 'specificId', index: 'specific_id', align: 'center', width:'80px'},
+			{label: '检查状态 0 正常  1 异常', name: 'status', index: 'status', align: 'center', width:'80px'}],
 		viewrecords: true,
-        height: 385,
+        height: 555,
         rowNum: 10,
         rowList: [10, 30, 50],
         rownumbers: true,
@@ -38,22 +33,12 @@ $(function () {
     });
 });
 
-///格式二维码
-function formatQR(t) {
-    return '<img alt="image"  style="height: 64px; width: 64px;" src="'+t+'">';
-}
-//0：正常；1：报废；2：异常
-///格式化任务状态
-const Status = ["正常","报废","异常"];
-function formatStatus(t) {
-    return '<span>' + Status[t] + '</span>';
-}
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
         showList: true,
         title: null,
-		taskGroupMaterial: {},
+		inspectOrderRelSpecific: {},
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
@@ -61,17 +46,8 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		},
-        taskGroupList:[
-            {id:"",name:"任务组"}
-        ], //查询使用
+		}
 	},
-    created:function () {
-        //console.log("created..........")
-        $.get("../taskgroup/queryAll", function (r) {
-            vm.taskGroupList = vm.taskGroupList.concat(r.list);
-        });
-    },
 	methods: {
 		query: function () {
 			vm.reload();
@@ -79,7 +55,7 @@ var vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
-			vm.taskGroupMaterial = {};
+			vm.inspectOrderRelSpecific = {};
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -92,12 +68,12 @@ var vm = new Vue({
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-            var url = vm.taskGroupMaterial.id == null ? "../taskgroupmaterial/save" : "../taskgroupmaterial/update";
+            var url = vm.inspectOrderRelSpecific.id == null ? "../inspectorderrelspecific/save" : "../inspectorderrelspecific/update";
 			$.ajax({
 				type: "POST",
 			    url: url,
 			    contentType: "application/json",
-			    data: JSON.stringify(vm.taskGroupMaterial),
+			    data: JSON.stringify(vm.inspectOrderRelSpecific),
                 success: function (r) {
                     if (r.code === 0) {
                         alert('操作成功', function (index) {
@@ -118,7 +94,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function () {
 				$.ajax({
 					type: "POST",
-				    url: "../taskgroupmaterial/delete",
+				    url: "../inspectorderrelspecific/delete",
 				    contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function (r) {
@@ -134,8 +110,8 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get("../taskgroupmaterial/info/"+id, function (r) {
-                vm.taskGroupMaterial = r.taskGroupMaterial;
+			$.get("../inspectorderrelspecific/info/"+id, function (r) {
+                vm.inspectOrderRelSpecific = r.inspectOrderRelSpecific;
             });
 		},
 		reload: function (event) {

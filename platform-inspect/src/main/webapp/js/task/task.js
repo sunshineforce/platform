@@ -46,6 +46,7 @@ $(function () {
 
 ///格式化日期
 function formatDay (v) {
+    if (v == null || v== "") {return "";}
   return DateUtils.long2String(v,1);
 }
 ///循环周期
