@@ -19,10 +19,36 @@ var vm = new Vue({
                     vm.inspectOrder = r.order;
                     if (vm.inspectOrder != null && vm.inspectOrder.photos != null){
                         vm.inspectOrder.photoList =  vm.inspectOrder.photos.split(",");
+                        if (null != vm.inspectOrder.photoList){
+                            var photoDatas = [];
+                            for (var i = 0; i < vm.inspectOrder.photoList.length ; i++ ){
+                                 var data = {
+                                     "alt": i + "",
+                                     "pid": i, //图片id
+                                     "src": vm.inspectOrder.photoList[i], //原图地址
+                                     "thumb": "" //缩略图地址
+                                 };
+                                 photoDatas.push(data);
+                            }
+                            vm.inspectOrder.photoDatas  = photoDatas;
+                        }
                         if (vm.inspectOrder.orderFlows != null  ){
                             for (var i = 0; i < vm.inspectOrder.orderFlows.length ; i++ ){
                                 if(vm.inspectOrder.orderFlows[i].photos != null){
                                     vm.inspectOrder.orderFlows[i].photoList =  vm.inspectOrder.orderFlows[i].photos.split(",");
+                                    if (null != vm.inspectOrder.orderFlows[i].photoList){
+                                        var photoDatas = [];
+                                        for (var j = 0; j < vm.inspectOrder.photoList.length ; j++ ){
+                                            var data = {
+                                                "alt": j + "",
+                                                "pid": j, //图片id
+                                                "src": vm.inspectOrder.orderFlows[i].photoList[j], //原图地址
+                                                "thumb": "" //缩略图地址
+                                            };
+                                            photoDatas.push(data);
+                                        }
+                                        vm.inspectOrder.orderFlows[i].photoDatas  = photoDatas;
+                                    }
                                 }else{
                                     vm.inspectOrder.orderFlows[i].photoList = [];
                                 }

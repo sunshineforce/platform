@@ -44,7 +44,7 @@
                             </li>
                             <li class="pt15 fl w388">
                                 <label class="w165 tr fl">二维码：</label>
-                                <p class=" w130 fl"><img alt="image"  style="height: 64px; width: 64px;" :src="inspectOrder.material.qrCode"></p>
+                                <p class=" w130 fl" ><img alt="image"  style="height: 64px; width: 64px;" :src="inspectOrder.material.qrCode" @click="eyeImage(inspectOrder.material.qrCode)"></p>
                             </li>
                             <li class="pt15 fl w388">
                                 <label class="w165 tr fl">所在位置：</label>
@@ -96,7 +96,7 @@
                                 <div class="w400 fl tl">
                                     <ul>
                                         <li style="float:left;margin-left:1px;"  v-for="p in inspectOrder.photoList">
-                                            <img alt="image" style="height: 64px; width: 64px;" :src="p">
+                                            <img alt="image" style="height: 64px; width: 64px;" :src="p" @click="eyeImages(inspectOrder.photoDatas)">
                                         </li>
                                     </ul>
                                 </div>
@@ -143,7 +143,7 @@
                                 <div class="w400 fl tl">
                                     <ul>
                                         <li style="float:left;margin-left:1px;"  v-for="p in flow.photoList">
-                                            <img alt="image" style="height: 64px; width: 64px;" :src="p">
+                                            <img alt="image" style="height: 64px; width: 64px;" :src="p" @click="eyeImages(flow.photoDatas)">
                                         </li>
                                     </ul>
                                 </div>

@@ -1,3 +1,4 @@
+var photosMap  = new Map();
 $(function () {
     $("#jqGrid").jqGrid({
         url: '../inspectorder/list',
@@ -55,12 +56,29 @@ function formatOrderStatus(t) {
 function formatImgs(t) {
     if (t == null || t == "" ){return "";}
     var imgs = t.split(",");
+    // var photoDatas = [];
+    // for (var j = 0; j < imgs.length ; j++ ){
+    //     var data = {
+    //         "alt": j + "",
+    //         "pid": j, //图片id
+    //         "src": imgs[j], //原图地址
+    //         "thumb": "" //缩略图地址
+    //     };
+    //     photoDatas.push(data);
+    //
+    // }
     var imgStr = "<div style='width: 195px; '> <ul>";
     for(var i = 0 ; i < imgs.length ; i++){
-        imgStr += '<li style="float:left;margin-left:1px;"><img alt="image" style="height: 64px; width: 64px;" src="'+imgs[i]+'"></li>';
+        imgStr += '<li style="float:left;margin-left:1px;"><img alt="image" style="height: 64px; width: 64px;" src="'+imgs[i]+'" ></li>';
+
     }
     imgStr +="</ul></div>";
     return imgStr;
+}
+
+function view(data) {
+	var d = JSON.parse(data);
+    eyeImages(d);
 }
 
 var vm = new Vue({
@@ -79,6 +97,20 @@ var vm = new Vue({
 		}
 	},
 	methods: {
+        eyeImages:function () {
+            var data = getSelectedRowData();
+            var imgs = t.split(",");
+            var photoDatas = [];
+            for (var j = 0; j < imgs.length ; j++ ){
+                var data = {
+                    "alt": j + "",
+                    "pid": j, //图片id
+                    "src": imgs[j], //原图地址
+                    "thumb": "" //缩略图地址
+                };
+                photoDatas.push(data);
+            }
+        },
         toDetail:function () {
             var id = getSelectedRow();
             if (id == null) {
