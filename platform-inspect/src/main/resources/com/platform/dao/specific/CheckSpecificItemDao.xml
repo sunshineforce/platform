@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.specific.CheckSpecificItemDao">
+
+    <resultMap type="com.platform.entity.specific.CheckSpecificItemEntity" id="checkSpecificItemMap">
+        <result property="id" column="id"/>
+        <result property="specificId" column="specific_id"/>
+        <result property="name" column="name"/>
+        <result property="dataStatus" column="data_status"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.specific.CheckSpecificItemEntity">
+		select
+			`id`,
+			`specific_id`,
+			`name`,
+			`data_status`
+		from check_specific_item
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.specific.CheckSpecificItemEntity">
+		select
+    		`id`,
+    		`specific_id`,
+    		`name`,
+    		`data_status`
+		from check_specific_item
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from check_specific_item
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.specific.CheckSpecificItemEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into check_specific_item(
+			`specific_id`,
+			`name`,
+			`data_status`)
+		values(
+			#{specificId},
+			#{name},
+			#{dataStatus})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.specific.CheckSpecificItemEntity">
+		update check_specific_item 
+		<set>
+			<if test="specificId != null">`specific_id` = #{specificId}, </if>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from check_specific_item where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from check_specific_item where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
