@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.material.MaterialDao">
+
+    <resultMap type="com.platform.entity.material.MaterialEntity" id="materialMap">
+        <result property="id" column="id"/>
+        <result property="qrCode" column="qr_code"/>
+        <result property="materialName" column="material_name"/>
+        <result property="location" column="location"/>
+        <result property="materialTypeId" column="material_type_id"/>
+        <result property="producedDate" column="produced_date"/>
+        <result property="expireDate" column="expire_date"/>
+        <result property="checkDate" column="check_date"/>
+        <result property="materialStatus" column="material_status"/>
+        <result property="materialOwner" column="material_owner"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="creator" column="creator"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.material.MaterialEntity">
+		select
+			`id`,
+			`qr_code`,
+			`material_name`,
+			`location`,
+			`material_type_id`,
+			`produced_date`,
+			`expire_date`,
+			`check_date`,
+			`material_status`,
+			`material_owner`,
+			`create_time`,
+			`update_time`,
+			`creator`
+		from material
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.material.MaterialEntity">
+		select
+    		`id`,
+    		`qr_code`,
+    		`material_name`,
+    		`location`,
+    		`material_type_id`,
+    		`produced_date`,
+    		`expire_date`,
+    		`check_date`,
+    		`material_status`,
+    		`material_owner`,
+    		`create_time`,
+    		`update_time`,
+    		`creator`
+		from material
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from material
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.material.MaterialEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into material(
+			`qr_code`,
+			`material_name`,
+			`location`,
+			`material_type_id`,
+			`produced_date`,
+			`expire_date`,
+			`check_date`,
+			`material_status`,
+			`material_owner`,
+			`create_time`,
+			`update_time`,
+			`creator`)
+		values(
+			#{qrCode},
+			#{materialName},
+			#{location},
+			#{materialTypeId},
+			#{producedDate},
+			#{expireDate},
+			#{checkDate},
+			#{materialStatus},
+			#{materialOwner},
+			#{createTime},
+			#{updateTime},
+			#{creator})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.material.MaterialEntity">
+		update material 
+		<set>
+			<if test="qrCode != null">`qr_code` = #{qrCode}, </if>
+			<if test="materialName != null">`material_name` = #{materialName}, </if>
+			<if test="location != null">`location` = #{location}, </if>
+			<if test="materialTypeId != null">`material_type_id` = #{materialTypeId}, </if>
+			<if test="producedDate != null">`produced_date` = #{producedDate}, </if>
+			<if test="expireDate != null">`expire_date` = #{expireDate}, </if>
+			<if test="checkDate != null">`check_date` = #{checkDate}, </if>
+			<if test="materialStatus != null">`material_status` = #{materialStatus}, </if>
+			<if test="materialOwner != null">`material_owner` = #{materialOwner}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="creator != null">`creator` = #{creator}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from material where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from material where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

@@ -1,18 +1,18 @@
 package com.platform.controller.inspect;
 
-import java.util.List;
-import java.util.Map;
-
 import com.platform.entity.inspect.InspectOrderEntity;
 import com.platform.service.inspect.IInspectOrderService;
+import com.platform.service.inspect.InspectOrderFlowService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
+import com.platform.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 安全巡检异常工单表Controller
@@ -26,6 +26,11 @@ import com.platform.utils.R;
 public class InspectOrderController {
     @Autowired
     private IInspectOrderService inspectOrderService;
+
+    @Autowired
+    private InspectOrderFlowService inspectOrderFlowService;
+
+
 
     /**
      * 查看列表
@@ -103,5 +108,14 @@ public class InspectOrderController {
         List<InspectOrderEntity> list = inspectOrderService.queryList(params);
 
         return R.ok().put("list", list);
+    }
+
+    @RequestMapping("/queryDetails")
+    @ResponseBody
+    public R queryDetails(@RequestBody InspectOrderEntity inspectOrder) {
+
+
+
+        return R.ok().put("inspectOrder", inspectOrder);
     }
 }
