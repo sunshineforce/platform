@@ -4,22 +4,20 @@ $(function () {
         datatype: "json",
         colModel: [
             {label: '用户ID', name: 'userId', index: "user_id", key: true, hidden: true},
-            {label: '用户名', name: 'username', width: 75},
-            {label: '所属部门', name: 'deptName', width: 75},
-            {label: '邮箱', name: 'email', width: 90},
+            {label: '姓名', name: 'username', width: 75},
             {label: '手机号', name: 'mobile', width: 100},
+            {label: '帐号', name: 'account', width: 100},
+            {label: '角色', name: 'roleName', width: 100},
             {
-                label: '状态', name: 'status', width: 80, formatter: function (value) {
+                label: '是否启用', name: 'status', width: 80, formatter: function (value) {
                 return value === 0 ?
-                    '<span class="label label-danger">禁用</span>' :
-                    '<span class="label label-success">正常</span>';
+                    '<span class="label label-danger">否</span>' :
+                    '<span class="label label-success">是</span>';
             }
             },
-            {
-                label: '创建时间', name: 'createTime', index: "create_time", width: 80, formatter: function (value) {
-                return transDate(value);
-            }
-            }],
+            {label: '最后修改时间', name: 'updateTime', width: 75},
+            {label: '最后修改人', name: 'email', width: 90}
+            ],
         viewrecords: true,
         height: 385,
         rowNum: 10,

@@ -75,6 +75,16 @@ public class SysUserEntity implements Serializable {
     private String deptName;
 
     /**
+     * 帐号
+     */
+    private String account;
+
+    /**
+     * 所属区域
+     */
+    private String region;
+
+    /**
      * 设置：
      *
      * @param userId
@@ -230,5 +240,21 @@ public class SysUserEntity implements Serializable {
 
     public void setDeptName(String deptName) {
         this.deptName = deptName;
+    }
+
+    public String getAccount() {
+        return account;
+    }
+
+    public void setAccount(String account) {
+        this.account = account;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 }

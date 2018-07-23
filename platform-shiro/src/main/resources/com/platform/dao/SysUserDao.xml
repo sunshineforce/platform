@@ -40,7 +40,7 @@
 	</select>
 
 	<select id="queryTotal" resultType="int">
-		select count(*) from sys_user
+		select count(1) from sys_user
 		<where>
 			<if test="createUserId != null">
 				and `create_user_id` = #{createUserId} 
@@ -84,7 +84,11 @@
 			`status`, 
 			`create_user_id`,
 			`dept_id`,
-			`create_time`
+			`create_time`,
+			`account`,
+			`role_id`,
+			`update_time`,
+			`update_user_id`
 		)
 		values
 		(
@@ -96,7 +100,11 @@
 			#{status}, 
 			#{createUserId},
 			#{deptId},
-			#{createTime}
+			#{createTime},
+			#{account},
+			#{roleId},
+			#{updateTime},
+			#{updateUserId}
 		)
 	</insert>
 	 
@@ -105,10 +113,10 @@
 		<set> 
 			<if test="username != null">`username` = #{username}, </if>
 			<if test="password != null">`password` = #{password}, </if>
-			<if test="email != null">`email` = #{email}, </if>
+			<if test="account != null">`account` = #{account}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
-			<if test="deptId != null">`dept_id` = #{deptId}, </if>
+			<if test="roleId != null">`dept_id` = #{roleId} </if>
 		</set>
 		where user_id = #{userId} 
 		<if test="createUserId != null">
