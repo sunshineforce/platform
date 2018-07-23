@@ -5,10 +5,8 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '物品名称', name: 'materialTypeName', index: 'material_type_name', align: 'center', width:'80px'},
-			{label: '上级类目Id', name: 'parentId', index: 'parent_id', align: 'center', width:'80px'},
 			{label: '备注', name: 'remark', index: 'remark', align: 'center', width:'80px'},
 			{label: '创建时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'},
-			{label: '创建人', name: 'creator', index: 'creator', align: 'center', width:'80px'},
 			{label: '最后修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
 			{label: '最后修改人', name: 'updator', index: 'updator', align: 'center', width:'80px'}],
 		viewrecords: true,
