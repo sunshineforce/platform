@@ -11,6 +11,7 @@
         <result property="userName" column="user_name"/>
         <result property="createTime" column="create_time"/>
         <result property="descr" column="descr"/>
+		<result property="photos" column="photos"/>
         <result property="dataStatus" column="data_status"/>
     </resultMap>
 
@@ -23,6 +24,7 @@
 			`user_name`,
 			`create_time`,
 			`descr`,
+			`photos`,
 			`data_status`
 		from inspect_order_flow
 		where id = #{id}
@@ -37,11 +39,15 @@
     		`user_name`,
     		`create_time`,
     		`descr`,
+		     `photos`,
     		`data_status`
 		from inspect_order_flow
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="orderId != null">
+			AND `order_id` = #{orderId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -62,6 +68,9 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="orderId != null">
+			AND `order_id` = #{orderId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderFlowEntity" useGeneratedKeys="true" keyProperty="id">
@@ -72,6 +81,7 @@
 			`user_name`,
 			`create_time`,
 			`descr`,
+			`photos`,
 			`data_status`)
 		values(
 			#{orderId},
@@ -80,6 +90,7 @@
 			#{userName},
 			#{createTime},
 			#{descr},
+			#{photos},
 			#{dataStatus})
 	</insert>
 	 
@@ -92,6 +103,7 @@
 			<if test="userName != null">`user_name` = #{userName}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="descr != null">`descr` = #{descr}, </if>
+			<if test="photos != null">`descr` = #{photos}, </if>
 			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
 		</set>
 		where id = #{id}

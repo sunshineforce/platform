@@ -20,6 +20,19 @@
 		where id = #{id}
 	</select>
 
+	<select id="selctOrderSpecific" resultType="com.platform.entity.inspect.InspectOrderRelSpecificEntity">
+		SELECT
+		  cs.specific_name AS specificName,
+		  r.order_id AS orderId,
+		  r.specific_id AS specificId,
+		  r.`status`
+		FROM
+			check_specific AS cs,
+		  inspect_order_rel_specific AS r
+		WHERE cs.id = r.specific_id
+		AND r.order_id =  #{id}
+	</select>
+
 	<select id="queryList" resultType="com.platform.entity.inspect.InspectOrderRelSpecificEntity">
 		select
     		`id`,

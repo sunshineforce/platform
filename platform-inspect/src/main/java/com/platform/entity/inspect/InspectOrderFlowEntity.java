@@ -29,6 +29,10 @@ public class InspectOrderFlowEntity implements Serializable {
     private Date createTime;
     //描述
     private String descr;
+
+    //现场照片
+    private String photos;
+
     //数据状态 0 正常  1 删除
     private Integer dataStatus;
 
@@ -135,5 +139,13 @@ public class InspectOrderFlowEntity implements Serializable {
      */
     public Integer getDataStatus() {
         return dataStatus;
+    }
+
+    public String getPhotos() {
+        return photos;
+    }
+
+    public void setPhotos(String photos) {
+        this.photos = photos;
     }
 }

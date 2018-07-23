@@ -80,7 +80,11 @@ var vm = new Vue({
 	},
 	methods: {
         toDetail:function () {
-			window.location.href = "/inspect/inspectorderflow.html";
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+			window.location.href = "/inspect/orderDetail.html?id="+id;
         },
 		query: function () {
 			vm.reload();

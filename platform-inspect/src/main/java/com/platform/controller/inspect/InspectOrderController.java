@@ -1,11 +1,17 @@
 package com.platform.controller.inspect;
 
 import com.platform.entity.inspect.InspectOrderEntity;
+import com.platform.entity.inspect.InspectOrderFlowEntity;
+import com.platform.entity.inspect.InspectOrderRelSpecificEntity;
+import com.platform.entity.material.MaterialEntity;
 import com.platform.service.inspect.IInspectOrderService;
 import com.platform.service.inspect.InspectOrderFlowService;
+import com.platform.service.inspect.InspectOrderRelSpecificService;
+import com.platform.service.material.MaterialService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,6 +36,11 @@ public class InspectOrderController {
     @Autowired
     private InspectOrderFlowService inspectOrderFlowService;
 
+    @Autowired
+    private MaterialService materialService;
+
+    @Autowired
+    private InspectOrderRelSpecificService inspectOrderRelSpecificService;
 
 
     /**
@@ -110,12 +121,22 @@ public class InspectOrderController {
         return R.ok().put("list", list);
     }
 
-    @RequestMapping("/queryDetails")
+    @RequestMapping("/queryDetail")
     @ResponseBody
-    public R queryDetails(@RequestBody InspectOrderEntity inspectOrder) {
+    public R queryDetail(@RequestBody InspectOrderEntity inspectOrder) {
+        ///加载检查信息
+        InspectOrderEntity order = inspectOrderService.queryObject(inspectOrder.getId());
+        List<InspectOrderRelSpecificEntity> orderRelSpecificEntityList = inspectOrderRelSpecificService.queryOrderSpecific(order.getId());
+        order.setSpecificList(orderRelSpecificEntityList);
+        ///加载物品详情
+        MaterialEntity material = materialService.queryObject(order.getMaterialId());
+        order.setMaterial(material);
+        ///加载异常处理流程
+        Map<String, Object> params = new HashedMap();
+        params.put("orderId",order.getId());
+        List<InspectOrderFlowEntity> flows = inspectOrderFlowService.queryList(params);
+        order.setOrderFlows(flows);
 
-
-
-        return R.ok().put("inspectOrder", inspectOrder);
+        return R.ok().put("order", order);
     }
 }

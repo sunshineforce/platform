@@ -57,4 +57,9 @@ public class InspectOrderRelSpecificServiceImpl implements InspectOrderRelSpecif
     public int deleteBatch(Integer[]ids) {
         return inspectOrderRelSpecificDao.deleteBatch(ids);
     }
+
+    @Override
+    public List<InspectOrderRelSpecificEntity> queryOrderSpecific(Integer orderId) {
+        return inspectOrderRelSpecificDao.selctOrderSpecific(orderId);
+    }
 }

@@ -76,7 +76,6 @@ tbody > tr > th {
 }
 
 .row {
-    border-top: 1px solid #ddd;
     margin: 0;
     padding: 10px 2px 0px 2px;
 }
@@ -112,4 +111,8 @@ tbody > tr > th {
     display:inline;
     float: right;
     padding-right: 10px;
+}
+
+.cred{
+    color: red;
 }

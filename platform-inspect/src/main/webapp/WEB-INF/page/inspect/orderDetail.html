@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>巡检工单详情</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <i-button style="margin-top: 15px;margin-left: 15px;" type="info" @click="toOrderList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回列表</i-button>
+
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                     物品基础信息
+                </div>
+                <div class="panel-body">
+                    <div class=" pb15">
+                        <ul class="lh22 clearfix">
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">物品名称：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.materialName}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">物品类型：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.materialTypeId}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">所属区域：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.location}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">所属企业：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.materialOwner}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">生产日期：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.producedDate}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">过期日期：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.expireDate}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">二维码：</label>
+                                <p class=" w130 fl"><img alt="image"  style="height: 64px; width: 64px;" :src="inspectOrder.material.qrCode"></p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">所在位置：</label>
+                                <p class=" w130 fl">{{inspectOrder.material.location}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+   <!--  检查信息  -->
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    检查信息
+                </div>
+                <div class="panel-body">
+                    <div class=" pb15">
+                        <ul class="lh22 clearfix">
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">检查时间：</label>
+                                <p class=" w130 fl">{{inspectOrder.inspectTime}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">检查人：</label>
+                                <p class=" w130 fl">{{inspectOrder.userName}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">检查结果：</label>
+                                <p class=" w130 fl">{{inspectOrder.inspectStatus==0 ? "正常":"异常" }}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">上报上级：</label>
+                                <p class=" w130 fl">{{inspectOrder.chiefName}}</p>
+                            </li>
+                            <li class="pt15 fl w776">
+                                <label class="w165 fl tr">检查项：</label>
+                                <div style="word-break:break-all; width:400px;" class="w400 fl tl">
+                                    <ul>
+                                        <li  v-for="s in inspectOrder.specificList" ><span class="cred">{{s.status==0 ? "正常":"异常" }}</span> &nbsp;&nbsp;&nbsp; {{s.specificName}}</li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="pt15 fl w776">
+                                <label class="w165 tr fl">现场照片：</label>
+                                <div class="w400 fl tl">
+                                    <ul>
+                                        <li style="float:left;margin-left:1px;"  v-for="p in inspectOrder.photoList">
+                                            <img alt="image" style="height: 64px; width: 64px;" :src="p">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--  异常处理信息  -->
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    检查信息
+                </div>
+                <div class="panel-body">
+                    <div class=" pb15" v-for="flow in inspectOrder.orderFlows">
+                        <ul class="lh22 clearfix">
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl" v-if="flow.type == 0 || flow.type == 1">检查时间：</label>
+                                <label class="w165 tr fl" v-if="flow.type == 2">复查时间：</label>
+                                <p class=" w130 fl">{{flow.createTime}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl" v-if="flow.type == 0 ">处理人：</label>
+                                <label class="w165 tr fl" v-if="flow.type == 1">上报上级：</label>
+                                <label class="w165 tr fl" v-if="flow.type == 2">复查人：</label>
+                                <p class=" w130 fl">{{flow.userName}}</p>
+                            </li>
+                            <li class="pt15 fl w776" v-if="flow.type == 0 || flow.type == 1">
+                                <label class="w165 tr fl" v-if="flow.type == 0 ">处理描述：</label>
+                                <label class="w165 tr fl" v-if="flow.type == 1">上报描述：</label>
+                                <div style="word-break:break-all; width:400px;" class="w400 fl tl">
+                                    {{flow.descr}}
+                                </div>
+                            </li>
+                            <li class="pt15 fl w776"  v-if="flow.type == 0 " >
+                                <label class="w165 tr fl">现场照片：</label>
+                                <div class="w400 fl tl">
+                                    <ul>
+                                        <li style="float:left;margin-left:1px;"  v-for="p in flow.photoList">
+                                            <img alt="image" style="height: 64px; width: 64px;" :src="p">
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <i-button style="margin-top: 15px;margin-left: 15px;" type="info" @click="toOrderList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回列表</i-button>
+</div>
+
+<script src="${rc.contextPath}/js/inspect/orderDetail.js?_${date.systemTime}"></script>
+</body>
+</html>

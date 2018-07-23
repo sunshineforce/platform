@@ -70,4 +70,12 @@ public interface InspectOrderRelSpecificService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+
+    /**
+     * 查询工单检查项
+     * @param orderId
+     * @return
+     */
+    List<InspectOrderRelSpecificEntity> queryOrderSpecific(Integer orderId);
 }

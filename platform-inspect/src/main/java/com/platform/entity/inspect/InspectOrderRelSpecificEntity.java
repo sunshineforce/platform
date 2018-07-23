@@ -1,7 +1,6 @@
 package com.platform.entity.inspect;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -23,6 +22,8 @@ public class InspectOrderRelSpecificEntity implements Serializable {
     private Integer specificId;
     //检查状态 0 正常  1 异常
     private Integer status;
+
+    private String specificName; //检查项名称
 
     /**
      * 设置：主键id
@@ -75,5 +76,13 @@ public class InspectOrderRelSpecificEntity implements Serializable {
      */
     public Integer getStatus() {
         return status;
+    }
+
+    public String getSpecificName() {
+        return specificName;
+    }
+
+    public void setSpecificName(String specificName) {
+        this.specificName = specificName;
     }
 }

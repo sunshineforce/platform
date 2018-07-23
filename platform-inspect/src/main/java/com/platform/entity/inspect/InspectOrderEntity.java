@@ -1,7 +1,10 @@
 package com.platform.entity.inspect;
 
+import com.platform.entity.material.MaterialEntity;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -41,6 +44,18 @@ public class InspectOrderEntity implements Serializable {
     private Date updateTime;
     //数据状态 0 正常 1 删除
     private Integer dataStatus;
+
+
+    /////业务属性
+
+    //物品信息
+    private MaterialEntity material;
+
+    //异常处理信息
+    private List<InspectOrderFlowEntity> orderFlows;
+
+    //检查项信息
+    private List<InspectOrderRelSpecificEntity> specificList;
 
     /**
      * 设置：主键ID
@@ -210,5 +225,29 @@ public class InspectOrderEntity implements Serializable {
      */
     public Integer getDataStatus() {
         return dataStatus;
+    }
+
+    public MaterialEntity getMaterial() {
+        return material;
+    }
+
+    public void setMaterial(MaterialEntity material) {
+        this.material = material;
+    }
+
+    public List<InspectOrderFlowEntity> getOrderFlows() {
+        return orderFlows;
+    }
+
+    public void setOrderFlows(List<InspectOrderFlowEntity> orderFlows) {
+        this.orderFlows = orderFlows;
+    }
+
+    public List<InspectOrderRelSpecificEntity> getSpecificList() {
+        return specificList;
+    }
+
+    public void setSpecificList(List<InspectOrderRelSpecificEntity> specificList) {
+        this.specificList = specificList;
     }
 }
