@@ -42,6 +42,9 @@ public class MaterialEntity implements Serializable {
     //创建人Id
     private Integer creator;
 
+    ///物品类型名称
+    private String materialTypeName;
+
     /**
      * 设置：主键Id
      */
@@ -210,5 +213,13 @@ public class MaterialEntity implements Serializable {
      */
     public Integer getCreator() {
         return creator;
+    }
+
+    public String getMaterialTypeName() {
+        return materialTypeName;
+    }
+
+    public void setMaterialTypeName(String materialTypeName) {
+        this.materialTypeName = materialTypeName;
     }
 }

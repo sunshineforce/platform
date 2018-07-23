@@ -1,7 +1,9 @@
 package com.platform.service.material.impl;
 
 import com.platform.dao.material.MaterialDao;
+import com.platform.dao.material.MaterialTypeDao;
 import com.platform.entity.material.MaterialEntity;
+import com.platform.entity.material.MaterialTypeEntity;
 import com.platform.service.material.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,9 +25,19 @@ public class MaterialServiceImpl implements MaterialService {
     @Autowired
     private MaterialDao materialDao;
 
+    @Autowired
+    private MaterialTypeDao materialTypeDao;
+
     @Override
     public MaterialEntity queryObject(Integer id) {
-        return materialDao.queryObject(id);
+        MaterialEntity materialEntity = materialDao.queryObject(id);
+        if (null != materialEntity){
+            MaterialTypeEntity materialTypeEntity = materialTypeDao.queryObject(materialEntity.getMaterialTypeId());
+            if (null != materialTypeEntity){
+                materialEntity.setMaterialTypeName(materialTypeEntity.getMaterialTypeName());
+            }
+        }
+        return materialEntity;
     }
 
     @Override
