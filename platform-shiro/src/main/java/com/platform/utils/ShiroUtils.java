@@ -1,5 +1,6 @@
 package com.platform.utils;
 
+import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysUserEntity;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.session.Session;
@@ -24,6 +25,10 @@ public class ShiroUtils {
 
     public static SysUserEntity getUserEntity() {
         return (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+    }
+
+    public static AppUserEntity getAppUserEntity(){
+        return (AppUserEntity) SecurityUtils.getSubject().getPrincipal();
     }
 
     public static Long getUserId() {

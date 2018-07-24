@@ -1,5 +1,6 @@
 package com.platform.controller;
 
+import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.utils.ShiroUtils;
 
@@ -13,6 +14,10 @@ import com.platform.utils.ShiroUtils;
 public abstract class AbstractController {
     protected SysUserEntity getUser() {
         return ShiroUtils.getUserEntity();
+    }
+
+    protected AppUserEntity getAppUser(){
+        return ShiroUtils.getAppUserEntity();
     }
 
     protected Long getUserId() {

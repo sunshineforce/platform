@@ -20,4 +20,6 @@ public class CommonConstant {
 
 
     public static final String LOGIN_USER = "";
+
+    public static final String APP_LOGIN_USER="";
 }

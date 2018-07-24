@@ -1,4 +1,4 @@
-package com.platform.entity.user;
+package com.platform.entity;
 
 import java.io.Serializable;
 import java.util.Date;
