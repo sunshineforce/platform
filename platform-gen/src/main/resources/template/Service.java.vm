@@ -12,7 +12,7 @@ import java.util.Map;
  *  ${email}
  * @date ${datetime}
  */
-public interface ${className}Service {
+public interface I${className}Service {
 
     /**
      * 根据主键查询实体
