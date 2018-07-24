@@ -4,15 +4,11 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '知识名称', name: 'knowledgeName', index: 'knowledge_name', align: 'center', width:'80px'},
-			{label: '描述', name: 'description', index: 'description', align: 'center', width:'80px'},
-			{label: '预览图片url', name: 'url', index: 'url', align: 'center', width:'80px'},
-			{label: '知识内容方式(0：自主编辑；1：外部链接)', name: 'type', index: 'type', align: 'center', width:'80px'},
-			{label: '自主编辑知识内容', name: 'content', index: 'content', align: 'center', width:'80px'},
-			{label: '知识外部链接地址', name: 'link', index: 'link', align: 'center', width:'80px'},
-			{label: '关联考试', name: 'relation', index: 'relation', align: 'center', width:'80px'},
+			{label: '法规名称', name: 'knowledgeName', index: 'knowledge_name', align: 'center', width:'120px'},
+			{label: '描述', name: 'description', index: 'description', align: 'center', width:'160px'},
+			{label: '图片', name: 'url', index: 'url', align: 'center', width:'80px',formatter:formatImage},
+			{label: '链接', name: 'link', index: 'link', align: 'center', width:'140px'},
 			{label: '创建时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'},
-			{label: '创建人', name: 'creator', index: 'creator', align: 'center', width:'80px'},
 			{label: '更改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
 			{label: '修改人', name: 'updator', index: 'updator', align: 'center', width:'80px'}],
 		viewrecords: true,
@@ -41,6 +37,11 @@ $(function () {
     });
 });
 
+///格式图片
+function formatImage(t) {
+    return '<img alt="image"  style="height: 64px; width: 64px;" src="'+t+'">';
+}
+
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -54,7 +55,8 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+		examList:[],
 	},
 	methods: {
 		query: function () {
@@ -63,7 +65,9 @@ var vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
-			vm.regulation = {};
+			vm.regulation = {
+                type:0,
+			};
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -138,6 +142,28 @@ var vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        changeType:function () {
+
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+            });
+        },
+        handleSuccessPicUrl: function (res, file) {
+            vm.regulation.url = file.response.url;
+        },
+        eyeImagePicUrl: function () {
+            var url = vm.regulation.url;
+            eyeImage(url);
         }
 	}
 });

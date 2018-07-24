@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,6 +64,10 @@ public class RegulationController {
     @RequiresPermissions("regulation:save")
     @ResponseBody
     public R save(@RequestBody RegulationEntity regulation) {
+        Date time = new Date();
+        regulation.setUpdateTime(time);
+        regulation.setCreateTime(time);
+
         regulationService.save(regulation);
 
         return R.ok();
@@ -75,6 +80,9 @@ public class RegulationController {
     @RequiresPermissions("regulation:update")
     @ResponseBody
     public R update(@RequestBody RegulationEntity regulation) {
+        Date time = new Date();
+        regulation.setUpdateTime(time);
+
         regulationService.update(regulation);
 
         return R.ok();

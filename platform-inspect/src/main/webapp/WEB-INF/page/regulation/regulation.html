@@ -29,39 +29,55 @@
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="regulation" :rules="ruleValidate" :label-width="80">
-            <Form-item label="知识名称" prop="knowledgeName">
-                <i-input v-model="regulation.knowledgeName" placeholder="知识名称"/>
+            <Form-item label="法规名称" prop="knowledgeName">
+                <i-input v-model="regulation.knowledgeName" placeholder="法规名称"/>
             </Form-item>
             <Form-item label="描述" prop="description">
                 <i-input v-model="regulation.description" placeholder="描述"/>
             </Form-item>
-            <Form-item label="预览图片url" prop="url">
-                <i-input v-model="regulation.url" placeholder="预览图片url"/>
+            <Row>
+                <i-col span="16">
+                    <Form-item label="预览图片" prop="url">
+                        <i-input v-model="regulation.url" placeholder="预览图片" readonly/>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <Upload style="width: 300px;" action="../sys/oss/uploadFtp?platformCode=mall&dirFolderName=goods" :format="['jpg','jpeg','png']"
+                                max-size="2048"
+                                :on-success="handleSuccessPicUrl" :on-format-error="handleFormatError"
+                                :show-upload-list="false"
+                                :on-exceeded-size="handleMaxSize">
+                            <i-button icon="ios-cloud-upload-outline">上传图片</i-button>
+                        </Upload>
+                    </Form-item>
+                </i-col>
+                <i-col span="3">
+                    <Form-item :label-width="1">
+                        <i-button icon="eye" @click="eyeImagePicUrl">预览图片</i-button>
+                    </Form-item>
+                </i-col>
+            </Row>
+            <Form-item label="任务类型" prop="type">
+                <Radio-group v-model="regulation.type" @on-change="changeType">
+                    <Radio label="0">自主编辑</Radio>
+                    <Radio label="1">外部链接</Radio>
+                </Radio-group>
             </Form-item>
-            <Form-item label="知识内容方式(0：自主编辑；1：外部链接)" prop="type">
-                <i-input v-model="regulation.type" placeholder="知识内容方式(0：自主编辑；1：外部链接)"/>
+
+            <Form-item label="知识内容" prop="content" v-show="regulation.type==0">
+                <i-input v-model="regulation.content" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="知识内容"/>
             </Form-item>
-            <Form-item label="自主编辑知识内容" prop="content">
-                <i-input v-model="regulation.content" placeholder="自主编辑知识内容"/>
-            </Form-item>
-            <Form-item label="知识外部链接地址" prop="link">
-                <i-input v-model="regulation.link" placeholder="知识外部链接地址"/>
+            <Form-item label="链接地址" prop="link" v-show="regulation.type==1">
+                <i-input v-model="regulation.link" placeholder="链接地址"/>
             </Form-item>
             <Form-item label="关联考试" prop="relation">
-                <i-input v-model="regulation.relation" placeholder="关联考试"/>
+                <i-select v-model="regulation.relation" filterable>
+                    <i-option v-for="exam in examList" :value="exam.id" :key="exam.id">{{exam.name}}
+                    </i-option>
+                </i-select>
             </Form-item>
-            <Form-item label="创建时间" prop="createTime">
-                <i-input v-model="regulation.createTime" placeholder="创建时间"/>
-            </Form-item>
-            <Form-item label="创建人" prop="creator">
-                <i-input v-model="regulation.creator" placeholder="创建人"/>
-            </Form-item>
-            <Form-item label="更改时间" prop="updateTime">
-                <i-input v-model="regulation.updateTime" placeholder="更改时间"/>
-            </Form-item>
-            <Form-item label="修改人" prop="updator">
-                <i-input v-model="regulation.updator" placeholder="修改人"/>
-            </Form-item>
+
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px"/>返回</i-button>
