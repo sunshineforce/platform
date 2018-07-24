@@ -32,18 +32,6 @@ public class R extends HashMap<String, Object> {
         return r;
     }
 
-    public static R loginError(){
-        return error(SystemCode.LOGIN_VALID.getCode(),SystemCode.LOGIN_VALID.getDesc());
-    }
-
-    public static R succeed(){
-        return error(ErrorCode.SUCCEED.getCode(),ErrorCode.SUCCEED.getDesc());
-    }
-
-    public static R failure(){
-        return error(ErrorCode.FAILURE.getCode(),ErrorCode.FAILURE.getDesc());
-    }
-
     public static R ok(String msg) {
         R r = new R();
         r.put("msg", msg);
@@ -57,7 +45,7 @@ public class R extends HashMap<String, Object> {
     }
 
     public static R ok() {
-        return succeed();
+        return new R();
     }
 
     public R put(String key, Object value) {

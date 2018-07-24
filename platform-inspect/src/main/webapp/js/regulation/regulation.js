@@ -69,6 +69,12 @@ var vm = new Vue({
                 type:0,
 			};
 		},
+        ///获取考试列表
+        getExamList:function () {
+            $.get("../exam/queryAll", function (r) {
+                vm.examList = r.list;
+            });
+        },
 		update: function (event) {
             var id = getSelectedRow();
 			if (id == null) {
@@ -144,7 +150,11 @@ var vm = new Vue({
             handleResetForm(this, name);
         },
         changeType:function () {
-
+            if(vm.regulation.type == 0){
+                vm.regulation.link = "";
+            }else {
+                vm.regulation.content = "";
+            }
         },
         handleFormatError: function (file) {
             this.$Notice.warning({

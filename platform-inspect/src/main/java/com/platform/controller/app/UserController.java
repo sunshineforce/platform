@@ -52,7 +52,7 @@ public class UserController extends AbstractController {
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             if (token == null) {
-                R.loginError();
+                //R.loginError();
             }
             subject.login(token);
             AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
@@ -60,9 +60,9 @@ public class UserController extends AbstractController {
             subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,appUser);
             return R.ok();
         } catch (AuthenticationException e) {
-            return R.failure();
+            return R.error();
         } catch (InvalidSessionException e) {
-            return R.failure();
+            return R.error();
         }
     }
 
