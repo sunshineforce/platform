@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.material.QrCodeApplyDao">
+
+    <resultMap type="com.platform.entity.material.QrCodeApplyEntity" id="qrCodeApplyMap">
+        <result property="id" column="id"/>
+        <result property="qrCodeType" column="qr_code_type"/>
+        <result property="batchNo" column="batch_no"/>
+        <result property="quantity" column="quantity"/>
+        <result property="prefix" column="prefix"/>
+        <result property="applicant" column="applicant"/>
+        <result property="applyDate" column="apply_date"/>
+        <result property="qrCodeStatus" column="qr_code_status"/>
+        <result property="rejectReason" column="reject_reason"/>
+        <result property="generateMan" column="generate_man"/>
+        <result property="generateDate" column="generate_date"/>
+        <result property="bindMan" column="bind_man"/>
+        <result property="bindDate" column="bind_date"/>
+        <result property="matetialId" column="matetial_id"/>
+        <result property="materialTypeId" column="material_type_id"/>
+        <result property="createDate" column="create_date"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.material.QrCodeApplyEntity">
+		select
+			`id`,
+			`qr_code_type`,
+			`batch_no`,
+			`quantity`,
+			`prefix`,
+			`applicant`,
+			`apply_date`,
+			`qr_code_status`,
+			`reject_reason`,
+			`generate_man`,
+			`generate_date`,
+			`bind_man`,
+			`bind_date`,
+			`matetial_id`,
+			`material_type_id`,
+			`create_date`
+		from qr_code_apply
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.material.QrCodeApplyEntity">
+		select
+    		`id`,
+    		`qr_code_type`,
+    		`batch_no`,
+    		`quantity`,
+    		`prefix`,
+    		`applicant`,
+    		`apply_date`,
+    		`qr_code_status`,
+    		`reject_reason`,
+    		`generate_man`,
+    		`generate_date`,
+    		`bind_man`,
+    		`bind_date`,
+    		`matetial_id`,
+    		`material_type_id`,
+    		`create_date`
+		from qr_code_apply
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from qr_code_apply
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.material.QrCodeApplyEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into qr_code_apply(
+			`qr_code_type`,
+			`batch_no`,
+			`quantity`,
+			`prefix`,
+			`applicant`,
+			`apply_date`,
+			`qr_code_status`,
+			`reject_reason`,
+			`generate_man`,
+			`generate_date`,
+			`bind_man`,
+			`bind_date`,
+			`matetial_id`,
+			`material_type_id`,
+			`create_date`)
+		values(
+			#{qrCodeType},
+			#{batchNo},
+			#{quantity},
+			#{prefix},
+			#{applicant},
+			#{applyDate},
+			#{qrCodeStatus},
+			#{rejectReason},
+			#{generateMan},
+			#{generateDate},
+			#{bindMan},
+			#{bindDate},
+			#{matetialId},
+			#{materialTypeId},
+			#{createDate})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.material.QrCodeApplyEntity">
+		update qr_code_apply 
+		<set>
+			<if test="qrCodeType != null">`qr_code_type` = #{qrCodeType}, </if>
+			<if test="batchNo != null">`batch_no` = #{batchNo}, </if>
+			<if test="quantity != null">`quantity` = #{quantity}, </if>
+			<if test="prefix != null">`prefix` = #{prefix}, </if>
+			<if test="applicant != null">`applicant` = #{applicant}, </if>
+			<if test="applyDate != null">`apply_date` = #{applyDate}, </if>
+			<if test="qrCodeStatus != null">`qr_code_status` = #{qrCodeStatus}, </if>
+			<if test="rejectReason != null">`reject_reason` = #{rejectReason}, </if>
+			<if test="generateMan != null">`generate_man` = #{generateMan}, </if>
+			<if test="generateDate != null">`generate_date` = #{generateDate}, </if>
+			<if test="bindMan != null">`bind_man` = #{bindMan}, </if>
+			<if test="bindDate != null">`bind_date` = #{bindDate}, </if>
+			<if test="matetialId != null">`matetial_id` = #{matetialId}, </if>
+			<if test="materialTypeId != null">`material_type_id` = #{materialTypeId}, </if>
+			<if test="createDate != null">`create_date` = #{createDate}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from qr_code_apply where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from qr_code_apply where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
