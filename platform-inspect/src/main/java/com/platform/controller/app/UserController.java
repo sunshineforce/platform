@@ -1,4 +1,4 @@
-package com.platform.controller.app.system;
+package com.platform.controller.app;
 
 import com.platform.annotation.SysLog;
 import com.platform.constants.CommonConstant;
