@@ -18,7 +18,7 @@ import ${package}.service.${className}Service;
  * @date ${datetime}
  */
 @Service("${classname}Service")
-public class ${className}ServiceImpl implements I${className}Service {
+public class ${className}ServiceImpl implements ${className}Service {
     @Autowired
     private ${className}Dao ${classname}Dao;
 
