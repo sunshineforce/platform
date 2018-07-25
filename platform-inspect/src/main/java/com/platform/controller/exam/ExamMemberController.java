@@ -30,7 +30,6 @@ public class ExamMemberController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("exammember:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
@@ -48,7 +47,6 @@ public class ExamMemberController {
      * 查看信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("exammember:info")
     @ResponseBody
     public R info(@PathVariable("id") Long id) {
         ExamMemberEntity examMember = examMemberService.queryObject(id);

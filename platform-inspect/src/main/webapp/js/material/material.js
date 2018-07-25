@@ -4,18 +4,17 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '二维码', name: 'qrCode', index: 'qr_code', align: 'center', width:'80px'},
+			{label: '二维码', name: 'qrCode', index: 'qr_code', align: 'center', width:'80px',formatter:formatQR},
 			{label: '物品名称', name: 'materialName', index: 'material_name', align: 'center', width:'80px'},
 			{label: '所在位置', name: 'location', index: 'location', align: 'center', width:'80px'},
-			{label: '物品类型Id', name: 'materialTypeId', index: 'material_type_id', align: 'center', width:'80px'},
+			{label: '物品类型', name: 'materialTypeName', index: '', align: 'center', width:'80px'},
 			{label: '生产日期', name: 'producedDate', index: 'produced_date', align: 'center', width:'80px'},
 			{label: '到期时间', name: 'expireDate', index: 'expire_date', align: 'center', width:'80px'},
 			{label: '最近检查时间', name: 'checkDate', index: 'check_date', align: 'center', width:'80px'},
-			{label: '物品状态（0：正常；1：报废；2：异常）', name: 'materialStatus', index: 'material_status', align: 'center', width:'80px'},
+			{label: '状态', name: 'materialStatus', index: 'material_status', align: 'center', width:'80px',formatter:formatStatus},
 			{label: '所属企业', name: 'materialOwner', index: 'material_owner', align: 'center', width:'80px'},
 			{label: '创建时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'},
-			{label: '更新时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
-			{label: '创建人Id', name: 'creator', index: 'creator', align: 'center', width:'80px'}],
+			{label: '更新时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'}],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -41,7 +40,16 @@ $(function () {
         }
     });
 });
-
+///格式二维码
+function formatQR(t) {
+    return '<img alt="image"  style="height: 64px; width: 64px;" src="'+t+'">';
+}
+//0：正常；1：报废；2：异常
+///格式化任务状态
+const Status = ["正常","报废","异常"];
+function formatStatus(t) {
+    return '<span>' + Status[t] + '</span>';
+}
 var vm = new Vue({
 	el: '#rrapp',
 	data: {

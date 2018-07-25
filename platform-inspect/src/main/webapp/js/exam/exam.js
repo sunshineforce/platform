@@ -33,6 +33,47 @@ $(function () {
             rows: "limit",
             order: "order"
         },
+        subGrid: true,  // (1)开启子表格支持
+        subGridRowExpanded: function(subgrid_id, row_id) {  // (2)子表格容器的id和需要展开子表格的行id，将传入此事件函数
+            var subgrid_table_id;
+            subgrid_table_id = subgrid_id + "_t";   // (3)根据subgrid_id定义对应的子表格的table的id
+
+            var subgrid_pager_id;
+            subgrid_pager_id = subgrid_id + "_pgr"  // (4)根据subgrid_id定义对应的子表格的pager的id
+
+            // (5)动态添加子报表的table和pager
+            $("#" + subgrid_id).html("<table id='"+subgrid_table_id+"' class='scroll'></table><div id='"+subgrid_pager_id+"' class='scroll'></div>");
+
+            // (6)创建jqGrid对象
+            $("#" + subgrid_table_id).jqGrid({
+                url: "../exammember/list?examId="+row_id,  // (7)子表格数据对应的url，注意传入的contact.id参数
+                datatype: "json",
+                //colNames: ['编号','内部编码','名称','申请号'],
+                colModel: [
+                    {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+                    {label: '姓名', name: 'examId', index: '', align: 'center', width:'80px'},
+                    {label: '得分', name: 'memberId', index: '', align: 'center', width:'80px'},
+                    {label: '考试时间', name: 'memberId', index: '', align: 'center', width:'80px'},
+				],
+				height: 300,
+                pager: subgrid_pager_id,
+                viewrecords: true,
+                height: "100%",
+                rowNum: 10,
+                rowList: [10, 30, 50],
+                jsonReader: {
+                root: "page.list",
+                    page: "page.currPage",
+                    total: "page.totalPage",
+                    records: "page.totalCount"
+                 },
+				prmNames: {
+					page: "page",
+						rows: "limit",
+						order: "order"
+				}
+            });
+        },
         gridComplete: function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }

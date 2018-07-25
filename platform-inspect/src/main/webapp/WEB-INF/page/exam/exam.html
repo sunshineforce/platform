@@ -60,9 +60,33 @@
                     <Form-item label="题目" prop="introduce">
                         <i-input v-model="exam.introduce" placeholder="题目"/>
                     </Form-item>
-                    <Form-item label="选项1" prop="introduce">
-                        <i-input v-model="exam.introduce" placeholder="选项1"/>
-                    </Form-item>
+                    <Row>
+                        <i-col span="18">
+                            <Form-item label="选项1" prop="introduce">
+                                <i-input v-model="exam.introduce" placeholder="选项1"/>
+                            </Form-item>
+                        </i-col>
+
+                        <i-col span="4">
+                            <Form-item :label-width="5">
+                                <i-button type="info" @click="handleSubmit('formValidate')">设置为正确答案</i-button>
+                            </Form-item>
+                        </i-col>
+                    </Row>
+                    <Row>
+                        <i-col span="18">
+                            <Form-item label="选项2" prop="introduce">
+                                <i-input v-model="exam.introduce" placeholder="选项2"/>
+                            </Form-item>
+                        </i-col>
+
+                        <i-col span="4">
+                            <Form-item :label-width="5">
+                                <i class="fa fa-check cred fa-2x" aria-hidden="true"></i>
+                            </Form-item>
+                        </i-col>
+                    </Row>
+
                     <Form-item>
                         <i-button type="primary" @click="handleSubmit('formValidate')">添加选项</i-button>
                     </Form-item>

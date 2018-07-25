@@ -28,6 +28,9 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="examId != null and examId.trim() != ''">
+			AND exam_id = #{examId}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -47,6 +50,9 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="examId != null and examId.trim() != ''">
+			AND exam_id = #{examId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.exam.ExamMemberEntity" useGeneratedKeys="true" keyProperty="id">

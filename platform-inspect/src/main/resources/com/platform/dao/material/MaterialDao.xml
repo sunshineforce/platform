@@ -40,23 +40,25 @@
 
 	<select id="queryList" resultType="com.platform.entity.material.MaterialEntity">
 		select
-    		`id`,
-    		`qr_code`,
-    		`material_name`,
-    		`location`,
-    		`material_type_id`,
-    		`produced_date`,
-    		`expire_date`,
-    		`check_date`,
-    		`material_status`,
-    		`material_owner`,
-    		`create_time`,
-    		`update_time`,
-    		`creator`
-		from material
+		m.`id`,
+    		m.`qr_code`,
+    		m.`material_name`,
+    		m.`location`,
+    		m.`material_type_id`,
+    		m.`produced_date`,
+    		m.`expire_date`,
+    		m.`check_date`,
+    		m.`material_status`,
+    		m.`material_owner`,
+    		m.`create_time`,
+    		m.`update_time`,
+    		m.`creator`,
+		    t.material_type_name AS materialTypeName
+		from material AS m
+		LEFT JOIN material_type AS t ON  m.material_type_id = t.id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+			AND m.name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -72,10 +74,13 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from material
+		select
+		   count(*)
+		from material AS m
+		LEFT JOIN material_type AS t ON  m.material_type_id = t.id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+            AND m.name LIKE concat('%',#{name},'%')
         </if>
 	</select>
 	 
