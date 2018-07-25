@@ -4,16 +4,15 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '试题名称', name: 'examName', index: 'exam_name', align: 'center', width:'80px'},
-			{label: '试题介绍', name: 'introduce', index: 'introduce', align: 'center', width:'80px'},
+			{label: '试题名称', name: 'examName', index: 'exam_name', align: 'center', width:'120px'},
+			{label: '试题介绍', name: 'introduce', index: 'introduce', align: 'center', width:'160px'},
+            {label: '题目数量', name: 'introduce', index: '', align: 'center', width:'60px'},
+            {label: '总分值', name: 'introduce', index: '', align: 'center', width:'60px'},
 			{label: '开始时间', name: 'beginTime', index: 'begin_time', align: 'center', width:'80px'},
 			{label: '结束时间', name: 'endTime', index: 'end_time', align: 'center', width:'80px'},
 			{label: '参考人员', name: 'member', index: 'member', align: 'center', width:'80px'},
-			{label: '创建时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'},
-			{label: '创建人', name: 'creator', index: 'creator', align: 'center', width:'80px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
-			{label: '修改人', name: 'updator', index: 'updator', align: 'center', width:'80px'},
-			{label: '是否启用（0：启用；1：禁用）', name: 'enabled', index: 'enabled', align: 'center', width:'80px'}],
+			{label: '修改人', name: 'updator', index: 'updator', align: 'center', width:'80px'}],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -53,7 +52,8 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+		userList:[],
 	},
 	methods: {
 		query: function () {

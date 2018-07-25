@@ -73,7 +73,7 @@
             </Form-item>
             <Form-item label="关联考试" prop="relation">
                 <i-select v-model="regulation.relation" filterable>
-                    <i-option v-for="exam in examList" :value="exam.id" :key="exam.id">{{exam.name}}
+                    <i-option v-for="exam in examList" :value="exam.id" :key="exam.id">{{exam.examName}}
                     </i-option>
                 </i-select>
             </Form-item>

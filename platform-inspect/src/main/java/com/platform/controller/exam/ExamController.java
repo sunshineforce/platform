@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -63,8 +64,10 @@ public class ExamController {
     @RequiresPermissions("exam:save")
     @ResponseBody
     public R save(@RequestBody ExamEntity exam) {
+        Date time = new Date();
+        exam.setCreateTime(time);
+        exam.setUpdateTime(time);
         examService.save(exam);
-
         return R.ok();
     }
 
@@ -75,6 +78,8 @@ public class ExamController {
     @RequiresPermissions("exam:update")
     @ResponseBody
     public R update(@RequestBody ExamEntity exam) {
+        Date time = new Date();
+        exam.setUpdateTime(time);
         examService.update(exam);
 
         return R.ok();

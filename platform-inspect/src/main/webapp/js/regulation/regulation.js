@@ -68,6 +68,7 @@ var vm = new Vue({
 			vm.regulation = {
                 type:0,
 			};
+			vm.getExamList();
 		},
         ///获取考试列表
         getExamList:function () {
