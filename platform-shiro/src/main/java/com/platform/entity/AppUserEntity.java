@@ -3,7 +3,6 @@ package com.platform.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
  * APP用户表实体
  * 表名 app_user
