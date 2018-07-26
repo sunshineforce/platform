@@ -3,7 +3,7 @@ package com.platform.controller.app;
 import com.platform.annotation.SysLog;
 import com.platform.constants.CommonConstant;
 import com.platform.controller.AbstractController;
-import com.platform.entity.AppUserEntity;
+import com.platform.entity.SysUserEntity;
 import com.platform.service.SysUserService;
 import com.platform.utils.DateUtils;
 import com.platform.utils.R;
@@ -55,9 +55,9 @@ public class UserController extends AbstractController {
                 //R.loginError();
             }
             subject.login(token);
-            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
-            logger.info(appUser.getUserName() +" login system at :" + DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
-            subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,appUser);
+            SysUserEntity sysUser = (SysUserEntity) subject.getPrincipal();
+            logger.info(sysUser.getUsername() +" login system at :" + DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+            subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,sysUser);
             return R.ok();
         } catch (AuthenticationException e) {
             return R.error();

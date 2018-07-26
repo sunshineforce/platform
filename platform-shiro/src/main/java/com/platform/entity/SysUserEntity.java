@@ -19,70 +19,58 @@ import java.util.List;
 public class SysUserEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 用户ID
-     */
+    /** 用户ID */
     private Long userId;
 
-    /**
-     * 用户名
-     */
+    /** 用户名 */
     @NotBlank(message = "用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String username;
 
-    /**
-     * 密码
-     */
+    /** 密码 */
     private transient String password;
 
-    /**
-     * 邮箱
-     */
+    /** 邮箱 */
     @NotBlank(message = "邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
     @Email(message = "邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
     private String email;
 
-    /**
-     * 手机号
-     */
+    /** 手机号 */
     private String mobile;
 
-    /**
-     * 状态  0：禁用   1：正常
-     */
+    /** 状态  0：禁用   1：正常 */
     private Integer status;
 
-    /**
-     * 角色ID列表
-     */
+    /** 角色ID列表 */
     private List<Long> roleIdList;
 
-    /**
-     * 创建者ID
-     */
+    /** 创建者ID */
     private Long createUserId;
 
-    /**
-     * 创建时间
-     */
+    /** 创建时间 */
     private Date createTime;
 
     private Long deptId;
 
-    /**
-     * 部门名称
-     */
+    /** 部门名称 */
     private String deptName;
 
-    /**
-     * 帐号
-     */
+
+    /************************* 巡检自定义 字段  begin *********************/
+
+    /**  帐号 */
     private String account;
 
-    /**
-     * 所属区域
-     */
+    /** 身份 */
+    private Integer identify;
+
+    /** 所属区域 */
     private String region;
+
+    /** 上级 */
+    private String superior;
+
+    /** 安全证url */
+    private String certificateUrl;
 
     /**
      * 设置：
@@ -256,5 +244,29 @@ public class SysUserEntity implements Serializable {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public Integer getIdentify() {
+        return identify;
+    }
+
+    public void setIdentify(Integer identify) {
+        this.identify = identify;
+    }
+
+    public String getSuperior() {
+        return superior;
+    }
+
+    public void setSuperior(String superior) {
+        this.superior = superior;
+    }
+
+    public String getCertificateUrl() {
+        return certificateUrl;
+    }
+
+    public void setCertificateUrl(String certificateUrl) {
+        this.certificateUrl = certificateUrl;
     }
 }
