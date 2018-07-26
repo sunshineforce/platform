@@ -1,18 +1,30 @@
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '../appUser/list',
+        url: '../sys/app/user/list',
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '姓名', name: 'userName', index: 'user_name', align: 'center', width:'80px'},
+			{label: '姓名', name: 'username', index: 'username', align: 'center', width:'80px'},
 			{label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'80px'},
             {label: '帐号', name: 'account', index: 'account', align: 'center', width:'80px'},
-            {label: '身份', name: 'identify', index: 'identify', align: 'center', width:'80px'},
-            {label: '是否启用（0：启用；1：禁用）', name: 'enabled', index: 'enabled', align: 'center', width:'80px'},
+            {
+                label: '身份', name: 'status', width: 80, formatter: function (value) {
+                    return value === 1 ?
+                        '<span>安全员</span>' :
+                        '<span>领导</span>';
+                }
+            },
+            {
+                label: '是否启用', name: 'status', width: 80, formatter: function (value) {
+                    return value === 0 ?
+                        '<span>否</span>' :
+                        '<span>是</span>';
+                }
+            },
             {label: '层级', name: 'superior', index: 'superior', align: 'center', width:'80px'},
 			{label: '创建人', name: 'creator', index: 'creator', align: 'center', width:'80px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
-			{label: '修改人', name: 'updator', index: 'updator', align: 'center', width:'80px'}],
+			{label: '修改人', name: 'updateUserId', index: 'update_user_id', align: 'center', width:'80px'}],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -43,8 +55,11 @@ var vm = new Vue({
 	el: '#rrapp',
 	data: {
         showList: true,
+        roleList: {},
         title: null,
-		appUser: {},
+		appUser: {
+            roleIdList: []
+        },
 		ruleValidate: {
 			userName: [
 				{required: true, message: '姓名不能为空', trigger: 'blur'}
@@ -74,7 +89,10 @@ var vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
+            vm.roleList = {};
 			vm.appUser = {};
+
+            this.getRoleList();
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -83,11 +101,11 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-
+            vm.getRoleList();
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
-            var url = vm.appUser.id == null ? "../appUser/save" : "../appUser/update";
+            var url = vm.appUser.id == null ? "../sys/app/user/save" : "../sys/app/user/update";
 			$.ajax({
 				type: "POST",
 			    url: url,
@@ -104,6 +122,11 @@ var vm = new Vue({
                 }
 			});
 		},
+        getRoleList: function () {
+            $.get("../sys/role/select", function (r) {
+                vm.roleList = r.list;
+            });
+        },
 		del: function (event) {
             var ids = getSelectedRows();
 			if (ids == null){
@@ -113,7 +136,7 @@ var vm = new Vue({
 			confirm('确定要删除选中的记录？', function () {
 				$.ajax({
 					type: "POST",
-				    url: "../appUser/delete",
+				    url: "../sys/app/user/delete",
 				    contentType: "application/json",
 				    data: JSON.stringify(ids),
 				    success: function (r) {
@@ -129,7 +152,7 @@ var vm = new Vue({
 			});
 		},
 		getInfo: function(id){
-			$.get("../appUser/info/"+id, function (r) {
+			$.get("../sys/app/user/info/"+id, function (r) {
                 vm.appUser = r.appUser;
             });
 		},

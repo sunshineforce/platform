@@ -30,8 +30,8 @@ public class SysUserEntity implements Serializable {
     private transient String password;
 
     /** 邮箱 */
-    @NotBlank(message = "邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
-    @Email(message = "邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
+//    @NotBlank(message = "邮箱不能为空", groups = {AddGroup.class, UpdateGroup.class})
+//    @Email(message = "邮箱格式不正确", groups = {AddGroup.class, UpdateGroup.class})
     private String email;
 
     /** 手机号 */
@@ -39,6 +39,8 @@ public class SysUserEntity implements Serializable {
 
     /** 状态  0：禁用   1：正常 */
     private Integer status;
+
+    private Integer roleId;
 
     /** 角色ID列表 */
     private List<Long> roleIdList;
@@ -71,6 +73,12 @@ public class SysUserEntity implements Serializable {
 
     /** 安全证url */
     private String certificateUrl;
+
+    /** 最后修改时间 */
+    private Date updateTime;
+
+    /** 最后修改人 */
+    private Long updateUserId;
 
     /**
      * 设置：
@@ -198,6 +206,14 @@ public class SysUserEntity implements Serializable {
         return createTime;
     }
 
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
     public List<Long> getRoleIdList() {
         return roleIdList;
     }
@@ -268,5 +284,21 @@ public class SysUserEntity implements Serializable {
 
     public void setCertificateUrl(String certificateUrl) {
         this.certificateUrl = certificateUrl;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public Long getUpdateUserId() {
+        return updateUserId;
+    }
+
+    public void setUpdateUserId(Long updateUserId) {
+        this.updateUserId = updateUserId;
     }
 }

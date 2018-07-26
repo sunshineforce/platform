@@ -47,10 +47,15 @@ public interface SysUserService {
      */
     List<SysUserEntity> queryList(Map<String, Object> map);
 
+
+    List<SysUserEntity> queryAllAppUser(Map<String, Object> map);
+
     /**
      * 查询总数
      */
     int queryTotal(Map<String, Object> map);
+
+    Integer queryAppUserTotal(Map<String, Object> map);
 
     /**
      * 保存用户

@@ -66,8 +66,18 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public List<SysUserEntity> queryAllAppUser(Map<String, Object> map) {
+        return sysUserDao.queryAppUserList(map);
+    }
+
+    @Override
     public int queryTotal(Map<String, Object> map) {
         return sysUserDao.queryTotal(map);
+    }
+
+    @Override
+    public Integer queryAppUserTotal(Map<String, Object> map) {
+        return sysUserDao.queryAppUserTotal(map);
     }
 
     @Override
