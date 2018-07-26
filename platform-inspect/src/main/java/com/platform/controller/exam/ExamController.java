@@ -1,11 +1,19 @@
 package com.platform.controller.exam;
 
+import com.alibaba.fastjson.JSON;
 import com.platform.entity.exam.ExamEntity;
+import com.platform.entity.exam.ExamQuestionEntity;
+import com.platform.entity.exam.ExamQuestionItemEntity;
+import com.platform.service.exam.ExamQuestionItemService;
+import com.platform.service.exam.ExamQuestionService;
 import com.platform.service.exam.ExamService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import org.apache.commons.collections.map.HashedMap;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +32,19 @@ import java.util.Map;
 @Controller
 @RequestMapping("exam")
 public class ExamController {
+
+    private static final Logger logger = LoggerFactory.getLogger(ExamController.class);
+
     @Autowired
     private ExamService examService;
+
+    @Autowired
+    private ExamQuestionService examQuestionService;
+
+    @Autowired
+    private ExamQuestionItemService examQuestionItemService;
+
+
 
     /**
      * 查看列表
@@ -53,7 +72,18 @@ public class ExamController {
     @ResponseBody
     public R info(@PathVariable("id") Long id) {
         ExamEntity exam = examService.queryObject(id);
-
+        Map<String, Object> params = new HashedMap();
+        params.put("examId",exam.getId());
+        List<ExamQuestionEntity> examQuestionEntities = examQuestionService.queryList(params);
+        if (null != examQuestionEntities && examQuestionEntities.size() > 0){
+            for (ExamQuestionEntity question : examQuestionEntities) {
+                Map<String, Object> params1 = new HashedMap();
+                params1.put("questionId",question.getId());
+                List<ExamQuestionItemEntity> questionItemEntities = examQuestionItemService.queryList(params1);
+                question.setQuestionItems(questionItemEntities);
+            }
+        }
+        exam.setQuestionList(examQuestionEntities);
         return R.ok().put("exam", exam);
     }
 
@@ -64,10 +94,27 @@ public class ExamController {
     @RequiresPermissions("exam:save")
     @ResponseBody
     public R save(@RequestBody ExamEntity exam) {
+
         Date time = new Date();
         exam.setCreateTime(time);
         exam.setUpdateTime(time);
         examService.save(exam);
+        logger.debug("getQuestionJson -------" + exam.getQuestionJson());
+        List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);
+        if (null != list && list.size() > 0){
+            for (ExamQuestionEntity question : list) {
+                question.setCreateTime(time);
+                question.setExamId(exam.getId());
+                examQuestionService.save(question);
+                List<ExamQuestionItemEntity> questionItems = question.getQuestionItems();
+                if (null != questionItems && questionItems.size() > 0){
+                    for (ExamQuestionItemEntity questionItem : questionItems) {
+                        questionItem.setQuestionId(question.getId());
+                        examQuestionItemService.save(questionItem);
+                    }
+                }
+            }
+        }
         return R.ok();
     }
 
@@ -81,7 +128,21 @@ public class ExamController {
         Date time = new Date();
         exam.setUpdateTime(time);
         examService.update(exam);
-
+        logger.debug("getQuestionJson -------" + exam.getQuestionJson());
+        List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);
+        if (null != list && list.size() > 0){
+            for (ExamQuestionEntity question : list) {
+                question.setExamId(exam.getId());
+                examQuestionService.update(question);
+                List<ExamQuestionItemEntity> questionItems = question.getQuestionItems();
+                if (null != questionItems && questionItems.size() > 0){
+                    for (ExamQuestionItemEntity questionItem : questionItems) {
+                        questionItem.setQuestionId(question.getId());
+                        examQuestionItemService.update(questionItem);
+                    }
+                }
+            }
+        }
         return R.ok();
     }
 

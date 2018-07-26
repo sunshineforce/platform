@@ -2,6 +2,7 @@ package com.platform.entity.exam;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -18,7 +19,7 @@ public class ExamQuestionEntity implements Serializable {
     //主键
     private Long id;
     //试题Id
-    private Integer examId;
+    private Long examId;
     //题目分值
     private Double score;
     //题目
@@ -31,6 +32,8 @@ public class ExamQuestionEntity implements Serializable {
     private Date createTime;
     //创建人
     private Integer creator;
+
+    private List<ExamQuestionItemEntity> questionItems;
 
     /**
      * 设置：主键
@@ -45,19 +48,23 @@ public class ExamQuestionEntity implements Serializable {
     public Long getId() {
         return id;
     }
-    /**
-     * 设置：试题Id
-     */
-    public void setExamId(Integer examId) {
+
+    public Long getExamId() {
+        return examId;
+    }
+
+    public void setExamId(Long examId) {
         this.examId = examId;
     }
 
-    /**
-     * 获取：试题Id
-     */
-    public Integer getExamId() {
-        return examId;
+    public List<ExamQuestionItemEntity> getQuestionItems() {
+        return questionItems;
     }
+
+    public void setQuestionItems(List<ExamQuestionItemEntity> questionItems) {
+        this.questionItems = questionItems;
+    }
+
     /**
      * 设置：题目分值
      */
@@ -136,4 +143,6 @@ public class ExamQuestionEntity implements Serializable {
     public Integer getCreator() {
         return creator;
     }
+
+
 }

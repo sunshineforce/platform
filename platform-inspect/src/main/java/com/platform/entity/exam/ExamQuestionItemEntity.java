@@ -1,7 +1,6 @@
 package com.platform.entity.exam;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -21,6 +20,8 @@ public class ExamQuestionItemEntity implements Serializable {
     private Long questionId;
     //题目选项
     private String item;
+
+    private Integer isRight;
 
     /**
      * 设置：主键Id
@@ -60,5 +61,13 @@ public class ExamQuestionItemEntity implements Serializable {
      */
     public String getItem() {
         return item;
+    }
+
+    public Integer getIsRight() {
+        return isRight;
+    }
+
+    public void setIsRight(Integer isRight) {
+        this.isRight = isRight;
     }
 }

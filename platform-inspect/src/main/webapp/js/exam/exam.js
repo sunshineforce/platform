@@ -10,7 +10,6 @@ $(function () {
             {label: '总分值', name: 'introduce', index: '', align: 'center', width:'60px'},
 			{label: '开始时间', name: 'beginTime', index: 'begin_time', align: 'center', width:'80px'},
 			{label: '结束时间', name: 'endTime', index: 'end_time', align: 'center', width:'80px'},
-			{label: '参考人员', name: 'member', index: 'member', align: 'center', width:'80px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
 			{label: '修改人', name: 'updator', index: 'updator', align: 'center', width:'80px'}],
 		viewrecords: true,
@@ -51,9 +50,10 @@ $(function () {
                 //colNames: ['编号','内部编码','名称','申请号'],
                 colModel: [
                     {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-                    {label: '姓名', name: 'examId', index: '', align: 'center', width:'80px'},
-                    {label: '得分', name: 'memberId', index: '', align: 'center', width:'80px'},
-                    {label: '考试时间', name: 'memberId', index: '', align: 'center', width:'80px'},
+                    {label: '姓名', name: 'examId', index: '', align: 'center', width:'160px'},
+                    {label: '手机号', name: 'examId', index: '', align: 'center', width:'80px'},
+                    {label: '答题进度', name: 'memberId', index: '', align: 'center', width:'120px'},
+                    {label: '分数', name: 'memberId', index: '', align: 'center', width:'60px'},
 				],
 				height: 300,
                 pager: subgrid_pager_id,
@@ -94,16 +94,84 @@ var vm = new Vue({
 		q: {
 		    name: ''
 		},
+        totalSocre:0,
 		userList:[],
+        questionList:[],
 	},
 	methods: {
+	    ///添加问题
+	    addQuestion:function () {
+            var questionVo = {
+                score:0,
+                question:"",
+                questionItems:[
+                {
+                    id : 0,
+                    questionId:0,
+                    label:"选项" + (vm.questionList.length + 1),
+                    item:"",
+                    isRight:0, // 0 否 1 是
+                }
+            ]
+            };
+            vm.questionList.push(questionVo);
+        },
+        //设置答案
+        setRightAnswer:function (q, i ,r) {
+           var questionVo =  vm.questionList[q];
+           var item = questionVo.questionItems[i];
+           item.isRight = r;
+           Vue.set(vm.questionList, q, questionVo);
+        },
+        ///添加选项
+        addItem:function (q) {
+            var questionVo = vm.questionList[q];
+            var item = {
+                id : 0,
+                questionId:0,
+                label:"选项" + (questionVo.questionItems.length + 1),
+                item:"",
+                isRight:0, // 0 否 1 是
+            };
+            vm.questionList[q].questionItems.push(item);
+            Vue.set(vm.questionList, q, questionVo);
+        },
+        //删除选项
+        deleteItem:function (q, i) {
+            var questionVo = vm.questionList[q];
+            vm.questionList[q].questionItems.splice(i, 1);
+            Vue.set(vm.questionList, q, questionVo);
+        },
+        //计算分值
+        calScore:function () {
+	        var t = 0;
+             vm.questionList.forEach(function(item,i){
+               t+= parseInt(item.score);
+            })
+            vm.totalSocre = t;
+        },
 		query: function () {
 			vm.reload();
 		},
 		add: function () {
+            vm.questionList = []; //清空缓存
+            vm.totalSocre = 0;
 			vm.showList = false;
 			vm.title = "新增";
 			vm.exam = {};
+			vm.questionList[0] = {
+                score:0,
+                question:"",
+                questionItems:[
+                    {
+                        id : "",
+                        label:"选项" + (vm.questionList.length + 1),
+                        item:"",
+                        isRight:0, // 0 否 1 是
+                    }
+                ]
+
+            };
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -112,11 +180,13 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-
+            vm.questionList = []; //清空缓存
+            vm.totalSocre = 0;
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
             var url = vm.exam.id == null ? "../exam/save" : "../exam/update";
+            vm.exam.questionJson = JSON.stringify(vm.questionList);
 			$.ajax({
 				type: "POST",
 			    url: url,
@@ -124,6 +194,8 @@ var vm = new Vue({
 			    data: JSON.stringify(vm.exam),
                 success: function (r) {
                     if (r.code === 0) {
+                        vm.questionList = []; //清空缓存
+                        vm.totalSocre = 0;
                         alert('操作成功', function (index) {
                             vm.reload();
                         });
@@ -160,6 +232,8 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../exam/info/"+id, function (r) {
                 vm.exam = r.exam;
+                vm.questionList = vm.exam.questionList;
+                vm.calScore();
             });
 		},
 		reload: function (event) {

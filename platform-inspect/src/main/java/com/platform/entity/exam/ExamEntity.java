@@ -2,6 +2,7 @@ package com.platform.entity.exam;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -37,6 +38,13 @@ public class ExamEntity implements Serializable {
     private Integer updator;
     //是否启用（0：启用；1：禁用）
     private Integer enabled;
+
+
+    private String questionJson;
+
+    private List<ExamQuestionEntity> questionList;
+
+
 
     /**
      * 设置：主键Id
@@ -180,5 +188,21 @@ public class ExamEntity implements Serializable {
      */
     public Integer getEnabled() {
         return enabled;
+    }
+
+    public String getQuestionJson() {
+        return questionJson;
+    }
+
+    public void setQuestionJson(String questionJson) {
+        this.questionJson = questionJson;
+    }
+
+    public List<ExamQuestionEntity> getQuestionList() {
+        return questionList;
+    }
+
+    public void setQuestionList(List<ExamQuestionEntity> questionList) {
+        this.questionList = questionList;
     }
 }

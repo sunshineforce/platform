@@ -5,7 +5,6 @@ import com.platform.service.exam.ExamQuestionService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,6 @@ public class ExamQuestionController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("examquestion:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
@@ -48,7 +46,6 @@ public class ExamQuestionController {
      * 查看信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("examquestion:info")
     @ResponseBody
     public R info(@PathVariable("id") Long id) {
         ExamQuestionEntity examQuestion = examQuestionService.queryObject(id);
@@ -60,7 +57,6 @@ public class ExamQuestionController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("examquestion:save")
     @ResponseBody
     public R save(@RequestBody ExamQuestionEntity examQuestion) {
         examQuestionService.save(examQuestion);
@@ -72,7 +68,6 @@ public class ExamQuestionController {
      * 修改
      */
     @RequestMapping("/update")
-    @RequiresPermissions("examquestion:update")
     @ResponseBody
     public R update(@RequestBody ExamQuestionEntity examQuestion) {
         examQuestionService.update(examQuestion);
@@ -84,7 +79,6 @@ public class ExamQuestionController {
      * 删除
      */
     @RequestMapping("/delete")
-    @RequiresPermissions("examquestion:delete")
     @ResponseBody
     public R delete(@RequestBody Long[]ids) {
         examQuestionService.deleteBatch(ids);
