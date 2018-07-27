@@ -1,23 +1,22 @@
 package com.platform.controller.enterprise;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.platform.entity.enterprise.LicenseEntity;
 import com.platform.entity.enterprise.LicenseTypeEntity;
 import com.platform.entity.enterprise.LicenseVo;
 import com.platform.service.enterprise.ILicenseService;
 import com.platform.service.enterprise.ILicenseTypeService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
+import com.platform.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 证照表Controller

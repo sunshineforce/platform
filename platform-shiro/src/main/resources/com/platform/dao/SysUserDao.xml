@@ -122,7 +122,8 @@
 			`account`,
 			`role_id`,
 			`update_time`,
-			`update_user_id`
+			`update_user_id`,
+			identify
 		)
 		values
 		(
@@ -138,7 +139,8 @@
 			#{account},
 			#{roleId},
 			#{updateTime},
-			#{updateUserId}
+			#{updateUserId},
+			#{identify}
 		)
 	</insert>
 	 
@@ -150,6 +152,7 @@
 			<if test="account != null">`account` = #{account}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
+			<if test="identify != null">`status` = #{identify}, </if>
 			<if test="roleId != null">`dept_id` = #{roleId} </if>
 		</set>
 		where user_id = #{userId} 

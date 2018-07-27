@@ -4,14 +4,15 @@ import com.platform.annotation.SysLog;
 import com.platform.entity.SysUserEntity;
 import com.platform.service.SysUserRoleService;
 import com.platform.service.SysUserService;
-import com.platform.utils.*;
-import com.platform.validator.Assert;
+import com.platform.utils.Constant;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
+import com.platform.utils.R;
 import com.platform.validator.ValidatorUtils;
 import com.platform.validator.group.AddGroup;
 import com.platform.validator.group.UpdateGroup;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -72,8 +73,8 @@ public class AppUserController extends SysUserController {
         SysUserEntity user = sysUserService.queryObject(userId);
 
         //获取用户所属的角色列表
-        List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-        user.setRoleIdList(roleIdList);
+//        List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
+//        user.setRoleIdList(roleIdList);
 
         return R.ok().put("user", user);
     }

@@ -153,7 +153,7 @@ var vm = new Vue({
 		},
 		getInfo: function(id){
 			$.get("../sys/app/user/info/"+id, function (r) {
-                vm.appUser = r.appUser;
+                vm.appUser = r.user;
             });
 		},
 		reload: function (event) {
