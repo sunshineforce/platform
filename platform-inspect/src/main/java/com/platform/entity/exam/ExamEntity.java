@@ -39,6 +39,10 @@ public class ExamEntity implements Serializable {
     //是否启用（0：启用；1：禁用）
     private Integer enabled;
 
+    private Double totalScore;
+
+    private Integer  questionNum;
+
 
     private String questionJson;
 
@@ -204,5 +208,21 @@ public class ExamEntity implements Serializable {
 
     public void setQuestionList(List<ExamQuestionEntity> questionList) {
         this.questionList = questionList;
+    }
+
+    public Double getTotalScore() {
+        return totalScore;
+    }
+
+    public void setTotalScore(Double totalScore) {
+        this.totalScore = totalScore;
+    }
+
+    public Integer getQuestionNum() {
+        return questionNum;
+    }
+
+    public void setQuestionNum(Integer questionNum) {
+        this.questionNum = questionNum;
     }
 }

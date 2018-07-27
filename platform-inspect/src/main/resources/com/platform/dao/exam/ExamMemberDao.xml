@@ -7,21 +7,74 @@
         <result property="id" column="id"/>
         <result property="examId" column="exam_id"/>
         <result property="memberId" column="member_id"/>
+		<result property="answerNum" column="answer_num"/>
+		<result property="score" column="score"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.exam.ExamMemberEntity">
 		select
 			`id`,
-			`exam_id`,
-			`member_id`
+    		`exam_id`,
+		    `answer_num`,
+			`score`
+    		`member_id`
 		from exam_member
 		where id = #{id}
+	</select>
+
+	<select id="selectExamMembers" resultType="com.platform.entity.exam.ExamMemberEntity">
+		SELECT
+			m.id AS id,
+			m.exam_id AS examId ,
+			m.member_id  AS  memberId,
+			m.answer_num AS  answerNum,
+			m.score AS score,
+			u.username AS userName,
+			u.mobile AS  mobile,
+		    CONCAT_WS("/",e.question_num,m.answer_num) AS answerProcess
+		FROM
+			exam_member AS m
+		LEFT JOIN sys_user AS u ON m.member_id = u.user_id
+		LEFT JOIN exam AS  e ON  m.exam_id = e.id
+		WHERE 1=1
+
+		<if test="examId != null and examId.trim() != ''">
+			AND m.exam_id = #{examId}
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+
+	</select>
+
+	<select id="selectExamMembersTotal" resultType="int">
+		SELECT
+		   COUNT(*)
+		FROM
+		exam_member AS m
+		LEFT JOIN sys_user AS u ON m.member_id = u.user_id
+		LEFT JOIN exam AS  e ON  m.exam_id = e.id
+		WHERE 1=1
+
+		<if test="examId != null and examId.trim() != ''">
+			AND m.exam_id = #{examId}
+		</if>
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.exam.ExamMemberEntity">
 		select
     		`id`,
     		`exam_id`,
+		    `answer_num`,
+			`score`
     		`member_id`
 		from exam_member
 		WHERE 1=1
@@ -58,9 +111,13 @@
 	<insert id="save" parameterType="com.platform.entity.exam.ExamMemberEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into exam_member(
 			`exam_id`,
+			`answer_num`,
+			`score`
 			`member_id`)
 		values(
 			#{examId},
+			#{answerNum},
+			#{score},
 			#{memberId})
 	</insert>
 	 
@@ -68,6 +125,8 @@
 		update exam_member 
 		<set>
 			<if test="examId != null">`exam_id` = #{examId}, </if>
+			<if test="answerNum != null">`answer_num` = #{answerNum}, </if>
+			<if test="score != null">`exam_id` = #{score}, </if>
 			<if test="memberId != null">`member_id` = #{memberId}</if>
 		</set>
 		where id = #{id}

@@ -12,4 +12,10 @@ import com.platform.entity.exam.ExamQuestionItemEntity;
  */
 public interface ExamQuestionItemDao extends BaseDao<ExamQuestionItemEntity> {
 
+    /**
+     * 通过题目删除选项
+     * @param questionId
+     * @return
+     */
+    int deleteByQid(Long questionId);
 }

@@ -70,4 +70,19 @@ public interface ExamMemberService {
      * @return 删除条数
      */
     int deleteBatch(Long[] ids);
+
+    /**
+     * 查找考试人员考试信息
+     * @param map
+     * @return
+     */
+    List<ExamMemberEntity> queryExamMembers(Map<String, Object> map);
+
+
+    /**
+     * 总条数
+     * @param map
+     * @return
+     */
+    int queryExamMembersTotal(Map<String, Object> map);
 }

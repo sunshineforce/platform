@@ -136,9 +136,10 @@ public class ExamController {
                 examQuestionService.update(question);
                 List<ExamQuestionItemEntity> questionItems = question.getQuestionItems();
                 if (null != questionItems && questionItems.size() > 0){
+                    examQuestionItemService.deleteByQid(question.getId());
                     for (ExamQuestionItemEntity questionItem : questionItems) {
                         questionItem.setQuestionId(question.getId());
-                        examQuestionItemService.update(questionItem);
+                        examQuestionItemService.save(questionItem);
                     }
                 }
             }
@@ -153,7 +154,17 @@ public class ExamController {
     @RequiresPermissions("exam:delete")
     @ResponseBody
     public R delete(@RequestBody Long[]ids) {
-        examService.deleteBatch(ids);
+        //examService.deleteBatch(ids);
+        if (null != ids && ids.length > 0){
+            for (Long id : ids) {
+                ExamEntity exam = new ExamEntity();
+                exam.setId(id);
+                Date time = new Date();
+                exam.setUpdateTime(time);
+                exam.setEnabled(1); //删除态
+                examService.update(exam);
+            }
+        }
 
         return R.ok();
     }

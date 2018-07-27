@@ -82,6 +82,10 @@
 	<delete id="delete">
 		delete from exam_question_item where id = #{value}
 	</delete>
+
+	<delete id="deleteByQid">
+		delete from exam_question_item where question_id = #{value}
+	</delete>
 	
 	<delete id="deleteBatch">
 		delete from exam_question_item where id in 

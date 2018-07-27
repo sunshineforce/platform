@@ -1,7 +1,6 @@
 package com.platform.entity.exam;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -18,9 +17,23 @@ public class ExamMemberEntity implements Serializable {
     //主键
     private Long id;
     //试题Id
-    private Integer examId;
+    private Long examId;
     //参考人员Id
     private Integer memberId;
+
+    //已答题数量
+    private Integer answerNum;
+
+    //得分
+    private Double score;
+
+    //姓名
+    private String userName;
+
+    //手机号
+    private String mobile;
+
+    private String answerProcess;
 
     /**
      * 设置：主键
@@ -35,19 +48,15 @@ public class ExamMemberEntity implements Serializable {
     public Long getId() {
         return id;
     }
-    /**
-     * 设置：试题Id
-     */
-    public void setExamId(Integer examId) {
+
+    public Long getExamId() {
+        return examId;
+    }
+
+    public void setExamId(Long examId) {
         this.examId = examId;
     }
 
-    /**
-     * 获取：试题Id
-     */
-    public Integer getExamId() {
-        return examId;
-    }
     /**
      * 设置：参考人员Id
      */
@@ -60,5 +69,45 @@ public class ExamMemberEntity implements Serializable {
      */
     public Integer getMemberId() {
         return memberId;
+    }
+
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getAnswerProcess() {
+        return answerProcess;
+    }
+
+    public void setAnswerProcess(String answerProcess) {
+        this.answerProcess = answerProcess;
     }
 }

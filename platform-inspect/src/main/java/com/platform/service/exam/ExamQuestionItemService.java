@@ -70,4 +70,11 @@ public interface ExamQuestionItemService {
      * @return 删除条数
      */
     int deleteBatch(Long[] ids);
+
+    /**
+     * 通过题目删除选项
+     * @param questionId
+     * @return
+     */
+    int deleteByQid(Long questionId);
 }

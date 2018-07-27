@@ -35,8 +35,8 @@ public class ExamMemberController {
         //查询列表数据
         Query query = new Query(params);
 
-        List<ExamMemberEntity> examMemberList = examMemberService.queryList(query);
-        int total = examMemberService.queryTotal(query);
+        List<ExamMemberEntity> examMemberList = examMemberService.queryExamMembers(query);
+        int total = examMemberService.queryExamMembersTotal(query);
 
         PageUtils pageUtil = new PageUtils(examMemberList, total, query.getLimit(), query.getPage());
 

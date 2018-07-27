@@ -6,8 +6,8 @@ $(function () {
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '试题名称', name: 'examName', index: 'exam_name', align: 'center', width:'120px'},
 			{label: '试题介绍', name: 'introduce', index: 'introduce', align: 'center', width:'160px'},
-            {label: '题目数量', name: 'introduce', index: '', align: 'center', width:'60px'},
-            {label: '总分值', name: 'introduce', index: '', align: 'center', width:'60px'},
+            {label: '题目数量', name: 'questionNum', index: 'question_num', align: 'center', width:'60px'},
+            {label: '总分值', name: 'totalScore', index: 'total_score', align: 'center', width:'60px'},
 			{label: '开始时间', name: 'beginTime', index: 'begin_time', align: 'center', width:'80px'},
 			{label: '结束时间', name: 'endTime', index: 'end_time', align: 'center', width:'80px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
@@ -50,10 +50,10 @@ $(function () {
                 //colNames: ['编号','内部编码','名称','申请号'],
                 colModel: [
                     {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-                    {label: '姓名', name: 'examId', index: '', align: 'center', width:'160px'},
-                    {label: '手机号', name: 'examId', index: '', align: 'center', width:'80px'},
-                    {label: '答题进度', name: 'memberId', index: '', align: 'center', width:'120px'},
-                    {label: '分数', name: 'memberId', index: '', align: 'center', width:'60px'},
+                    {label: '姓名', name: 'userName', index: '', align: 'center', width:'160px'},
+                    {label: '手机号', name: 'mobile', index: '', align: 'center', width:'80px'},
+                    {label: '答题进度', name: 'answerProcess', index: '', align: 'center', width:'120px'},
+                    {label: '分数', name: 'score', index: '', align: 'center', width:'60px'},
 				],
 				height: 300,
                 pager: subgrid_pager_id,
@@ -87,8 +87,8 @@ var vm = new Vue({
         title: null,
 		exam: {},
 		ruleValidate: {
-			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
+            examName: [
+				{required: true, message: '试题名称不能为空', trigger: 'blur'}
 			]
 		},
 		q: {
@@ -187,6 +187,8 @@ var vm = new Vue({
 		saveOrUpdate: function (event) {
             var url = vm.exam.id == null ? "../exam/save" : "../exam/update";
             vm.exam.questionJson = JSON.stringify(vm.questionList);
+            vm.exam.totalScore = vm.totalSocre;
+            vm.exam.questionNum = vm.questionList.length;
 			$.ajax({
 				type: "POST",
 			    url: url,

@@ -56,4 +56,14 @@ public class ExamMemberServiceImpl implements ExamMemberService {
     public int deleteBatch(Long[]ids) {
         return examMemberDao.deleteBatch(ids);
     }
+
+    @Override
+    public List<ExamMemberEntity> queryExamMembers(Map<String, Object> map) {
+        return examMemberDao.selectExamMembers(map);
+    }
+
+    @Override
+    public int queryExamMembersTotal(Map<String, Object> map) {
+        return examMemberDao.selectExamMembersTotal(map);
+    }
 }

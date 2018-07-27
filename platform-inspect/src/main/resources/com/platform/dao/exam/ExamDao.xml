@@ -15,6 +15,8 @@
         <result property="updateTime" column="update_time"/>
         <result property="updator" column="updator"/>
         <result property="enabled" column="enabled"/>
+		<result property="totalScore" column="total_score"/>
+		<result property="questionNum" column="question_num"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.exam.ExamEntity">
@@ -29,6 +31,8 @@
 			`creator`,
 			`update_time`,
 			`updator`,
+			`total_score`,
+			`question_num`,
 			`enabled`
 		from exam
 		where id = #{id}
@@ -46,9 +50,11 @@
     		`creator`,
     		`update_time`,
     		`updator`,
+			`total_score`,
+			`question_num`,
     		`enabled`
 		from exam
-		WHERE 1=1
+		WHERE 1=1 AND  `enabled` = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
@@ -67,8 +73,8 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from exam
-		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
+		WHERE 1=1 AND  `enabled` = 0
+		<if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
 	</select>
@@ -84,6 +90,8 @@
 			`creator`,
 			`update_time`,
 			`updator`,
+			`total_score`,
+			`question_num`,
 			`enabled`)
 		values(
 			#{examName},
@@ -95,6 +103,8 @@
 			#{creator},
 			#{updateTime},
 			#{updator},
+			#{totalScore},
+			#{questionNum},
 			#{enabled})
 	</insert>
 	 
@@ -110,6 +120,8 @@
 			<if test="creator != null">`creator` = #{creator}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="updator != null">`updator` = #{updator}, </if>
+			<if test="totalScore != null">`total_score` = #{totalScore}, </if>
+			<if test="questionNum != null">`question_num` = #{questionNum}, </if>
 			<if test="enabled != null">`enabled` = #{enabled}</if>
 		</set>
 		where id = #{id}
