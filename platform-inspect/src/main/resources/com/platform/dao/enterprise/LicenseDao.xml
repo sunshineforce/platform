@@ -19,7 +19,6 @@
 		select
 			`id`,
 			`license_type_id`,
-			`license_type`,
 			`license_name`,
 			`number`,
 			`expire_date`,
@@ -71,8 +70,9 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(1) from license
+		select count(1) from license m left join license_type s on s.id = m. license_type_id
 		WHERE 1=1
+
         <if test="name != null and name.trim() != ''">
             AND license_name LIKE concat('%',#{name},'%')
         </if>
@@ -81,7 +81,6 @@
 	<insert id="save" parameterType="com.platform.entity.enterprise.LicenseEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into license(
 			`license_type_id`,
-			`license_type`,
 			`license_name`,
 			`number`,
 			`expire_date`,
@@ -90,7 +89,6 @@
 			`creator`)
 		values(
 			#{licenseTypeId},
-			#{licenseType},
 			#{licenseName},
 			#{number},
 			#{expireDate},
@@ -103,7 +101,6 @@
 		update license 
 		<set>
 			<if test="licenseTypeId != null">`license_type_id` = #{licenseTypeId}, </if>
-			<if test="licenseType != null">`license_type_id` = #{licenseType}, </if>
 			<if test="licenseName != null">`license_name` = #{licenseName}, </if>
 			<if test="number != null">`number` = #{number}, </if>
 			<if test="expireDate != null">`expire_date` = #{expireDate}, </if>

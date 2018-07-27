@@ -73,7 +73,6 @@ public class LicenseController {
     @RequiresPermissions("license:save")
     @ResponseBody
     public R save(@RequestBody LicenseEntity license) {
-        license.setLicenseTypeId(loadLicenseType().get(license.getLicenseType()));
         license.setCreateTime(new Date());
         licenseService.save(license);
 
@@ -87,7 +86,6 @@ public class LicenseController {
     @RequiresPermissions("license:update")
     @ResponseBody
     public R update(@RequestBody LicenseEntity license) {
-        license.setLicenseTypeId(loadLicenseType().get(license.getLicenseType()));
         licenseService.update(license);
 
         return R.ok();
