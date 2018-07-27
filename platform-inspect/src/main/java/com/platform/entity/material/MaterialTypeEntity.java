@@ -18,9 +18,11 @@ public class MaterialTypeEntity implements Serializable {
     //主键Id
     private Integer id;
     //物品名称
-    private String materialTypeName;
+    private String name;
     //上级类目Id
     private Integer parentId;
+    //上级类目
+    private String parentName;
     //备注
     private String remark;
     //创建时间
@@ -45,19 +47,15 @@ public class MaterialTypeEntity implements Serializable {
     public Integer getId() {
         return id;
     }
-    /**
-     * 设置：物品名称
-     */
-    public void setMaterialTypeName(String materialTypeName) {
-        this.materialTypeName = materialTypeName;
+
+    public String getName() {
+        return name;
     }
 
-    /**
-     * 获取：物品名称
-     */
-    public String getMaterialTypeName() {
-        return materialTypeName;
+    public void setName(String name) {
+        this.name = name;
     }
+
     /**
      * 设置：上级类目Id
      */
@@ -135,5 +133,13 @@ public class MaterialTypeEntity implements Serializable {
      */
     public Integer getUpdator() {
         return updator;
+    }
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
     }
 }

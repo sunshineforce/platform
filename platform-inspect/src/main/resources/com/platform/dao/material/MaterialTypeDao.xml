@@ -5,20 +5,22 @@
 
     <resultMap type="com.platform.entity.material.MaterialTypeEntity" id="materialTypeMap">
         <result property="id" column="id"/>
-        <result property="materialTypeName" column="material_type_name"/>
+        <result property="name" column="name"/>
         <result property="parentId" column="parent_id"/>
         <result property="remark" column="remark"/>
         <result property="createTime" column="create_time"/>
         <result property="creator" column="creator"/>
         <result property="updateTime" column="update_time"/>
         <result property="updator" column="updator"/>
+		<result property="parentName" column="parent_name"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.material.MaterialTypeEntity">
 		select
 			`id`,
-			`material_type_name`,
+			`name`,
 			`parent_id`,
+			`parent_name`,
 			`remark`,
 			`create_time`,
 			`creator`,
@@ -31,8 +33,9 @@
 	<select id="queryList" resultType="com.platform.entity.material.MaterialTypeEntity">
 		select
     		`id`,
-    		`material_type_name`,
+    		`name`,
     		`parent_id`,
+		    `parent_name`,
     		`remark`,
     		`create_time`,
     		`creator`,
@@ -48,7 +51,7 @@
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by id desc
+                order by id
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -66,16 +69,18 @@
 	 
 	<insert id="save" parameterType="com.platform.entity.material.MaterialTypeEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into material_type(
-			`material_type_name`,
+			`name`,
 			`parent_id`,
+			`parent_name`,
 			`remark`,
 			`create_time`,
 			`creator`,
 			`update_time`,
 			`updator`)
 		values(
-			#{materialTypeName},
+			#{name},
 			#{parentId},
+			#{parentName},
 			#{remark},
 			#{createTime},
 			#{creator},
@@ -86,8 +91,9 @@
 	<update id="update" parameterType="com.platform.entity.material.MaterialTypeEntity">
 		update material_type 
 		<set>
-			<if test="materialTypeName != null">`material_type_name` = #{materialTypeName}, </if>
+			<if test="name != null">`material_type_name` = #{name}, </if>
 			<if test="parentId != null">`parent_id` = #{parentId}, </if>
+			<if test="parentName != null">`parent_name` = #{parentName}, </if>
 			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="creator != null">`creator` = #{creator}, </if>

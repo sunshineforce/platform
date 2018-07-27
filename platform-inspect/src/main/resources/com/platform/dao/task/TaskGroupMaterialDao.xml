@@ -29,7 +29,7 @@
 			m.location AS location,
 			m.material_status AS materialStatus,
 			m.update_time AS updateTime,
-			t.material_type_name AS materialTypeName
+			t.name AS materialTypeName
 		FROM
 		material AS m,
 		material_type AS t,

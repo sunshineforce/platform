@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -56,6 +57,8 @@ public class MaterialTypeController {
         return R.ok().put("materialType", materialType);
     }
 
+
+
     /**
      * 保存
      */
@@ -63,6 +66,9 @@ public class MaterialTypeController {
     @RequiresPermissions("materialtype:save")
     @ResponseBody
     public R save(@RequestBody MaterialTypeEntity materialType) {
+        Date time = new Date();
+        materialType.setUpdateTime(time);
+        materialType.setCreateTime(time);
         materialTypeService.save(materialType);
 
         return R.ok();
@@ -75,6 +81,8 @@ public class MaterialTypeController {
     @RequiresPermissions("materialtype:update")
     @ResponseBody
     public R update(@RequestBody MaterialTypeEntity materialType) {
+        Date time = new Date();
+        materialType.setUpdateTime(time);
         materialTypeService.update(materialType);
 
         return R.ok();

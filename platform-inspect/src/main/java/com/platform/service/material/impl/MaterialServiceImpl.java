@@ -34,7 +34,7 @@ public class MaterialServiceImpl implements MaterialService {
         if (null != materialEntity){
             MaterialTypeEntity materialTypeEntity = materialTypeDao.queryObject(materialEntity.getMaterialTypeId());
             if (null != materialTypeEntity){
-                materialEntity.setMaterialTypeName(materialTypeEntity.getMaterialTypeName());
+                materialEntity.setMaterialTypeName(materialTypeEntity.getName());
             }
         }
         return materialEntity;

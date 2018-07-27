@@ -8,10 +8,10 @@
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
         <Row :gutter="16">
-            <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
-            </i-col>
-            <i-button @click="query">查询</i-button>
+            <!--<i-col span="4">-->
+                <!--<i-input v-model="q.name" @on-enter="query" placeholder="名称"/>-->
+            <!--</i-col>-->
+            <i-button type="ghost" @click="reload"><i class="fa fa-refresh"></i>&nbsp;刷新</i-button>
 			#if($shiro.hasPermission("materialtype:save"))
             <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
 			#end
@@ -29,26 +29,15 @@
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="materialType" :rules="ruleValidate" :label-width="80">
-            <Form-item label="物品名称" prop="materialTypeName">
-                <i-input v-model="materialType.materialTypeName" placeholder="物品名称"/>
+            <Form-item label="物品名称" prop="name">
+                <i-input v-model="materialType.name" placeholder="物品名称"/>
             </Form-item>
-            <Form-item label="上级类目Id" prop="parentId">
-                <i-input v-model="materialType.parentId" placeholder="上级类目Id"/>
+            <Form-item label="上级类目" prop="parentId">
+                <i-input v-model="materialType.parentName" @on-click="materialTypeTree" icon="eye" readonly="readonly"
+                         placeholder="上级类目"/>
             </Form-item>
             <Form-item label="备注" prop="remark">
                 <i-input v-model="materialType.remark" placeholder="备注"/>
-            </Form-item>
-            <Form-item label="创建时间" prop="createTime">
-                <i-input v-model="materialType.createTime" placeholder="创建时间"/>
-            </Form-item>
-            <Form-item label="创建人" prop="creator">
-                <i-input v-model="materialType.creator" placeholder="创建人"/>
-            </Form-item>
-            <Form-item label="最后修改时间" prop="updateTime">
-                <i-input v-model="materialType.updateTime" placeholder="最后修改时间"/>
-            </Form-item>
-            <Form-item label="最后修改人" prop="updator">
-                <i-input v-model="materialType.updator" placeholder="最后修改人"/>
             </Form-item>
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
@@ -58,7 +47,10 @@
         </i-form>
 	</Card>
 </div>
-
+<!-- 选择菜单 -->
+<div id="materialTypeLayer" style="display: none;padding:10px;">
+    <ul id="materialTypeTree" class="ztree"></ul>
+</div>
 <script src="${rc.contextPath}/js/material/materialtype.js?_${date.systemTime}"></script>
 </body>
 </html>
