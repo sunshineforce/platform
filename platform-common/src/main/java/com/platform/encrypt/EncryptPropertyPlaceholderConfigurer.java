@@ -15,11 +15,9 @@ public class EncryptPropertyPlaceholderConfigurer extends PropertyPlaceholderCon
 
     @Override
     protected String convertProperty(String propertyName, String propertyValue){
-        logger.debug("########convertProperty --------- in-----------" );
         //如果在加密属性名单中发现该属性
         if (isEncryptProp(propertyName)){
             String decryptValue = DESUtils.getDecryptString(propertyValue);
-            logger.debug("decryptValue ---------" + decryptValue);
             return decryptValue;
         }else {
             return propertyValue;
