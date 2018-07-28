@@ -12,8 +12,10 @@
         <result property="member" column="member"/>
         <result property="createTime" column="create_time"/>
         <result property="creator" column="creator"/>
+		<result property="creatorId" column="creator_id"/>
         <result property="updateTime" column="update_time"/>
         <result property="updator" column="updator"/>
+		<result property="updatorId" column="updator_id"/>
         <result property="enabled" column="enabled"/>
 		<result property="totalScore" column="total_score"/>
 		<result property="questionNum" column="question_num"/>
@@ -29,8 +31,10 @@
 			`member`,
 			`create_time`,
 			`creator`,
+			`creator_id`,
 			`update_time`,
 			`updator`,
+			`updator_id`,
 			`total_score`,
 			`question_num`,
 			`enabled`
@@ -48,8 +52,10 @@
     		`member`,
     		`create_time`,
     		`creator`,
+		`creator_id`,
     		`update_time`,
     		`updator`,
+		`updator_id`,
 			`total_score`,
 			`question_num`,
     		`enabled`
@@ -88,8 +94,10 @@
 			`member`,
 			`create_time`,
 			`creator`,
+			`creator_id`,
 			`update_time`,
 			`updator`,
+			`updator_id`,
 			`total_score`,
 			`question_num`,
 			`enabled`)
@@ -101,8 +109,10 @@
 			#{member},
 			#{createTime},
 			#{creator},
+			#{creatorId},
 			#{updateTime},
 			#{updator},
+			#{updatorId},
 			#{totalScore},
 			#{questionNum},
 			#{enabled})
@@ -118,8 +128,10 @@
 			<if test="member != null">`member` = #{member}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="creator != null">`creator` = #{creator}, </if>
+			<if test="creatorId != null">`creator_id` = #{creatorId}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="updator != null">`updator` = #{updator}, </if>
+			<if test="updatorId != null">`updator_id` = #{updatorId}, </if>
 			<if test="totalScore != null">`total_score` = #{totalScore}, </if>
 			<if test="questionNum != null">`question_num` = #{questionNum}, </if>
 			<if test="enabled != null">`enabled` = #{enabled}</if>

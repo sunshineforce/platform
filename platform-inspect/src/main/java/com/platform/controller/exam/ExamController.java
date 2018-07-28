@@ -1,6 +1,8 @@
 package com.platform.controller.exam;
 
 import com.alibaba.fastjson.JSON;
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.exam.ExamEntity;
 import com.platform.entity.exam.ExamQuestionEntity;
 import com.platform.entity.exam.ExamQuestionItemEntity;
@@ -31,7 +33,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("exam")
-public class ExamController {
+public class ExamController extends AbstractController {
 
     private static final Logger logger = LoggerFactory.getLogger(ExamController.class);
 
@@ -98,6 +100,11 @@ public class ExamController {
         Date time = new Date();
         exam.setCreateTime(time);
         exam.setUpdateTime(time);
+        SysUserEntity user = getUser();
+        if (null != user){
+            exam.setCreatorId(user.getUserId());
+            exam.setCreator(user.getUsername());
+        }
         examService.save(exam);
         logger.debug("getQuestionJson -------" + exam.getQuestionJson());
         List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);
@@ -128,6 +135,11 @@ public class ExamController {
         Date time = new Date();
         exam.setUpdateTime(time);
         examService.update(exam);
+        SysUserEntity user = getUser();
+        if (null != user){
+            exam.setUpdatorId(user.getUserId());
+            exam.setUpdator(user.getUsername());
+        }
         logger.debug("getQuestionJson -------" + exam.getQuestionJson());
         List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);
         if (null != list && list.size() > 0){
