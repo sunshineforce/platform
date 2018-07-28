@@ -57,4 +57,16 @@ public class ExamServiceImpl implements ExamService {
     public int deleteBatch(Long[]ids) {
         return examDao.deleteBatch(ids);
     }
+
+    @Override
+    public List<ExamEntity> queryExamListByUserId(Map<String, Object> map) {
+        return examDao.queryExamListByUserId(map);
+    }
+
+    @Override
+    public int queryExamListByUserIdTotal(Map<String, Object> map) {
+        return examDao.queryExamListByUserIdTotal(map);
+    }
+
+
 }

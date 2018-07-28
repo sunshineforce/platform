@@ -42,6 +42,51 @@
 		where id = #{id}
 	</select>
 
+	<select id="queryExamListByUserId" resultType="com.platform.entity.exam.ExamEntity">
+		SELECT
+		e.id AS id,
+		e.exam_name AS examName,
+		e.begin_time AS beginTime,
+		e.end_time AS endTime,
+		e.total_score AS totalScore,
+		e.question_num AS questionNum,
+		e.introduce AS introduce,
+		em.answer_num AS answerNum,
+		em.score AS score
+		FROM
+		exam AS e
+		LEFT JOIN exam_member AS em ON e.id = em.exam_id
+		WHERE
+		e.enabled = 0
+		<if test="userId != null">
+			AND em.member_id = #{userId}
+		</if>
+
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="queryExamListByUserIdTotal" resultType="int">
+		select count(*) FROM
+		exam AS e
+		LEFT JOIN exam_member AS em ON e.id = em.exam_id
+		WHERE
+		e.enabled = 0
+		<if test="userId != null">
+			AND em.member_id = #{userId}
+		</if>
+	</select>
+
+
 	<select id="queryList" resultType="com.platform.entity.exam.ExamEntity">
 		select
     		`id`,

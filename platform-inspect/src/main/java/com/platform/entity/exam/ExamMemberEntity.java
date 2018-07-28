@@ -19,7 +19,7 @@ public class ExamMemberEntity implements Serializable {
     //试题Id
     private Long examId;
     //参考人员Id
-    private Integer memberId;
+    private Long memberId;
 
     //已答题数量
     private Integer answerNum;
@@ -57,18 +57,13 @@ public class ExamMemberEntity implements Serializable {
         this.examId = examId;
     }
 
-    /**
-     * 设置：参考人员Id
-     */
-    public void setMemberId(Integer memberId) {
-        this.memberId = memberId;
+
+    public Long getMemberId() {
+        return memberId;
     }
 
-    /**
-     * 获取：参考人员Id
-     */
-    public Integer getMemberId() {
-        return memberId;
+    public void setMemberId(Long memberId) {
+        this.memberId = memberId;
     }
 
     public Integer getAnswerNum() {

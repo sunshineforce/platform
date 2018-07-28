@@ -103,7 +103,7 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
-		<if test="examId != null and examId.trim() != ''">
+		<if test="examId != null">
 			AND exam_id = #{examId}
 		</if>
 	</select>
@@ -129,7 +129,16 @@
 			<if test="score != null">`exam_id` = #{score}, </if>
 			<if test="memberId != null">`member_id` = #{memberId}</if>
 		</set>
-		where id = #{id}
+		where 1=1
+		<if test="id != null">
+			AND id = #{id}
+		</if>
+		<if test="examId != null">
+			AND exam_id = #{examId}
+		</if>
+		<if test="memberId != null">
+			AND member_id = #{memberId}
+		</if>
 	</update>
 	
 	<delete id="delete">
