@@ -28,7 +28,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app")
-public class CommonController extends AbstractController {
+public class AppCommonController extends AbstractController {
 
     @Autowired
     private MaterialTypeService materialTypeService;

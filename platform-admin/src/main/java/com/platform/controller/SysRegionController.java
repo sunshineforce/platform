@@ -1,5 +1,6 @@
 package com.platform.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.platform.cache.RegionCacheUtil;
 import com.platform.entity.SysRegionEntity;
 import com.platform.service.SysRegionService;
@@ -144,9 +145,9 @@ public class SysRegionController {
             sysRegionEntity.setValue(sysRegionEntity.getId() + "");
             sysRegionEntity.setLabel(sysRegionEntity.getName());
         }
-        List<SysRegionEntity> node = TreeUtils.factorTree(list);
-
-        return R.ok().put("node", node);
+//        List<SysRegionEntity> node = TreeUtils.factorTree(list);
+//        String s = JSON.toJSONString(node);
+        return R.ok().put("node", list);
     }
 
     @RequestMapping("/getAreaByType")

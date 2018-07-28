@@ -25,7 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app")
-public class NoticeController extends AbstractController {
+public class AppNoticeController extends AbstractController {
 
     @Autowired
     private INoticeService noticeService;

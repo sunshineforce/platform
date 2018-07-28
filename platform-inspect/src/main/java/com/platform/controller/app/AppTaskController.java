@@ -29,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app")
-public class TaskController {
+public class AppTaskController {
 
     @Resource
     private TaskService taskService;

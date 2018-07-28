@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 
 @RequestMapping("/app")
-public class PlatformAlarmController {
+public class AppPlatformAlarmController {
 
     @RequestMapping("/platform/alarm/list")
     @ResponseBody

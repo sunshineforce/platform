@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/app")
-public class MaterialBindController extends AbstractController {
+public class AppMaterialBindController extends AbstractController {
 
     @Autowired
     private MaterialService materialService;

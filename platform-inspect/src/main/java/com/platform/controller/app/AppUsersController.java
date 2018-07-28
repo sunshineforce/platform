@@ -34,9 +34,9 @@ import java.util.Date;
 
 @RestController
 @RequestMapping("/app")
-public class UserController extends AbstractController{
+public class AppUsersController extends AbstractController{
 
-    public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+    public static final Logger logger = LoggerFactory.getLogger(AppUsersController.class);
 
     public static final String RESET_PASSOWRD_SMS = "";
 

@@ -1,6 +1,7 @@
 package com.platform.controller.app;
 
 import com.platform.utils.R;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -8,26 +9,35 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * Created with IntelliJ IDEA
  * ProjectName: inspect
  * CreateUser:  lixiaopeng
- * CreateTime : 2018/7/24 21:15
+ * CreateTime : 2018/7/24 21:06
  * ModifyUser: bjlixiaopeng
  * Class Description:
  * To change this template use File | Settings | File and Code Template
  */
-
+@Controller
 @RequestMapping("/app")
-public class RegulationController {
+public class AppAnomalyController {
 
-    @RequestMapping("/regulation/list")
+    @RequestMapping("/anomaly/list")
     @ResponseBody
-    public R regulationList(){
+    public R anomalyList(){
 
         return R.succeed();
     }
 
-    @RequestMapping("/regulation/details")
+    @RequestMapping("/anomaly/details")
     @ResponseBody
-    public R regulationDetail(){
+    public R anomalyDetails(){
 
         return R.succeed();
     }
+
+
+    @RequestMapping("/anomaly/histories")
+    @ResponseBody
+    public R anomalyHistories(){
+
+        return R.succeed();
+    }
+
 }
