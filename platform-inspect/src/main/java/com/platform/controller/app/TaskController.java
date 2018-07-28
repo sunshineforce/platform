@@ -1,8 +1,12 @@
 package com.platform.controller.app;
 
+import com.alibaba.druid.util.StringUtils;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskEntity;
 import com.platform.service.task.TaskService;
 import com.platform.utils.R;
+import org.apache.shiro.SecurityUtils;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -26,16 +30,21 @@ public class TaskController {
     private TaskService taskService;
 
     @RequestMapping("/task/list")
-    public R taskList(HashMap<String,Object> params){
+    public R taskList(@RequestBody HashMap<String,Object> params){
         if (params == null) {
             return R.ok();
         }
+        if (StringUtils.isEmpty(String.valueOf(params.get("status")))) {
+            return R.paramsIllegal();
+        }
+
         List<TaskEntity> taskList = taskService.queryList(params);
+
         return R.ok().put("data",taskList);
     }
 
     @RequestMapping("/task/create")
-    public R createTask(TaskEntity taskEntity){
+    public R createTask(@RequestBody TaskEntity taskEntity){
         if (taskEntity == null) {
             return R.ok();
         }

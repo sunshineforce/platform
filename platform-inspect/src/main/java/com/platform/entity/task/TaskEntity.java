@@ -45,6 +45,8 @@ public class TaskEntity implements Serializable {
     private Date updateTime;
     //数据状态 0  正常 1 删除
     private Integer dataStatus;
+    //任务超时原因
+    private String delayReason;
 
 
     ////业务属性
@@ -58,7 +60,11 @@ public class TaskEntity implements Serializable {
     //最后执行时间
     private Date lastCheckTime;
 
+    //完成进度
+    private String progressRate;
 
+    //通知状态
+    private String noticeStatus;
 
     /**
      * 设置：主键id
@@ -230,6 +236,14 @@ public class TaskEntity implements Serializable {
         return dataStatus;
     }
 
+    public String getDelayReason() {
+        return delayReason;
+    }
+
+    public void setDelayReason(String delayReason) {
+        this.delayReason = delayReason;
+    }
+
     public String getName() {
         return name;
     }
@@ -276,5 +290,21 @@ public class TaskEntity implements Serializable {
 
     public void setLastCheckTime(Date lastCheckTime) {
         this.lastCheckTime = lastCheckTime;
+    }
+
+    public String getProgressRate() {
+        return progressRate;
+    }
+
+    public void setProgressRate(String progressRate) {
+        this.progressRate = progressRate;
+    }
+
+    public String getNoticeStatus() {
+        return noticeStatus;
+    }
+
+    public void setNoticeStatus(String noticeStatus) {
+        this.noticeStatus = noticeStatus;
     }
 }

@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.NoticeDao">
+
+    <resultMap type="com.platform.entity.notice.NoticeEntity" id="noticeMap">
+        <result property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="status" column="status"/>
+        <result property="taskId" column="task_id"/>
+        <result property="userId" column="user_id"/>
+        <result property="createTime" column="create_time"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.notice.NoticeEntity">
+		select
+			`id`,
+			`name`,
+			`status`,
+			`task_id`,
+			`user_id`,
+			`create_time`
+		from notice
+		where id = #{id}
+	</select>
+
+	<select id="queryObjectByCondition" parameterType="com.platform.entity.notice.NoticeEntity" resultType="com.platform.entity.notice.NoticeEntity">
+		select
+		`id`,
+		`name`,
+		`status`,
+		`task_id`,
+		`user_id`,
+		`create_time`
+		from notice where 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="userId != null and userId.trim() != ''">
+			AND user_id =#{userId}
+		</if>
+		<if test="taskId != null and taskId.trim() != ''">
+			AND task_id =#{taskId}
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND status =#{status}
+		</if>
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.notice.NoticeEntity">
+		select
+    		`id`,
+    		`name`,
+    		`status`,
+    		`task_id`,
+    		`user_id`,
+    		`create_time`
+		from notice
+		WHERE 1=1
+		<if test="name != null and name.trim() != ''">
+			AND name LIKE concat('%',#{name},'%')
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) from notice
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.notice.NoticeEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into notice(
+			`name`,
+			`status`,
+			`task_id`,
+			`user_id`,
+			`create_time`)
+		values(
+			#{name},
+			#{status},
+			#{taskId},
+			#{userId},
+			#{createTime})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.notice.NoticeEntity">
+		update notice 
+		<set>
+			<if test="name != null">`name` = #{name}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="taskId != null">`task_id` = #{taskId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from notice where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from notice where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>

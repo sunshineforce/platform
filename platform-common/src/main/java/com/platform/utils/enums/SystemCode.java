@@ -1,4 +1,4 @@
-package com.platform.utils;
+package com.platform.utils.enums;
 
 /**
  * Created with IntelliJ IDEA

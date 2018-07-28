@@ -19,6 +19,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="dataStatus" column="data_status"/>
+        <result property="delayReason" column="delay_reason"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.task.TaskEntity">
@@ -37,7 +38,8 @@
 			`schedule_cycle`,
 			`create_time`,
 			`update_time`,
-			`data_status`
+			`data_status`,
+			`delay_reason`
 		from task
 		where id = #{id}
 	</select>
@@ -58,7 +60,8 @@
 			t.`create_time`,
 			t.`update_time`,
 			t.`data_status`,
-			tg.`name` AS taskGroupName
+			tg.`name` AS taskGroupName,
+			`delay_reason` as delayReason
 		from task AS t
 		LEFT JOIN task_group AS tg ON t.task_group_id = tg.id
 		WHERE 1=1 AND t.data_status = 0
@@ -88,8 +91,7 @@
 	</select>
 
 	<select id="selectTaskTotal" resultType="int">
-		select
-		  COUNT(*)
+		select COUNT(1)
 		from task AS t
 		LEFT JOIN task_group AS tg ON t.task_group_id = tg.id
 		WHERE 1=1 AND t.data_status = 0
@@ -108,26 +110,18 @@
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.task.TaskEntity">
-		select
-    		`id`,
-			`name`,
-			`remark`,
-    		`task_group_id`,
-    		`type`,
-    		`status`,
-    		`user_ids`,
-    		`user_names`,
-    		`start_time`,
-    		`end_time`,
-    		`schedule`,
-    		`schedule_cycle`,
-    		`create_time`,
-    		`update_time`,
-    		`data_status`
+		select `id`, `name`, `remark`,`task_group_id`,`type`,`status`,`user_ids`,`user_names`,
+    		`start_time`,`end_time`,`schedule`,`schedule_cycle`,`create_time`,`update_time`,`data_status`,`delay_reason`
 		from task
 		WHERE 1=1 AND data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND status =#{status}
+		</if>
+		<if test="userId != null">
+			AND #{userId} in user_ids
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -143,7 +137,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from task
+		select count(1) from task
 		WHERE 1=1 AND data_status = 0
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
@@ -165,7 +159,8 @@
 			`schedule_cycle`,
 			`create_time`,
 			`update_time`,
-			`data_status`)
+			`data_status`,
+			`delay_reason`)
 		values(
 			#{taskGroupId},
 			#{name},
@@ -180,7 +175,8 @@
 			#{scheduleCycle},
 			#{createTime},
 			#{updateTime},
-			#{dataStatus})
+			#{dataStatus},
+			#{delay_reason})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.task.TaskEntity">
@@ -200,6 +196,7 @@
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
+			<if test="delayReason != null and delayReason!= ''">`delay_reason` = #{delayReason}</if>
 		</set>
 		where id = #{id}
 	</update>
