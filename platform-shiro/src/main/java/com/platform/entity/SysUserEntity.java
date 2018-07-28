@@ -2,7 +2,6 @@ package com.platform.entity;
 
 import com.platform.validator.group.AddGroup;
 import com.platform.validator.group.UpdateGroup;
-import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 
 import java.io.Serializable;
@@ -65,6 +64,9 @@ public class SysUserEntity implements Serializable {
     /** 身份 */
     private Integer identify;
 
+    /** 所属区域Id */
+    private Integer regionId;
+
     /** 所属区域 */
     private String region;
 
@@ -79,6 +81,9 @@ public class SysUserEntity implements Serializable {
 
     /** 最后修改人 */
     private Long updateUserId;
+
+    /** 用户所属企业 */
+    private Integer enterpriseId;
 
     /**
      * 设置：
@@ -254,6 +259,14 @@ public class SysUserEntity implements Serializable {
         this.account = account;
     }
 
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
+
     public String getRegion() {
         return region;
     }
@@ -300,5 +313,13 @@ public class SysUserEntity implements Serializable {
 
     public void setUpdateUserId(Long updateUserId) {
         this.updateUserId = updateUserId;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 }

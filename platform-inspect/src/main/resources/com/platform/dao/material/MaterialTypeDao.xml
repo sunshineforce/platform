@@ -64,6 +64,11 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<!-- 加载所有物料类型,用于前端选择 -->
+	<select id="queryAllMaterialType" resultType="com.platform.entity.vo.MaterialTypeVo">
+		select id,name,parent_id as pid from material_type order by id
+	</select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from material_type

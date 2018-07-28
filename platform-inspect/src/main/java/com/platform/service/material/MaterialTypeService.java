@@ -2,6 +2,7 @@ package com.platform.service.material;
 
 
 import com.platform.entity.material.MaterialTypeEntity;
+import com.platform.entity.vo.MaterialTypeVo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,12 @@ public interface MaterialTypeService {
      * @return list
      */
     List<MaterialTypeEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 加载所有物品类型，用于下拉列表选择
+     * @return
+     */
+    List<MaterialTypeVo> loadAllMaterialType();
 
     /**
      * 分页统计总数

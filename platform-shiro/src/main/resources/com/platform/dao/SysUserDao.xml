@@ -51,10 +51,7 @@
 	</select>
 
 	<select id="queryListByBean" resultType="com.platform.entity.UserWindowDto">
-		select
-		id,username name,dept_Id
-		from sys_user
-		WHERE 1=1
+		select id,username name,dept_Id from sys_user WHERE 1=1
 		<if test="name != null and name.trim() != ''" >
 			AND username LIKE concat('%',#{name},'%')
 		</if>
@@ -123,7 +120,13 @@
 			`role_id`,
 			`update_time`,
 			`update_user_id`,
-			identify
+			account,
+			identify,
+			region,
+			superior,
+			certificate_url,
+			enterprise_id,
+			region_id
 		)
 		values
 		(
@@ -140,7 +143,13 @@
 			#{roleId},
 			#{updateTime},
 			#{updateUserId},
-			#{identify}
+			#{account},
+			#{identify},
+			#{region},
+			#{superior},
+			#{certificateUrl},
+			#{enterpriseId},
+			#{regionId}
 		)
 	</insert>
 	 
@@ -149,11 +158,17 @@
 		<set> 
 			<if test="username != null">`username` = #{username}, </if>
 			<if test="password != null">`password` = #{password}, </if>
+			<if test="email != null">`email` = #{email}, </if>
 			<if test="account != null">`account` = #{account}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
-			<if test="identify != null">`status` = #{identify}, </if>
-			<if test="roleId != null">`dept_id` = #{roleId} </if>
+			<if test="identify != null">`identify` = #{identify}, </if>
+			<if test="region != null and region!=''">`region` = #{region}, </if>
+			<if test="regionId != null">`region_id` = #{regionId}, </if>
+			<if test="superior != null">`superior` = #{superior}, </if>
+			<if test="certificate_url != null">`certificate_url` = #{certificateUrl}, </if>
+			<if test="roleId != null">`role_id` = #{roleId} </if>
+			<if test="enterprise_id != null">`enterprise_id` = #{enterpriseId} </if>
 		</set>
 		where user_id = #{userId} 
 		<if test="createUserId != null">

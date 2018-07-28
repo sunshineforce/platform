@@ -58,6 +58,11 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<!-- 查询所有检查规范，下拉选择列表 -->
+	<select id="queryAllCheckSpecific" resultType="com.platform.entity.vo.CheckSpecificVo">
+		SELECT `id`, `specific_name` AS name FROM check_specific ORDER BY id
+	</select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from check_specific

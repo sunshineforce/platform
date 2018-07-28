@@ -2,6 +2,7 @@ package com.platform.service.specific.impl;
 
 import com.platform.dao.specific.CheckSpecificDao;
 import com.platform.entity.specific.CheckSpecificEntity;
+import com.platform.entity.vo.CheckSpecificVo;
 import com.platform.service.specific.CheckSpecificService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,11 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
     @Override
     public List<CheckSpecificEntity> queryList(Map<String, Object> map) {
         return checkSpecificDao.queryList(map);
+    }
+
+    @Override
+    public List<CheckSpecificVo> loadAllCheckSpecific() {
+        return checkSpecificDao.queryAllCheckSpecific();
     }
 
     @Override

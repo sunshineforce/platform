@@ -1,7 +1,10 @@
 package com.platform.entity.task;
 
+import com.platform.entity.material.MaterialEntity;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -65,6 +68,9 @@ public class TaskEntity implements Serializable {
 
     //通知状态
     private String noticeStatus;
+
+    //物品种类
+    private List<TaskGroupMaterialEntity> materialList;
 
     /**
      * 设置：主键id
@@ -306,5 +312,13 @@ public class TaskEntity implements Serializable {
 
     public void setNoticeStatus(String noticeStatus) {
         this.noticeStatus = noticeStatus;
+    }
+
+    public List<TaskGroupMaterialEntity> getMaterialList() {
+        return materialList;
+    }
+
+    public void setMaterialList(List<TaskGroupMaterialEntity> materialList) {
+        this.materialList = materialList;
     }
 }

@@ -4,12 +4,16 @@ import com.platform.dao.task.TaskDao;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.notice.NoticeEntity;
 import com.platform.entity.task.TaskEntity;
+import com.platform.entity.task.TaskGroupMaterialEntity;
 import com.platform.service.notice.INoticeService;
+import com.platform.service.task.TaskGroupMaterialService;
 import com.platform.service.task.TaskService;
+import com.platform.utils.enums.MaterialStatusEnum;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +33,9 @@ public class TaskServiceImpl implements TaskService {
     @Autowired
     private INoticeService noticeService;
 
+    @Autowired
+    private TaskGroupMaterialService taskGroupMaterialService;
+
     @Override
     public TaskEntity queryObject(Integer id) {
         return taskDao.queryObject(id);
@@ -42,10 +49,17 @@ public class TaskServiceImpl implements TaskService {
 
         Long taskId = Long.valueOf(String.valueOf(map.get("taskId")));
 
+        Map<String,Object> paramsMap = new HashMap<String,Object>();
+        List<TaskGroupMaterialEntity> taskGroupMaterialList;
         for (TaskEntity taskEntity : taskList) {
             taskEntity.setChekArea(sysUser.getRegion());
-            taskEntity.setProgressRate(calcTaskProgressRate());
+            taskEntity.setProgressRate(String.valueOf(calcTaskProgressRate(taskEntity.getTaskGroupId()).get("finished")));
             taskEntity.setNoticeStatus(getNoticeStatus(sysUser.getUserId(),taskId));
+
+            paramsMap.put("taskGroupId",taskEntity.getTaskGroupId());
+            taskGroupMaterialList = taskGroupMaterialService.queryTaskGroupMaterialList(paramsMap);
+
+            taskEntity.setMaterialList(taskGroupMaterialList);
         }
         return taskDao.queryList(map);
     }
@@ -54,8 +68,34 @@ public class TaskServiceImpl implements TaskService {
      * 计算任务完成进度
      * @return
      */
-    private String calcTaskProgressRate(){
-        return "2/10";
+    private Map<String,Object> calcTaskProgressRate(Integer taskGroupId){
+        Map<String,Object> resultMap = new HashMap<String,Object>();
+        Map<String,Object> paramsMap = new HashMap<String,Object>();
+        paramsMap.put("taskGroupId",taskGroupId);
+        List<TaskGroupMaterialEntity> taskGroupMaterialList = taskGroupMaterialService.queryTaskGroupMaterialList(paramsMap);
+        Integer finishedCount=0;
+        Integer normalCount=0;
+        Integer anomalyCount=0;
+
+        Integer total = taskGroupMaterialList.size();
+
+        resultMap.put("finished",finishedCount+"/"+total);
+        resultMap.put("normal",normalCount);
+        resultMap.put("anomaly",anomalyCount);
+
+        for (TaskGroupMaterialEntity entity : taskGroupMaterialList) {
+            if (entity.getMaterialStatus().equals(MaterialStatusEnum.NORMAL.getCode())) {
+                normalCount++;
+            }else if (entity.getMaterialStatus().equals(MaterialStatusEnum.ANOMALY.getCode())) {
+                anomalyCount++;
+            }else if (entity.getMaterialStatus().equals(MaterialStatusEnum.FINISHED.getCode())) {
+                finishedCount++;
+            }
+            resultMap.put("finished",finishedCount+"/"+total);
+            resultMap.put("normal",normalCount);
+            resultMap.put("anomaly",anomalyCount);
+        }
+        return resultMap;
     }
 
     /**
@@ -69,7 +109,10 @@ public class TaskServiceImpl implements TaskService {
         condition.setUserId(userId);
         condition.setTaskId(taskId);
         NoticeEntity notice = noticeService.queryObjectByCondition(condition);
-        return notice.getName();
+        if (notice != null) {
+            return notice.getName().equals("")?"":notice.getName();
+        }
+        return "";
     }
 
     @Override
