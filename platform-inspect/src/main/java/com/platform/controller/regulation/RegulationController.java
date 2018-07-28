@@ -1,5 +1,7 @@
 package com.platform.controller.regulation;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.regulation.RegulationEntity;
 import com.platform.service.regulation.RegulationService;
 import com.platform.utils.PageUtils;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("regulation")
-public class RegulationController {
+public class RegulationController extends AbstractController{
     @Autowired
     private RegulationService regulationService;
 
@@ -67,7 +69,11 @@ public class RegulationController {
         Date time = new Date();
         regulation.setUpdateTime(time);
         regulation.setCreateTime(time);
-
+        SysUserEntity user = getUser();
+        if (null != user){
+            regulation.setCreatorId(user.getUserId());
+            regulation.setCreator(user.getUsername());
+        }
         regulationService.save(regulation);
 
         return R.ok();
@@ -82,7 +88,11 @@ public class RegulationController {
     public R update(@RequestBody RegulationEntity regulation) {
         Date time = new Date();
         regulation.setUpdateTime(time);
-
+        SysUserEntity user = getUser();
+        if (null != user){
+            regulation.setUpdatorId(user.getUserId());
+            regulation.setUpdator(user.getUsername());
+        }
         regulationService.update(regulation);
 
         return R.ok();

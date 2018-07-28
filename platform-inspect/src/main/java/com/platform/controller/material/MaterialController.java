@@ -1,5 +1,7 @@
 package com.platform.controller.material;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.service.material.MaterialService;
 import com.platform.utils.PageUtils;
@@ -22,7 +24,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("material")
-public class MaterialController {
+public class MaterialController extends AbstractController {
     @Autowired
     private MaterialService materialService;
 
@@ -63,6 +65,11 @@ public class MaterialController {
     @RequiresPermissions("material:save")
     @ResponseBody
     public R save(@RequestBody MaterialEntity material) {
+        SysUserEntity user = getUser();
+        if (null != user){
+            material.setCreatorId(user.getUserId());
+            material.setCreator(user.getUsername());
+        }
         materialService.save(material);
 
         return R.ok();
@@ -75,6 +82,11 @@ public class MaterialController {
     @RequiresPermissions("material:update")
     @ResponseBody
     public R update(@RequestBody MaterialEntity material) {
+        SysUserEntity user = getUser();
+        if (null != user){
+            material.setUpdatorId(user.getUserId());
+            material.setUpdator(user.getUsername());
+        }
         materialService.update(material);
 
         return R.ok();
