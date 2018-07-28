@@ -12,4 +12,10 @@ import com.platform.entity.specific.CheckSpecificItemEntity;
  */
 public interface CheckSpecificItemDao extends BaseDao<CheckSpecificItemEntity> {
 
+    /**
+     * 通过主表id删除
+     * @param specificId
+     * @return
+     */
+    int deleteBySpecId(Integer specificId);
 }

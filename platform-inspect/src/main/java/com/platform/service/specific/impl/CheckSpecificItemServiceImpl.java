@@ -56,4 +56,9 @@ public class CheckSpecificItemServiceImpl implements CheckSpecificItemService {
     public int deleteBatch(Integer[]ids) {
         return checkSpecificItemDao.deleteBatch(ids);
     }
+
+    @Override
+    public int deleteBySpecId(Integer specificId) {
+        return checkSpecificItemDao.deleteBySpecId(specificId);
+    }
 }

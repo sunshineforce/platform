@@ -9,8 +9,10 @@
         <result property="remark" column="remark"/>
         <result property="createTime" column="create_time"/>
         <result property="creator" column="creator"/>
+		<result property="creatorId" column="creator_id"/>
         <result property="updateTime" column="update_time"/>
         <result property="updator" column="updator"/>
+		<result property="updatorId" column="updator_id"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.specific.CheckSpecificEntity">
@@ -19,9 +21,11 @@
 			`specific_name`,
 			`remark`,
 			`create_time`,
+			`creator_id`,
 			`creator`,
 			`update_time`,
-			`updator`
+			`updator`,
+			`updator_id`
 		from check_specific
 		where id = #{id}
 	</select>
@@ -32,9 +36,11 @@
     		`specific_name`,
     		`remark`,
     		`create_time`,
-    		`creator`,
-    		`update_time`,
-    		`updator`
+			`creator_id`,
+			`creator`,
+			`update_time`,
+			`updator`,
+			`updator_id`
 		from check_specific
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -45,7 +51,7 @@
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by id desc
+                order by id
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -66,15 +72,19 @@
 			`specific_name`,
 			`remark`,
 			`create_time`,
+			`creator_id`,
 			`creator`,
 			`update_time`,
+			`updator_id`,
 			`updator`)
 		values(
 			#{specificName},
 			#{remark},
 			#{createTime},
+			#{creatorId},
 			#{creator},
 			#{updateTime},
+			#{updatorId},
 			#{updator})
 	</insert>
 	 
@@ -84,8 +94,10 @@
 			<if test="specificName != null">`specific_name` = #{specificName}, </if>
 			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="creatorId != null">`creator_id` = #{creatorId}, </if>
 			<if test="creator != null">`creator` = #{creator}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updatorId != null">`updator_id` = #{updatorId},</if>
 			<if test="updator != null">`updator` = #{updator}</if>
 		</set>
 		where id = #{id}

@@ -27,16 +27,19 @@
     		`name`,
     		`data_status`
 		from check_specific_item
-		WHERE 1=1
+		WHERE 1=1 AND `data_status` = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="specificId != null ">
+			AND `specific_id` =  #{specificId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
             </when>
 			<otherwise>
-                order by id desc
+                order by id
 			</otherwise>
         </choose>
 		<if test="offset != null and limit != null">
@@ -46,10 +49,13 @@
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from check_specific_item
-		WHERE 1=1
+		WHERE 1=1  AND `data_status` = 0
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="specificId != null ">
+			AND `specific_id` =  #{specificId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.specific.CheckSpecificItemEntity" useGeneratedKeys="true" keyProperty="id">
@@ -75,6 +81,10 @@
 	
 	<delete id="delete">
 		delete from check_specific_item where id = #{value}
+	</delete>
+
+	<delete id="deleteBySpecId">
+		delete from check_specific_item where specific_id = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">

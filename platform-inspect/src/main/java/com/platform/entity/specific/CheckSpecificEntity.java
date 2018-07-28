@@ -2,6 +2,7 @@ package com.platform.entity.specific;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 
 /**
@@ -24,11 +25,19 @@ public class CheckSpecificEntity implements Serializable {
     //创建时间
     private Date createTime;
     //创建者
-    private Integer creator;
+    private String creator;
     //最后修改人
     private Date updateTime;
     //最后修改人
-    private Integer updator;
+    private String updator;
+
+    private Long creatorId;
+
+    private Long updatorId;
+
+    private String specificItemsJson;
+
+    private List<CheckSpecificItemEntity> specificItems;
 
     /**
      * 设置：主键Id
@@ -82,19 +91,7 @@ public class CheckSpecificEntity implements Serializable {
     public Date getCreateTime() {
         return createTime;
     }
-    /**
-     * 设置：创建者
-     */
-    public void setCreator(Integer creator) {
-        this.creator = creator;
-    }
 
-    /**
-     * 获取：创建者
-     */
-    public Integer getCreator() {
-        return creator;
-    }
     /**
      * 设置：最后修改人
      */
@@ -108,17 +105,52 @@ public class CheckSpecificEntity implements Serializable {
     public Date getUpdateTime() {
         return updateTime;
     }
-    /**
-     * 设置：最后修改人
-     */
-    public void setUpdator(Integer updator) {
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public String getUpdator() {
+        return updator;
+    }
+
+    public void setUpdator(String updator) {
         this.updator = updator;
     }
 
-    /**
-     * 获取：最后修改人
-     */
-    public Integer getUpdator() {
-        return updator;
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Long getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
+    }
+
+    public String getSpecificItemsJson() {
+        return specificItemsJson;
+    }
+
+    public void setSpecificItemsJson(String specificItemsJson) {
+        this.specificItemsJson = specificItemsJson;
+    }
+
+    public List<CheckSpecificItemEntity> getSpecificItems() {
+        return specificItems;
+    }
+
+    public void setSpecificItems(List<CheckSpecificItemEntity> specificItems) {
+        this.specificItems = specificItems;
     }
 }

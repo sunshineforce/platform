@@ -70,4 +70,13 @@ public interface CheckSpecificItemService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+
+    /**
+     * 通过主表id删除
+     * @param specificId
+     * @return
+     */
+    int deleteBySpecId(Integer specificId);
+
 }
