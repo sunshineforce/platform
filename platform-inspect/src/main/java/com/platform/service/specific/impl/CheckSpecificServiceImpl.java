@@ -2,8 +2,8 @@ package com.platform.service.specific.impl;
 
 import com.platform.dao.specific.CheckSpecificDao;
 import com.platform.entity.specific.CheckSpecificEntity;
-import com.platform.entity.vo.CheckSpecificVo;
 import com.platform.service.specific.CheckSpecificService;
+import com.platform.vo.SelectVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
     }
 
     @Override
-    public List<CheckSpecificVo> loadAllCheckSpecific() {
+    public List<SelectVo> loadAllCheckSpecific() {
         return checkSpecificDao.queryAllCheckSpecific();
     }
 

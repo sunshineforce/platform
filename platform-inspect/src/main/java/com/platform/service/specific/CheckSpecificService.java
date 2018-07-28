@@ -1,17 +1,14 @@
 package com.platform.service.specific;
 
-
 import com.platform.entity.specific.CheckSpecificEntity;
-import com.platform.entity.vo.CheckSpecificVo;
+import com.platform.vo.SelectVo;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 检查规范表Service接口
- *
  * @author admin
- *  
  * @date 2018-07-23 20:03:40
  */
 public interface CheckSpecificService {
@@ -36,7 +33,7 @@ public interface CheckSpecificService {
      * 加载所有的检查规范
      * @return
      */
-    List<CheckSpecificVo> loadAllCheckSpecific();
+    List<SelectVo> loadAllCheckSpecific();
 
     /**
      * 分页统计总数

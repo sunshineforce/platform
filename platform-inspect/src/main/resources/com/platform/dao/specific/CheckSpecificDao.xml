@@ -60,7 +60,7 @@
 	</select>
 
 	<!-- 查询所有检查规范，下拉选择列表 -->
-	<select id="queryAllCheckSpecific" resultType="com.platform.entity.vo.CheckSpecificVo">
+	<select id="queryAllCheckSpecific" resultType="com.platform.vo.SelectVo">
 		SELECT `id`, `specific_name` AS name FROM check_specific ORDER BY id
 	</select>
 	

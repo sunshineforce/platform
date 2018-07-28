@@ -2,16 +2,18 @@ package com.platform.controller.app;
 
 import com.platform.controller.AbstractController;
 import com.platform.entity.SysRegionEntity;
-import com.platform.entity.vo.CheckSpecificVo;
-import com.platform.entity.vo.MaterialTypeVo;
 import com.platform.service.SysRegionService;
 import com.platform.service.material.MaterialTypeService;
 import com.platform.service.specific.CheckSpecificService;
 import com.platform.utils.R;
+import com.platform.vo.SelectVo;
+import com.platform.vo.TreeVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -42,18 +44,21 @@ public class CommonController extends AbstractController {
 
     @RequestMapping(value = "/material/type/list")
     public R queryMaterialTypeList(){
-        List<MaterialTypeVo> list = materialTypeService.loadAllMaterialType();
+        List<TreeVo> list = materialTypeService.loadAllMaterialType();
         return R.succeed().put("list",list);
     }
 
     @RequestMapping(value = "/check/specific//list")
     public R queryCheckSpecificList(){
-        List<CheckSpecificVo> list = checkSpecificService.loadAllCheckSpecific();
+        List<SelectVo> list = checkSpecificService.loadAllCheckSpecific();
         return R.succeed().put("list",list);
     }
 
-    @RequestMapping(value = "/region/list")
-    public R queryRegionList(){
+    @RequestMapping(value = "/enterprise/info")
+    public R queryEnterpriseByRegionId(@RequestParam("regionId") Long regionId){
+        if (regionId == null) {
+            return R.paramsIllegal();
+        }
         List<SysRegionEntity> list = regionService.queryList(null);
         return R.succeed().put("list",list);
     }
