@@ -1,5 +1,7 @@
 package com.platform.utils;
 
+import com.platform.utils.enums.SystemCode;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +44,10 @@ public class R extends HashMap<String, Object> {
 
     public static R failure(){
         return error(ErrorCode.FAILURE.getCode(),ErrorCode.FAILURE.getDesc());
+    }
+
+    public static R paramsIllegal(){
+        return error(SystemCode.PARAM_ILLEGAL.getCode(),SystemCode.PARAM_ILLEGAL.getDesc());
     }
 
     public static R ok(String msg) {

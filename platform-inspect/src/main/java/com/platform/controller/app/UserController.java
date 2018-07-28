@@ -8,7 +8,7 @@ import com.platform.service.SysUserService;
 import com.platform.utils.DateUtils;
 import com.platform.utils.R;
 import com.platform.utils.ShiroUtils;
-import com.platform.utils.SystemCode;
+import com.platform.utils.enums.SystemCode;
 import com.platform.validator.Assert;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
@@ -18,11 +18,7 @@ import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 
@@ -36,17 +32,19 @@ import java.util.Date;
  * To change this template use File | Settings | File and Code Template
  */
 
-@Controller
+@RestController
 @RequestMapping("/app")
-public class UserController extends AbstractController {
+public class UserController extends AbstractController{
 
     public static final Logger logger = LoggerFactory.getLogger(UserController.class);
+
+    public static final String RESET_PASSOWRD_SMS = "";
 
     @Autowired
     private SysUserService sysUserService;
 
     @ResponseBody
-    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public R login(String username, String password){
         Subject subject = ShiroUtils.getSubject();
         password = new Sha256Hash(password).toHex();
@@ -71,7 +69,7 @@ public class UserController extends AbstractController {
      * 修改登录用户密码
      */
     @SysLog("修改密码")
-    @RequestMapping("/password")
+    @RequestMapping(value="/user/password/reset",method = RequestMethod.POST)
     public R password(String password, String newPassword) {
         Assert.isBlank(newPassword, "新密码不为能空");
 
@@ -91,7 +89,7 @@ public class UserController extends AbstractController {
     /**
      * 获取登录的用户信息
      */
-    @RequestMapping("/info")
+    @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
         return R.ok().put("data", getUser());
     }
@@ -99,7 +97,7 @@ public class UserController extends AbstractController {
     /**
      * 用户信息
      */
-    @RequestMapping("/info/{userId}")
+    @RequestMapping(value="/user/info/{userId}", method = RequestMethod.POST)
     public R info(@PathVariable("userId") Long userId) {
         SysUserEntity user = sysUserService.queryObject(userId);
         return R.ok().put("user", user);
@@ -108,7 +106,7 @@ public class UserController extends AbstractController {
     /**
      * 退出
      */
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/logout", method = RequestMethod.GET)
     public String logout() {
         ShiroUtils.logout();
         return "redirect:/";
