@@ -13,7 +13,7 @@ $(function () {
 			{label: '最后修改人', name: 'updator', index: 'updator', width: 80}
 			],
 		viewrecords: true,
-        height: 385,
+        height: 555,
         rowNum: 10,
         rowList: [10, 30, 50],
         rownumbers: true,
@@ -38,6 +38,21 @@ $(function () {
     });
 });
 
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
+    }
+};
+var ztree;
+
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -51,9 +66,30 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
 	},
+    created:function () {
+        //加载树
+        $.get("../sys/region/getAreaTree", function (r) {
+            var datas = r.node;
+            ztree = $.fn.zTree.init($("#regionTree"), setting,datas );
+
+            var treeObj = $.fn.zTree.getZTreeObj("regionTree");
+            var nodes = treeObj.getNodes();
+
+            for (var i = 0; i < nodes.length; i++) { //设置节点展开
+                treeObj.expandNode(nodes[i], true, false, true);
+            }
+        })
+    },
 	methods: {
+        getRegionTree: function () {
+            //加载树
+            $.get("../sys/region/getAreaTree", function (r) {
+                var datas = r.node;
+                ztree = $.fn.zTree.init($("#regionTree"), setting,datas );
+            })
+        },
 		query: function () {
 			vm.reload();
 		},

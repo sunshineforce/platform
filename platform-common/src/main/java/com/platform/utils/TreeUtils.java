@@ -71,6 +71,8 @@ public class TreeUtils {
                         children.set(object, list);
                     }
                 }
+                map = null;
+                tree = null; //清空无用信息
                 return t_list;
             }
         } catch (Exception e) {
