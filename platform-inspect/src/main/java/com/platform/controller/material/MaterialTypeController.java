@@ -1,5 +1,7 @@
 package com.platform.controller.material;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.material.MaterialTypeEntity;
 import com.platform.service.material.MaterialTypeService;
 import com.platform.utils.PageUtils;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("materialtype")
-public class MaterialTypeController {
+public class MaterialTypeController extends AbstractController {
     @Autowired
     private MaterialTypeService materialTypeService;
 
@@ -66,9 +68,16 @@ public class MaterialTypeController {
     @RequiresPermissions("materialtype:save")
     @ResponseBody
     public R save(@RequestBody MaterialTypeEntity materialType) {
+        SysUserEntity user = getUser();
+        if (null != user){
+            materialType.setCreatorId(user.getUserId());
+            materialType.setCreator(user.getUsername());
+        }
+
         Date time = new Date();
         materialType.setUpdateTime(time);
         materialType.setCreateTime(time);
+
         materialTypeService.save(materialType);
 
         return R.ok();
@@ -81,6 +90,11 @@ public class MaterialTypeController {
     @RequiresPermissions("materialtype:update")
     @ResponseBody
     public R update(@RequestBody MaterialTypeEntity materialType) {
+        SysUserEntity user = getUser();
+        if (null != user){
+            materialType.setUpdatorId(user.getUserId());
+            materialType.setUpdator(user.getUsername());
+        }
         Date time = new Date();
         materialType.setUpdateTime(time);
         materialTypeService.update(materialType);

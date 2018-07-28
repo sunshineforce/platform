@@ -31,7 +31,9 @@ public class ExamQuestionEntity implements Serializable {
     //创建时间
     private Date createTime;
     //创建人
-    private Integer creator;
+    private String creator;
+
+    private Long creatorId;
 
     private List<ExamQuestionItemEntity> questionItems;
 
@@ -130,19 +132,21 @@ public class ExamQuestionEntity implements Serializable {
     public Date getCreateTime() {
         return createTime;
     }
-    /**
-     * 设置：创建人
-     */
-    public void setCreator(Integer creator) {
-        this.creator = creator;
-    }
 
-    /**
-     * 获取：创建人
-     */
-    public Integer getCreator() {
+
+    public String getCreator() {
         return creator;
     }
 
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
 
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
 }

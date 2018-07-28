@@ -28,11 +28,15 @@ public class MaterialTypeEntity implements Serializable {
     //创建时间
     private Date createTime;
     //创建人
-    private Integer creator;
+    private Long creatorId;
+
+    private String creator;
     //最后修改时间
     private Date updateTime;
-    //最后修改人
-    private Integer updator;
+    //修改人
+    private Long updatorId;
+
+    private String updator;
 
     /**
      * 设置：主键Id
@@ -95,19 +99,7 @@ public class MaterialTypeEntity implements Serializable {
     public Date getCreateTime() {
         return createTime;
     }
-    /**
-     * 设置：创建人
-     */
-    public void setCreator(Integer creator) {
-        this.creator = creator;
-    }
 
-    /**
-     * 获取：创建人
-     */
-    public Integer getCreator() {
-        return creator;
-    }
     /**
      * 设置：最后修改时间
      */
@@ -121,19 +113,7 @@ public class MaterialTypeEntity implements Serializable {
     public Date getUpdateTime() {
         return updateTime;
     }
-    /**
-     * 设置：最后修改人
-     */
-    public void setUpdator(Integer updator) {
-        this.updator = updator;
-    }
 
-    /**
-     * 获取：最后修改人
-     */
-    public Integer getUpdator() {
-        return updator;
-    }
 
     public String getParentName() {
         return parentName;
@@ -141,5 +121,37 @@ public class MaterialTypeEntity implements Serializable {
 
     public void setParentName(String parentName) {
         this.parentName = parentName;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Long getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
+    }
+
+    public String getUpdator() {
+        return updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
     }
 }

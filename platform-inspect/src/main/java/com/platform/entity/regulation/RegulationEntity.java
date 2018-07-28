@@ -34,11 +34,15 @@ public class RegulationEntity implements Serializable {
     //创建时间
     private Date createTime;
     //创建人
-    private Integer creator;
+    private Long creatorId;
+
+    private String creator;
     //更改时间
     private Date updateTime;
     //修改人
-    private Integer updator;
+    private Long updatorId;
+
+    private String updator;
 
     /**
      * 设置：主键Id
@@ -157,19 +161,7 @@ public class RegulationEntity implements Serializable {
     public Date getCreateTime() {
         return createTime;
     }
-    /**
-     * 设置：创建人
-     */
-    public void setCreator(Integer creator) {
-        this.creator = creator;
-    }
 
-    /**
-     * 获取：创建人
-     */
-    public Integer getCreator() {
-        return creator;
-    }
     /**
      * 设置：更改时间
      */
@@ -183,17 +175,38 @@ public class RegulationEntity implements Serializable {
     public Date getUpdateTime() {
         return updateTime;
     }
-    /**
-     * 设置：修改人
-     */
-    public void setUpdator(Integer updator) {
-        this.updator = updator;
+
+
+    public String getCreator() {
+        return creator;
     }
 
-    /**
-     * 获取：修改人
-     */
-    public Integer getUpdator() {
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public Long getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
+    }
+
+    public String getUpdator() {
         return updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
     }
 }

@@ -112,6 +112,10 @@ public class ExamController extends AbstractController {
             for (ExamQuestionEntity question : list) {
                 question.setCreateTime(time);
                 question.setExamId(exam.getId());
+                if (null != user){
+                    question.setCreator(user.getUsername());
+                    question.setCreatorId(user.getUserId());
+                }
                 examQuestionService.save(question);
                 List<ExamQuestionItemEntity> questionItems = question.getQuestionItems();
                 if (null != questionItems && questionItems.size() > 0){
@@ -134,12 +138,13 @@ public class ExamController extends AbstractController {
     public R update(@RequestBody ExamEntity exam) {
         Date time = new Date();
         exam.setUpdateTime(time);
-        examService.update(exam);
         SysUserEntity user = getUser();
         if (null != user){
             exam.setUpdatorId(user.getUserId());
             exam.setUpdator(user.getUsername());
         }
+        examService.update(exam);
+
         logger.debug("getQuestionJson -------" + exam.getQuestionJson());
         List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);
         if (null != list && list.size() > 0){

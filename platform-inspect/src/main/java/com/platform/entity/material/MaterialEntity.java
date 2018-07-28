@@ -37,10 +37,16 @@ public class MaterialEntity implements Serializable {
     private String materialOwner;
     //创建时间
     private Date createTime;
-    //更新时间
+    //创建人
+    private Long creatorId;
+
+    private String creator;
+    //更改时间
     private Date updateTime;
-    //创建人Id
-    private Integer creator;
+    //修改人
+    private Long updatorId;
+
+    private String updator;
 
     ///物品类型名称
     private String materialTypeName;
@@ -201,19 +207,7 @@ public class MaterialEntity implements Serializable {
     public Date getUpdateTime() {
         return updateTime;
     }
-    /**
-     * 设置：创建人Id
-     */
-    public void setCreator(Integer creator) {
-        this.creator = creator;
-    }
 
-    /**
-     * 获取：创建人Id
-     */
-    public Integer getCreator() {
-        return creator;
-    }
 
     public String getMaterialTypeName() {
         return materialTypeName;
@@ -221,5 +215,37 @@ public class MaterialEntity implements Serializable {
 
     public void setMaterialTypeName(String materialTypeName) {
         this.materialTypeName = materialTypeName;
+    }
+
+    public Long getCreatorId() {
+        return creatorId;
+    }
+
+    public void setCreatorId(Long creatorId) {
+        this.creatorId = creatorId;
+    }
+
+    public String getCreator() {
+        return creator;
+    }
+
+    public void setCreator(String creator) {
+        this.creator = creator;
+    }
+
+    public Long getUpdatorId() {
+        return updatorId;
+    }
+
+    public void setUpdatorId(Long updatorId) {
+        this.updatorId = updatorId;
+    }
+
+    public String getUpdator() {
+        return updator;
+    }
+
+    public void setUpdator(String updator) {
+        this.updator = updator;
     }
 }
