@@ -2,7 +2,7 @@ package com.platform.dao.material;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.material.MaterialTypeEntity;
-import com.platform.entity.vo.MaterialTypeVo;
+import com.platform.vo.TreeVo;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
  * @date 2018-07-23 11:11:45
  */
 public interface MaterialTypeDao extends BaseDao<MaterialTypeEntity> {
-    List<MaterialTypeVo> queryAllMaterialType();
+    List<TreeVo> queryAllMaterialType();
 }

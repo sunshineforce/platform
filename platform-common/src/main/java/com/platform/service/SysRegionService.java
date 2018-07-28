@@ -2,6 +2,7 @@ package com.platform.service;
 
 
 import com.platform.entity.SysRegionEntity;
+import com.platform.vo.TreeVo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,12 @@ public interface SysRegionService {
      * @return list
      */
     List<SysRegionEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 查询区域树
+     * @return
+     */
+    List<TreeVo> queryAllRegion();
 
     /**
      * 分页统计总数

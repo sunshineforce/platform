@@ -2,7 +2,7 @@ package com.platform.dao.specific;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.specific.CheckSpecificEntity;
-import com.platform.entity.vo.CheckSpecificVo;
+import com.platform.vo.SelectVo;
 
 import java.util.List;
 
@@ -14,5 +14,5 @@ import java.util.List;
  * @date 2018-07-23 20:03:40
  */
 public interface CheckSpecificDao extends BaseDao<CheckSpecificEntity> {
-    List<CheckSpecificVo> queryAllCheckSpecific();
+    List<SelectVo> queryAllCheckSpecific();
 }

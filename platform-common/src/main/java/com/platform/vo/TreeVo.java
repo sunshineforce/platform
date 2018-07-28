@@ -1,4 +1,4 @@
-package com.platform.entity.vo;
+package com.platform.vo;
 
 import java.io.Serializable;
 
@@ -6,25 +6,26 @@ import java.io.Serializable;
  * Created with IntelliJ IDEA
  * ProjectName: inspect
  * CreateUser:  lixiaopeng
- * CreateTime : 2018/7/28 15:26
+ * CreateTime : 2018/7/28 15:39
  * ModifyUser: bjlixiaopeng
  * Class Description:
  * To change this template use File | Settings | File and Code Template
  */
 
-
-public class CheckSpecificVo implements Serializable {
-    private static final long serialVersionUID = 4869912229957397175L;
+public class TreeVo implements Serializable {
+    private static final long serialVersionUID = 6417017624744971017L;
 
     private Long id;
     private String name;
+    private Long pid;
 
-    public CheckSpecificVo() {
+    public TreeVo() {
     }
 
-    public CheckSpecificVo(Long id, String name) {
+    public TreeVo(Long id, String name, Long pid) {
         this.id = id;
         this.name = name;
+        this.pid = pid;
     }
 
     public Long getId() {
@@ -41,5 +42,13 @@ public class CheckSpecificVo implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Long getPid() {
+        return pid;
+    }
+
+    public void setPid(Long pid) {
+        this.pid = pid;
     }
 }

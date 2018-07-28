@@ -1,17 +1,14 @@
 package com.platform.service.material;
 
-
 import com.platform.entity.material.MaterialTypeEntity;
-import com.platform.entity.vo.MaterialTypeVo;
+import com.platform.vo.TreeVo;
 
 import java.util.List;
 import java.util.Map;
 
 /**
  * 物品类型表Service接口
- *
  * @author admin
- *  
  * @date 2018-07-23 11:11:45
  */
 public interface MaterialTypeService {
@@ -36,7 +33,7 @@ public interface MaterialTypeService {
      * 加载所有物品类型，用于下拉列表选择
      * @return
      */
-    List<MaterialTypeVo> loadAllMaterialType();
+    List<TreeVo> loadAllMaterialType();
 
     /**
      * 分页统计总数

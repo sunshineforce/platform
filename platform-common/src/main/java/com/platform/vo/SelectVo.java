@@ -1,4 +1,4 @@
-package com.platform.entity.vo;
+package com.platform.vo;
 
 import java.io.Serializable;
 
@@ -6,26 +6,24 @@ import java.io.Serializable;
  * Created with IntelliJ IDEA
  * ProjectName: inspect
  * CreateUser:  lixiaopeng
- * CreateTime : 2018/7/28 15:39
+ * CreateTime : 2018/7/28 15:26
  * ModifyUser: bjlixiaopeng
  * Class Description:
  * To change this template use File | Settings | File and Code Template
  */
 
-public class MaterialTypeVo implements Serializable {
-    private static final long serialVersionUID = 6417017624744971017L;
+public class SelectVo implements Serializable {
+    private static final long serialVersionUID = 4869912229957397175L;
 
     private Long id;
     private String name;
-    private Long pid;
 
-    public MaterialTypeVo() {
+    public SelectVo() {
     }
 
-    public MaterialTypeVo(Long id, String name, Long pid) {
+    public SelectVo(Long id, String name) {
         this.id = id;
         this.name = name;
-        this.pid = pid;
     }
 
     public Long getId() {
@@ -42,13 +40,5 @@ public class MaterialTypeVo implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Long getPid() {
-        return pid;
-    }
-
-    public void setPid(Long pid) {
-        this.pid = pid;
     }
 }

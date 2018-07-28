@@ -3,6 +3,7 @@ package com.platform.service.impl;
 import com.platform.dao.SysRegionDao;
 import com.platform.entity.SysRegionEntity;
 import com.platform.service.SysRegionService;
+import com.platform.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +30,11 @@ public class SysRegionServiceImpl implements SysRegionService {
     @Override
     public List<SysRegionEntity> queryList(Map<String, Object> map) {
         return sysRegionDao.queryList(map);
+    }
+
+    @Override
+    public List<TreeVo> queryAllRegion() {
+        return sysRegionDao.queryAllRegion();
     }
 
     @Override

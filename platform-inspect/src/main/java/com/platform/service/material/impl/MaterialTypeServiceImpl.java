@@ -2,8 +2,8 @@ package com.platform.service.material.impl;
 
 import com.platform.dao.material.MaterialTypeDao;
 import com.platform.entity.material.MaterialTypeEntity;
-import com.platform.entity.vo.MaterialTypeVo;
 import com.platform.service.material.MaterialTypeService;
+import com.platform.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +34,7 @@ public class MaterialTypeServiceImpl implements MaterialTypeService {
     }
 
     @Override
-    public List<MaterialTypeVo> loadAllMaterialType() {
+    public List<TreeVo> loadAllMaterialType() {
         return materialTypeDao.queryAllMaterialType();
     }
 
