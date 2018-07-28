@@ -21,20 +21,27 @@ public class MaterialEntity implements Serializable {
     private String qrCode;
     //物品名称
     private String materialName;
+    //区域Id
+    private Long regionId;
+    //企业Id
+    private Long enterpriseId;
     //所在位置
     private String location;
     //物品类型Id
     private Integer materialTypeId;
+    //规范Id
+    private Integer checkSpecificId;
     //生产日期
     private Date producedDate;
     //到期时间
     private Date expireDate;
     //最近检查时间
     private Date checkDate;
-    //物品状态（0：正常；1：报废；2：异常）
+    //物品状态（0：未检查；1：正常；2：异常；3：报废）
     private Integer materialStatus;
-    //所属企业
-    private String materialOwner;
+    //物品url
+    private String materialUrl;
+
     //创建时间
     private Date createTime;
     //创建人
@@ -50,6 +57,8 @@ public class MaterialEntity implements Serializable {
 
     ///物品类型名称
     private String materialTypeName;
+
+    private String remark;
 
     /**
      * 设置：主键Id
@@ -77,6 +86,23 @@ public class MaterialEntity implements Serializable {
     public String getQrCode() {
         return qrCode;
     }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
+    }
+
+    public Long getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Long enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
     /**
      * 设置：物品名称
      */
@@ -116,6 +142,15 @@ public class MaterialEntity implements Serializable {
     public Integer getMaterialTypeId() {
         return materialTypeId;
     }
+
+    public Integer getCheckSpecificId() {
+        return checkSpecificId;
+    }
+
+    public void setCheckSpecificId(Integer checkSpecificId) {
+        this.checkSpecificId = checkSpecificId;
+    }
+
     /**
      * 设置：生产日期
      */
@@ -168,19 +203,15 @@ public class MaterialEntity implements Serializable {
     public Integer getMaterialStatus() {
         return materialStatus;
     }
-    /**
-     * 设置：所属企业
-     */
-    public void setMaterialOwner(String materialOwner) {
-        this.materialOwner = materialOwner;
+
+    public String getMaterialUrl() {
+        return materialUrl;
     }
 
-    /**
-     * 获取：所属企业
-     */
-    public String getMaterialOwner() {
-        return materialOwner;
+    public void setMaterialUrl(String materialUrl) {
+        this.materialUrl = materialUrl;
     }
+
     /**
      * 设置：创建时间
      */

@@ -5,13 +5,12 @@ import com.platform.dao.enterprise.EnterpriseDao;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.service.enterprise.IEnterpriseService;
+import com.platform.vo.SelectVo;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 企业管理Service实现类
@@ -33,6 +32,21 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
     @Override
     public List<EnterpriseEntity> queryList(Map<String, Object> map) {
         return enterpriseDao.queryList(map);
+    }
+
+    @Override
+    public List<SelectVo> loadEnterpriseByRegionId(Integer regionId) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("regionId",regionId);
+        List<EnterpriseEntity> list = queryList(params);
+
+        SelectVo selectVo;
+        List<SelectVo> resultList = new ArrayList<SelectVo>(list.size());
+        for (EnterpriseEntity enterprise : list) {
+            selectVo = new SelectVo(enterprise.getId(),enterprise.getEnterpriseName());
+            resultList.add(selectVo);
+        }
+        return resultList;
     }
 
     @Override

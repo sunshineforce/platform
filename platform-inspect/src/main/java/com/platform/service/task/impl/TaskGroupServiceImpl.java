@@ -3,6 +3,7 @@ package com.platform.service.task.impl;
 import com.platform.dao.task.TaskGroupDao;
 import com.platform.entity.task.TaskGroupEntity;
 import com.platform.service.task.TaskGroupService;
+import com.platform.vo.SelectVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +31,16 @@ public class TaskGroupServiceImpl implements TaskGroupService {
     @Override
     public List<TaskGroupEntity> queryList(Map<String, Object> map) {
         return taskGroupDao.queryList(map);
+    }
+
+    @Override
+    public List<SelectVo> queryAllTaskGroup() {
+        return taskGroupDao.queryAllTaskGroup();
+    }
+
+    @Override
+    public List<SelectVo> queryAllTaskGroupMembers() {
+        return taskGroupDao.queryAllTaskGroupMembers();
     }
 
     @Override

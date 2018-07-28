@@ -49,6 +49,15 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<select id="queryAllTaskGroup" resultType="com.platform.vo.SelectVo">
+		select `id`,`name` from task_group where data_status=0
+	</select>
+
+	<!--查询所有任务组人员 -->
+	<select id="queryAllTaskGroupMembers" resultType="com.platform.vo.SelectVo">
+		select id,name from sys_user order by id where username != 'admin' or account!='admin'
+	</select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from task_group

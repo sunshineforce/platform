@@ -8,12 +8,16 @@
         <result property="qrCode" column="qr_code"/>
         <result property="materialName" column="material_name"/>
         <result property="location" column="location"/>
+        <result property="region_id" column="regionId"/>
+        <result property="enterprise_id" column="enterpriseId"/>
         <result property="materialTypeId" column="material_type_id"/>
+        <result property="checkSpecificId" column="check_specific_id"/>
         <result property="producedDate" column="produced_date"/>
         <result property="expireDate" column="expire_date"/>
         <result property="checkDate" column="check_date"/>
         <result property="materialStatus" column="material_status"/>
-        <result property="materialOwner" column="material_owner"/>
+        <result property="materialUrl" column="material_url"/>
+        <result property="remark" column="remark"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="creator" column="creator"/>
@@ -28,12 +32,16 @@
 			`qr_code`,
 			`material_name`,
 			`location`,
+			 region_id,
+			 enterprise_id
 			`material_type_id`,
+			 check_specific_id,
 			`produced_date`,
 			`expire_date`,
 			`check_date`,
 			`material_status`,
-			`material_owner`,
+			`material_url`,
+			 remark,
 			`create_time`,
 			`update_time`,
 			`creator`,
@@ -50,12 +58,16 @@
     		m.`qr_code`,
     		m.`material_name`,
     		m.`location`,
+			m.region_id,
+			m.enterprise_id,
     		m.`material_type_id`,
-    		m.`produced_date`,
+			m.check_specific_id,
+			m.`produced_date`,
     		m.`expire_date`,
     		m.`check_date`,
     		m.`material_status`,
-    		m.`material_owner`,
+			m.material_url,
+		 	m.remark,
     		m.`create_time`,
     		m.`update_time`,
 			m.`creator`,
@@ -83,9 +95,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select
-		   count(*)
-		from material AS m
+		select count(1) from material AS m
 		LEFT JOIN material_type AS t ON  m.material_type_id = t.id
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
@@ -98,12 +108,16 @@
 			`qr_code`,
 			`material_name`,
 			`location`,
+			 region_id,
+			 enterprise_id,
 			`material_type_id`,
+			 check_specific_id,
 			`produced_date`,
 			`expire_date`,
 			`check_date`,
 			`material_status`,
-			`material_owner`,
+			 material_url,
+			 remark,
 			`create_time`,
 			`update_time`,
 			`creator`,
@@ -114,12 +128,16 @@
 			#{qrCode},
 			#{materialName},
 			#{location},
+			#{regionId},
+			#{enterpriseId},
 			#{materialTypeId},
+			#{checkSpecificId},
 			#{producedDate},
 			#{expireDate},
 			#{checkDate},
 			#{materialStatus},
-			#{materialOwner},
+			#{materialUrl},
+			#{remark},
 			#{createTime},
 			#{updateTime},
 			#{creator},
@@ -135,12 +153,16 @@
 			<if test="qrCode != null">`qr_code` = #{qrCode}, </if>
 			<if test="materialName != null">`material_name` = #{materialName}, </if>
 			<if test="location != null">`location` = #{location}, </if>
+			<if test="regionId != null">`region_id` = #{regionId}, </if>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="materialTypeId != null">`material_type_id` = #{materialTypeId}, </if>
+			<if test="checkSpecificId != null">`check_specific_id` = #{checkSpecificId}, </if>
 			<if test="producedDate != null">`produced_date` = #{producedDate}, </if>
 			<if test="expireDate != null">`expire_date` = #{expireDate}, </if>
 			<if test="checkDate != null">`check_date` = #{checkDate}, </if>
 			<if test="materialStatus != null">`material_status` = #{materialStatus}, </if>
-			<if test="materialOwner != null">`material_owner` = #{materialOwner}, </if>
+			<if test="materialUrl != null">`material_url` = #{materialUrl}, </if>
+			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="creator != null">`creator` = #{creator},</if>

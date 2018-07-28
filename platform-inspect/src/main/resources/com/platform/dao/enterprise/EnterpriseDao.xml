@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.enterprise.EnterpriseEntity" id="enterpriseMap">
         <result property="id" column="id"/>
+        <result property="regionId" column="region_id"/>
         <result property="enterpriseName" column="enterprise_name"/>
         <result property="mobile" column="mobile"/>
         <result property="owner" column="owner"/>
@@ -21,6 +22,7 @@
 	<select id="queryObject" resultType="com.platform.entity.enterprise.EnterpriseEntity">
 		select
 			`id`,
+			 region_id,
 			`enterprise_name`,
 			`mobile`,
 			`owner`,
@@ -37,23 +39,15 @@
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.enterprise.EnterpriseEntity">
-		select
-    		`id`,
-    		`enterprise_name`,
-    		`mobile`,
-    		`owner`,
-    		`address`,
-    		`account`,
-    		`password`,
-    		`create_time`,
-    		`creator`,
-    		`update_time`,
-    		`updator`,
-    		`enabled`
+		select `id`,region_id,`enterprise_name`,`mobile`,`owner`,`address`,`account`,`password`,
+    		`create_time`,`creator`,`update_time`,`updator`,`enabled`
 		from enterprise
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="regionId != null and regionId.trim() != ''">
+			AND region_id = #{regionId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

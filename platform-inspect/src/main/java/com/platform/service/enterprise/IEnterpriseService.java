@@ -1,6 +1,7 @@
 package com.platform.service.enterprise;
 
 import com.platform.entity.enterprise.EnterpriseEntity;
+import com.platform.vo.SelectVo;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,13 @@ public interface IEnterpriseService {
      * @return list
      */
     List<EnterpriseEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 根据区域Id加载所有企业
+     * @param regionId
+     * @return
+     */
+    List<SelectVo> loadEnterpriseByRegionId(Integer regionId);
 
     /**
      * 分页统计总数

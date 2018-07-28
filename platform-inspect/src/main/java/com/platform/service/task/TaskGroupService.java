@@ -2,6 +2,7 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskGroupEntity;
+import com.platform.vo.SelectVo;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,18 @@ public interface TaskGroupService {
      * @return list
      */
     List<TaskGroupEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 获取所有的任务组
+     * @return
+     */
+    List<SelectVo> queryAllTaskGroup();
+
+    /**
+     * 查询所有任务组人员
+     * @return
+     */
+    List<SelectVo> queryAllTaskGroupMembers();
 
     /**
      * 分页统计总数
