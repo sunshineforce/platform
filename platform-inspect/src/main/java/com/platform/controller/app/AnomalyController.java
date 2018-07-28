@@ -21,14 +21,14 @@ public class AnomalyController {
     @ResponseBody
     public R anomalyList(){
 
-        return R.ok();
+        return R.succeed();
     }
 
     @RequestMapping("/anomaly/details")
     @ResponseBody
     public R anomalyDetails(){
 
-        return R.ok();
+        return R.succeed();
     }
 
 
@@ -36,7 +36,7 @@ public class AnomalyController {
     @ResponseBody
     public R anomalyHistories(){
 
-        return R.ok();
+        return R.succeed();
     }
 
 }

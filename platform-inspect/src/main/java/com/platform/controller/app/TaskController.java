@@ -32,7 +32,7 @@ public class TaskController {
     @RequestMapping("/task/list")
     public R taskList(@RequestBody HashMap<String,Object> params){
         if (params == null) {
-            return R.ok();
+            return R.paramsIllegal();
         }
         if (StringUtils.isEmpty(String.valueOf(params.get("status")))) {
             return R.paramsIllegal();
@@ -40,15 +40,15 @@ public class TaskController {
 
         List<TaskEntity> taskList = taskService.queryList(params);
 
-        return R.ok().put("data",taskList);
+        return R.succeed().put("data",taskList);
     }
 
     @RequestMapping("/task/create")
     public R createTask(@RequestBody TaskEntity taskEntity){
         if (taskEntity == null) {
-            return R.ok();
+            return R.succeed();
         }
         taskService.save(taskEntity);
-        return R.ok();
+        return R.succeed();
     }
 }

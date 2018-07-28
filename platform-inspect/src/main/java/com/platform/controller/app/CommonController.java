@@ -1,8 +1,10 @@
 package com.platform.controller.app;
 
 import com.platform.controller.AbstractController;
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.vo.CheckSpecificVo;
 import com.platform.entity.vo.MaterialTypeVo;
+import com.platform.service.SysRegionService;
 import com.platform.service.material.MaterialTypeService;
 import com.platform.service.specific.CheckSpecificService;
 import com.platform.utils.R;
@@ -35,18 +37,25 @@ public class CommonController extends AbstractController {
     @Autowired
     private CheckSpecificService checkSpecificService;
 
+    @Autowired
+    private SysRegionService regionService;
+
     @RequestMapping(value = "/material/type/list")
     public R queryMaterialTypeList(){
         List<MaterialTypeVo> list = materialTypeService.loadAllMaterialType();
-        return R.ok().put("list",list);
+        return R.succeed().put("list",list);
     }
 
     @RequestMapping(value = "/check/specific//list")
     public R queryCheckSpecificList(){
         List<CheckSpecificVo> list = checkSpecificService.loadAllCheckSpecific();
-        return R.ok().put("list",list);
+        return R.succeed().put("list",list);
     }
 
-
+    @RequestMapping(value = "/region/list")
+    public R queryRegionList(){
+        List<SysRegionEntity> list = regionService.queryList(null);
+        return R.succeed().put("list",list);
+    }
 
 }

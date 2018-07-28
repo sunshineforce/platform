@@ -167,7 +167,7 @@
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="superior != null">`superior` = #{superior}, </if>
 			<if test="certificate_url != null">`certificate_url` = #{certificateUrl}, </if>
-			<if test="roleId != null">`role_id` = #{roleId} </if>
+			<if test="roleId != null">`role_id` = #{roleId}, </if>
 			<if test="enterprise_id != null">`enterprise_id` = #{enterpriseId} </if>
 		</set>
 		where user_id = #{userId} 

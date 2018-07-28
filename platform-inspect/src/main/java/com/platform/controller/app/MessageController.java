@@ -20,6 +20,6 @@ public class MessageController {
     @RequestMapping("/notice")
     @ResponseBody
     public R noticeList(){
-        return R.ok();
+        return R.succeed();
     }
 }

@@ -21,6 +21,6 @@ public class PlatformAlarmController {
     @ResponseBody
     public R platformAlarmList(){
 
-        return R.ok();
+        return R.succeed();
     }
 }

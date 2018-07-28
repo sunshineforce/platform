@@ -21,13 +21,13 @@ public class RegulationController {
     @ResponseBody
     public R regulationList(){
 
-        return R.ok();
+        return R.succeed();
     }
 
     @RequestMapping("/regulation/details")
     @ResponseBody
     public R regulationDetail(){
 
-        return R.ok();
+        return R.succeed();
     }
 }
