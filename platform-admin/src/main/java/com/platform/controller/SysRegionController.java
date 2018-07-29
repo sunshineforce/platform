@@ -146,7 +146,7 @@ public class SysRegionController {
             sysRegionEntity.setLabel(sysRegionEntity.getName());
         }
 //        List<SysRegionEntity> node = TreeUtils.factorTree(list);
-//        String s = JSON.toJSONString(node);
+        String s = JSON.toJSONString(list);
         return R.ok().put("node", list);
     }
 
