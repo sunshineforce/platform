@@ -97,7 +97,7 @@ public class AppUsersController extends AbstractController{
     /**
      * 用户信息
      */
-    @RequestMapping(value="/user/info/{userId}", method = RequestMethod.POST)
+    @RequestMapping(value="/user/info/{userId}", method = RequestMethod.GET)
     public R info(@PathVariable("userId") Long userId) {
         SysUserEntity user = sysUserService.queryObject(userId);
         return R.ok().put("user", user);

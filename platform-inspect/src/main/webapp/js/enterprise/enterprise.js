@@ -69,6 +69,8 @@ var vm = new Vue({
 		},
 	},
     created:function () {
+
+
         //加载树
         $.get("../sys/region/getAreaTree", function (r) {
             var datas = r.node;

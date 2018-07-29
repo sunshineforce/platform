@@ -116,11 +116,10 @@
 			`create_user_id`,
 			`dept_id`,
 			`create_time`,
-			`account`,
+			`realname`,
 			`role_id`,
 			`update_time`,
 			`update_user_id`,
-			account,
 			identify,
 			region,
 			superior,
@@ -139,11 +138,10 @@
 			#{createUserId},
 			#{deptId},
 			#{createTime},
-			#{account},
+			#{realname},
 			#{roleId},
 			#{updateTime},
 			#{updateUserId},
-			#{account},
 			#{identify},
 			#{region},
 			#{superior},
@@ -159,7 +157,7 @@
 			<if test="username != null">`username` = #{username}, </if>
 			<if test="password != null">`password` = #{password}, </if>
 			<if test="email != null">`email` = #{email}, </if>
-			<if test="account != null">`account` = #{account}, </if>
+			<if test="realname != null">`realname` = #{realname}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="identify != null">`identify` = #{identify}, </if>

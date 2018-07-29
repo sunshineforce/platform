@@ -21,9 +21,12 @@ public class SysUserEntity implements Serializable {
     /** 用户ID */
     private Long userId;
 
-    /** 用户名 */
+    /** 用户名账户 */
     @NotBlank(message = "用户名不能为空", groups = {AddGroup.class, UpdateGroup.class})
     private String username;
+
+    /*真实名字*/
+    private String realname;
 
     /** 密码 */
     private transient String password;
@@ -58,8 +61,7 @@ public class SysUserEntity implements Serializable {
 
     /************************* 巡检自定义 字段  begin *********************/
 
-    /**  帐号 */
-    private String account;
+
 
     /** 身份 */
     private Integer identify;
@@ -251,12 +253,12 @@ public class SysUserEntity implements Serializable {
         this.deptName = deptName;
     }
 
-    public String getAccount() {
-        return account;
+    public String getRealname() {
+        return realname;
     }
 
-    public void setAccount(String account) {
-        this.account = account;
+    public void setRealname(String realname) {
+        this.realname = realname;
     }
 
     public Integer getRegionId() {

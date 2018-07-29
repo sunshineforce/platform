@@ -3,10 +3,10 @@ $(function () {
         url: '../sys/app/user/list',
         datatype: "json",
         colModel: [
-			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '姓名', name: 'username', index: 'username', align: 'center', width:'80px'},
+			{label: 'id', name: 'userId', index: 'user_id', key: true, hidden: true},
+			{label: '姓名', name: 'realname', index: 'realname', align: 'center', width:'80px'},
 			{label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'80px'},
-            {label: '帐号', name: 'account', index: 'account', align: 'center', width:'80px'},
+            {label: '帐号', name: 'username', index: 'username', align: 'center', width:'80px'},
             {
                 label: '身份', name: 'status', width: 80, formatter: function (value) {
                     return value === 1 ?
@@ -58,7 +58,8 @@ var vm = new Vue({
         roleList: {},
         title: null,
 		appUser: {
-            roleIdList: []
+            identify:1,
+            roleIdList:[]
         },
 		ruleValidate: {
 			userName: [
@@ -70,9 +71,9 @@ var vm = new Vue({
             account: [
                 {required: true, message: '帐号不能为空', trigger: 'blur'}
             ],
-            identify: [
-                {required: true, message: '请选择身份', trigger: 'change'}
-            ],
+            // identify: [
+            //     {required: true, message: '请选择身份', trigger: 'change'}
+            // ],
             password: [
                 {required: true, message: '请设置初始密码', trigger: 'blur'}
             ]
@@ -80,7 +81,11 @@ var vm = new Vue({
 		q: {
 		    name: ''
 		},
-        enabled:'0'
+        enabled:'0',
+        identifyList: [
+            {id:1,name:"安全员"},
+            {id:2,name:"领导"},
+        ],
 	},
 	methods: {
 		query: function () {
@@ -90,9 +95,9 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
             vm.roleList = {};
-			vm.appUser = {};
+			vm.appUser = { identify:1,status:1,};
 
-            this.getRoleList();
+            //this.getRoleList();
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -101,7 +106,7 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-            vm.getRoleList();
+            //vm.getRoleList();
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
@@ -172,6 +177,32 @@ var vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        //处理身份变化
+        listenIdentifyChange:function () {
+            if (vm.appUser.identify == 2){
+                vm.appUser.certificateUrl = "";
+            }
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+            });
+        },
+        handleSuccessPicUrl: function (res, file) {
+            vm.appUser.certificateUrl = file.response.url;
+        },
+        eyeImagePicUrl: function () {
+            var url = vm.appUser.certificateUrl;
+            eyeImage(url);
         }
+
 	}
 });
