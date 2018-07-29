@@ -3,13 +3,52 @@
 <head>
     <title>智慧云店</title>
     #parse("sys/header.html")
-    <link href="${rc.contextPath}/statics/plugins/video-js-6/video-js.min.css" rel="stylesheet">
-    <script src="${rc.contextPath}/statics/plugins/video-js-6/ie8/videojs-ie8.js"></script>
-    <script src="${rc.contextPath}/statics/plugins/video-js-6/video.js"></script>
 </head>
 <body>
-<div class="wrapper wrapper-content  animated fadeInRight">
+<div id="rrapp" v-cloak class="wrapper wrapper-content  animated fadeInRight">
+
+    <div class="mb15">
+        <Card>
+            <Row>
+                <i-col span="6">
+                    <label class="fl mr10 mt5" style="font-size: 13px; color: #666;">统计节点</label>
+                    <i-select v-model="q.regionId" filterable style="float: left; width:70%;">
+                        <i-option value="0">杭州</i-option>
+                    </i-select>
+                </i-col>
+                <i-col span="8" style="margin-left: 121px;">
+                    <Row style="margin: 0;">
+                        <i-col span="12">
+                            <Date-picker type="datetime" placeholder="选择开始时间"></Date-picker>
+                        </i-col>
+                        <i-col span="12">
+                            <Date-picker type="datetime" placeholder="选择结束时间"></Date-picker>
+                        </i-col>
+                    </Row>
+
+
+                </i-col>
+            </Row>
+        </Card>
+    </div>
+
+
+
+    <Card style="margin-bottom: 15px;">
+        <p slot="title">
+            <span class="fl">任务执行统计</span>
+            <span class="fr" alt="查看表格数据"><i class="fa fa-bars"></i></span>
+        </p>
+    </Card>
+
+    <Card>
+        <p slot="title">
+            <span class="fl">异常处理统计</span>
+            <span class="fr" alt="查看表格数据"><i class="fa fa-bars"></i></span>
+        </p>
+    </Card>
 
 </div>
+<script src="${rc.contextPath}/js/sys/main.js?_${date.systemTime}"></script>
 </body>
 </html>
