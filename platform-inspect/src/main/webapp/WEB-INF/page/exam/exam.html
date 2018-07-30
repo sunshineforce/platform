@@ -42,7 +42,7 @@
                 <Date-picker type="datetime" placeholder="选择结束时间" v-model="exam.endTime"></Date-picker>
             </Form-item>
             <Form-item label="参考人员" prop="member">
-                <i-select v-model="exam.member" filterable>
+                <i-select v-model="memberArr" multiple filterable>
                     <i-option v-for="user in userList" :value="user.id" :key="user.id">{{user.name}}
                     </i-option>
                 </i-select>

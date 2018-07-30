@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.platform.controller.AbstractController;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.exam.ExamEntity;
+import com.platform.entity.exam.ExamMemberEntity;
 import com.platform.entity.exam.ExamQuestionEntity;
 import com.platform.entity.exam.ExamQuestionItemEntity;
+import com.platform.service.exam.ExamMemberService;
 import com.platform.service.exam.ExamQuestionItemService;
 import com.platform.service.exam.ExamQuestionService;
 import com.platform.service.exam.ExamService;
@@ -13,6 +15,7 @@ import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
 import org.apache.commons.collections.map.HashedMap;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +49,9 @@ public class ExamController extends AbstractController {
 
     @Autowired
     private ExamQuestionItemService examQuestionItemService;
+
+    @Autowired
+    private ExamMemberService examMemberService;
 
 
 
@@ -106,6 +113,13 @@ public class ExamController extends AbstractController {
             exam.setCreator(user.getUsername());
         }
         examService.save(exam);
+        if (StringUtils.isNotBlank(exam.getMember())){
+            String [] members = exam.getMember().split(",");
+            for (String member : members) {
+                ExamMemberEntity memberEntity = new ExamMemberEntity(exam.getId(), Long.valueOf(member), 0, 0.00);
+                examMemberService.save(memberEntity);
+            }
+        }
         logger.debug("getQuestionJson -------" + exam.getQuestionJson());
         List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);
         if (null != list && list.size() > 0){
@@ -144,6 +158,63 @@ public class ExamController extends AbstractController {
             exam.setUpdator(user.getUsername());
         }
         examService.update(exam);
+
+        Map<String, Object> params = new HashedMap();
+        params.put("examId",exam.getId());
+        List<ExamMemberEntity> examMemberEntities = examMemberService.queryList(params);
+
+        List<ExamMemberEntity> addList = new ArrayList<>();
+        //List<ExamMemberEntity> updateList = new ArrayList<>();
+        List<ExamMemberEntity> delList = new ArrayList<>();
+
+
+
+        if (StringUtils.isNotBlank(exam.getMember())){
+            String [] members = exam.getMember().split(",");
+
+            for (String member : members) {
+                boolean has = false;
+                for (ExamMemberEntity entity : examMemberEntities){
+                    if (Long.valueOf(member).intValue() == entity.getMemberId().intValue()){
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has){
+                    ExamMemberEntity memberEntity = new ExamMemberEntity(exam.getId(), Long.valueOf(member), 0, 0.00);
+                    addList.add(memberEntity);
+                }
+            }
+
+            for (ExamMemberEntity entity : examMemberEntities) {
+                boolean has = false;
+                for (String member : members) {
+                    if (Long.valueOf(member).intValue() == entity.getMemberId().intValue()){
+                       // updateList.add(entity);
+                        has = true;
+                        break;
+                    }
+                }
+                if (!has){
+                    delList.add(entity);
+                }
+
+            }
+        }else {
+            delList = examMemberEntities;
+        }
+
+        if (delList.size() > 0){
+            for (ExamMemberEntity entity : delList) {
+                examMemberService.update(entity);
+            }
+        }
+
+        if (addList.size() > 0){
+            for (ExamMemberEntity entity : addList) {
+                examMemberService.save(entity);
+            }
+        }
 
         logger.debug("getQuestionJson -------" + exam.getQuestionJson());
         List<ExamQuestionEntity> list = JSON.parseArray(exam.getQuestionJson(), ExamQuestionEntity.class);

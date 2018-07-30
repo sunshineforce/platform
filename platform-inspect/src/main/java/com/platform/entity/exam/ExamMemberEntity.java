@@ -35,6 +35,16 @@ public class ExamMemberEntity implements Serializable {
 
     private String answerProcess;
 
+    public ExamMemberEntity() {
+    }
+
+    public ExamMemberEntity(Long examId, Long memberId, Integer answerNum, Double score) {
+        this.examId = examId;
+        this.memberId = memberId;
+        this.answerNum = answerNum;
+        this.score = score;
+    }
+
     /**
      * 设置：主键
      */
