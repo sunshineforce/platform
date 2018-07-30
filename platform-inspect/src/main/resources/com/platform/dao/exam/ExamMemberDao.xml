@@ -9,6 +9,7 @@
         <result property="memberId" column="member_id"/>
 		<result property="answerNum" column="answer_num"/>
 		<result property="score" column="score"/>
+		<result property="dataStatus" column="data_status"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.exam.ExamMemberEntity">
@@ -16,7 +17,7 @@
 			`id`,
     		`exam_id`,
 		    `answer_num`,
-			`score`
+			`score`,
     		`member_id`
 		from exam_member
 		where id = #{id}
@@ -36,7 +37,7 @@
 			exam_member AS m
 		LEFT JOIN sys_user AS u ON m.member_id = u.user_id
 		LEFT JOIN exam AS  e ON  m.exam_id = e.id
-		WHERE 1=1
+		WHERE 1=1 AND m.data_status = 0
 
 		<if test="examId != null and examId.trim() != ''">
 			AND m.exam_id = #{examId}
@@ -62,9 +63,9 @@
 		exam_member AS m
 		LEFT JOIN sys_user AS u ON m.member_id = u.user_id
 		LEFT JOIN exam AS  e ON  m.exam_id = e.id
-		WHERE 1=1
+		WHERE 1=1 AND m.data_status = 0
 
-		<if test="examId != null and examId.trim() != ''">
+		<if test="examId != null ">
 			AND m.exam_id = #{examId}
 		</if>
 	</select>
@@ -74,14 +75,14 @@
     		`id`,
     		`exam_id`,
 		    `answer_num`,
-			`score`
+			`score`,
     		`member_id`
 		from exam_member
-		WHERE 1=1
+		WHERE 1=1 AND  data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="examId != null and examId.trim() != ''">
+		<if test="examId != null ">
 			AND exam_id = #{examId}
 		</if>
         <choose>
@@ -100,7 +101,7 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from exam_member
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
+        <if test="name != null ">
             AND name LIKE concat('%',#{name},'%')
         </if>
 		<if test="examId != null">
@@ -112,12 +113,14 @@
 		insert into exam_member(
 			`exam_id`,
 			`answer_num`,
-			`score`
+			`score`,
+			data_status,
 			`member_id`)
 		values(
 			#{examId},
 			#{answerNum},
 			#{score},
+			#{dataStatus},
 			#{memberId})
 	</insert>
 	 
@@ -127,6 +130,7 @@
 			<if test="examId != null">`exam_id` = #{examId}, </if>
 			<if test="answerNum != null">`answer_num` = #{answerNum}, </if>
 			<if test="score != null">`exam_id` = #{score}, </if>
+			<if test="dataStatus != null">`data_status` = #{dataStatus}, </if>
 			<if test="memberId != null">`member_id` = #{memberId}</if>
 		</set>
 		where 1=1

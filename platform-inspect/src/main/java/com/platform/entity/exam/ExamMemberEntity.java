@@ -35,6 +35,8 @@ public class ExamMemberEntity implements Serializable {
 
     private String answerProcess;
 
+    private Integer dataStatus;
+
     public ExamMemberEntity() {
     }
 
@@ -114,5 +116,13 @@ public class ExamMemberEntity implements Serializable {
 
     public void setAnswerProcess(String answerProcess) {
         this.answerProcess = answerProcess;
+    }
+
+    public Integer getDataStatus() {
+        return dataStatus;
+    }
+
+    public void setDataStatus(Integer dataStatus) {
+        this.dataStatus = dataStatus;
     }
 }

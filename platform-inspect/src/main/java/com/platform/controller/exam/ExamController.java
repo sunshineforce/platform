@@ -117,6 +117,7 @@ public class ExamController extends AbstractController {
             String [] members = exam.getMember().split(",");
             for (String member : members) {
                 ExamMemberEntity memberEntity = new ExamMemberEntity(exam.getId(), Long.valueOf(member), 0, 0.00);
+                memberEntity.setDataStatus(0);
                 examMemberService.save(memberEntity);
             }
         }
@@ -182,6 +183,7 @@ public class ExamController extends AbstractController {
                 }
                 if (!has){
                     ExamMemberEntity memberEntity = new ExamMemberEntity(exam.getId(), Long.valueOf(member), 0, 0.00);
+                    memberEntity.setDataStatus(0);
                     addList.add(memberEntity);
                 }
             }
@@ -196,6 +198,7 @@ public class ExamController extends AbstractController {
                     }
                 }
                 if (!has){
+                    entity.setDataStatus(1);
                     delList.add(entity);
                 }
 
