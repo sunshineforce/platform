@@ -97,8 +97,14 @@ var vm = new Vue({
         totalSocre:0,
 		userList:[],
         questionList:[],
+        memberArr:[],
 	},
 	methods: {
+        queryUserList:function (id) {
+            $.get("../sys/app/user/superiorList/"+id, function (r) {
+                vm.userList = r.superiorList;
+            });
+        },
 	    ///添加问题
 	    addQuestion:function () {
             var questionVo = {
@@ -159,6 +165,7 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.exam = {};
+            vm.queryUserList(0);
 			vm.questionList[0] = {
                 score:0,
                 question:"",
@@ -182,10 +189,12 @@ var vm = new Vue({
             vm.title = "修改";
             vm.questionList = []; //清空缓存
             vm.totalSocre = 0;
+            vm.queryUserList(0);
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
             var url = vm.exam.id == null ? "../exam/save" : "../exam/update";
+            vm.exam.member = vm.memberArr.length > 0 ? vm.memberArr.join(",") : "";
             vm.exam.questionJson = JSON.stringify(vm.questionList);
             vm.exam.totalScore = vm.totalSocre;
             vm.exam.questionNum = vm.questionList.length;
@@ -235,6 +244,14 @@ var vm = new Vue({
 			$.get("../exam/info/"+id, function (r) {
                 vm.exam = r.exam;
                 vm.questionList = vm.exam.questionList;
+                var arr = [];
+                if (vm.exam.member != null){
+                    var sArr = vm.exam.member.split(",");
+                    for (var i = 0; i <sArr.length; i++){
+                        arr[i] = parseInt(sArr[i]);
+                    }
+                }
+                vm.memberArr = arr;
                 vm.calScore();
             });
 		},

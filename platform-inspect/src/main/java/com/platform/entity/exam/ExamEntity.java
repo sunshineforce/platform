@@ -27,7 +27,7 @@ public class ExamEntity implements Serializable {
     //结束时间
     private Date endTime;
     //参考人员
-    private Integer member;
+    private String member;
     //创建时间
     private Date createTime;
     //创建人
@@ -121,19 +121,15 @@ public class ExamEntity implements Serializable {
     public Date getEndTime() {
         return endTime;
     }
-    /**
-     * 设置：参考人员
-     */
-    public void setMember(Integer member) {
+
+    public String getMember() {
+        return member;
+    }
+
+    public void setMember(String member) {
         this.member = member;
     }
 
-    /**
-     * 获取：参考人员
-     */
-    public Integer getMember() {
-        return member;
-    }
     /**
      * 设置：创建时间
      */
