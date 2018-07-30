@@ -5,6 +5,7 @@ import com.platform.entity.SysUserEntity;
 import com.platform.entity.notice.NoticeEntity;
 import com.platform.entity.task.TaskEntity;
 import com.platform.entity.task.TaskGroupMaterialEntity;
+import com.platform.entity.task.vo.TaskStatisticsVo;
 import com.platform.service.notice.INoticeService;
 import com.platform.service.task.TaskGroupMaterialService;
 import com.platform.service.task.TaskService;
@@ -53,6 +54,7 @@ public class TaskServiceImpl implements TaskService {
         List<TaskGroupMaterialEntity> taskGroupMaterialList;
         for (TaskEntity taskEntity : taskList) {
             taskEntity.setChekArea(sysUser.getRegion());
+            List<TaskStatisticsVo> statistics = taskGroupMaterialService.queryMaterialStatisticsByTaskId(Long.valueOf(taskEntity.getId()));
             taskEntity.setProgressRate(String.valueOf(calcTaskProgressRate(taskEntity.getTaskGroupId()).get("finished")));
             taskEntity.setNoticeStatus(getNoticeStatus(sysUser.getUserId(),taskId));
 

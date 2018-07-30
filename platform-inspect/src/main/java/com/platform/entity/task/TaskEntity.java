@@ -1,7 +1,5 @@
 package com.platform.entity.task;
 
-import com.platform.entity.material.MaterialEntity;
-
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;

@@ -2,6 +2,7 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskGroupMaterialEntity;
+import com.platform.entity.task.vo.TaskStatisticsVo;
 
 import java.util.List;
 import java.util.Map;
@@ -84,4 +85,6 @@ public interface TaskGroupMaterialService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+    List<TaskStatisticsVo> queryMaterialStatisticsByTaskId(Long taskId);
 }

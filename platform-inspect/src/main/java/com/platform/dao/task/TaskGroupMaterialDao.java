@@ -2,6 +2,7 @@ package com.platform.dao.task;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.task.TaskGroupMaterialEntity;
+import com.platform.entity.task.vo.TaskStatisticsVo;
 
 import java.util.List;
 import java.util.Map;
@@ -28,4 +29,11 @@ public interface TaskGroupMaterialDao extends BaseDao<TaskGroupMaterialEntity> {
      * @return
      */
     int selectTaskGroupMaterialTotal(Map<String, Object> map);
+
+    /**
+     * 查询任务下物品类型的完成数量
+     * @param taskId
+     * @return
+     */
+    List<TaskStatisticsVo> selectMaterialStatusCount(Long taskId);
 }

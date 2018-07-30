@@ -2,6 +2,7 @@ package com.platform.service.task.impl;
 
 import com.platform.dao.task.TaskGroupMaterialDao;
 import com.platform.entity.task.TaskGroupMaterialEntity;
+import com.platform.entity.task.vo.TaskStatisticsVo;
 import com.platform.service.task.TaskGroupMaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,5 +67,13 @@ public class TaskGroupMaterialServiceImpl implements TaskGroupMaterialService {
     @Override
     public int deleteBatch(Integer[]ids) {
         return taskGroupMaterialDao.deleteBatch(ids);
+    }
+
+    @Override
+    public List<TaskStatisticsVo> queryMaterialStatisticsByTaskId(Long taskId) {
+        if (taskId == null) {
+            return null;
+        }
+        return taskGroupMaterialDao.selectMaterialStatusCount(taskId);
     }
 }
