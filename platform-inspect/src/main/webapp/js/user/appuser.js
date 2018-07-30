@@ -21,8 +21,7 @@ $(function () {
                         '<span>是</span>';
                 }
             },
-            {label: '层级', name: 'superior', index: 'superior', align: 'center', width:'80px'},
-			{label: '创建人', name: 'creator', index: 'creator', align: 'center', width:'80px'},
+            {label: '上级领导', name: 'superiorStr', index: 'superior', align: 'center', width:'80px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
 			{label: '修改人', name: 'updateUserId', index: 'update_user_id', align: 'center', width:'80px'}],
 		viewrecords: true,
@@ -57,6 +56,7 @@ var vm = new Vue({
         showList: true,
         roleList: {},
         title: null,
+        showPaw:true,
 		appUser: {
             identify:1,
             roleIdList:[]
@@ -86,8 +86,17 @@ var vm = new Vue({
             {id:1,name:"安全员"},
             {id:2,name:"领导"},
         ],
+        ///上级列表
+        superiorList:[],
+        //接受选择结果
+        superiorArr:[],
 	},
 	methods: {
+	    querySuperiorList:function (id) {
+            $.get("../sys/app/user/superiorList/"+id, function (r) {
+                vm.superiorList = r.superiorList;
+            });
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -96,7 +105,7 @@ var vm = new Vue({
 			vm.title = "新增";
             vm.roleList = {};
 			vm.appUser = { identify:1,status:1,};
-
+            vm.querySuperiorList(0);
             //this.getRoleList();
 		},
 		update: function (event) {
@@ -106,11 +115,14 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
+            vm.showPaw = false;
             //vm.getRoleList();
+            vm.querySuperiorList(id);
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
             var url = vm.appUser.id == null ? "../sys/app/user/save" : "../sys/app/user/update";
+            vm.appUser.superior = vm.superiorArr.join(",");
 			$.ajax({
 				type: "POST",
 			    url: url,
@@ -159,6 +171,7 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../sys/app/user/info/"+id, function (r) {
                 vm.appUser = r.user;
+                vm.superiorArr = (vm.appUser.superior != null) ? vm.appUser.superior.split(",") : [];
             });
 		},
 		reload: function (event) {

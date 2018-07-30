@@ -10,16 +10,13 @@ import com.platform.utils.Query;
 import com.platform.utils.R;
 import com.platform.validator.ValidatorUtils;
 import com.platform.validator.group.AddGroup;
-import com.platform.validator.group.UpdateGroup;
 import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * APP用户
@@ -51,9 +48,71 @@ public class AppUserController extends SysUserController {
         List<SysUserEntity> userList = sysUserService.queryAllAppUser(query);
         int total = sysUserService.queryAppUserTotal(query);
 
+        Map<String, Object> params1 = new HashMap<>();
+//        Query query1 = new Query(params1);
+        List<SysUserEntity> allAppUsers = sysUserService.queryAllAppUser(params1);
+        setSuperior(allAppUsers,userList);
         PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
+    }
+
+    ///格式化领导字符串
+    private void setSuperior(List<SysUserEntity> allAppUsers, List<SysUserEntity> userList){
+        for (SysUserEntity user : userList) {
+            if (StringUtils.isNotBlank(user.getSuperior())){
+                String superiorStrArr [] = user.getSuperior().split(",");
+                StringBuffer superiorStr = new StringBuffer("");
+
+                for (String s : superiorStrArr) {
+                    if (null != allAppUsers && allAppUsers.size() > 0){
+                        for (SysUserEntity allAppUser : allAppUsers) {
+                            if (allAppUser.getUserId() != null && s.equals(String.valueOf(allAppUser.getUserId()))) {
+                                if (superiorStr.length() > 0){
+                                    superiorStr.append(",").append(allAppUser.getRealname());
+                                }else {
+                                    superiorStr.append(allAppUser.getRealname());
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                }
+
+                user.setSuperiorStr(superiorStr.toString());
+
+            }
+
+        }
+    }
+
+    /**
+     * 领导下拉选项
+     * @param
+     * @return
+     */
+    @RequestMapping("/superiorList/{userId}")
+    public R superiorList(@PathVariable("userId") Long userId) {
+        //查询列表数据
+        Map<String, Object> params = new HashMap<>();
+       // Query query = new Query(params);
+        List<SysUserEntity> userList = sysUserService.queryAllAppUser(params);
+
+        List<Map<String,Object>> superiorList = new ArrayList<>();
+        if (null != userList && userList.size() > 0){
+            Map<String,Object> superiorMap = null;
+            for (SysUserEntity sysUserEntity : userList) {
+                if (userId == null || (userId != null && userId.intValue() != sysUserEntity.getUserId().intValue())) { //刨除自身
+                    superiorMap = new HashMap<>();
+                    superiorMap.put("id",sysUserEntity.getUserId());
+                    superiorMap.put("name",sysUserEntity.getRealname());
+                    superiorList.add(superiorMap);
+                }
+            }
+        }
+
+        return R.ok().put("superiorList", superiorList);
     }
 
     /**
@@ -87,6 +146,10 @@ public class AppUserController extends SysUserController {
     @RequiresPermissions("appUser:save")
     public R save(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, AddGroup.class);
+        SysUserEntity sysUserEntity = getUser();
+        if (null != user){
+            user.setCreateUserId(sysUserEntity.getUserId());
+        }
         user.setCreateTime(new Date());
         user.setCreateUserId(getUserId());
         user.setRoleId(2);
@@ -107,9 +170,13 @@ public class AppUserController extends SysUserController {
     @RequestMapping("/update")
     @RequiresPermissions("appUser:update")
     public R update(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, UpdateGroup.class);
+       // ValidatorUtils.validateEntity(user, UpdateGroup.class);
 
-        user.setCreateUserId(getUserId());
+        SysUserEntity sysUserEntity = getUser();
+        if (null != user){
+            user.setUpdateUserId(sysUserEntity.getUserId());
+        }
+        user.setUpdateTime(new Date());
         sysUserService.update(user);
 
         return R.ok();

@@ -42,12 +42,15 @@
                 </i-select>
             </Form-item>
             <Form-item label="上级" prop="superior">
-                <i-input v-model="appUser.superior" placeholder="上级"/>
+                <i-select v-model="superiorArr" multiple placeholder="请选择上级">
+                    <i-option v-for="superior in superiorList" :value="superior.id" :key="superior.id">{{superior.name}}
+                    </i-option>
+                </i-select>
             </Form-item>
             <Form-item label="帐号" prop="username">
                 <i-input v-model="appUser.username" placeholder="帐号"/>
             </Form-item>
-            <Form-item label="初始密码" prop="password">
+            <Form-item label="初始密码" prop="password" v-if="showPaw">
                 <i-input v-model="appUser.password" type="password" placeholder="初始密码"/>
             </Form-item>
 

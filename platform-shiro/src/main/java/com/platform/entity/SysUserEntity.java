@@ -75,6 +75,8 @@ public class SysUserEntity implements Serializable {
     /** 上级 */
     private String superior;
 
+    private String superiorStr;
+
     /** 安全证url */
     private String certificateUrl;
 
@@ -323,5 +325,13 @@ public class SysUserEntity implements Serializable {
 
     public void setEnterpriseId(Integer enterpriseId) {
         this.enterpriseId = enterpriseId;
+    }
+
+    public String getSuperiorStr() {
+        return superiorStr;
+    }
+
+    public void setSuperiorStr(String superiorStr) {
+        this.superiorStr = superiorStr;
     }
 }
