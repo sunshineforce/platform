@@ -30,7 +30,7 @@
 			m.member_id  AS  memberId,
 			m.answer_num AS  answerNum,
 			m.score AS score,
-			u.username AS userName,
+			u.realname AS userName,
 			u.mobile AS  mobile,
 		    CONCAT_WS("/",e.question_num,m.answer_num) AS answerProcess
 		FROM
