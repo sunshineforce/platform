@@ -95,6 +95,8 @@ var vm = new Vue({
 	    querySuperiorList:function (id) {
             $.get("../sys/app/user/superiorList/"+id, function (r) {
                 vm.superiorList = r.superiorList;
+
+
             });
         },
 		query: function () {
@@ -117,8 +119,8 @@ var vm = new Vue({
             vm.title = "修改";
             vm.showPaw = false;
             //vm.getRoleList();
-            vm.querySuperiorList(id);
             vm.getInfo(id)
+
 		},
 		saveOrUpdate: function (event) {
             var url = vm.appUser.id == null ? "../sys/app/user/save" : "../sys/app/user/update";
@@ -171,7 +173,16 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../sys/app/user/info/"+id, function (r) {
                 vm.appUser = r.user;
-                vm.superiorArr = (vm.appUser.superior != null) ? vm.appUser.superior.split(",") : [];
+                vm.superiorList = vm.appUser.superiorList;
+                var arr = [];
+                if (vm.appUser.superior != null){
+                    var sArr = vm.appUser.superior.split(",");
+                    for (var i = 0; i <sArr.length; i++){
+                        arr[i] = parseInt(sArr[i]);
+                    }
+                }
+                vm.superiorArr = arr;
+               // console.log("superiorArr-----------" + vm.superiorArr)
             });
 		},
 		reload: function (event) {

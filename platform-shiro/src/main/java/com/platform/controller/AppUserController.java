@@ -94,9 +94,16 @@ public class AppUserController extends SysUserController {
      */
     @RequestMapping("/superiorList/{userId}")
     public R superiorList(@PathVariable("userId") Long userId) {
-        //查询列表数据
+
+
+        List<Map<String,Object>> superiorList = getSuperiorList(userId);
+
+        return R.ok().put("superiorList", superiorList);
+    }
+
+    private List<Map<String,Object>> getSuperiorList(Long userId){
         Map<String, Object> params = new HashMap<>();
-       // Query query = new Query(params);
+        // Query query = new Query(params);
         List<SysUserEntity> userList = sysUserService.queryAllAppUser(params);
 
         List<Map<String,Object>> superiorList = new ArrayList<>();
@@ -111,8 +118,7 @@ public class AppUserController extends SysUserController {
                 }
             }
         }
-
-        return R.ok().put("superiorList", superiorList);
+        return superiorList;
     }
 
     /**
@@ -134,7 +140,8 @@ public class AppUserController extends SysUserController {
         //获取用户所属的角色列表
 //        List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
 //        user.setRoleIdList(roleIdList);
-
+        List<Map<String,Object>> superiorList = getSuperiorList(userId);
+        user.setSuperiorList(superiorList);
         return R.ok().put("user", user);
     }
 

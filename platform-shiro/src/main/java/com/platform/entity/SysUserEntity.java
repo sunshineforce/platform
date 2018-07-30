@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 系统用户
@@ -88,6 +89,9 @@ public class SysUserEntity implements Serializable {
 
     /** 用户所属企业 */
     private Integer enterpriseId;
+
+
+   private List<Map<String,Object>> superiorList;
 
     /**
      * 设置：
@@ -333,5 +337,13 @@ public class SysUserEntity implements Serializable {
 
     public void setSuperiorStr(String superiorStr) {
         this.superiorStr = superiorStr;
+    }
+
+    public List<Map<String, Object>> getSuperiorList() {
+        return superiorList;
+    }
+
+    public void setSuperiorList(List<Map<String, Object>> superiorList) {
+        this.superiorList = superiorList;
     }
 }
