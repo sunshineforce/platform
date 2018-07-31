@@ -50,6 +50,9 @@ $(function () {
     });
 });
 
+var ztree;
+var ztree1;
+
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -90,8 +93,66 @@ var vm = new Vue({
         superiorList:[],
         //接受选择结果
         superiorArr:[],
+        //所属企业
+        enterpriseList:[],
 	},
+    created:function () {
+
+
+        //加载树
+        $.get("../sys/region/getAreaTree", function (r) {
+            var datas = r.node;
+            ztree = $.fn.zTree.init($("#regionTree"), setting,datas );
+
+            var treeObj = $.fn.zTree.getZTreeObj("regionTree");
+            var nodes = treeObj.getNodes();
+
+            for (var i = 0; i < nodes.length; i++) { //设置节点展开
+                treeObj.expandNode(nodes[i], true, false, true);
+            }
+        })
+    },
 	methods: {
+        ztreeClick:function () {
+            var node = ztree.getSelectedNodes();
+            //alert(node[0].id)
+            vm.q.regionId = node[0].id;
+            vm.reload();
+        },
+        getRegionTree: function () {
+            //加载树
+            $.get("../sys/region/getAreaTree", function (r) {
+                var datas = r.node;
+                ztree1 = $.fn.zTree.init($("#editRegionTree"), setting1,datas );
+
+                console.log("id-----------------" + vm.appUser.regionId)
+                var node = ztree1.getNodeByParam("id", vm.appUser.regionId);
+                if (node) {
+                    console.log("name-----------------" + node.name)
+                    ztree1.selectNode(node);
+                    //vm.enterprise.regionName = node.name;
+                    Vue.set(vm.appUser,'regionName',node.name);
+                }
+            })
+        },
+        layerTree: function () {
+            openWindow({
+                title: "选择菜单",
+                area: ['300px', '450px'],
+                content: jQuery("#regionLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = ztree1.getSelectedNodes();
+
+                    //选择地域
+                    Vue.set(vm.appUser,'regionId',node[0].id);
+                    Vue.set(vm.appUser,'regionName',node[0].name);
+                    //console.log("name ---------" + node[0].name)
+                    vm.enterpriseList = [{id:0,name:'清华同方'}];
+                    layer.close(index);
+                }
+            });
+        },
 	    querySuperiorList:function (id) {
             $.get("../sys/app/user/superiorList/"+id, function (r) {
                 vm.superiorList = r.superiorList;
@@ -106,8 +167,10 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
             vm.roleList = {};
-			vm.appUser = { identify:1,status:1,};
+			vm.appUser = { identify:1,status:1,enterpriseId:''};
             vm.querySuperiorList(0);
+            vm.getRegionTree();
+            vm.enterpriseList = [];
             //this.getRoleList();
 		},
 		update: function (event) {
@@ -182,6 +245,7 @@ var vm = new Vue({
                     }
                 }
                 vm.superiorArr = arr;
+                vm.getRegionTree();
                // console.log("superiorArr-----------" + vm.superiorArr)
             });
 		},
@@ -230,3 +294,34 @@ var vm = new Vue({
 
 	}
 });
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
+    },
+    callback:{
+        onClick:vm.ztreeClick,
+    }
+};
+
+var setting1 = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
+    }
+};

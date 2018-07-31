@@ -6,29 +6,48 @@
 </head>
 <body>
 <div id="rrapp" v-cloak>
-	<div v-show="showList">
-        <Row :gutter="16">
-            <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
-            </i-col>
-            <i-button @click="query">查询</i-button>
-			#if($shiro.hasPermission("appUser:save"))
-            <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
-			#end
-			#if($shiro.hasPermission("appUser:update"))
-            <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
-			#end
-			#if($shiro.hasPermission("appUser:delete"))
-            <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
-			#end
-        </Row>
-	    <table id="jqGrid"></table>
-	    <div id="jqGridPager"></div>
+
+    <div v-show="showList">
+        <div class="row">
+            <div class="col-sm-2" style="height: 669px; overflow-y: scroll;">
+                <ul id="regionTree" class="ztree"></ul>
+            </div>
+            <div class="col-sm-10 ml30">
+                <Row :gutter="16">
+                    <i-col span="4">
+                        <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                    </i-col>
+                    <i-button @click="query">查询</i-button>
+                    #if($shiro.hasPermission("appUser:save"))
+                    <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;新增</i-button>
+                    #end
+                    #if($shiro.hasPermission("appUser:update"))
+                    <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+                    #end
+                    #if($shiro.hasPermission("appUser:delete"))
+                    <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                    #end
+                </Row>
+                <table id="jqGrid"></table>
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
+
     </div>
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>
 		<i-form ref="formValidate" :model="appUser" :rules="ruleValidate" :label-width="80">
+            <Form-item label="区域">
+                <i-input v-model="appUser.regionName" @on-click="layerTree" icon="eye" readonly="readonly"
+                         placeholder="选择区域"/>
+            </Form-item>
+            <Form-item label="所属企业" prop="superior">
+                <i-select v-model="appUser.enterpriseId"  placeholder="请选择所属企业">
+                    <i-option v-for="enterprise in enterpriseList" :value="enterprise.id" :key="enterprise.id">{{enterprise.name}}
+                    </i-option>
+                </i-select>
+            </Form-item>
             <Form-item label="姓名" prop="realname">
                 <i-input v-model="appUser.realname" placeholder="姓名"/>
             </Form-item>
@@ -91,7 +110,10 @@
         </i-form>
 	</Card>
 </div>
-
+<!-- 选择区域 -->
+<div id="regionLayer" style="display: none;padding:10px;">
+    <ul id="editRegionTree" class="ztree"></ul>
+</div>
 <script src="${rc.contextPath}/js/user/appuser.js?_${date.systemTime}"></script>
 </body>
 </html>
