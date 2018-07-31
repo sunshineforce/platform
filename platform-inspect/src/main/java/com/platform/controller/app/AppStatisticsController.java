@@ -1,6 +1,5 @@
 package com.platform.controller.app;
 
-import com.platform.utils.PageUtils;
 import com.platform.utils.R;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
