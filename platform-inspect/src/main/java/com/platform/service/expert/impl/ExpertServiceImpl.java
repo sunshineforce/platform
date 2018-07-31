@@ -3,7 +3,6 @@ package com.platform.service.expert.impl;
 import com.platform.constants.CommonConstant;
 import com.platform.dao.expert.ExpertDao;
 import com.platform.entity.SysUserEntity;
-import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.entity.expert.ExpertEntity;
 import com.platform.service.expert.IExpertService;
 import com.platform.utils.PageUtils;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

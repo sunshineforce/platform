@@ -1,14 +1,12 @@
 package com.platform.controller.app;
 
 import com.alibaba.druid.util.StringUtils;
-import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskEntity;
 import com.platform.service.task.TaskGroupService;
 import com.platform.service.task.TaskService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
