@@ -17,8 +17,8 @@ public class TaskStatisticsVo implements Serializable {
 
     private static final long serialVersionUID = -9161908361298897190L;
 
-    //物料状态
-    private Integer materialStatus;
+    //物料类型名称
+    private String materialType;
     //总数量
     private Integer total;
     //完成数量
@@ -26,12 +26,12 @@ public class TaskStatisticsVo implements Serializable {
     //异常数量
     private Integer anomaly;
 
-    public Integer getMaterialStatus() {
-        return materialStatus;
+    public String getMaterialType() {
+        return materialType;
     }
 
-    public void setMaterialStatus(Integer materialStatus) {
-        this.materialStatus = materialStatus;
+    public void setMaterialType(String materialType) {
+        this.materialType = materialType;
     }
 
     public Integer getTotal() {

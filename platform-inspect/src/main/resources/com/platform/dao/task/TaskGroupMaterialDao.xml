@@ -144,22 +144,23 @@
 		</foreach>
 	</delete>
 
-
+	<!-- 获取任务组物品统计 -->
 	<select id="selectMaterialStatusCount" parameterType="java.lang.Long" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
 		SELECT
-		r.materialStatus,
+		r.material_type_id,
+		r.material_type as materialType,
 		SUM(r.id) AS total,
 		SUM(r.material_status =1) AS finish,
 		SUM(r.material_status =2) AS anomaly
 		FROM (
-		SELECT m.id,m.material_status,mt.name AS materialStatus
+		SELECT m.id,mt.id AS material_type_id,mt.name AS material_type,m.material_status
 		 FROM task t
 			LEFT JOIN task_group_material tgm ON t.task_group_id = tgm.task_group_id
 			LEFT JOIN material m ON m.id = tgm.material_id
 			LEFT JOIN material_type mt ON mt.id = m.material_type_id
 			where t.id = #{taskId}
 		) r
-		GROUP BY r.material_status
+		GROUP BY r.material_type_id,r.material_status
 	</select>
 
 </mapper>

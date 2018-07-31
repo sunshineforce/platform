@@ -48,20 +48,12 @@ public class TaskServiceImpl implements TaskService {
         map.put("userId",sysUser.getUserId());
         List<TaskEntity> taskList = taskDao.queryList(map);
 
-        Long taskId = Long.valueOf(String.valueOf(map.get("taskId")));
-
-        Map<String,Object> paramsMap = new HashMap<String,Object>();
-        List<TaskGroupMaterialEntity> taskGroupMaterialList;
+        List<TaskStatisticsVo> statistics;
         for (TaskEntity taskEntity : taskList) {
             taskEntity.setChekArea(sysUser.getRegion());
-            List<TaskStatisticsVo> statistics = taskGroupMaterialService.queryMaterialStatisticsByTaskId(Long.valueOf(taskEntity.getId()));
-            taskEntity.setProgressRate(String.valueOf(calcTaskProgressRate(taskEntity.getTaskGroupId()).get("finished")));
-            taskEntity.setNoticeStatus(getNoticeStatus(sysUser.getUserId(),taskId));
-
-            paramsMap.put("taskGroupId",taskEntity.getTaskGroupId());
-            taskGroupMaterialList = taskGroupMaterialService.queryTaskGroupMaterialList(paramsMap);
-
-            taskEntity.setMaterialList(taskGroupMaterialList);
+            taskEntity.setProgressRate(calcProgressRate(taskEntity.getId()));
+            statistics = taskGroupMaterialService.queryMaterialStatisticsByTaskId(Long.valueOf(taskEntity.getId()));
+            taskEntity.setStatistics(statistics);
         }
         return taskDao.queryList(map);
     }
@@ -70,34 +62,20 @@ public class TaskServiceImpl implements TaskService {
      * 计算任务完成进度
      * @return
      */
-    private Map<String,Object> calcTaskProgressRate(Integer taskGroupId){
-        Map<String,Object> resultMap = new HashMap<String,Object>();
-        Map<String,Object> paramsMap = new HashMap<String,Object>();
-        paramsMap.put("taskGroupId",taskGroupId);
-        List<TaskGroupMaterialEntity> taskGroupMaterialList = taskGroupMaterialService.queryTaskGroupMaterialList(paramsMap);
-        Integer finishedCount=0;
-        Integer normalCount=0;
-        Integer anomalyCount=0;
-
-        Integer total = taskGroupMaterialList.size();
-
-        resultMap.put("finished",finishedCount+"/"+total);
-        resultMap.put("normal",normalCount);
-        resultMap.put("anomaly",anomalyCount);
-
-        for (TaskGroupMaterialEntity entity : taskGroupMaterialList) {
-            if (entity.getMaterialStatus().equals(MaterialStatusEnum.NORMAL.getCode())) {
-                normalCount++;
-            }else if (entity.getMaterialStatus().equals(MaterialStatusEnum.ANOMALY.getCode())) {
-                anomalyCount++;
-            }else if (entity.getMaterialStatus().equals(MaterialStatusEnum.FINISHED.getCode())) {
-                finishedCount++;
-            }
-            resultMap.put("finished",finishedCount+"/"+total);
-            resultMap.put("normal",normalCount);
-            resultMap.put("anomaly",anomalyCount);
+    private String calcProgressRate(Integer taskId){
+        String progressRate = "";
+        if (taskId == null) {
+            return progressRate;
         }
-        return resultMap;
+        TaskStatisticsVo statisticsVo = taskDao.selectTaskProgressRate(taskId);
+        Integer finish;
+        Integer total;
+        if (statisticsVo != null) {
+            finish = statisticsVo.getFinish() == null ? 0 : statisticsVo.getFinish();
+            total = statisticsVo.getTotal() == null ? 0 : statisticsVo.getTotal();
+            progressRate =  finish + "/" + total;
+        }
+        return progressRate;
     }
 
     /**

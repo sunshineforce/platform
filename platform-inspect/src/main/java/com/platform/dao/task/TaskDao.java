@@ -2,6 +2,7 @@ package com.platform.dao.task;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.task.TaskEntity;
+import com.platform.entity.task.vo.TaskStatisticsVo;
 
 import java.util.List;
 import java.util.Map;
@@ -28,4 +29,11 @@ public interface TaskDao extends BaseDao<TaskEntity> {
      * @return
      */
     int selectTaskTotal(Map<String, Object> map);
+
+    /**
+     * 查询任务总进度
+     * @param taskId
+     * @return
+     */
+    TaskStatisticsVo selectTaskProgressRate(Integer taskId);
 }

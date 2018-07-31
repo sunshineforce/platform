@@ -134,4 +134,5 @@ public class TaskGroupMaterialEntity implements Serializable {
     public void setMaterialTypeName(String materialTypeName) {
         this.materialTypeName = materialTypeName;
     }
+
 }
