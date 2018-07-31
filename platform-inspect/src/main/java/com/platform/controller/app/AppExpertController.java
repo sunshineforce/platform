@@ -21,14 +21,14 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("app")
+@RequestMapping("/app")
 public class AppExpertController {
 
     @Autowired
     private IExpertService expertService;
 
 
-    @RequestMapping("/list")
+    @RequestMapping("/expert/list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
         return R.ok().put("page", expertService.search(params));
