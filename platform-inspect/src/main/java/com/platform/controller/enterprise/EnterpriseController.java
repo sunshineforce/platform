@@ -1,17 +1,17 @@
 package com.platform.controller.enterprise;
 
-import java.util.List;
-import java.util.Map;
-
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.service.enterprise.IEnterpriseService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
+import com.platform.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.R;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 企业信息表Controller
@@ -36,7 +36,7 @@ public class EnterpriseController {
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
-
+        String regionId = String.valueOf(params.get("regionId"));
         List<EnterpriseEntity> enterpriseList = enterpriseService.queryList(query);
         int total = enterpriseService.queryTotal(query);
 

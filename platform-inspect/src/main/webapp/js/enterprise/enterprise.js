@@ -38,19 +38,6 @@ $(function () {
     });
 });
 
-var setting = {
-    data: {
-        simpleData: {
-            enable: true,
-            idKey: "id",
-            pIdKey: "parentId",
-            rootPId: -1
-        },
-        key: {
-            id: 0
-        }
-    }
-};
 var ztree;
 
 var vm = new Vue({
@@ -65,8 +52,10 @@ var vm = new Vue({
 			]
 		},
 		q: {
-		    name: ''
+		    name: '',
+            regionId:'',
 		},
+
 	},
     created:function () {
 
@@ -85,6 +74,12 @@ var vm = new Vue({
         })
     },
 	methods: {
+	    ztreeClick:function () {
+            var node = ztree.getSelectedNodes();
+            //alert(node[0].id)
+            vm.q.regionId = node[0].id;
+            vm.reload();
+        },
         getRegionTree: function () {
             //加载树
             $.get("../sys/region/getAreaTree", function (r) {
@@ -161,7 +156,7 @@ var vm = new Vue({
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'name': vm.q.name,'regionId':vm.q.regionId},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
@@ -176,3 +171,21 @@ var vm = new Vue({
         }
 	}
 });
+
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
+    },
+    callback:{
+        onClick:vm.ztreeClick,
+    }
+};
