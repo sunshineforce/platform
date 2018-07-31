@@ -39,6 +39,7 @@ $(function () {
 });
 
 var ztree;
+var ztree1;
 
 var vm = new Vue({
 	el: '#rrapp',
@@ -84,8 +85,35 @@ var vm = new Vue({
             //加载树
             $.get("../sys/region/getAreaTree", function (r) {
                 var datas = r.node;
-                ztree = $.fn.zTree.init($("#regionTree"), setting,datas );
+                ztree1 = $.fn.zTree.init($("#editRegionTree"), setting1,datas );
+
+                console.log("id-----------------" + vm.enterprise.regionId)
+                var node = ztree1.getNodeByParam("id", vm.enterprise.regionId);
+                if (node) {
+                    console.log("name-----------------" + node.name)
+                    ztree1.selectNode(node);
+                    //vm.enterprise.regionName = node.name;
+                    Vue.set(vm.enterprise,'regionName',node.name);
+                }
             })
+        },
+        layerTree: function () {
+            openWindow({
+                title: "选择菜单",
+                area: ['300px', '450px'],
+                content: jQuery("#regionLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = ztree1.getSelectedNodes();
+
+                    //选择地域
+                    Vue.set(vm.enterprise,'regionId',node[0].id);
+                    Vue.set(vm.enterprise,'regionName',node[0].name);
+                    //console.log("name ---------" + node[0].name)
+
+                    layer.close(index);
+                }
+            });
         },
 		query: function () {
 			vm.reload();
@@ -93,7 +121,8 @@ var vm = new Vue({
 		add: function () {
 			vm.showList = false;
 			vm.title = "新增";
-			vm.enterprise = {};
+			vm.enterprise = {regionName:""};
+			vm.getRegionTree();
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -104,6 +133,7 @@ var vm = new Vue({
             vm.title = "修改";
 
             vm.getInfo(id)
+
 		},
 		saveOrUpdate: function (event) {
             var url = vm.enterprise.id == null ? "../enterprise/save" : "../enterprise/update";
@@ -114,6 +144,7 @@ var vm = new Vue({
 			    data: JSON.stringify(vm.enterprise),
                 success: function (r) {
                     if (r.code === 0) {
+                        vm.enterprise = {};
                         alert('操作成功', function (index) {
                             vm.reload();
                         });
@@ -150,6 +181,7 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../enterprise/info/"+id, function (r) {
                 vm.enterprise = r.enterprise;
+                vm.getRegionTree();
             });
 		},
 		reload: function (event) {
@@ -187,5 +219,19 @@ var setting = {
     },
     callback:{
         onClick:vm.ztreeClick,
+    }
+};
+
+var setting1 = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
     }
 };

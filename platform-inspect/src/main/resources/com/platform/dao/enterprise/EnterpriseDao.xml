@@ -73,6 +73,7 @@
 	<insert id="save" parameterType="com.platform.entity.enterprise.EnterpriseEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into enterprise(
 			`enterprise_name`,
+			 region_id,
 			`mobile`,
 			`owner`,
 			`address`,
@@ -85,6 +86,7 @@
 			`enabled`)
 		values(
 			#{enterpriseName},
+			#{regionId},
 			#{mobile},
 			#{owner},
 			#{address},
@@ -101,6 +103,7 @@
 		update enterprise 
 		<set>
 			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName}, </if>
+			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="owner != null">`owner` = #{owner}, </if>
 			<if test="address != null">`address` = #{address}, </if>
