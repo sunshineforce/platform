@@ -22,7 +22,7 @@ import java.util.Map;
 @RequestMapping("/app")
 public class AppAddressBookController {
 
-    @RequestMapping("/index/statistics")
+    @RequestMapping("/address/book/")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
 
