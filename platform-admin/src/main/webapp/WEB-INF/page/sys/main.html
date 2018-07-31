@@ -16,7 +16,7 @@
                         <i-option value="0">杭州</i-option>
                     </i-select>
                 </i-col>
-                <i-col span="8" style="margin-left: 121px;">
+                <i-col span="8" style="margin-left: 159px;">
                     <Row style="margin: 0;">
                         <i-col span="12">
                             <Date-picker type="datetime" placeholder="选择开始时间"></Date-picker>
@@ -39,6 +39,7 @@
             <span class="fl">任务执行统计</span>
             <span class="fr" alt="查看表格数据"><i class="fa fa-bars"></i></span>
         </p>
+        <div id="taskStatDiv" style="height: 399px;"></div>
     </Card>
 
     <Card>
@@ -46,9 +47,11 @@
             <span class="fl">异常处理统计</span>
             <span class="fr" alt="查看表格数据"><i class="fa fa-bars"></i></span>
         </p>
+        <div id="exceptionStatDiv" style="height: 399px;"></div>
     </Card>
 
 </div>
+<script src="${rc.contextPath}/statics/plugins/echarts/echarts-all.js"></script>
 <script src="${rc.contextPath}/js/sys/main.js?_${date.systemTime}"></script>
 </body>
 </html>
