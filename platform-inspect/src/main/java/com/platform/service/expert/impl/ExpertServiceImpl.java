@@ -6,11 +6,14 @@ import com.platform.entity.SysUserEntity;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.entity.expert.ExpertEntity;
 import com.platform.service.expert.IExpertService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -34,6 +37,18 @@ public class ExpertServiceImpl implements IExpertService {
     @Override
     public List<ExpertEntity> queryList(Map<String, Object> map) {
         return expertDao.queryList(map);
+    }
+
+    @Override
+    public PageUtils search(Map<String, Object> map) {
+        //查询列表数据
+        Query query = new Query(map);
+
+        List<ExpertEntity> expertList = expertDao.queryList(query);
+        int total = expertDao.queryTotal(query);
+
+        PageUtils pageUtil = new PageUtils(expertList, total, query.getLimit(), query.getPage());
+        return pageUtil;
     }
 
     @Override

@@ -2,8 +2,6 @@ package com.platform.controller.expert;
 
 import com.platform.entity.expert.ExpertEntity;
 import com.platform.service.expert.IExpertService;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
 import com.platform.utils.R;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +19,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("expert")
 public class ExpertController {
+
     @Autowired
     private IExpertService expertService;
 
@@ -31,15 +30,7 @@ public class ExpertController {
     @RequiresPermissions("expert:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
-        //查询列表数据
-        Query query = new Query(params);
-
-        List<ExpertEntity> expertList = expertService.queryList(query);
-        int total = expertService.queryTotal(query);
-
-        PageUtils pageUtil = new PageUtils(expertList, total, query.getLimit(), query.getPage());
-
-        return R.ok().put("page", pageUtil);
+        return R.ok().put("page", expertService.search(params));
     }
 
     /**

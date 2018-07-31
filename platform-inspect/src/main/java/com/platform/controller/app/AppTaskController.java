@@ -5,6 +5,8 @@ import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskEntity;
 import com.platform.service.task.TaskGroupService;
 import com.platform.service.task.TaskService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import com.platform.utils.R;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,8 @@ public class AppTaskController {
 
     @RequestMapping(value = "/task/list",method = RequestMethod.POST)
     public R taskList(@RequestBody HashMap<String,Object> params){
+        //查询列表数据
+        Query query = new Query(params);
         if (params == null) {
             return R.paramsIllegal();
         }
@@ -47,8 +51,11 @@ public class AppTaskController {
         }
 
         List<TaskEntity> taskList = taskService.queryList(params);
+        int total = taskService.queryTotal(query);
 
-        return R.succeed().put("list",taskList);
+        PageUtils pageUtil = new PageUtils(taskList, total, query.getLimit(), query.getPage());
+
+        return R.succeed().put("page", pageUtil);
     }
 
     @RequestMapping(value = "/task/create",method = RequestMethod.POST)

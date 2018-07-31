@@ -1,6 +1,7 @@
 package com.platform.service.expert;
 
 import com.platform.entity.expert.ExpertEntity;
+import com.platform.utils.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,13 @@ public interface IExpertService {
      * @return list
      */
     List<ExpertEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 分页查询
+     * @param map 参数
+     * @return list
+     */
+    PageUtils search(Map<String, Object> map);
 
     /**
      * 分页统计总数
