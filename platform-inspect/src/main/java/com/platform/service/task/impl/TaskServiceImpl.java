@@ -4,17 +4,14 @@ import com.platform.dao.task.TaskDao;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.notice.NoticeEntity;
 import com.platform.entity.task.TaskEntity;
-import com.platform.entity.task.TaskGroupMaterialEntity;
 import com.platform.entity.task.vo.TaskStatisticsVo;
 import com.platform.service.notice.INoticeService;
 import com.platform.service.task.TaskGroupMaterialService;
 import com.platform.service.task.TaskService;
-import com.platform.utils.enums.MaterialStatusEnum;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -50,7 +47,7 @@ public class TaskServiceImpl implements TaskService {
 
         List<TaskStatisticsVo> statistics;
         for (TaskEntity taskEntity : taskList) {
-            taskEntity.setChekArea(sysUser.getRegion());
+            //taskEntity.setChekArea(sysUser.getRegion());
             taskEntity.setProgressRate(calcProgressRate(taskEntity.getId()));
             statistics = taskGroupMaterialService.queryMaterialStatisticsByTaskId(Long.valueOf(taskEntity.getId()));
             taskEntity.setStatistics(statistics);
