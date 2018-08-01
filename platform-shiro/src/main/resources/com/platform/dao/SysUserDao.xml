@@ -121,7 +121,6 @@
 			`update_time`,
 			`update_user_id`,
 			identify,
-			region,
 			superior,
 			certificate_url,
 			enterprise_id,
@@ -143,7 +142,6 @@
 			#{updateTime},
 			#{updateUserId},
 			#{identify},
-			#{region},
 			#{superior},
 			#{certificateUrl},
 			#{enterpriseId},
@@ -161,7 +159,6 @@
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="identify != null">`identify` = #{identify}, </if>
-			<if test="region != null and region!=''">`region` = #{region}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="superior != null">`superior` = #{superior}, </if>
 			<if test="certificate_url != null">`certificate_url` = #{certificateUrl}, </if>

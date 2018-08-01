@@ -71,7 +71,7 @@ public class SysUserEntity implements Serializable {
     private Integer regionId;
 
     /** 所属区域 */
-    private String region;
+    private String regionName;
 
     /** 上级 */
     private String superior;
@@ -91,7 +91,25 @@ public class SysUserEntity implements Serializable {
     private Integer enterpriseId;
 
 
-   private List<Map<String,Object>> superiorList;
+    private String enterpriseName;
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
+    private List<Map<String,Object>> superiorList;
 
     /**
      * 设置：
@@ -275,13 +293,7 @@ public class SysUserEntity implements Serializable {
         this.regionId = regionId;
     }
 
-    public String getRegion() {
-        return region;
-    }
 
-    public void setRegion(String region) {
-        this.region = region;
-    }
 
     public Integer getIdentify() {
         return identify;
@@ -346,4 +358,6 @@ public class SysUserEntity implements Serializable {
     public void setSuperiorList(List<Map<String, Object>> superiorList) {
         this.superiorList = superiorList;
     }
+
+
 }
