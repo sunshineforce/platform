@@ -3,11 +3,19 @@
 
 <mapper namespace="com.platform.dao.SysUserDao">
 	<select id="queryObject" resultType="com.platform.entity.SysUserEntity">
-		select * from sys_user where user_id = #{value}
+		select u.*,
+			(SELECT r.`name` FROM sys_region AS r WHERE r.id = u.region_id) AS regionName,
+			(SELECT e.enterprise_name FROM enterprise AS e WHERE e.id = u.enterprise_id) AS enterpriseName
+		  from sys_user AS u where user_id = #{value}
 	</select>
 	
 	<select id="queryList" resultType="com.platform.entity.SysUserEntity">
-		select u.*, (select d.name from sys_dept d where d.dept_id = u.dept_id) deptName from sys_user u
+		select
+		  u.*,
+		(SELECT r.`name` FROM sys_region AS r WHERE r.id = u.region_id) AS regionName,
+		(SELECT e.enterprise_name FROM enterprise AS e WHERE e.id = u.enterprise_id) AS enterpriseName,
+		 (select d.name from sys_dept d where d.dept_id = u.dept_id) deptName
+		from sys_user u
 		<where>
 			<if test="createUserId != null">
 				and `create_user_id` = #{createUserId} 
@@ -30,7 +38,14 @@
 	</select>
 
 	<select id="queryAppUserList" resultType="com.platform.entity.SysUserEntity">
-		select * from sys_user u where u.identify !=0
+		SELECT
+			u.*,
+			(SELECT r.`name` FROM sys_region AS r WHERE r.id = u.region_id) AS regionName,
+			(SELECT e.enterprise_name FROM enterprise AS e WHERE e.id = u.enterprise_id) AS enterpriseName
+		FROM
+		sys_user u
+		WHERE
+		u.identify != 0
 		<if test="createUserId != null">
 			and `create_user_id` = #{createUserId}
 		</if>

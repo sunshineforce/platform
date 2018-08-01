@@ -42,9 +42,9 @@
                 <i-input v-model="appUser.regionName" @on-click="layerTree" icon="eye" readonly="readonly"
                          placeholder="选择区域"/>
             </Form-item>
-            <Form-item label="所属企业" prop="superior">
+            <Form-item label="所属企业" prop="enterpriseId">
                 <i-select v-model="appUser.enterpriseId"  placeholder="请选择所属企业">
-                    <i-option v-for="enterprise in enterpriseList" :value="enterprise.id" :key="enterprise.id">{{enterprise.name}}
+                    <i-option v-for="enterprise in enterpriseList" :value="enterprise.id" :key="enterprise.id">{{enterprise.enterpriseName}}
                     </i-option>
                 </i-select>
             </Form-item>

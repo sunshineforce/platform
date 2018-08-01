@@ -46,7 +46,7 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="regionId != null and regionId.trim() != ''">
+		<if test="regionId != null">
 			AND region_id = #{regionId}
 		</if>
         <choose>
@@ -68,6 +68,9 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="regionId != null">
+			AND region_id = #{regionId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.enterprise.EnterpriseEntity" useGeneratedKeys="true" keyProperty="id">

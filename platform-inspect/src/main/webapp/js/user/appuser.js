@@ -8,20 +8,22 @@ $(function () {
 			{label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'80px'},
             {label: '帐号', name: 'username', index: 'username', align: 'center', width:'80px'},
             {
-                label: '身份', name: 'status', width: 80, formatter: function (value) {
+                label: '身份', name: 'status', width: '60px', formatter: function (value) {
                     return value === 1 ?
                         '<span>安全员</span>' :
                         '<span>领导</span>';
                 }
             },
             {
-                label: '是否启用', name: 'status', width: 80, formatter: function (value) {
+                label: '是否启用', name: 'status', width: '60px', formatter: function (value) {
                     return value === 0 ?
                         '<span>否</span>' :
                         '<span>是</span>';
                 }
             },
             {label: '上级领导', name: 'superiorStr', index: 'superior', align: 'center', width:'80px'},
+            {label: '区域', name: 'regionName', index: '', align: 'center', width:'120px'},
+            {label: '所属企业', name: 'enterpriseName', index: '', align: 'center', width:'120px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
 			{label: '修改人', name: 'updateUserId', index: 'update_user_id', align: 'center', width:'80px'}],
 		viewrecords: true,
@@ -148,16 +150,36 @@ var vm = new Vue({
                     Vue.set(vm.appUser,'regionId',node[0].id);
                     Vue.set(vm.appUser,'regionName',node[0].name);
                     //console.log("name ---------" + node[0].name)
-                    vm.enterpriseList = [{id:0,name:'清华同方'}];
+                    //加载企业信息
+                    vm.queryEnterpriseList(node[0].id);
+
                     layer.close(index);
+                }
+            });
+        },
+        ///通过区域id加载企业列表
+        queryEnterpriseList:function (regionId) {
+            if (undefined == regionId || null == regionId){return;}
+            $.ajax({
+                type: "GET",
+                url: "../enterprise/queryAll",
+                contentType: "application/json",
+                data: {
+                    regionId:regionId,
+                },
+                success: function (r) {
+                    if (r.code == 0) {
+                        vm.enterpriseList = []; //清空上一次数据
+                        vm.enterpriseList = r.list;
+                    } else {
+                        console.log("error msg ---- " + r.msg)
+                    }
                 }
             });
         },
 	    querySuperiorList:function (id) {
             $.get("../sys/app/user/superiorList/"+id, function (r) {
                 vm.superiorList = r.superiorList;
-
-
             });
         },
 		query: function () {
@@ -246,6 +268,8 @@ var vm = new Vue({
                 }
                 vm.superiorArr = arr;
                 vm.getRegionTree();
+                //加载企业信息
+                vm.queryEnterpriseList(vm.appUser.enterpriseId);
                // console.log("superiorArr-----------" + vm.superiorArr)
             });
 		},
