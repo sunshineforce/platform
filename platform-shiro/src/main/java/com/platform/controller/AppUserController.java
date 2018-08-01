@@ -8,8 +8,6 @@ import com.platform.utils.Constant;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
-import com.platform.validator.ValidatorUtils;
-import com.platform.validator.group.AddGroup;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -152,7 +150,7 @@ public class AppUserController extends SysUserController {
     @RequestMapping("/save")
     @RequiresPermissions("appUser:save")
     public R save(@RequestBody SysUserEntity user) {
-        ValidatorUtils.validateEntity(user, AddGroup.class);
+        //ValidatorUtils.validateEntity(user, AddGroup.class);
         SysUserEntity sysUserEntity = getUser();
         if (null != user){
             user.setCreateUserId(sysUserEntity.getUserId());
