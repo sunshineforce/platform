@@ -73,7 +73,7 @@
 			m.`creator`,
 			m.`creator_id`,
 			m.`updator`,
-			m.`updator_id`
+			m.`updator_id`,
 		    t.name AS materialTypeName
 		from material AS m
 		LEFT JOIN material_type AS t ON  m.material_type_id = t.id

@@ -93,6 +93,25 @@ public class MaterialController extends AbstractController {
     }
 
     /**
+     * 报废
+     * @param material
+     * @return
+     */
+    @RequestMapping("/giveUp")
+    @RequiresPermissions("material:giveUp")
+    @ResponseBody
+    public R giveUp(@RequestBody MaterialEntity material) {
+        SysUserEntity user = getUser();
+        if (null != user){
+            material.setUpdatorId(user.getUserId());
+            material.setUpdator(user.getUsername());
+        }
+        materialService.update(material);
+
+        return R.ok();
+    }
+
+    /**
      * 删除
      */
     @RequestMapping("/delete")

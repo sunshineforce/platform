@@ -50,6 +50,22 @@ const Status = ["正常","报废","异常"];
 function formatStatus(t) {
     return '<span>' + Status[t] + '</span>';
 }
+
+var setting = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            url: "nourl"
+        }
+    }
+};
+var ztree;
+
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -63,9 +79,46 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+
 	},
 	methods: {
+        materialTypeTree: function () {
+            openWindow({
+                title: "选择类目",
+                area: ['300px', '450px'],
+                content: jQuery("#materialTypeLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = ztree.getSelectedNodes();
+                    console.log("node -------" + node.toString())
+                    //选择上级菜单
+                    // vm.materialType.parentId = node[0].id;
+                    Vue.set(vm.material, 'materialTypeId', node[0].id);
+                    Vue.set(vm.material, 'materialTypeName', node[0].name);
+                    //vm.materialType.parentName = node[0].name;
+
+                    layer.close(index);
+                }
+            });
+        },
+        getMaterialType: function () {
+            //加载树
+            $.get("../materialtype/queryAll", function (r) {
+                var datas = r.list;
+                ztree = $.fn.zTree.init($("#materialTypeTree"), setting,datas );
+                console.log(vm.material.materialTypeId)
+                var node = ztree.getNodeByParam("id", vm.material.materialTypeId);
+                if (node) {
+                    ztree.selectNode(node);
+                    vm.material.materialTypeName = node.name;
+                } else {
+                    // node = ztree.getNodeByParam("id", 0);
+                    // ztree.selectNode(node);
+                    // vm.materialType.parentName = node.name;
+                }
+            })
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -129,6 +182,7 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../material/info/"+id, function (r) {
                 vm.material = r.material;
+                vm.getMaterialType();
             });
 		},
 		reload: function (event) {
@@ -147,6 +201,25 @@ var vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        handleFormatError: function (file) {
+            this.$Notice.warning({
+                title: '文件格式不正确',
+                desc: '文件 ' + file.name + ' 格式不正确，请上传 jpg 或 png 格式的图片。'
+            });
+        },
+        handleMaxSize: function (file) {
+            this.$Notice.warning({
+                title: '超出文件大小限制',
+                desc: '文件 ' + file.name + ' 太大，不能超过 2M。'
+            });
+        },
+        handleSuccessPicUrl: function (res, file) {
+            vm.material.qrCode = file.response.url;
+        },
+        eyeImagePicUrl: function () {
+            var url = vm.material.qrCode;
+            eyeImage(url);
         }
 	}
 });
