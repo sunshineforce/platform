@@ -1,6 +1,8 @@
 package com.platform.controller.app;
 
+import com.platform.service.telephone.IAddressBookService;
 import com.platform.utils.R;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,10 +24,12 @@ import java.util.Map;
 @RequestMapping("/app")
 public class AppAddressBookController {
 
+    @Autowired
+    private IAddressBookService addressBookService;
+
     @RequestMapping("/address/book/")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
-
-        return R.succeed();
+        return R.succeed().put("page",addressBookService.search(params));
     }
 }

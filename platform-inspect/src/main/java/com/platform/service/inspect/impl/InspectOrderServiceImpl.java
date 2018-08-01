@@ -2,7 +2,10 @@ package com.platform.service.inspect.impl;
 
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.entity.inspect.InspectOrderEntity;
+import com.platform.entity.inspect.vo.AnomalyVo;
 import com.platform.service.inspect.IInspectOrderService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +33,16 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     @Override
     public List<InspectOrderEntity> queryList(Map<String, Object> map) {
         return inspectOrderDao.queryList(map);
+    }
+
+    @Override
+    public PageUtils search(Map<String, Object> map) {
+        Query query = new Query(map);
+        List<AnomalyVo> resultList = inspectOrderDao.search(map);
+        int total = queryTotal(map);
+
+        PageUtils pageUtil = new PageUtils(resultList, total, query.getLimit(), query.getPage());
+        return pageUtil;
     }
 
     @Override

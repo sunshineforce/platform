@@ -70,13 +70,47 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<!-- APP异常接口 -->
+	<select id="search" resultType="com.platform.entity.inspect.vo.AnomalyVo">
+		SELECT
+			m.material_name AS materialName,m.location,m.qr_code AS qrcode,m.material_url AS materialUrl,
+			o.inspect_time as checkTime,o.description,o.user_name as checkUserName,o.chief_ids as ,o.photos
+			FROM inspect_order o
+			LEFT JOIN material m ON m.id = o.material_id
+			WHERE o.inspect_status=1 and o.id=#{id}
+			<if test="status != null and status != ''">
+				AND status =#{status}
+			</if>
+			<if test="inspectStatus != null and inspectStatus != ''">
+				AND inspect_status =#{inspectStatus}
+			</if>
+			<if test="offset != null and limit != null">
+				limit #{offset}, #{limit}
+			</if>
+		ORDER BY id DESC
+	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from inspect_order
+		select count(1) from inspect_order
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+	</select>
+
+	<select id="searchTotal" resultType="int">
+		select count(1)
+		FROM inspect_order o
+		LEFT JOIN material m ON m.id = o.material_id
+		WHERE o.inspect_status=1 and o.id=#{id}
+		WHERE 1=1
+		<if test="status != null and status != ''">
+			AND status =#{status}
+		</if>
+		<if test="inspectStatus != null and inspectStatus != ''">
+			AND inspect_status =#{inspectStatus}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderEntity" useGeneratedKeys="true" keyProperty="id">

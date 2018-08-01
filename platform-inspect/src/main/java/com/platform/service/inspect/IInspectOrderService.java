@@ -2,6 +2,7 @@ package com.platform.service.inspect;
 
 
 import com.platform.entity.inspect.InspectOrderEntity;
+import com.platform.utils.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,13 @@ public interface IInspectOrderService {
      * @return list
      */
     List<InspectOrderEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 分页查询封装
+     * @param map
+     * @return
+     */
+    PageUtils search(Map<String, Object> map);
 
     /**
      * 分页统计总数

@@ -1,6 +1,7 @@
 package com.platform.service.telephone;
 
 import com.platform.entity.telephone.AddressBookEntity;
+import com.platform.utils.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +30,13 @@ public interface IAddressBookService {
      * @return list
      */
     List<AddressBookEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 分页查询
+     * @param map 参数
+     * @return PageUtils
+     */
+    PageUtils search(Map<String, Object> map);
 
     /**
      * 分页统计总数
