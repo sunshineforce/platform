@@ -17,7 +17,7 @@
             <i-button type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
 			#end
             #if($shiro.hasPermission("material:giveUp"))
-            <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;报废</i-button>
+            <i-button type="info" @click="giveup"><i class="fa fa-eraser"></i>&nbsp;报废</i-button>
             #end
 			#if($shiro.hasPermission("material:delete"))
             <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>

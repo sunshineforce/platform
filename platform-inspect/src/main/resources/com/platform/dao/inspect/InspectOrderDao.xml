@@ -11,7 +11,7 @@
         <result property="userId" column="user_id"/>
         <result property="userName" column="user_name"/>
         <result property="inspectStatus" column="inspect_status"/>
-        <result property="chiefId" column="chief_id"/>
+        <result property="chiefIds" column="chief_ids"/>
         <result property="chiefName" column="chief_name"/>
         <result property="photos" column="photos"/>
         <result property="createTime" column="create_time"/>
@@ -28,7 +28,7 @@
 			`user_id`,
 			`user_name`,
 			`inspect_status`,
-			`chief_id`,
+			`chief_ids`,
 			`chief_name`,
 			`photos`,
 			`create_time`,
@@ -47,7 +47,7 @@
     		`user_id`,
     		`user_name`,
     		`inspect_status`,
-    		`chief_id`,
+    		`chief_ids`,
     		`chief_name`,
     		`photos`,
     		`create_time`,
@@ -121,7 +121,7 @@
 			`user_id`,
 			`user_name`,
 			`inspect_status`,
-			`chief_id`,
+			`chief_ids`,
 			`chief_name`,
 			`photos`,
 			`create_time`,
@@ -134,7 +134,7 @@
 			#{userId},
 			#{userName},
 			#{inspectStatus},
-			#{chiefId},
+			#{chiefIds},
 			#{chiefName},
 			#{photos},
 			#{createTime},
@@ -151,7 +151,7 @@
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="userName != null">`user_name` = #{userName}, </if>
 			<if test="inspectStatus != null">`inspect_status` = #{inspectStatus}, </if>
-			<if test="chiefId != null">`chief_id` = #{chiefId}, </if>
+			<if test="chiefIds != null">`chief_ids` = #{chiefIds}, </if>
 			<if test="chiefName != null">`chief_name` = #{chiefName}, </if>
 			<if test="photos != null">`photos` = #{photos}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>

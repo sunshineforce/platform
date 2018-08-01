@@ -106,6 +106,7 @@ public class MaterialController extends AbstractController {
             material.setUpdatorId(user.getUserId());
             material.setUpdator(user.getUsername());
         }
+        material.setMaterialStatus(3);//报废
         materialService.update(material);
 
         return R.ok();

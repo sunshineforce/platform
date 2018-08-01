@@ -9,7 +9,7 @@ $(function () {
 			{label: '创建时间', name: 'createTime', index: 'create_time',align: 'center', width: 80},
 			{label: '更新时间', name: 'updateTime', index: 'update_time', align: 'center',width: 80},
             {label: '操作', name: 'id', index: 'id', align: 'center',width: 80,formatter:function (t) {
-				return "<a href='#'>添加物品</a>";
+				return "<a href='../material/material.html?id="+t+"'>添加物品</a>";
             }}],
 		viewrecords: true,
         height: 555,

@@ -46,7 +46,7 @@ function formatQR(t) {
 }
 //0：正常；1：报废；2：异常
 ///格式化任务状态
-const Status = ["正常","报废","异常"];
+const Status = ["未检查","正常","异常","报废"];
 function formatStatus(t) {
     return '<span>' + Status[t] + '</span>';
 }
@@ -155,6 +155,28 @@ var vm = new Vue({
                 }
 			});
 		},
+        giveup:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            var url =  "../material/giveUp";
+            $.ajax({
+                type: "POST",
+                url: url,
+                contentType: "application/json",
+                data: JSON.stringify({id:id}),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
 		del: function (event) {
             var ids = getSelectedRows();
 			if (ids == null){
@@ -182,6 +204,7 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../material/info/"+id, function (r) {
                 vm.material = r.material;
+                console.log("typeId ---- " + vm.material.materialTypeId)
                 vm.getMaterialType();
             });
 		},

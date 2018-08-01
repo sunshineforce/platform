@@ -33,7 +33,7 @@ public class InspectOrderEntity implements Serializable {
     //检查结果 0 正常  1 异常
     private Integer inspectStatus;
     //上级id
-    private Integer chiefId;
+    private String chiefIds;
     //上级姓名
     private String chiefName;
     //现场照片
@@ -148,19 +148,7 @@ public class InspectOrderEntity implements Serializable {
     public Integer getInspectStatus() {
         return inspectStatus;
     }
-    /**
-     * 设置：上级id
-     */
-    public void setChiefId(Integer chiefId) {
-        this.chiefId = chiefId;
-    }
 
-    /**
-     * 获取：上级id
-     */
-    public Integer getChiefId() {
-        return chiefId;
-    }
     /**
      * 设置：上级姓名
      */

@@ -33,7 +33,7 @@
 			`material_name`,
 			`location`,
 			 region_id,
-			 enterprise_id
+			 enterprise_id,
 			`material_type_id`,
 			 check_specific_id,
 			`produced_date`,
