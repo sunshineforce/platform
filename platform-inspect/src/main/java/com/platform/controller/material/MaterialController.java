@@ -3,7 +3,9 @@ package com.platform.controller.material;
 import com.platform.controller.AbstractController;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.material.MaterialEntity;
+import com.platform.entity.task.TaskGroupEntity;
 import com.platform.service.material.MaterialService;
+import com.platform.service.task.TaskGroupService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
@@ -12,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,9 @@ public class MaterialController extends AbstractController {
     @Autowired
     private MaterialService materialService;
 
+    @Autowired
+    private TaskGroupService taskGroupService;
+
     /**
      * 查看列表
      */
@@ -40,11 +46,34 @@ public class MaterialController extends AbstractController {
 
         List<MaterialEntity> materialList = materialService.queryList(query);
         int total = materialService.queryTotal(query);
-
+        Integer taskGroupId = params.get("taskGroupId") == null ? null : Integer.parseInt(String.valueOf(params.get("taskGroupId")));
+        syncTaskGroupStatus(materialList,taskGroupId);
         PageUtils pageUtil = new PageUtils(materialList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
     }
+    
+    private void syncTaskGroupStatus(List<MaterialEntity> materialList,Integer taskGroupId ){
+        if (null == materialList){
+            return;
+        }
+        Map<String, Object> params = null;
+        if (null != taskGroupId){
+            for (MaterialEntity materialEntity : materialList) {
+                params = new HashMap<>();
+                params.put("taskGroupId",taskGroupId);
+                params.put("materialId",materialEntity.getId());
+                List<TaskGroupEntity> l = taskGroupService.queryList(params);
+                if (null != l && l.size() > 0 ){
+                    materialEntity.setTaskGroupStatus(1);
+                }else{
+                    materialEntity.setTaskGroupStatus(0);
+                }
+            }
+        }
+    }
+
+
 
     /**
      * 查看信息

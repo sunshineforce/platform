@@ -60,6 +60,8 @@ public class MaterialEntity implements Serializable {
 
     private String remark;
 
+    private Integer taskGroupStatus;
+
     /**
      * 设置：主键Id
      */
@@ -278,5 +280,13 @@ public class MaterialEntity implements Serializable {
 
     public void setUpdator(String updator) {
         this.updator = updator;
+    }
+
+    public Integer getTaskGroupStatus() {
+        return taskGroupStatus;
+    }
+
+    public void setTaskGroupStatus(Integer taskGroupStatus) {
+        this.taskGroupStatus = taskGroupStatus;
     }
 }

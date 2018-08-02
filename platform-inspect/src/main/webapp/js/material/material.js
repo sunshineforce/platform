@@ -1,6 +1,17 @@
+var taskGroupId = getQueryString("id");
+var source = getQueryString("source");
 $(function () {
+    var isHide = !(source == 1);
+    if (isHide){
+        $("#addAllBtn").hide();
+        $("#removeAllBtn").hide();
+    }else{
+        $("#updateBtn").hide();
+        $("#giveupBtn").hide();
+        $("#delBtn").hide();
+    }
     $("#jqGrid").jqGrid({
-        url: '../material/list',
+        url: '../material/list?taskGroupId='+taskGroupId,
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
@@ -14,7 +25,14 @@ $(function () {
 			{label: '状态', name: 'materialStatus', index: 'material_status', align: 'center', width:'80px',formatter:formatStatus},
 			{label: '所属企业', name: 'materialOwner', index: 'material_owner', align: 'center', width:'80px'},
 			{label: '创建时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'},
-			{label: '更新时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'}],
+			{label: '更新时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
+            {label: '操作', name: 'id', hidden: isHide, index: 'id', align: 'center',width: 80,formatter:function (cellvalue, options, rowObject) {
+                var str = "<a href='javascript:add2TaskGroup("+taskGroupId+","+rowObject.id+")'>添加到此任务组</a>";
+                if (rowObject.taskGroupStatus == 1){
+                    str = "<a href='javascript:removeTaskGroup("+taskGroupId+","+rowObject.id+")'>添加到此任务组</a>";
+                }
+                return str;
+            }}],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -40,6 +58,7 @@ $(function () {
         }
     });
 });
+
 ///格式二维码
 function formatQR(t) {
     return '<img alt="image"  style="height: 64px; width: 64px;" src="'+t+'">';
@@ -66,6 +85,15 @@ var setting = {
 };
 var ztree;
 
+///添加到任务组
+function add2TaskGroup(tgId,mId) {
+    vm.add2TaskGroup(tgId,mId);
+}
+///从任务组移除
+function removeTaskGroup(tgId,mId) {
+    vm.removeTaskGroup(tgId,mId);
+}
+
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -83,6 +111,75 @@ var vm = new Vue({
 
 	},
 	methods: {
+        add2TaskGroup:function(tgId,mId){
+            $.ajax({
+                type: "POST",
+                url: "../taskgroupmaterial/save",
+                contentType: "application/json",
+                data: JSON.stringify({taskGroupId:tgId,materialId:mId}),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
+        removeTaskGroup:function (tgId,mId) {
+            $.ajax({
+                type: "POST",
+                url: "../taskgroupmaterial/remove",
+                contentType: "application/json",
+                data: JSON.stringify({taskGroupId:tgId,materialId:mId}),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
+        addAll2TaskGroup:function () {
+
+            $.ajax({
+                type: "POST",
+                url: "../taskgroupmaterial/remove",
+                contentType: "application/json",
+                data: JSON.stringify(vm.getQueryParams()),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
+        removeAllFromTaskGroup:function () {
+            $.ajax({
+                type: "POST",
+                url: "../taskgroupmaterial/remove",
+                contentType: "application/json",
+                data: JSON.stringify({taskGroupId:taskGroupId}),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
         materialTypeTree: function () {
             openWindow({
                 title: "选择类目",
@@ -93,10 +190,8 @@ var vm = new Vue({
                     var node = ztree.getSelectedNodes();
                     console.log("node -------" + node.toString())
                     //选择上级菜单
-                    // vm.materialType.parentId = node[0].id;
                     Vue.set(vm.material, 'materialTypeId', node[0].id);
                     Vue.set(vm.material, 'materialTypeName', node[0].name);
-                    //vm.materialType.parentName = node[0].name;
 
                     layer.close(index);
                 }
@@ -112,10 +207,6 @@ var vm = new Vue({
                 if (node) {
                     ztree.selectNode(node);
                     vm.material.materialTypeName = node.name;
-                } else {
-                    // node = ztree.getNodeByParam("id", 0);
-                    // ztree.selectNode(node);
-                    // vm.materialType.parentName = node.name;
                 }
             })
         },
@@ -208,11 +299,14 @@ var vm = new Vue({
                 vm.getMaterialType();
             });
 		},
+        getQueryParams:function () {
+            return {'name': vm.q.name,'taskGroupId':taskGroupId};
+        },
 		reload: function (event) {
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: vm.getQueryParams(),
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

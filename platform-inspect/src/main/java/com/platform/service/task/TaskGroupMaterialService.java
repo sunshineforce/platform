@@ -87,4 +87,11 @@ public interface TaskGroupMaterialService {
     int deleteBatch(Integer[] ids);
 
     List<TaskStatisticsVo> queryMaterialStatisticsByTaskId(Long taskId);
+
+    /**
+     * 移除
+     * @param taskGroupMaterialEntity
+     * @return
+     */
+    int remove(TaskGroupMaterialEntity taskGroupMaterialEntity);
 }

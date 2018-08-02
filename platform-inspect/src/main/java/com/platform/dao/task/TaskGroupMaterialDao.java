@@ -36,4 +36,11 @@ public interface TaskGroupMaterialDao extends BaseDao<TaskGroupMaterialEntity> {
      * @return
      */
     List<TaskStatisticsVo> selectMaterialStatusCount(Long taskId);
+
+    /**
+     * 移除
+     * @param taskGroupMaterialEntity
+     * @return
+     */
+    int remove(TaskGroupMaterialEntity taskGroupMaterialEntity);
 }

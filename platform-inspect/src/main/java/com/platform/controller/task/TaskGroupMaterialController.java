@@ -1,6 +1,8 @@
 package com.platform.controller.task;
 
+import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.task.TaskGroupMaterialEntity;
+import com.platform.service.material.MaterialService;
 import com.platform.service.task.TaskGroupMaterialService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
@@ -25,6 +27,9 @@ import java.util.Map;
 public class TaskGroupMaterialController {
     @Autowired
     private TaskGroupMaterialService taskGroupMaterialService;
+
+    @Autowired
+    private MaterialService materialService;
 
     /**
      * 查看列表
@@ -60,13 +65,45 @@ public class TaskGroupMaterialController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("taskgroupmaterial:save")
     @ResponseBody
     public R save(@RequestBody TaskGroupMaterialEntity taskGroupMaterial) {
         taskGroupMaterialService.save(taskGroupMaterial);
-
         return R.ok();
     }
+
+    /**
+     * 关联某一条件下
+     * @return
+     */
+    @RequestMapping("/saveAll")
+    @ResponseBody
+    public R saveAll(@RequestParam Map<String, Object> params) {
+        List<MaterialEntity> list = materialService.queryList(params);
+        Integer taskGroupId = params.get("taskGroupId") == null ? null : Integer.parseInt(String.valueOf(params.get("taskGroupId")));
+        if (taskGroupId != null && list != null && list.size() > 0) {
+            for (MaterialEntity materialEntity : list) {
+                TaskGroupMaterialEntity taskGroupMaterial = new TaskGroupMaterialEntity();
+                taskGroupMaterial.setMaterialId(materialEntity.getId());
+                taskGroupMaterial.setTaskGroupId(taskGroupId);
+                taskGroupMaterialService.save(taskGroupMaterial);
+            }
+        }
+        return R.ok();
+    }
+
+
+    /**
+     * 移除
+     * @param taskGroupMaterial
+     * @return
+     */
+    @RequestMapping("/remove")
+    @ResponseBody
+    public R remove(@RequestBody TaskGroupMaterialEntity taskGroupMaterial) {
+        taskGroupMaterialService.remove(taskGroupMaterial);
+        return R.ok();
+    }
+
 
     /**
      * 修改

@@ -76,4 +76,10 @@ public class TaskGroupMaterialServiceImpl implements TaskGroupMaterialService {
         }
         return taskGroupMaterialDao.selectMaterialStatusCount(taskId);
     }
+
+    @Override
+    public int remove(TaskGroupMaterialEntity taskGroupMaterialEntity) {
+
+        return taskGroupMaterialDao.remove(taskGroupMaterialEntity);
+    }
 }
