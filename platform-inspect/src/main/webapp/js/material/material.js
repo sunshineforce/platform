@@ -5,6 +5,7 @@ $(function () {
     if (isHide){
         $("#addAllBtn").hide();
         $("#removeAllBtn").hide();
+        $("#retunListBtn").hide();
     }else{
         $("#updateBtn").hide();
         $("#giveupBtn").hide();
@@ -29,7 +30,7 @@ $(function () {
             {label: '操作', name: 'id', hidden: isHide, index: 'id', align: 'center',width: 80,formatter:function (cellvalue, options, rowObject) {
                 var str = "<a href='javascript:add2TaskGroup("+taskGroupId+","+rowObject.id+")'>添加到此任务组</a>";
                 if (rowObject.taskGroupStatus == 1){
-                    str = "<a href='javascript:removeTaskGroup("+taskGroupId+","+rowObject.id+")'>添加到此任务组</a>";
+                    str = "<a href='javascript:removeTaskGroup("+taskGroupId+","+rowObject.id+")'>移除此任务组</a>";
                 }
                 return str;
             }}],
@@ -111,6 +112,9 @@ var vm = new Vue({
 
 	},
 	methods: {
+        retunList:function () {
+            window.location.href="/task/taskgroup.html";
+        },
         add2TaskGroup:function(tgId,mId){
             $.ajax({
                 type: "POST",
@@ -148,10 +152,10 @@ var vm = new Vue({
         addAll2TaskGroup:function () {
 
             $.ajax({
-                type: "POST",
-                url: "../taskgroupmaterial/remove",
+                type: "GET",
+                url: "../taskgroupmaterial/saveAll",
                 contentType: "application/json",
-                data: JSON.stringify(vm.getQueryParams()),
+                data: vm.getQueryParams(),
                 success: function (r) {
                     if (r.code === 0) {
                         alert('操作成功', function (index) {

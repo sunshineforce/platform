@@ -81,6 +81,9 @@ public class TaskGroupMaterialController {
         List<MaterialEntity> list = materialService.queryList(params);
         Integer taskGroupId = params.get("taskGroupId") == null ? null : Integer.parseInt(String.valueOf(params.get("taskGroupId")));
         if (taskGroupId != null && list != null && list.size() > 0) {
+            TaskGroupMaterialEntity tg = new TaskGroupMaterialEntity();
+            tg.setTaskGroupId(taskGroupId);
+            taskGroupMaterialService.remove(tg);
             for (MaterialEntity materialEntity : list) {
                 TaskGroupMaterialEntity taskGroupMaterial = new TaskGroupMaterialEntity();
                 taskGroupMaterial.setMaterialId(materialEntity.getId());

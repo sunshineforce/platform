@@ -3,9 +3,8 @@ package com.platform.controller.material;
 import com.platform.controller.AbstractController;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.material.MaterialEntity;
-import com.platform.entity.task.TaskGroupEntity;
 import com.platform.service.material.MaterialService;
-import com.platform.service.task.TaskGroupService;
+import com.platform.service.task.TaskGroupMaterialService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
@@ -32,7 +31,7 @@ public class MaterialController extends AbstractController {
     private MaterialService materialService;
 
     @Autowired
-    private TaskGroupService taskGroupService;
+    private TaskGroupMaterialService taskGroupMaterialService;
 
     /**
      * 查看列表
@@ -46,7 +45,10 @@ public class MaterialController extends AbstractController {
 
         List<MaterialEntity> materialList = materialService.queryList(query);
         int total = materialService.queryTotal(query);
-        Integer taskGroupId = params.get("taskGroupId") == null ? null : Integer.parseInt(String.valueOf(params.get("taskGroupId")));
+        Integer taskGroupId = null;
+        if (params.get("taskGroupId") != null && !"null".equals(String.valueOf(params.get("taskGroupId")))){
+           taskGroupId =  Integer.parseInt(String.valueOf(params.get("taskGroupId")));
+        }
         syncTaskGroupStatus(materialList,taskGroupId);
         PageUtils pageUtil = new PageUtils(materialList, total, query.getLimit(), query.getPage());
 
@@ -63,8 +65,8 @@ public class MaterialController extends AbstractController {
                 params = new HashMap<>();
                 params.put("taskGroupId",taskGroupId);
                 params.put("materialId",materialEntity.getId());
-                List<TaskGroupEntity> l = taskGroupService.queryList(params);
-                if (null != l && l.size() > 0 ){
+                int l = taskGroupMaterialService.queryTotal(params);
+                if (l > 0 ){
                     materialEntity.setTaskGroupStatus(1);
                 }else{
                     materialEntity.setTaskGroupStatus(0);

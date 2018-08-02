@@ -94,6 +94,8 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="taskGroupId != null"> AND  `task_group_id` = #{taskGroupId} </if>
+		<if test="materialId != null"> AND `material_id` = #{materialId}</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -113,6 +115,8 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="taskGroupId != null"> AND  `task_group_id` = #{taskGroupId} </if>
+		<if test="materialId != null"> AND `material_id` = #{materialId}</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.task.TaskGroupMaterialEntity" useGeneratedKeys="true" keyProperty="id">
