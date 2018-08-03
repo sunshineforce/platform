@@ -44,7 +44,7 @@ function formatQR(t) {
 }
 //0：正常；1：报废；2：异常
 ///格式化任务状态
-const Status = ["正常","报废","异常"];
+const Status = ["未检查","正常","异常","报废"];
 function formatStatus(t) {
     return '<span>' + Status[t] + '</span>';
 }
