@@ -5,10 +5,10 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '批次号', name: 'batchNo', index: 'batch_no', align: 'center', width:'80px'},
-			{label: '申请数量', name: 'quantity', index: 'quantity', align: 'center', width:'80px'},
-			{label: '二维前缀', name: 'prefix', index: 'prefix', align: 'center', width:'80px'},
+			{label: '生成数量', name: 'quantity', index: 'quantity', align: 'center', width:'80px'},
+			{label: '二维码前缀', name: 'prefix', index: 'prefix', align: 'center', width:'80px'},
+            {label: '申请企业', name: 'applicant', index: 'applicant', align: 'center', width:'80px'},
 			{label: '申请人', name: 'applicant', index: 'applicant', align: 'center', width:'80px'},
-			{label: '申请时间', name: 'applyDate', index: 'apply_date', align: 'center', width:'80px'},
 			{label: '状态', name: 'qrCodeStatus', index: 'qr_code_status', align: 'center', width:'80px',formatter:formatQrCodeStatus}
 			],
 		viewrecords: true,
@@ -36,13 +36,11 @@ $(function () {
         }
     });
 });
-
-///格式化任务状态
+//格式化任务状态
 const QrCodeStatus = ["审核中","已发放","已驳回"];
 function formatQrCodeStatus(t) {
     return '<span>' + QrCodeStatus[t] + '</span>';
 }
-
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
