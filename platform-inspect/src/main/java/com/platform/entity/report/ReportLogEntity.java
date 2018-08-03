@@ -42,6 +42,12 @@ public class ReportLogEntity implements Serializable {
     //创建时间
     private Date createTime;
 
+    private String userName;
+
+    private String mobile;
+
+    private String materialTypeName;
+
     /**
      * 设置：主键Id
      */
@@ -210,5 +216,29 @@ public class ReportLogEntity implements Serializable {
      */
     public Date getCreateTime() {
         return createTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getMaterialTypeName() {
+        return materialTypeName;
+    }
+
+    public void setMaterialTypeName(String materialTypeName) {
+        this.materialTypeName = materialTypeName;
     }
 }

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>巡检工单详情</title>
+    #parse("sys/header.html")
+</head>
+<body>
+<div id="rrapp" v-cloak>
+    <i-button style="margin-top: 15px;margin-left: 15px;" type="info" @click="toOrderList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回列表</i-button>
+
+
+    <div class="row">
+        <div class="col-sm-8">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                     上报详情
+                </div>
+                <div class="panel-body">
+                    <div class=" pb15">
+                        <ul class="lh22 clearfix">
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">告警时间：</label>
+                                <p class=" w130 fl">{{reportLog.sendTime}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">设备类型：</label>
+                                <p class=" w130 fl">{{reportLog.materialTypeName}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">所在楼层：</label>
+                                <p class=" w130 fl">{{reportLog.alarmFloor}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">位置标签：</label>
+                                <p class=" w130 fl">{{reportLog.localtionTag}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">客户名称：</label>
+                                <p class=" w130 fl">{{reportLog.userName}}</p>
+                            </li>
+                            <li class="pt15 fl w388">
+                                <label class="w165 tr fl">联系方式：</label>
+                                <p class=" w130 fl">{{reportLog.mobile}}</p>
+                            </li>
+
+                            <li class="pt15 fl w780">
+                                <label class="w165 tr fl">安装位置：</label>
+                                <p class=" w580 fl">{{reportLog.installLocal}}</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <Tabs value="classify1" style="margin-top: 15px;margin-left: 15px;" >
+        <Tab-pane label="户主/业主" name="classify0">
+        </Tab-pane>
+        <Tab-pane label="物业监控" name="classify1">
+        </Tab-pane>
+        <Tab-pane label="一级管理员" name="classify2">
+        </Tab-pane>
+        <Tab-pane label="二级管理员" name="classify3">
+        </Tab-pane>
+        <Tab-pane label="四个平台" name="classify4">
+        </Tab-pane>
+        <Tab-pane label="平台预警人员" name="classify5">
+        </Tab-pane>
+        <Tab-pane label="排版人员" name="classify6">
+        </Tab-pane>
+    </Tabs>
+
+
+
+    <i-button style="margin-top: 15px;margin-left: 15px;" type="info" @click="toOrderList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回列表</i-button>
+</div>
+
+<script src="${rc.contextPath}/js/report/logDetail.js?_${date.systemTime}"></script>
+</body>
+</html>

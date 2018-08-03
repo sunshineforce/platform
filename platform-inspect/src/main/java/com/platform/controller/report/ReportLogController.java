@@ -48,7 +48,6 @@ public class ReportLogController {
      * 查看信息
      */
     @RequestMapping("/info/{id}")
-    @RequiresPermissions("reportlog:info")
     @ResponseBody
     public R info(@PathVariable("id") Long id) {
         ReportLogEntity reportLog = reportLogService.queryObject(id);

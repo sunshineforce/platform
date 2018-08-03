@@ -4,18 +4,15 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: '发送时间', name: 'sendTime', index: 'send_time', align: 'center', width:'80px'},
 			{label: '事件编号', name: 'eventNo', index: 'event_no', align: 'center', width:'80px'},
-			{label: '推送结果(0:成功;1:失败;3:异常)', name: 'result', index: 'result', align: 'center', width:'80px'},
+			{label: '推送结果', name: 'result', index: 'result', align: 'center', width:'80px',formatter:formatResult},
 			{label: '告警位置', name: 'alarmLocation', index: 'alarm_location', align: 'center', width:'80px'},
 			{label: '位置标签', name: 'localtionTag', index: 'localtion_tag', align: 'center', width:'80px'},
-			{label: '设备类型', name: 'deviceType', index: 'device_type', align: 'center', width:'80px'},
-			{label: '客户id', name: 'customerId', index: 'customer_id', align: 'center', width:'80px'},
-			{label: '发送时间/告警时间', name: 'sendTime', index: 'send_time', align: 'center', width:'80px'},
-			{label: '所在楼层', name: 'alarmFloor', index: 'alarm_floor', align: 'center', width:'80px'},
-			{label: '安装位置', name: 'installLocal', index: 'install_local', align: 'center', width:'80px'},
-			{label: '发起内容', name: 'sendText', index: 'send_text', align: 'center', width:'80px'},
-			{label: '上报类型', name: 'classify', index: 'classify', align: 'center', width:'80px'},
-			{label: '创建时间', name: 'createTime', index: 'create_time', align: 'center', width:'80px'}],
+			{label: '设备类型', name: 'materialTypeName', index: 'device_type', align: 'center', width:'80px'},
+			{label: '客户名称', name: 'userName', index: 'customer_id', align: 'center', width:'80px'},
+            {label: '联系电话', name: 'mobile', index: 'customer_id', align: 'center', width:'80px'}
+			],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -42,6 +39,12 @@ $(function () {
     });
 });
 
+//0：正常；1：发送失败；2：异常
+///格式化任务状态
+const Result = ["发送成功","发送失败","发送异常"];
+function formatResult(t) {
+    return '<span>' + Result[t] + '</span>';
+}
 var vm = new Vue({
 	el: '#rrapp',
 	data: {
@@ -58,6 +61,13 @@ var vm = new Vue({
 		}
 	},
 	methods: {
+        toDetail:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            window.location.href = "/report/logDetail.html?id="+id;
+        },
 		query: function () {
 			vm.reload();
 		},
