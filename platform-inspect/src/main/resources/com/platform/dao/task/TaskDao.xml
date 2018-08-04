@@ -135,6 +135,36 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<select id="queryListSimple">
+		SELECT t.id,t.task_group_id,m.id,t.name,t.start_time,t.end_time,CONCAT(r.name,e.enterprise_name)
+		FROM task t
+		LEFT JOIN task_group_material gm ON t.task_group_id=gm.task_group_id
+		LEFT JOIN material m ON m.id = gm.material_id
+		LEFT JOIN sys_region r ON r.id = m.region_id
+		LEFT JOIN enterprise e ON e.id = m.enterprise_id
+		WHERE 1=1 AND data_status = 0
+		<if test="name != null and name.trim() != ''">
+			AND t.name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND t.status =#{status}
+		</if>
+		<if test="userId != null">
+			AND #{userId} = t.user_ids
+		</if>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(1) from task
