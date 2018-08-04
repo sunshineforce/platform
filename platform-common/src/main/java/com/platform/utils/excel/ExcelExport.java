@@ -2,12 +2,12 @@ package com.platform.utils.excel;
 
 import com.platform.utils.RRException;
 import com.platform.utils.StringUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
@@ -45,7 +47,7 @@ public class ExcelExport {
     /**
      * 工作表
      */
-    private Workbook workBook;
+    private HSSFWorkbook workBook;
 
     /**
      * 导出文件名
@@ -86,9 +88,9 @@ public class ExcelExport {
         if (fileName.endsWith(ExcelExport.EXCEL03_EXTENSION)) {
             workBook = new HSSFWorkbook();
         } else if (exportFileName.endsWith(ExcelExport.EXCEL07_EXTENSION)) {
-            workBook = new XSSFWorkbook();
+            workBook = new HSSFWorkbook();
         } else {
-            workBook = new XSSFWorkbook();
+            workBook = new HSSFWorkbook();
             fileName += ".xlsx";
             // 按正则替换？ 处理文件名最后一个字符为“.” 的问题
             // fileName = fileName.replaceAll("..", ".");
@@ -161,7 +163,7 @@ public class ExcelExport {
 
         List<Object> obj = new ArrayList<Object>();
 
-        obj.add("370681198002042214");
+        obj.add("https://www.resource.yuntuodev.cn/resource/images/weixin/mall/qrCode/201808041530162799738450.png");
         obj.add(new Date());
         obj.add(new Timestamp(System.currentTimeMillis()));
         obj.add(1);
@@ -175,7 +177,11 @@ public class ExcelExport {
 
         String[] header = new String[]{"身份证号", "日期", "时间", "整型", "长整", "浮点",
                 "双精度", "大数", "布尔"};
-        ee1.addSheetByArray("测试1", list1, header);
+        try {
+            ee1.addSheetByArray("测试1", list1, header);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         OutputStream fis;
         try {
@@ -200,10 +206,10 @@ public class ExcelExport {
      * @param colCaption 要生成的表头
      */
     public void addSheetByArray(String sheetName, List<Object[]> list,
-                                String[] colCaption) {
+                                String[] colCaption) throws IOException {
 
         // 创建表单
-        Sheet sheet;
+        HSSFSheet sheet;
 
         if (StringUtils.isNullOrEmpty(sheetName)) {
             sheet = workBook.createSheet();
@@ -220,7 +226,7 @@ public class ExcelExport {
         for (Object[] obj : list) {
 
             Row row = sheet.createRow(startRow++);
-            int cols = createRowData(row, Arrays.asList(obj));
+            int cols = createRowData(row, Arrays.asList(obj),sheet);
             row.setHeight((short) 400);
             colNum = colNum > cols ? colNum : cols;
         }
@@ -238,10 +244,10 @@ public class ExcelExport {
      * @param colCaption 要生成的表头
      */
     public void addSheetByMap(String sheetName, List<Map<String, Object>> list,
-                              String[] colCaption) {
+                              String[] colCaption) throws IOException {
 
         // 创建表单
-        Sheet sheet;
+        HSSFSheet sheet;
 
         if (StringUtils.isNullOrEmpty(sheetName)) {
             sheet = workBook.createSheet();
@@ -258,7 +264,7 @@ public class ExcelExport {
         int startRow = 1;
         for (Map<String, Object> map : list) {
             Row row = sheet.createRow(startRow++);
-            int cols = createRowData(row, map.values());
+            int cols = createRowData(row, map.values(),sheet);
             row.setHeight((short) 400);
             colNum = colNum > cols ? colNum : cols;
         }
@@ -297,7 +303,7 @@ public class ExcelExport {
      * @param coll 集合类型（List Map.values) 要处理的数据
      * @return int  列数
      */
-    private int createRowData(Row row, Collection<Object> coll) {
+    private int createRowData(Row row, Collection<Object> coll,HSSFSheet sheet) throws IOException {
 
         int cellNum = 0;
         for (Object obj : coll) {
@@ -320,7 +326,7 @@ public class ExcelExport {
                 // 处理宽度
 
                 // 设置单元格的值
-                setCellValue(cell, obj);
+                setCellValue(cell, obj,sheet);
 
             }
 
@@ -344,10 +350,11 @@ public class ExcelExport {
      * @param cell 单元格
      * @param obj  原始值（ null已转换为"" 空字符串)
      */
-    private void setCellValue(Cell cell, Object obj) {
+    private void setCellValue(Cell cell, Object obj,HSSFSheet sheet) throws IOException {
 
         CreationHelper createHelper = workBook.getCreationHelper();
         String strValue = obj.toString();
+
 
         // 时间戳类型 要先判断时间戳类型再判断时期类型
         if (obj instanceof Timestamp) {
@@ -435,13 +442,31 @@ public class ExcelExport {
         // }
         // 字符串类型
         else if (obj instanceof String) {
-            // modi at 2016年11月14日14:27:51 by zhang
-            // 补充设置单元格类型，避免编码类被当作数字类型
-            cell.setCellType(CellType.STRING);
-            // end modi
+            if (obj.toString().endsWith(".png")){
+                byte[] bytes = IOUtils.toByteArray(getInputStream(obj.toString()));
+                int my_picture_id = workBook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
+                // 利用HSSFPatriarch将图片写入EXCEL
+                /**
+                 * 该构造函数有8个参数
+                 * 前四个参数是控制图片在单元格的位置，分别是图片距离单元格left，top，right，bottom的像素距离
+                 * 后四个参数，前连个表示图片左上角所在的cellNum和 rowNum，后天个参数对应的表示图片右下角所在的cellNum和 rowNum，
+                 * excel中的cellNum和rowNum的index都是从0开始的
+                 *
+                 */
+                HSSFPatriarch patri = sheet.createDrawingPatriarch();
+                HSSFClientAnchor anchor = new HSSFClientAnchor();
+                anchor.setCol1(cell.getColumnIndex());
+                anchor.setRow1(cell.getRowIndex());
+                HSSFPicture my_picture = patri.createPicture(anchor, my_picture_id);
+                my_picture.resize();
+            }else {
+                // modi at 2016年11月14日14:27:51 by zhang
+                // 补充设置单元格类型，避免编码类被当作数字类型
+                cell.setCellType(CellType.STRING);
+                // end modi
 
-            cell.setCellValue(strValue);
-
+                cell.setCellValue(strValue);
+            }
         } else {
             cell.setCellType(CellType.STRING);
             cell.setCellValue(strValue);
@@ -449,13 +474,38 @@ public class ExcelExport {
 
     }
 
-    /**
-     * 主要功能: 生成EXCEL的第一行表头
-     * 注意事项: 默认按第一行生成表头。
-     *
-     * @param colCaption 表头字符数组
-     * @param sheet      表单
-     */
+    public static  InputStream getInputStream(String path) {
+        InputStream inputStream = null;
+        HttpURLConnection httpURLConnection = null;
+        try {
+            URL url = new URL(path);
+            if (url != null) {
+                httpURLConnection = (HttpURLConnection) url.openConnection();
+                httpURLConnection.setConnectTimeout(3000);
+                httpURLConnection.setRequestMethod("GET");
+                int responseCode = httpURLConnection.getResponseCode();
+                if (responseCode == 200) {
+                    inputStream = httpURLConnection.getInputStream();
+                }
+            }
+
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return inputStream;
+    }
+
+
+
+        /**
+         * 主要功能: 生成EXCEL的第一行表头
+         * 注意事项: 默认按第一行生成表头。
+         *
+         * @param colCaption 表头字符数组
+         * @param sheet      表单
+         */
     private void createCaptionRow(String[] colCaption, Sheet sheet) {
         // 默认第一行
         Row row = sheet.createRow(0);
@@ -584,7 +634,7 @@ public class ExcelExport {
      *
      * @param workBook 设定值
      */
-    public void setWorkbook(Workbook workBook) {
+    public void setWorkbook(HSSFWorkbook workBook) {
         this.workBook = workBook;
     }
 

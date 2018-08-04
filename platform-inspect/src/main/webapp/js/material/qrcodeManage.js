@@ -4,12 +4,14 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: 'isGenerated', name: 'isGenerated',  key: true, hidden: true},
+            {label: 'qrCodeStatus', name: 'qrCodeStatus',  key: true, hidden: true},
 			{label: '批次号', name: 'batchNo', index: 'batch_no', align: 'center', width:'80px'},
 			{label: '生成数量', name: 'quantity', index: 'quantity', align: 'center', width:'80px'},
 			{label: '二维码前缀', name: 'prefix', index: 'prefix', align: 'center', width:'80px'},
-            {label: '申请企业', name: 'applicant', index: 'applicant', align: 'center', width:'80px'},
-			{label: '申请人', name: 'applicant', index: 'applicant', align: 'center', width:'80px'},
-			{label: '状态', name: 'qrCodeStatus', index: 'qr_code_status', align: 'center', width:'80px',formatter:formatQrCodeStatus}
+            {label: '申请企业', name: 'enterpriseName', index: '', align: 'center', width:'80px'},
+			{label: '申请人', name: 'applicantName', index: 'applicant', align: 'center', width:'80px'},
+			{label: '状态', name: 'qrCodeStatusStr', index: 'qr_code_status', align: 'center', width:'80px',formatter:formatQrCodeStatus}
 			],
 		viewrecords: true,
         height: 555,
@@ -38,8 +40,8 @@ $(function () {
 });
 //格式化任务状态
 const QrCodeStatus = ["审核中","已发放","已驳回"];
-function formatQrCodeStatus(t) {
-    return '<span>' + QrCodeStatus[t] + '</span>';
+function formatQrCodeStatus(cellvalue, options, rowObject) {
+    return '<span>' + QrCodeStatus[rowObject.qrCodeStatus] + '</span>';
 }
 var vm = new Vue({
 	el: '#rrapp',
@@ -54,9 +56,104 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        rejectReason:"",
 	},
 	methods: {
+        generateQr:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            var data = getSelectedRowData();
+            if (data.isGenerated == 1){
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "../qrcodeapply/generateQr",
+                contentType: "application/json",
+                data: JSON.stringify({id:data.id,batchNo:data.batchNo,quantity:data.quantity}),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
+        grant:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            var data = getSelectedRowData();
+            if (data.qrCodeStatus != 0){
+                return;
+            }
+            if (data.isGenerated == 0){
+                alert("请先生成二维码再发放，谢谢！");
+                return;
+            }
+            $.ajax({
+                type: "POST",
+                url: "../qrcodeapply/grant",
+                contentType: "application/json",
+                data: JSON.stringify({id:data.id}),
+                success: function (r) {
+                    if (r.code === 0) {
+                        alert('操作成功', function (index) {
+                            vm.reload();
+                        });
+                    } else {
+                        alert(r.msg);
+                    }
+                }
+            });
+        },
+        rejectApply:function () {
+            vm.rejectReason = "";
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            var data = getSelectedRowData();
+            if (data.qrCodeStatus != 0){
+                return;
+            }
+            openWindow({
+                title: "驳回原因",
+                area: ['500px', '300px'],
+                content: jQuery("#rejectDiv"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    layer.close(index);
+                    confirm('确定要驳回该记录？', function () {
+                        $.ajax({
+                            type: "POST",
+                            url: "../qrcodeapply/reject",
+                            contentType: "application/json",
+                            data: JSON.stringify({id:data.id,rejectReason:vm.rejectReason}),
+                            success: function (r) {
+                                if (r.code === 0) {
+                                    alert('操作成功', function (index) {
+                                        vm.reload();
+                                    });
+                                } else {
+                                    alert(r.msg);
+                                }
+                            }
+                        });
+                    });
+                }
+            });
+
+
+
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -65,15 +162,19 @@ var vm = new Vue({
 			vm.title = "新增";
 			vm.qrCodeApply = {};
 		},
-		update: function (event) {
+        openGenerateQr: function (event) {
             var id = getSelectedRow();
 			if (id == null) {
 				return;
 			}
+            var data = getSelectedRowData();
+            if (data.isGenerated == 1){
+                return;
+            }
 			vm.showList = false;
-            vm.title = "修改";
+            vm.title = "生成二维码";
 
-            vm.getInfo(id)
+            vm.getInfo(data.id)
 		},
 		saveOrUpdate: function (event) {
             var url = vm.qrCodeApply.id == null ? "../qrcodeapply/save" : "../qrcodeapply/update";

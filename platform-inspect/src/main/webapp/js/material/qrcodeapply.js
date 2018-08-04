@@ -7,8 +7,9 @@ $(function () {
 			{label: '批次号', name: 'batchNo', index: 'batch_no', align: 'center', width:'80px'},
 			{label: '申请数量', name: 'quantity', index: 'quantity', align: 'center', width:'80px'},
 			{label: '二维前缀', name: 'prefix', index: 'prefix', align: 'center', width:'80px'},
-			{label: '申请人', name: 'applicant', index: 'applicant', align: 'center', width:'80px'},
+			{label: '申请人', name: 'applicantName', index: 'applicant', align: 'center', width:'80px'},
 			{label: '申请时间', name: 'applyDate', index: 'apply_date', align: 'center', width:'80px'},
+            {label: '驳回原因', name: 'rejectReason', index: 'reject_reason', align: 'center', width:'80px'},
 			{label: '状态', name: 'qrCodeStatus', index: 'qr_code_status', align: 'center', width:'80px',formatter:formatQrCodeStatus}
 			],
 		viewrecords: true,
@@ -62,11 +63,22 @@ var vm = new Vue({
 		query: function () {
 			vm.reload();
 		},
-		add: function () {
+        apply: function () {
 			vm.showList = false;
-			vm.title = "新增";
+			vm.title = "申请";
 			vm.qrCodeApply = {};
 		},
+        toDetail:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            window.location.href = "/material/qrcodedetail.html?id="+id;
+        },
+		//导出
+        exportExecel:function () {
+
+        },
 		update: function (event) {
             var id = getSelectedRow();
 			if (id == null) {
