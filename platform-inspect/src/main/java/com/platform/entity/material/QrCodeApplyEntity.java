@@ -17,8 +17,6 @@ public class QrCodeApplyEntity implements Serializable {
 
     //主键Id
     private Integer id;
-    //二维码类型（0：物品二维码；1：企业二维码）
-    private Integer qrCodeType;
     //申请批次号
     private String batchNo;
     //二维码生成数量
@@ -26,27 +24,26 @@ public class QrCodeApplyEntity implements Serializable {
     //二维前缀
     private String prefix;
     //申请人
-    private Integer applicant;
+    private Long applicant;
     //申请时间
     private Date applyDate;
-    //状态（0：审核中；1：已发放）
+    //状态（0：审核中；1：已发放 2 已驳回）
     private Integer qrCodeStatus;
     //驳回原因
     private String rejectReason;
     //生成人员
-    private Integer generateMan;
+    private Long generateMan;
     //生成时间
     private Date generateDate;
-    //绑定人员
-    private Integer bindMan;
-    //绑定时间
-    private Date bindDate;
-    //物料Id
-    private Integer matetialId;
-    //物品类型
-    private Integer materialTypeId;
     //创建时间
     private Date createDate;
+
+    private String applicantName;
+
+    private String enterpriseName;
+
+    private Integer isGenerated; // 是否已生成  0 为生成 1 已生成
+
 
     /**
      * 设置：主键Id
@@ -61,19 +58,7 @@ public class QrCodeApplyEntity implements Serializable {
     public Integer getId() {
         return id;
     }
-    /**
-     * 设置：二维码类型（0：物品二维码；1：企业二维码）
-     */
-    public void setQrCodeType(Integer qrCodeType) {
-        this.qrCodeType = qrCodeType;
-    }
 
-    /**
-     * 获取：二维码类型（0：物品二维码；1：企业二维码）
-     */
-    public Integer getQrCodeType() {
-        return qrCodeType;
-    }
     /**
      * 设置：申请批次号
      */
@@ -113,19 +98,7 @@ public class QrCodeApplyEntity implements Serializable {
     public String getPrefix() {
         return prefix;
     }
-    /**
-     * 设置：申请人
-     */
-    public void setApplicant(Integer applicant) {
-        this.applicant = applicant;
-    }
 
-    /**
-     * 获取：申请人
-     */
-    public Integer getApplicant() {
-        return applicant;
-    }
     /**
      * 设置：申请时间
      */
@@ -165,19 +138,7 @@ public class QrCodeApplyEntity implements Serializable {
     public String getRejectReason() {
         return rejectReason;
     }
-    /**
-     * 设置：生成人员
-     */
-    public void setGenerateMan(Integer generateMan) {
-        this.generateMan = generateMan;
-    }
 
-    /**
-     * 获取：生成人员
-     */
-    public Integer getGenerateMan() {
-        return generateMan;
-    }
     /**
      * 设置：生成时间
      */
@@ -191,58 +152,7 @@ public class QrCodeApplyEntity implements Serializable {
     public Date getGenerateDate() {
         return generateDate;
     }
-    /**
-     * 设置：绑定人员
-     */
-    public void setBindMan(Integer bindMan) {
-        this.bindMan = bindMan;
-    }
 
-    /**
-     * 获取：绑定人员
-     */
-    public Integer getBindMan() {
-        return bindMan;
-    }
-    /**
-     * 设置：绑定时间
-     */
-    public void setBindDate(Date bindDate) {
-        this.bindDate = bindDate;
-    }
-
-    /**
-     * 获取：绑定时间
-     */
-    public Date getBindDate() {
-        return bindDate;
-    }
-    /**
-     * 设置：物料Id
-     */
-    public void setMatetialId(Integer matetialId) {
-        this.matetialId = matetialId;
-    }
-
-    /**
-     * 获取：物料Id
-     */
-    public Integer getMatetialId() {
-        return matetialId;
-    }
-    /**
-     * 设置：物品类型
-     */
-    public void setMaterialTypeId(Integer materialTypeId) {
-        this.materialTypeId = materialTypeId;
-    }
-
-    /**
-     * 获取：物品类型
-     */
-    public Integer getMaterialTypeId() {
-        return materialTypeId;
-    }
     /**
      * 设置：创建时间
      */
@@ -255,5 +165,45 @@ public class QrCodeApplyEntity implements Serializable {
      */
     public Date getCreateDate() {
         return createDate;
+    }
+
+    public String getApplicantName() {
+        return applicantName;
+    }
+
+    public void setApplicantName(String applicantName) {
+        this.applicantName = applicantName;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
+    public Long getApplicant() {
+        return applicant;
+    }
+
+    public void setApplicant(Long applicant) {
+        this.applicant = applicant;
+    }
+
+    public Long getGenerateMan() {
+        return generateMan;
+    }
+
+    public void setGenerateMan(Long generateMan) {
+        this.generateMan = generateMan;
+    }
+
+    public Integer getIsGenerated() {
+        return isGenerated;
+    }
+
+    public void setIsGenerated(Integer isGenerated) {
+        this.isGenerated = isGenerated;
     }
 }
