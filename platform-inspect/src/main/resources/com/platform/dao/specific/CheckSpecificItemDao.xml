@@ -46,6 +46,13 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<!-- 检查规范项下拉列表 -->
+	<select id="queryListSimple" resultType="com.platform.vo.SelectVo">
+		select `id`,`name` from check_specific_item WHERE `data_status` = 0
+		AND `specific_id` =  #{specificId}
+		order by id
+	</select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(*) from check_specific_item

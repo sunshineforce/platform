@@ -1,14 +1,9 @@
 package com.platform.controller.app;
 
-import com.platform.controller.AbstractController;
 import com.platform.service.enterprise.IEnterpriseService;
 import com.platform.service.material.MaterialTypeService;
-import com.platform.service.specific.CheckSpecificService;
 import com.platform.utils.R;
-import com.platform.vo.SelectVo;
 import com.platform.vo.TreeVo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,13 +23,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/app")
-public class AppCommonController extends AbstractController {
+public class AppCommonController{
 
     @Autowired
     private MaterialTypeService materialTypeService;
-
-    @Autowired
-    private CheckSpecificService checkSpecificService;
 
     @Autowired
     private IEnterpriseService enterpriseService;
@@ -42,12 +34,6 @@ public class AppCommonController extends AbstractController {
     @RequestMapping(value = "/material/type/list")
     public R queryMaterialTypeList(){
         List<TreeVo> list = materialTypeService.loadAllMaterialType();
-        return R.succeed().put("list",list);
-    }
-
-    @RequestMapping(value = "/check/specific/list")
-    public R queryCheckSpecificList(){
-        List<SelectVo> list = checkSpecificService.loadAllCheckSpecific();
         return R.succeed().put("list",list);
     }
 

@@ -16,10 +16,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * 专家库表Service实现类
- *
+ * 专家库
  * @author admin
- *  
  * @date 2018-07-20 18:08:44
  */
 @Service("expertService")
@@ -42,11 +40,10 @@ public class ExpertServiceImpl implements IExpertService {
         //查询列表数据
         Query query = new Query(map);
 
-        List<ExpertEntity> expertList = expertDao.queryList(query);
-        int total = expertDao.queryTotal(query);
+        List<ExpertEntity> expertList = queryList(query);
+        int total = queryTotal(query);
 
-        PageUtils pageUtil = new PageUtils(expertList, total, query.getLimit(), query.getPage());
-        return pageUtil;
+        return new PageUtils(expertList, total, query.getLimit(), query.getPage());
     }
 
     @Override

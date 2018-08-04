@@ -2,9 +2,10 @@ package com.platform.dao.specific;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.specific.CheckSpecificEntity;
-import com.platform.vo.SelectVo;
+import com.platform.entity.specific.vo.CheckSpecificVo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 检查规范表Dao
@@ -14,5 +15,7 @@ import java.util.List;
  * @date 2018-07-23 20:03:40
  */
 public interface CheckSpecificDao extends BaseDao<CheckSpecificEntity> {
-    List<SelectVo> queryAllCheckSpecific();
+    List<CheckSpecificVo> queryListSimple(Map<String, Object> map);
+
+    Integer queryTotalSimple(Map<String, Object> map);
 }

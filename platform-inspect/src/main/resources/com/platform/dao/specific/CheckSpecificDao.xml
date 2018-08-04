@@ -44,7 +44,7 @@
 		from check_specific
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+			AND specific_name LIKE concat('%',#{name},'%')
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -60,16 +60,36 @@
 	</select>
 
 	<!-- 查询所有检查规范，下拉选择列表 -->
-	<select id="queryAllCheckSpecific" resultType="com.platform.vo.SelectVo">
-		SELECT `id`, `specific_name` AS name FROM check_specific ORDER BY id
+	<select id="queryListSimple" resultType="com.platform.entity.specific.vo.CheckSpecificVo">
+		SELECT cs.id,cs.specific_name as name,cs.remark
+		FROM material m
+		LEFT JOIN check_specific cs ON m.check_specific_id = cs.id
+		where m.material_type_id = #{materialTypeId}
+		<if test="name != null and name.trim() != ''">
+			AND cs.specific_name LIKE concat('%',#{name},'%')
+		</if>
+		ORDER BY id
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from check_specific
+		select count(1) from check_specific
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+            AND specific_name LIKE concat('%',#{name},'%')
         </if>
+	</select>
+
+	<select id="queryTotalSimple" resultType="com.platform.entity.specific.vo.CheckSpecificVo">
+		SELECT count(1)
+		FROM material m
+		LEFT JOIN check_specific cs ON m.check_specific_id = cs.id
+		where m.material_type_id = #{materialTypeId}
+		<if test="name != null and name.trim() != ''">
+			AND cs.specific_name LIKE concat('%',#{name},'%')
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.specific.CheckSpecificEntity" useGeneratedKeys="true" keyProperty="id">

@@ -1,6 +1,8 @@
 package com.platform.service.specific;
 
 import com.platform.entity.specific.CheckSpecificEntity;
+import com.platform.entity.specific.vo.CheckSpecificVo;
+import com.platform.utils.PageUtils;
 import com.platform.vo.SelectVo;
 
 import java.util.List;
@@ -30,10 +32,17 @@ public interface CheckSpecificService {
     List<CheckSpecificEntity> queryList(Map<String, Object> map);
 
     /**
+     * 分页查询封装
+     * @param map 参数
+     * @return list
+     */
+    PageUtils search(Map<String, Object> map);
+
+    /**
      * 加载所有的检查规范
      * @return
      */
-    List<SelectVo> loadAllCheckSpecific();
+    List<CheckSpecificVo> queryListSimple(Map<String, Object> map);
 
     /**
      * 分页统计总数

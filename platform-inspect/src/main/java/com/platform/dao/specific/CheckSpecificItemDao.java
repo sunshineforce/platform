@@ -2,6 +2,9 @@ package com.platform.dao.specific;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.specific.CheckSpecificItemEntity;
+import com.platform.vo.SelectVo;
+
+import java.util.List;
 
 /**
  * 规范项条目表Dao
@@ -18,4 +21,6 @@ public interface CheckSpecificItemDao extends BaseDao<CheckSpecificItemEntity> {
      * @return
      */
     int deleteBySpecId(Integer specificId);
+
+    List<SelectVo> queryListSimple(Long specificId);
 }

@@ -1,8 +1,12 @@
 package com.platform.service.specific.impl;
 
 import com.platform.dao.specific.CheckSpecificDao;
+import com.platform.dao.specific.CheckSpecificItemDao;
 import com.platform.entity.specific.CheckSpecificEntity;
+import com.platform.entity.specific.vo.CheckSpecificVo;
 import com.platform.service.specific.CheckSpecificService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import com.platform.vo.SelectVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,19 +14,19 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Map;
 
-
-
 /**
  * 检查规范表Service实现类
- *
  * @author admin
- *  
  * @date 2018-07-23 20:03:40
  */
 @Service("checkSpecificService")
 public class CheckSpecificServiceImpl implements CheckSpecificService {
+
     @Autowired
     private CheckSpecificDao checkSpecificDao;
+
+    @Autowired
+    private CheckSpecificItemDao checkSpecificItemDao;
 
     @Override
     public CheckSpecificEntity queryObject(Integer id) {
@@ -35,8 +39,24 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
     }
 
     @Override
-    public List<SelectVo> loadAllCheckSpecific() {
-        return checkSpecificDao.queryAllCheckSpecific();
+    public PageUtils search(Map<String, Object> map) {
+        Query query = new Query(map);
+        List<CheckSpecificVo> resultList = queryListSimple(map);
+        List<SelectVo> checkItems;
+        Long specificId;
+        for (CheckSpecificVo checkSpecific : resultList) {
+            specificId = checkSpecific.getId();
+            checkItems = checkSpecificItemDao.queryListSimple(specificId);
+            checkSpecific.setItemList(checkItems);
+        }
+        Integer total = checkSpecificDao.queryTotalSimple(map);
+
+        return new PageUtils(resultList, total, query.getLimit(), query.getPage());
+    }
+
+    @Override
+    public List<CheckSpecificVo> queryListSimple(Map<String, Object> map) {
+        return checkSpecificDao.queryListSimple(map);
     }
 
     @Override
