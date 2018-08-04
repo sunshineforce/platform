@@ -60,6 +60,12 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="taskId != null and taskId.trim() != ''">
+			AND task_id LIKE concat('%',#{taskId},'%')
+		</if>
+		<if test="userId != null and userId.trim() != ''">
+			AND user_id LIKE concat('%',#{userId},'%')
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

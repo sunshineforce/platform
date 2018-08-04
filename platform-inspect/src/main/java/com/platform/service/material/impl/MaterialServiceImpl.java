@@ -12,12 +12,9 @@ import java.util.List;
 import java.util.Map;
 
 
-
 /**
  * 物品表Service实现类
- *
  * @author admin
- *  
  * @date 2018-07-23 11:11:45
  */
 @Service("materialService")

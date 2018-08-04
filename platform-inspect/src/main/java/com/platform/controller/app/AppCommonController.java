@@ -1,5 +1,7 @@
 package com.platform.controller.app;
 
+import com.platform.constants.CommonConstant;
+import com.platform.service.SysRegionService;
 import com.platform.service.enterprise.IEnterpriseService;
 import com.platform.service.material.MaterialTypeService;
 import com.platform.utils.R;
@@ -31,10 +33,13 @@ public class AppCommonController{
     @Autowired
     private IEnterpriseService enterpriseService;
 
+    @Autowired
+    private SysRegionService regionService;
+
     @RequestMapping(value = "/material/type/list")
     public R queryMaterialTypeList(){
         List<TreeVo> list = materialTypeService.loadAllMaterialType();
-        return R.succeed().put("list",list);
+        return R.succeed().put(CommonConstant.DATA_KEY,list);
     }
 
     @RequestMapping(value = "/enterprise/list")
@@ -43,7 +48,12 @@ public class AppCommonController{
             return R.paramsIllegal();
         }
 
-        return R.succeed().put("list",enterpriseService.loadEnterpriseByRegionId(regionId));
+        return R.succeed().put(CommonConstant.DATA_KEY,enterpriseService.loadEnterpriseByRegionId(regionId));
+    }
+
+    @RequestMapping(value = "/region/list")
+    public R queryAllRegion(){
+        return R.succeed().put(CommonConstant.DATA_KEY,regionService.queryAllRegion());
     }
 
 }

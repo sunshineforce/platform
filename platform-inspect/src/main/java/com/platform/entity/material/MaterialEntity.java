@@ -3,13 +3,10 @@ package com.platform.entity.material;
 import java.io.Serializable;
 import java.util.Date;
 
-
 /**
  * 物品表实体
  * 表名 material
- *
  * @author admin
- *  
  * @date 2018-07-23 11:11:45
  */
 public class MaterialEntity implements Serializable {
@@ -288,5 +285,13 @@ public class MaterialEntity implements Serializable {
 
     public void setTaskGroupStatus(Integer taskGroupStatus) {
         this.taskGroupStatus = taskGroupStatus;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

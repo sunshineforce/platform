@@ -15,7 +15,7 @@ public class NoticeEntity implements Serializable {
 
     //主键Id
     private Long id;
-    //消息通知名称
+    //消息通知内容
     private String name;
     //通知状态(0:未读;1:已读)
     private Integer status;
