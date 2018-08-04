@@ -75,9 +75,13 @@ var vm = new Vue({
             }
             window.location.href = "/material/qrcodedetail.html?id="+id;
         },
-		//导出
+        //导出
         exportExecel:function () {
-
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            window.location.href = "../qrcodedetail/export?applyId="+id;
         },
 		update: function (event) {
             var id = getSelectedRow();
