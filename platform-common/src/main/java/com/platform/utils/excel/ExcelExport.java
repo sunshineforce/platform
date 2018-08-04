@@ -443,6 +443,7 @@ public class ExcelExport {
         // 字符串类型
         else if (obj instanceof String) {
             if (obj.toString().endsWith(".png")){
+                sheet.setColumnWidth(cell.getColumnIndex(),80);
                 byte[] bytes = IOUtils.toByteArray(getInputStream(obj.toString()));
                 int my_picture_id = workBook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
                 // 利用HSSFPatriarch将图片写入EXCEL
@@ -453,12 +454,24 @@ public class ExcelExport {
                  * excel中的cellNum和rowNum的index都是从0开始的
                  *
                  */
+                // 指定我想要的长宽
+                double standardWidth = 64;
+                double standardHeight = 64;
+
+                // 计算单元格的长宽
+                 double cellWidth = sheet.getColumnWidthInPixels(cell.getColumnIndex());
+                 double cellHeight = cell.getRow().getHeightInPoints()/72*96;
+
+                 // 计算需要的长宽比例的系数
+                 double a = standardWidth / cellWidth;
+                 double b = standardHeight / cellHeight;
                 HSSFPatriarch patri = sheet.createDrawingPatriarch();
                 HSSFClientAnchor anchor = new HSSFClientAnchor();
                 anchor.setCol1(cell.getColumnIndex());
                 anchor.setRow1(cell.getRowIndex());
                 HSSFPicture my_picture = patri.createPicture(anchor, my_picture_id);
-                my_picture.resize();
+
+                my_picture.resize(a,b);
             }else {
                 // modi at 2016年11月14日14:27:51 by zhang
                 // 补充设置单元格类型，避免编码类被当作数字类型

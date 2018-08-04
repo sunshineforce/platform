@@ -1,5 +1,6 @@
+var id = T.p('id');
 $(function () {
-    var id = T.p('id');
+
     $("#jqGrid").jqGrid({
         url: '../qrcodedetail/list?applyId='+id,
         datatype: "json",
@@ -70,7 +71,7 @@ var vm = new Vue({
         },
         //导出
         exportExecel:function () {
-
+            window.location.href = "../qrcodedetail/export?applyId="+id;
         },
 		reload: function (event) {
 			vm.showList = true;
