@@ -121,7 +121,7 @@
 			AND status =#{status}
 		</if>
 		<if test="userId != null">
-			AND #{userId} in user_ids
+			AND #{userId} = user_ids
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

@@ -41,7 +41,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskEntity> queryList(Map<String, Object> map) {
-        SysUserEntity sysUser = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+//        SysUserEntity sysUser = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
+        SysUserEntity sysUser = new SysUserEntity();
+        sysUser.setUserId(1L);
         map.put("userId",sysUser.getUserId());
         List<TaskEntity> taskList = taskDao.queryList(map);
 
@@ -60,7 +62,7 @@ public class TaskServiceImpl implements TaskService {
      * @return
      */
     private String calcProgressRate(Integer taskId){
-        String progressRate = "";
+        String progressRate = "0/0";
         if (taskId == null) {
             return progressRate;
         }
