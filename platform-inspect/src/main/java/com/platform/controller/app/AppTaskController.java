@@ -8,10 +8,7 @@ import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
@@ -37,8 +34,8 @@ public class AppTaskController {
     @Autowired
     private TaskGroupService taskGroupService;
 
-    @RequestMapping(value = "/task/list",method = RequestMethod.POST)
-    public R taskList(@RequestBody HashMap<String,Object> params){
+    @RequestMapping(value = "/task/list")
+    public R taskList(@RequestParam HashMap<String,Object> params){
         //查询列表数据
         Query query = new Query(params);
         if (params == null) {
