@@ -11,21 +11,24 @@
             <Row>
                 <i-col span="6">
                     <label class="fl mr10 mt5" style="font-size: 13px; color: #666;">统计节点</label>
-                    <i-select v-model="q.regionId" filterable style="float: left; width:70%;">
+                    <i-select v-model="regionId" filterable style="float: left; width:70%;">
                         <i-option value="0">杭州</i-option>
                     </i-select>
                 </i-col>
                 <i-col span="8" style="margin-left: 159px;">
                     <Row style="margin: 0;">
                         <i-col span="12">
-                            <Date-picker type="datetime" placeholder="选择开始时间"></Date-picker>
+                            <Date-picker v-model="startTime" type="date" placeholder="选择开始时间"></Date-picker>
                         </i-col>
                         <i-col span="12">
-                            <Date-picker type="datetime" placeholder="选择结束时间"></Date-picker>
+                            <Date-picker v-model="endTime" type="date" placeholder="选择结束时间"></Date-picker>
                         </i-col>
                     </Row>
 
 
+                </i-col>
+                <i-col>
+                    <i-button type="primary" @click="queryStatDatas">查询</i-button>
                 </i-col>
             </Row>
         </Card>
@@ -50,7 +53,8 @@
     </Card>
 
 </div>
-<script src="${rc.contextPath}/statics/plugins/echarts/echarts-all.js"></script>
 <script src="${rc.contextPath}/js/sys/main.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/plugins/echarts/echarts-all.js"></script>
+
 </body>
 </html>

@@ -5,7 +5,10 @@ import org.springframework.util.StringUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * 日期处理
@@ -89,6 +92,38 @@ public class DateUtils {
         }
     }
 
+    public static List<String> getDateList(Date from, Date to, String format){
+        List<String> dateList = new LinkedList<String>();
+        if (from==null || to == null) {
+            return dateList;
+        }
+        double dateCount= getDistanceOfTwoDate(from,to);
+        for (int i = 0; i < dateCount; i++) {
+            Date date = getAfterOneDay(from,i);
+            dateList.add(format(date,format));
+        }
+
+        return dateList;
+    }
+
+    public static double getDistanceOfTwoDate(Date before, Date after) {
+        long beforeTime = before.getTime();
+        long afterTime = after.getTime();
+        return (afterTime - beforeTime) / (1000 * 60 * 60 * 24);
+    }
+
+    /**
+     *  得到后Num天
+     *
+     * @return
+     */
+    public static Date getAfterOneDay(Date startDate,int Num) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(startDate);
+        calendar.add(Calendar.DAY_OF_MONTH, Num);
+        return calendar.getTime();
+    }
+
 
     /**
      * 根据传入的日期格式字符串，获取日期的格式
@@ -163,6 +198,30 @@ public class DateUtils {
     public static long pastMinutes(Date date) {
         long t = System.currentTimeMillis()-date.getTime();
         return t/(60*1000);
+    }
+
+    /**
+     * 截取时间
+     * @param dateTime 格式为2016101915 or 20161019
+     * @param type 小时 or 天
+     * @return
+     */
+    public static String subDate(String dateTime,int type){
+        //小时
+        if (type == 1) {
+            String year = dateTime.substring(0,4);
+            String month = dateTime.substring(4,6);
+            String day = dateTime.substring(6,8);
+            String hour = dateTime.substring(8,10);
+
+            return year+"-"+month+"-"+day+" " + hour+":00";
+        }else if (type == 0) {
+            String year = dateTime.substring(0,4);
+            String month = dateTime.substring(4,6);
+            String day = dateTime.substring(6,8);
+            return year+"-"+month+"-"+day;
+        }
+        return "";
     }
 
 

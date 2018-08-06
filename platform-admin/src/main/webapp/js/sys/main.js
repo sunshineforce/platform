@@ -1,9 +1,10 @@
 $(function () {
-    statTask();
-    statExceptions();
+    //statTask();
+
+    vm.queryStatDatas();
 });
 
-function statTask() {
+function statTask(xData,tasksSeries) {
     var colorList = [
         '#ff7f50','#87cefa','#da70d6','#32cd32','#6495ed',
         '#ff69b4','#ba55d3','#cd5c5c','#ffa500','#40e0d0'
@@ -35,7 +36,7 @@ function statTask() {
         },
         legend: {
             x: 'right',
-            data:['2010','2011','2012','2013']
+            data:['待执行', '执行中', '已完成', '已超时']
         },
         toolbox: {
             show: true,
@@ -58,7 +59,7 @@ function statTask() {
             {
                 splitLine:{show: false},//去除网格线
                 type: 'category',
-                data: ['待执行', '执行中', '已完成', '已超时']
+                data:xData
             }
         ],
         yAxis: [
@@ -67,28 +68,7 @@ function statTask() {
                 type: 'value'
             }
         ],
-        series: [
-            {
-                name: '2010',
-                type: 'bar',
-                data: [4804.7,1444.3,1332.1,908,871.8,1983.7,1627.6,499.2]
-            },
-            {
-                name: '2011',
-                type: 'bar',
-                data: [5506.3,1674.7,1405,1023.2,969,2149.7,1851.7,581.3]
-            },
-            {
-                name: '2012',
-                type: 'bar',
-                data: [6040.9,1823.4,1484.3,1116.1,1063.7,2455.5,2033.5,657.1]
-            },
-            {
-                name: '2013',
-                type: 'bar',
-                data: [6311.9,1902,1745.1,1215.1,1118.3,2736.9,2294,699.4]
-            }
-        ]
+        series: tasksSeries
     };
 
     // 基于准备好的dom，初始化echarts实例
@@ -195,39 +175,29 @@ function statExceptions() {
 var vm = new Vue({
     el: '#rrapp',
     data: {
-        q: {
-            regionId:0,
-        },
-        form:{
-            subWay:"GET"
-        },
-        rs:"",
-
+        regionId:"",
+        startTime:"2018-08-05",
+        endTime:"2018-08-06",
     },
     methods: {
-        handleSubmit: function () {
-
-            if (vm.form.subWay == "GET"){
-                $.get(vm.form.url, function (r) {
-                    vm.rs = r;
-                });
-            }else{
-                $.ajax({
-                    type: vm.form.subWay,
-                    url: vm.form.url,
-                    contentType: "application/json",
-                    data: vm.form.json,
-                    success: function (r) {
-                        vm.rs = r;
-                    }
-                });
-            }
-
-        },
-        handleReset: function (name) {
-            vm.form = {subWay:"GET"};
-            vm.rs = "";
-        }
+       queryStatDatas:function(){
+           $.ajax({
+               type: "GET",
+               url: "../stat/statTaskAndOrder",
+               contentType: "application/json",
+               data: {
+                   regionId:vm.regionId,
+                   startTime:vm.startTime,
+                   endTime:vm.endTime
+               },
+               success: function (r) {
+                   if (r.code == 0) {
+                       statTask(r.xData,r.tasksSeries);
+                       statExceptions();
+                   }
+               }
+           });
+       }
 
     }
 });
