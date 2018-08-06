@@ -63,7 +63,7 @@ public class AppTaskController {
      */
     @RequestMapping("/task/group/list")
     public R queryAllTaskGroup(){
-        return R.succeed().put("list",taskGroupService.queryAllTaskGroup());
+        return R.succeed().put("list",taskGroupService.queryAllTaskGroupForApp());
     }
 
     /**

@@ -2,6 +2,7 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskGroupEntity;
+import com.platform.utils.PageUtils;
 import com.platform.vo.SelectVo;
 
 import java.util.List;
@@ -83,4 +84,12 @@ public interface TaskGroupService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+
+
+    /**********************************************APP 接口部分 **************************************/
+
+    PageUtils queryAllTaskGroupForApp();
+
+
 }

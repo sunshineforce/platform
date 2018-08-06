@@ -1,0 +1,44 @@
+package com.platform.entity;
+
+import java.io.Serializable;
+
+public class AppUserVo implements Serializable{
+    private static final long serialVersionUID = -5435898367360698660L;
+
+    private String username;
+    private String realname;
+    private String mobile;
+    private String regionName;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getRealname() {
+        return realname;
+    }
+
+    public void setRealname(String realname) {
+        this.realname = realname;
+    }
+
+    public String getMobile() {
+        return mobile;
+    }
+
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+}
