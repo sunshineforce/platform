@@ -3,8 +3,12 @@ package com.platform.controller.app;
 import com.platform.annotation.SysLog;
 import com.platform.constants.CommonConstant;
 import com.platform.controller.AbstractController;
+import com.platform.entity.AppUserVo;
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.SysUserEntity;
+import com.platform.service.SysRegionService;
 import com.platform.service.SysUserService;
+import com.platform.utils.BeanUtils;
 import com.platform.utils.DateUtils;
 import com.platform.utils.R;
 import com.platform.utils.ShiroUtils;
@@ -42,6 +46,9 @@ public class AppUsersController extends AbstractController{
 
     @Autowired
     private SysUserService sysUserService;
+
+    @Autowired
+    private SysRegionService regionService;
 
     @ResponseBody
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
@@ -91,7 +98,13 @@ public class AppUsersController extends AbstractController{
      */
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
-        return R.ok().put("data", getUser());
+        SysUserEntity sysUser = sysUserService.queryObject(11L);
+        sysUser.setRegionName(getRegionName(sysUser.getRegionId()));
+
+        AppUserVo appUser = new AppUserVo();
+        BeanUtils.copyProperties(sysUser,appUser);
+
+        return R.ok().put("data", appUser);
     }
 
     /**
@@ -110,6 +123,26 @@ public class AppUsersController extends AbstractController{
     public String logout() {
         ShiroUtils.logout();
         return "redirect:/";
+    }
+
+    /**
+     * 获取某个区域的全名，自动拼接上上级区域名称
+     * @return
+     */
+    public String getRegionName(Integer regionId) {
+        String regionName = "";
+        if (regionId == null) {
+            return regionName;
+        }
+        SysRegionEntity region = regionService.queryObject(regionId);
+
+        if(region != null) {
+            if (region.getParentId() != 0) {
+                regionName =  getRegionName(region.getParentId()) + region.getName();  //  递归调用方法getRegionString(Long regionId)，停止条件设为regionId==null为真
+            }
+        }
+        regionName = regionName.replace("市辖区","");
+        return regionName;
     }
 
 }

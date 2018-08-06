@@ -1,12 +1,19 @@
 package com.platform.service.task.impl;
 
+import com.platform.dao.task.TaskDao;
 import com.platform.dao.task.TaskGroupDao;
 import com.platform.entity.task.TaskGroupEntity;
+import com.platform.entity.task.vo.TaskGroupVo;
 import com.platform.service.task.TaskGroupService;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import com.platform.vo.SelectVo;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +27,12 @@ import java.util.Map;
  */
 @Service("taskGroupService")
 public class TaskGroupServiceImpl implements TaskGroupService {
+
     @Autowired
     private TaskGroupDao taskGroupDao;
+
+    @Autowired
+    private TaskDao taskDao;
 
     @Override
     public TaskGroupEntity queryObject(Integer id) {
@@ -66,5 +77,24 @@ public class TaskGroupServiceImpl implements TaskGroupService {
     @Override
     public int deleteBatch(Integer[]ids) {
         return taskGroupDao.deleteBatch(ids);
+    }
+
+    @Override
+    public PageUtils queryAllTaskGroupForApp() {
+        Query query = new Query(new HashMap<String,Object>());
+        List<SelectVo> list = queryAllTaskGroup();
+        List<SelectVo> taskList;
+        List<TaskGroupVo> taskGroupList = new ArrayList<TaskGroupVo>();
+        for (SelectVo selectVo : list) {
+            TaskGroupVo taskGroupVo = new TaskGroupVo();
+            BeanUtils.copyProperties(selectVo,taskGroupVo);
+
+            taskList = taskGroupDao.selectTaskByTaskGroupId(taskGroupVo.getId());
+            taskGroupVo.setTaskList(taskList);
+
+            taskGroupList.add(taskGroupVo);
+        }
+        int total = taskGroupDao.queryTotal();
+        return new PageUtils(taskGroupList, total, query.getLimit(), query.getPage());
     }
 }
