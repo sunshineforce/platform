@@ -25,7 +25,7 @@ function statTask() {
                 // for text color
                 var color = colorList[params[0].dataIndex];
                 var res = '<div style="color:' + color + '">';
-                res += '<strong>' + params[0].name + '消费（元）</strong>'
+                res += '<strong>' + params[0].name + '</strong>'
                 for (var i = 0, l = params.length; i < l; i++) {
                     res += '<br/>' + params[i].seriesName + ' : ' + params[i].value
                 }
@@ -58,7 +58,7 @@ function statTask() {
             {
                 splitLine:{show: false},//去除网格线
                 type: 'category',
-                data: ['食品', '衣着', '居住', '家庭设备及用品', '医疗保健', '交通和通信', '文教娱乐服务', '其他']
+                data: ['待执行', '执行中', '已完成', '已超时']
             }
         ],
         yAxis: [
