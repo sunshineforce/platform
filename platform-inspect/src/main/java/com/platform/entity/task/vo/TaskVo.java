@@ -2,6 +2,7 @@ package com.platform.entity.task.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -25,11 +26,15 @@ public class TaskVo implements Serializable {
 
     private String name;
 
+    private String progressRate;
+
     private Date startTime;
 
     private Date endTime;
 
     private String location;
+
+    private List<TaskStatisticsVo> statistics;
 
     public Long getId() {
         return id;
@@ -63,6 +68,14 @@ public class TaskVo implements Serializable {
         this.name = name;
     }
 
+    public String getProgressRate() {
+        return progressRate;
+    }
+
+    public void setProgressRate(String progressRate) {
+        this.progressRate = progressRate;
+    }
+
     public Date getStartTime() {
         return startTime;
     }
@@ -85,5 +98,13 @@ public class TaskVo implements Serializable {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public List<TaskStatisticsVo> getStatistics() {
+        return statistics;
+    }
+
+    public void setStatistics(List<TaskStatisticsVo> statistics) {
+        this.statistics = statistics;
     }
 }

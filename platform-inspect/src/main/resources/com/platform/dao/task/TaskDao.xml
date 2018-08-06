@@ -135,9 +135,19 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(1) from task
+		WHERE 1=1 AND data_status = 0
+        <if test="name != null and name.trim() != ''">
+            AND name LIKE concat('%',#{name},'%')
+        </if>
+	</select>
 
-	<select id="queryListSimple">
-		SELECT t.id,t.task_group_id,m.id,t.name,t.start_time,t.end_time,CONCAT(r.name,e.enterprise_name)
+	<select id="queryListSimple" resultType="com.platform.entity.task.vo.TaskVo">
+		SELECT t.id,t.task_group_id as taskGroupId,m.id as materialId,t.name,'0/0' as progressRate,
+		t.start_time as startTime,t.end_time as endTime,
+		CONCAT(r.name,e.enterprise_name) as location
 		FROM task t
 		LEFT JOIN task_group_material gm ON t.task_group_id=gm.task_group_id
 		LEFT JOIN material m ON m.id = gm.material_id
@@ -158,20 +168,49 @@
 				order by ${sidx} ${order}
 			</when>
 			<otherwise>
-				order by id desc
+				order by t.id desc
 			</otherwise>
 		</choose>
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
 		</if>
 	</select>
-	
- 	<select id="queryTotal" resultType="int">
-		select count(1) from task
+
+	<select id="queryListSimpleTotal" resultType="int">
+		SELECT count(1)
+		FROM task t
+		LEFT JOIN task_group_material gm ON t.task_group_id=gm.task_group_id
+		LEFT JOIN material m ON m.id = gm.material_id
+		LEFT JOIN sys_region r ON r.id = m.region_id
+		LEFT JOIN enterprise e ON e.id = m.enterprise_id
 		WHERE 1=1 AND data_status = 0
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
-        </if>
+		<if test="name != null and name.trim() != ''">
+			AND t.name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND t.status =#{status}
+		</if>
+		<if test="userId != null">
+			AND #{userId} = t.user_ids
+		</if>
+		ORDER BY t.id DESC
+	</select>
+
+	<!-- 获取任务下物品进度 -->
+	<select id="selectTaskProgressRate" parameterType="java.lang.Long" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
+		SELECT SUM(r.id) AS total,
+		SUM(r.material_status =0 or r.material_status =1) AS unfinished,
+		SUM(r.material_status =2) AS finish,
+		SUM(r.material_status =3) AS timeout,
+		FROM (
+			SELECT m.id,mt.name AS material_type,m.material_status
+		 	FROM task t
+			LEFT JOIN task_group_material tgm ON t.task_group_id = tgm.task_group_id
+			LEFT JOIN material m ON m.id = tgm.material_id
+			LEFT JOIN material_type mt ON mt.id = m.material_type_id
+			WHERE t.id = #{taskId}
+		) r
+		GROUP BY r.material_status
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.task.TaskEntity" useGeneratedKeys="true" keyProperty="id">
@@ -241,19 +280,5 @@
 			#{id}
 		</foreach>
 	</delete>
-
-	<!-- 获取任务下物品进度 -->
-	<select id="selectTaskProgressRate" parameterType="java.lang.Integer" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
-		SELECT SUM(r.id) AS total,SUM(r.material_status =1) AS finish
-		FROM (
-			SELECT m.id,mt.name AS material_type,m.material_status
-		 	FROM task t
-			LEFT JOIN task_group_material tgm ON t.task_group_id = tgm.task_group_id
-			LEFT JOIN material m ON m.id = tgm.material_id
-			LEFT JOIN material_type mt ON mt.id = m.material_type_id
-			WHERE t.id = #{taskId}
-		) r
-		GROUP BY r.material_status
-	</select>
 
 </mapper>

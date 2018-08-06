@@ -2,6 +2,7 @@ package com.platform.controller.app;
 
 import com.alibaba.druid.util.StringUtils;
 import com.platform.entity.task.TaskEntity;
+import com.platform.entity.task.vo.TaskVo;
 import com.platform.service.task.TaskGroupService;
 import com.platform.service.task.TaskService;
 import com.platform.utils.PageUtils;
@@ -37,7 +38,6 @@ public class AppTaskController {
     @RequestMapping(value = "/task/list")
     public R taskList(@RequestParam HashMap<String,Object> params){
         //查询列表数据
-        Query query = new Query(params);
         if (params == null) {
             return R.paramsIllegal();
         }
@@ -45,12 +45,7 @@ public class AppTaskController {
             return R.paramsIllegal();
         }
 
-        List<TaskEntity> taskList = taskService.queryList(params);
-        int total = taskService.queryTotal(query);
-
-        PageUtils pageUtil = new PageUtils(taskList, total, query.getLimit(), query.getPage());
-
-        return R.succeed().put("page", pageUtil);
+        return R.succeed().put("page", taskService.queryListForApp(params));
     }
 
     @RequestMapping(value = "/task/create",method = RequestMethod.POST)

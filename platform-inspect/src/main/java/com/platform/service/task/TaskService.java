@@ -2,6 +2,7 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskEntity;
+import com.platform.utils.PageUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,8 @@ public interface TaskService {
      * @return list
      */
     List<TaskEntity> queryList(Map<String, Object> map);
+
+    PageUtils queryListForApp(Map<String, Object> map);
 
     /**
      * 分页统计总数
