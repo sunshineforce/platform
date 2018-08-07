@@ -74,16 +74,15 @@
 	<!-- APP异常接口 -->
 	<select id="search" resultType="com.platform.entity.inspect.vo.AnomalyVo">
 		SELECT
-			m.material_name AS materialName,m.location,m.qr_code AS qrcode,m.material_url AS materialUrl,
-			o.inspect_time as checkTime,o.description,o.user_name as checkUserName,o.chief_ids as ,o.photos
-			FROM inspect_order o
-			LEFT JOIN material m ON m.id = o.material_id
-			WHERE o.inspect_status=1 and o.id=#{id}
-			<if test="status != null and status != ''">
-				AND status =#{status}
-			</if>
-			<if test="inspectStatus != null and inspectStatus != ''">
-				AND inspect_status =#{inspectStatus}
+		m.qr_code AS qrcode,m.material_name AS materialName,m.location,o.inspect_time AS checkTime,
+		o.inspect_status AS checkResult,o.description,o.user_name AS checkUserName,
+		m.material_url AS materialUrl,m.produced_date AS producedDate,m.expire_date AS expireDate,
+		o.chief_ids AS chiefIds,m.material_type_id AS materialTypeId
+		FROM inspect_order o
+		LEFT JOIN material m ON m.id = o.material_id
+		WHERE o.inspect_status=#{inspectStatus}
+			<if test="materialId != null and materialId != ''">
+				AND m.materialId=#{materialId}
 			</if>
 			<if test="offset != null and limit != null">
 				limit #{offset}, #{limit}
@@ -103,14 +102,7 @@
 		select count(1)
 		FROM inspect_order o
 		LEFT JOIN material m ON m.id = o.material_id
-		WHERE o.inspect_status=1 and o.id=#{id}
-		WHERE 1=1
-		<if test="status != null and status != ''">
-			AND status =#{status}
-		</if>
-		<if test="inspectStatus != null and inspectStatus != ''">
-			AND inspect_status =#{inspectStatus}
-		</if>
+		WHERE o.inspect_status=#{inspectStatus}
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderEntity" useGeneratedKeys="true" keyProperty="id">
