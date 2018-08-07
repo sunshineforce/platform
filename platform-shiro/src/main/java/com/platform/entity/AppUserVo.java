@@ -9,6 +9,7 @@ public class AppUserVo implements Serializable{
     private String realname;
     private String mobile;
     private String regionName;
+    private Integer identify;
 
     public String getUsername() {
         return username;
@@ -40,5 +41,13 @@ public class AppUserVo implements Serializable{
 
     public void setRegionName(String regionName) {
         this.regionName = regionName;
+    }
+
+    public Integer getIdentify() {
+        return identify;
+    }
+
+    public void setIdentify(Integer identify) {
+        this.identify = identify;
     }
 }
