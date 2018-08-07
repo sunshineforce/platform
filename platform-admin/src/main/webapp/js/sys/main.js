@@ -1,6 +1,4 @@
 $(function () {
-    //statTask();
-
     vm.queryStatDatas();
 });
 
@@ -12,9 +10,7 @@ function statTask(xData,tasksSeries) {
 
     var option = {
         title: {
-            text: '2010-2013年中国城镇居民家庭人均消费构成（元）',
-            subtext: '数据来自国家统计局',
-            sublink: 'http://data.stats.gov.cn/search/keywordlist2?keyword=%E5%9F%8E%E9%95%87%E5%B1%85%E6%B0%91%E6%B6%88%E8%B4%B9'
+            text: '任务执行统计'
         },
         tooltip: {
             trigger: 'axis',
@@ -77,11 +73,10 @@ function statTask(xData,tasksSeries) {
     chart.setOption(option);
 }
 
-function statExceptions() {
+function statExceptions(orderSeries) {
     var option = {
         title : {
-            text: '南丁格尔玫瑰图',
-            subtext: '纯属虚构',
+            text: '异常处理统计',
             x:'center'
         },
         tooltip : {
@@ -89,84 +84,42 @@ function statExceptions() {
             formatter: "{a} <br/>{b} : {c} ({d}%)"
         },
         legend: {
-            x : 'center',
-            y : 'bottom',
-            data:['rose1','rose2','rose3','rose4','rose5','rose6','rose7','rose8']
+            orient : 'vertical',
+            x : 'left',
+            data:['待处理','待复查','已完成']
         },
         toolbox: {
-            show : true,
-            feature : {
-                mark : {show: true},
-                dataView : {show: true, readOnly: false},
-                magicType : {
-                    show: true,
-                    type: ['pie', 'funnel']
-                },
-                restore : {show: true},
-                saveAsImage : {show: true}
-            }
+            // show : true,
+            // feature : {
+            //     mark : {show: true},
+            //     dataView : {show: true, readOnly: false},
+            //     magicType : {
+            //         show: true,
+            //         type: ['pie', 'funnel'],
+            //         option: {
+            //             funnel: {
+            //                 x: '25%',
+            //                 width: '50%',
+            //                 funnelAlign: 'left',
+            //                 max: 1548
+            //             }
+            //         }
+            //     },
+            //     restore : {show: true},
+            //     saveAsImage : {show: true}
+            // }
         },
         calculable : true,
         series : [
             {
-                name:'半径模式',
+                name:'处理状态',
                 type:'pie',
-                radius : [20, 110],
-                center : ['25%', 200],
-                roseType : 'radius',
-                width: '40%',       // for funnel
-                max: 40,            // for funnel
-                itemStyle : {
-                    normal : {
-                        label : {
-                            show : false
-                        },
-                        labelLine : {
-                            show : false
-                        }
-                    },
-                    emphasis : {
-                        label : {
-                            show : true
-                        },
-                        labelLine : {
-                            show : true
-                        }
-                    }
-                },
-                data:[
-                    {value:10, name:'rose1'},
-                    {value:5, name:'rose2'},
-                    {value:15, name:'rose3'},
-                    {value:25, name:'rose4'},
-                    {value:20, name:'rose5'},
-                    {value:35, name:'rose6'},
-                    {value:30, name:'rose7'},
-                    {value:40, name:'rose8'}
-                ]
-            },
-            {
-                name:'面积模式',
-                type:'pie',
-                radius : [30, 110],
-                center : ['75%', 200],
-                roseType : 'area',
-                x: '50%',               // for funnel
-                max: 40,                // for funnel
-                sort : 'ascending',     // for funnel
-                data:[
-                    {value:10, name:'rose1'},
-                    {value:5, name:'rose2'},
-                    {value:15, name:'rose3'},
-                    {value:25, name:'rose4'},
-                    {value:20, name:'rose5'},
-                    {value:35, name:'rose6'},
-                    {value:30, name:'rose7'},
-                    {value:40, name:'rose8'}
-                ]
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:orderSeries
             }
         ]
-    };
+    }
     // 基于准备好的dom，初始化echarts实例
     var chart = echarts.init(document.getElementById("exceptionStatDiv"));
     // 使用刚指定的配置项和数据显示图表。
@@ -176,24 +129,25 @@ var vm = new Vue({
     el: '#rrapp',
     data: {
         regionId:"",
-        startTime:"2018-08-05",
-        endTime:"2018-08-06",
+        startTime: DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-8),1),
+        endTime:DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-1),1),
     },
     methods: {
        queryStatDatas:function(){
+           console.log("startTime ---" + DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-8),1))
            $.ajax({
                type: "GET",
                url: "../stat/statTaskAndOrder",
                contentType: "application/json",
                data: {
                    regionId:vm.regionId,
-                   startTime:vm.startTime,
-                   endTime:vm.endTime
+                   startTime:DateUtils.date2String(new Date(vm.startTime),1),
+                   endTime:DateUtils.date2String(new Date(vm.endTime),1)
                },
                success: function (r) {
                    if (r.code == 0) {
                        statTask(r.xData,r.tasksSeries);
-                       statExceptions();
+                       statExceptions(r.orderSeries);
                    }
                }
            });

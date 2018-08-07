@@ -32,7 +32,7 @@
 		from sta_exception_day
 		WHERE 1=1
 		<if test="startTime != null and endTime != null">
-			<![CDATA[	AND #{statDate} <= `stat_date` <= #{statDate} ]]>
+			<![CDATA[	AND #{startTime} <= `stat_date` AND  `stat_date`<= #{endTime} ]]>
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">

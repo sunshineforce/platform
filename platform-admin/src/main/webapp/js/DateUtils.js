@@ -302,15 +302,15 @@ var DateUtils = {
 		var newDate = new Date(date.getTime());
 		switch(field){
 			// 以年为单位位移
-			case "year","y":
+			case "year":
 				newDate.setFullYear(date.getFullYear()+amount);
 				break;
 			// 以月份为单位位移
-			case "month","M":
+			case "month":
 				newDate.setMonth(date.getMonth()+amount);
 				break;
 			// 以天为单位位移
-			case "day","d":
+			case "day":
 				newDate.setDate(date.getDate()+amount);
 				break;
 			// 以小时为单位位移

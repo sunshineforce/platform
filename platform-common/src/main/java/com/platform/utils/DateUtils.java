@@ -224,6 +224,13 @@ public class DateUtils {
         return "";
     }
 
+    public static String dateToIntStr(String dateTime){
+        String year = dateTime.substring(0,4);
+        String month = dateTime.substring(5,7);
+        String day = dateTime.substring(8);
+        return year+""+month+""+day;
+    }
+
 
     public static void main(String[] args) {
         Date date = new Date();

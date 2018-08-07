@@ -9,13 +9,13 @@
     <div class="mb15">
         <Card>
             <Row>
-                <i-col span="6">
-                    <label class="fl mr10 mt5" style="font-size: 13px; color: #666;">统计节点</label>
-                    <i-select v-model="regionId" filterable style="float: left; width:70%;">
-                        <i-option value="0">杭州</i-option>
-                    </i-select>
-                </i-col>
-                <i-col span="8" style="margin-left: 159px;">
+                <!--<i-col span="6">-->
+                    <!--<label class="fl mr10 mt5" style="font-size: 13px; color: #666;">统计节点</label>-->
+                    <!--<i-select v-model="regionId" filterable style="float: left; width:70%;">-->
+                        <!--<i-option value="0">杭州</i-option>-->
+                    <!--</i-select>-->
+                <!--</i-col>-->
+                <i-col span="8" > <!--style="margin-left: 159px;"-->
                     <Row style="margin: 0;">
                         <i-col span="12">
                             <Date-picker v-model="startTime" type="date" placeholder="选择开始时间"></Date-picker>
@@ -39,7 +39,7 @@
     <Card style="margin-bottom: 15px;">
         <p slot="title">
             <span class="fl">任务执行统计</span>
-            <span class="fr" alt="查看表格数据"><i class="fa fa-bars"></i></span>
+            <span class="fr" alt="查看表格数据"><a href="/task/task.html"><i class="fa fa-bars"></i></a> </span>
         </p>
         <div id="taskStatDiv" style="height: 399px;"></div>
     </Card>
@@ -47,7 +47,7 @@
     <Card>
         <p slot="title">
             <span class="fl">异常处理统计</span>
-            <span class="fr" alt="查看表格数据"><i class="fa fa-bars"></i></span>
+            <span class="fr" alt="查看表格数据"><a href="/inspect/exceptorder.html"><i class="fa fa-bars"></i></a></span>
         </p>
         <div id="exceptionStatDiv" style="height: 399px;"></div>
     </Card>
