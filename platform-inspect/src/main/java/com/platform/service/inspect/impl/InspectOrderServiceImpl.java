@@ -22,6 +22,7 @@ import java.util.Map;
  */
 @Service("inspectOrderService")
 public class InspectOrderServiceImpl implements IInspectOrderService {
+
     @Autowired
     private InspectOrderDao inspectOrderDao;
 
@@ -39,7 +40,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     public PageUtils search(Map<String, Object> map) {
         Query query = new Query(map);
         List<AnomalyVo> resultList = inspectOrderDao.search(map);
-        int total = queryTotal(map);
+        int total = inspectOrderDao.searchTotal(map);
 
         PageUtils pageUtil = new PageUtils(resultList, total, query.getLimit(), query.getPage());
         return pageUtil;

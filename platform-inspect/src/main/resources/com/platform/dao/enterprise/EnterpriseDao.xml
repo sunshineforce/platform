@@ -49,6 +49,12 @@
 		<if test="regionId != null">
 			AND region_id = #{regionId}
 		</if>
+		<if test="regionIdList != null">
+			AND region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -70,6 +76,12 @@
         </if>
 		<if test="regionId != null">
 			AND region_id = #{regionId}
+		</if>
+		<if test="regionIdList != null">
+			AND region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
 		</if>
 	</select>
 	 

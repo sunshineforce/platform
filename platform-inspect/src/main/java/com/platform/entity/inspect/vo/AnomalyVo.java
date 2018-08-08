@@ -21,6 +21,8 @@ public class AnomalyVo implements Serializable {
     private Long id;
     //二维码
     private String qrcode;
+    //物品类型
+    private Integer materialTypeId;
     //物品名称
     private String materialName;
     //物品url
@@ -34,9 +36,14 @@ public class AnomalyVo implements Serializable {
     //检查结果
     private String checkResult;
     //检查描述
-    private String checkDesc;
+    private String description;
     //检查用户
     private String checkUserName;
+    //生产日期
+    private Date producedDate;
+    //过期日期
+    private Date expireDate;
+
     //上级ids
     private String chiefIds;
     //检查上级名称
@@ -56,6 +63,14 @@ public class AnomalyVo implements Serializable {
 
     public void setQrcode(String qrcode) {
         this.qrcode = qrcode;
+    }
+
+    public Integer getMaterialTypeId() {
+        return materialTypeId;
+    }
+
+    public void setMaterialTypeId(Integer materialTypeId) {
+        this.materialTypeId = materialTypeId;
     }
 
     public String getMaterialName() {
@@ -106,12 +121,28 @@ public class AnomalyVo implements Serializable {
         this.checkResult = checkResult;
     }
 
-    public String getCheckDesc() {
-        return checkDesc;
+    public String getDescription() {
+        return description;
     }
 
-    public void setCheckDesc(String checkDesc) {
-        this.checkDesc = checkDesc;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Date getProducedDate() {
+        return producedDate;
+    }
+
+    public void setProducedDate(Date producedDate) {
+        this.producedDate = producedDate;
+    }
+
+    public Date getExpireDate() {
+        return expireDate;
+    }
+
+    public void setExpireDate(Date expireDate) {
+        this.expireDate = expireDate;
     }
 
     public String getCheckUserName() {
