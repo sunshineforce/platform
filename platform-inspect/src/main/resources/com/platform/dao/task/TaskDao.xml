@@ -161,8 +161,12 @@
 			AND t.status =#{status}
 		</if>
 		<if test="userId != null">
-			AND #{userId} = t.user_ids
+			AND #{userId} IN
+			<foreach collection="userIds" item="uid" separator=","  open="(" close=")">
+				#{uid}
+			</foreach>
 		</if>
+
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by ${sidx} ${order}
@@ -245,7 +249,7 @@
 			#{createTime},
 			#{updateTime},
 			#{dataStatus},
-			#{delay_reason})
+			#{delayReason})
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.task.TaskEntity">

@@ -15,6 +15,7 @@ import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +93,11 @@ public class TaskServiceImpl implements TaskService {
         SysUserEntity sysUser = new SysUserEntity();
         sysUser.setUserId(1L);
         map.put("userId",sysUser.getUserId());
+
+        List<Long> userIds = new ArrayList<Long>();
+        userIds.add(sysUser.getUserId());
+
+        map.put("userIds",userIds);
 
         Query query  = new Query(map);
         String status = String.valueOf(map.get("status"));
