@@ -160,8 +160,8 @@
 		r.material_type_id,
 		r.material_type as materialType,
 		SUM(r.id) AS total,
-		SUM(r.material_status =1) AS finish,
-		SUM(r.material_status =2) AS anomaly
+		IFNULL(SUM(r.material_status =1),0) AS finish,
+		IFNULL(SUM(r.material_status =2),0) AS anomaly
 		FROM (
 		SELECT m.id,mt.id AS material_type_id,mt.name AS material_type,m.material_status
 		 FROM task t
