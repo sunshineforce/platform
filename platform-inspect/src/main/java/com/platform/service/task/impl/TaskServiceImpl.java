@@ -91,13 +91,8 @@ public class TaskServiceImpl implements TaskService {
     public PageUtils queryListForApp(Map<String, Object> map) {
 //        SysUserEntity sysUser = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
         SysUserEntity sysUser = new SysUserEntity();
-        sysUser.setUserId(1L);
+        sysUser.setUserId(11L);
         map.put("userId",sysUser.getUserId());
-
-        List<Long> userIds = new ArrayList<Long>();
-        userIds.add(sysUser.getUserId());
-
-        map.put("userIds",userIds);
 
         Query query  = new Query(map);
         String status = String.valueOf(map.get("status"));

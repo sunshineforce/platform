@@ -161,10 +161,7 @@
 			AND t.status =#{status}
 		</if>
 		<if test="userId != null">
-			AND #{userId} IN
-			<foreach collection="userIds" item="uid" separator=","  open="(" close=")">
-				#{uid}
-			</foreach>
+			AND FIND_IN_SET(#{userId},user_ids)
 		</if>
 
 		<choose>
@@ -203,9 +200,9 @@
 	<!-- 获取任务下物品进度 -->
 	<select id="selectTaskProgressRate" parameterType="java.lang.Long" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
 		SELECT SUM(r.id) AS total,
-		SUM(r.material_status =0 or r.material_status =1) AS unfinished,
-		SUM(r.material_status =2) AS finish,
-		SUM(r.material_status =3) AS timeout,
+		IFNULL(SUM(r.material_status =0 or r.material_status =1),0) AS unfinished,
+		IFNULL(SUM(r.material_status =2),0) AS finish,
+		IFNULL(SUM(r.material_status =3),0) AS timeout
 		FROM (
 			SELECT m.id,mt.name AS material_type,m.material_status
 		 	FROM task t

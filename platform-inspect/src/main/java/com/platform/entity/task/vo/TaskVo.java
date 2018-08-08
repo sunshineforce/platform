@@ -36,8 +36,6 @@ public class TaskVo implements Serializable {
 
     private List<TaskStatisticsVo> statistics;
 
-    private List<Integer> userIds;
-
     public Long getId() {
         return id;
     }
@@ -110,11 +108,4 @@ public class TaskVo implements Serializable {
         this.statistics = statistics;
     }
 
-    public List<Integer> getUserIds() {
-        return userIds;
-    }
-
-    public void setUserIds(List<Integer> userIds) {
-        this.userIds = userIds;
-    }
 }
