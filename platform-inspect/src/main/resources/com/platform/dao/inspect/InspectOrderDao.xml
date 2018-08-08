@@ -74,7 +74,7 @@
 	<!-- APP异常接口 -->
 	<select id="search" resultType="com.platform.entity.inspect.vo.AnomalyVo">
 		SELECT
-		m.qr_code AS qrcode,m.material_name AS materialName,m.location,o.inspect_time AS checkTime,
+		m.id,m.qr_code AS qrcode,m.material_name AS materialName,m.location,o.inspect_time AS checkTime,
 		o.inspect_status AS checkResult,o.description,o.user_name AS checkUserName,
 		m.material_url AS materialUrl,m.produced_date AS producedDate,m.expire_date AS expireDate,
 		o.chief_ids AS chiefIds,m.material_type_id AS materialTypeId
@@ -87,7 +87,7 @@
 			<if test="offset != null and limit != null">
 				limit #{offset}, #{limit}
 			</if>
-		ORDER BY id DESC
+		ORDER BY o.id DESC
 	</select>
 	
  	<select id="queryTotal" resultType="int">

@@ -33,6 +33,20 @@ public class AppAnomalyController {
         return R.succeed().put("page",orderService.search(queryParams));
     }
 
+    @RequestMapping("/anomaly/process")
+    @ResponseBody
+    public R process(@RequestParam Map<String, Object> queryParams){
+
+        return R.succeed();
+    }
+
+    @RequestMapping("/anomaly/report")
+    @ResponseBody
+    public R report(@RequestParam Map<String, Object> queryParams){
+
+        return R.succeed();
+    }
+
     @RequestMapping("/anomaly/details")
     @ResponseBody
     public R anomalyDetails(){
