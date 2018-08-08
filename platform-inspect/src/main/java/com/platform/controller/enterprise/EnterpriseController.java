@@ -1,5 +1,7 @@
 package com.platform.controller.enterprise;
 
+import com.platform.cache.RegionCacheUtil;
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.service.enterprise.IEnterpriseService;
 import com.platform.utils.PageUtils;
@@ -34,9 +36,16 @@ public class EnterpriseController {
     @RequiresPermissions("enterprise:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        if (null != params.get("regionId")){
+            Integer regionId = Integer.parseInt(String.valueOf(params.get("regionId")));
+            SysRegionEntity region = RegionCacheUtil.getAreaByAreaId(regionId);
+            List<Integer> regionIdList = RegionCacheUtil.getRegionIdList(region.getId(), region.getType());
+            params.put("regionIdList",regionIdList);
+            params.put("regionId",null);
+        }
         //查询列表数据
         Query query = new Query(params);
-        String regionId = String.valueOf(params.get("regionId"));
+
         List<EnterpriseEntity> enterpriseList = enterpriseService.queryList(query);
         int total = enterpriseService.queryTotal(query);
 
