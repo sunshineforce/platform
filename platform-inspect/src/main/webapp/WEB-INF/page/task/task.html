@@ -57,8 +57,8 @@
                 <i-input v-model="task.name" placeholder="任务名称"/>
             </Form-item>
             <Form-item label="任务组" prop="taskGroupId">
-                <i-select v-model="task.taskGroupId" filterable>
-                    <i-option v-for="group in taskGroups" :value="group.id" :key="group.id">{{group.name}}
+                <i-select v-model="task.taskGroupId" filterable placeholder="请选择任务组">
+                    <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
                     </i-option>
                 </i-select>
             </Form-item>

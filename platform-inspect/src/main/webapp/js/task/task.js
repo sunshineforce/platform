@@ -5,19 +5,19 @@ $(function () {
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
             {label: '任务名称', name: 'name', index: 'name', align: 'center',width: '160px'},
-            {label: '备注', name: 'remark', index: 'remark', align: 'center',width: '100px'},
 			{label: '任务组', name: 'taskGroupName', index: 'task_group_id', align: 'center',width: '120px'},
-			{label: '任务类型', name: 'type', index: 'type',align: 'center', width: '70px',formatter:formatType},
-			{label: '开始时间', name: 'startTime', index: 'start_time', align: 'center',width: '80px',formatter:formatDay},
-			{label: '截止时间', name: 'endTime', index: 'end_time', align: 'center',width: '80px',formatter:formatDay},
-			{label: '执行时限', name: 'schedule', index: 'schedule',align: 'center', width: '80px'},
-			{label: '循环周期', name: 'scheduleCycle', index: 'schedule_cycle',align: 'center', width: '50px',formatter:formatScheduleCycle},
+            {label: '任务类型', name: 'type', index: 'type',align: 'center', width: '70px',formatter:formatType},
+            {label: '开始时间', name: 'startTime', index: 'start_time', align: 'center',width: '80px',formatter:formatDay},
+            {label: '截止时间', name: 'endTime', index: 'end_time', align: 'center',width: '80px',formatter:formatDay},
+            {label: '执行时限', name: 'schedule', index: 'schedule',align: 'center', width: '80px'},
+            {label: '循环周期', name: 'scheduleCycle', index: 'schedule_cycle',align: 'center', width: '50px',formatter:formatScheduleCycle},
             {label: '检查区域', name: 'chekArea', index: '', align: 'center',width: '120px'},
             {label: '检查企业', name: 'checkCompany', index: '', align: 'center',width: '120px'},
             {label: '检查人', name: 'userNames', index: 'user_names', align: 'center',width: '80px'},
             {label: '状态', name: 'status', index: 'status',align: 'center', width: '60px',formatter:formatStatus},
-			{label: '最后执行时间', name: 'createTime', index: 'create_time', align: 'center'}
-		],
+            {label: '最后执行时间', name: 'createTime', index: 'create_time', align: 'center'},
+            {label: '备注', name: 'remark', index: 'remark', align: 'center',width: '100px'}
+        ],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -108,13 +108,11 @@ var vm = new Vue({
 		],
 	},
     created:function () {
-      //console.log("created..........")
         $.get("../taskgroup/queryAll", function (r) {
-            vm.taskGroupList = vm.taskGroupList.concat(r.list);
+            vm.taskGroupList = r.list;
         });
     },
 	methods: {
-
 		query: function () {
 			vm.reload();
 		},
@@ -217,6 +215,7 @@ var vm = new Vue({
 		getTaskGroups:function () {
             $.get("../taskgroup/queryAll", function (r) {
                 vm.taskGroups = r.list;
+                console.log("===="+vm.taskGroups);
             });
         },
 	}
