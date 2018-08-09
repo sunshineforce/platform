@@ -5,11 +5,20 @@ import java.io.Serializable;
 public class AppUserVo implements Serializable{
     private static final long serialVersionUID = -5435898367360698660L;
 
+    private Long userId;
     private String username;
     private String realname;
     private String mobile;
     private String regionName;
     private Integer identify;
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
 
     public String getUsername() {
         return username;
