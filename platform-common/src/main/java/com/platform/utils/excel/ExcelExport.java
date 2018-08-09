@@ -42,7 +42,7 @@ public class ExcelExport {
     /**
      * EXCEL 2007 扩展名
      */
-    public static final String EXCEL07_EXTENSION = ".xls";
+    public static final String EXCEL07_EXTENSION = ".xlsx";
 
     /**
      * 工作表
@@ -227,12 +227,12 @@ public class ExcelExport {
 
             Row row = sheet.createRow(startRow++);
             int cols = createRowData(row, Arrays.asList(obj),sheet);
-            row.setHeight((short) 400);
+            row.setHeight((short) (20*76));
             colNum = colNum > cols ? colNum : cols;
         }
 
         adjustCellWidth(colNum, startRow, sheet);
-
+        sheet.setColumnWidth(0,200*20);
     }
 
     /**
@@ -339,6 +339,9 @@ public class ExcelExport {
 
     }
 
+    final int COL_WIDTH = 13000;
+    final int ROW_HEIGHT = 5000;
+
     /**
      * 主要功能: 设置某单元格的值
      * 注意事项: 同时根据值类型设置样式
@@ -443,7 +446,7 @@ public class ExcelExport {
         // 字符串类型
         else if (obj instanceof String) {
             if (obj.toString().endsWith(".png")){
-                sheet.setColumnWidth(cell.getColumnIndex(),80);
+                sheet.setColumnWidth(cell.getColumnIndex(),150);
                 byte[] bytes = IOUtils.toByteArray(getInputStream(obj.toString()));
                 int my_picture_id = workBook.addPicture(bytes, Workbook.PICTURE_TYPE_JPEG);
                 // 利用HSSFPatriarch将图片写入EXCEL
@@ -454,24 +457,19 @@ public class ExcelExport {
                  * excel中的cellNum和rowNum的index都是从0开始的
                  *
                  */
-                // 指定我想要的长宽
-                double standardWidth = 64;
-                double standardHeight = 64;
 
-                // 计算单元格的长宽
-                 double cellWidth = sheet.getColumnWidthInPixels(cell.getColumnIndex());
-                 double cellHeight = cell.getRow().getHeightInPoints()/72*96;
-
-                 // 计算需要的长宽比例的系数
-                 double a = standardWidth / cellWidth;
-                 double b = standardHeight / cellHeight;
                 HSSFPatriarch patri = sheet.createDrawingPatriarch();
                 HSSFClientAnchor anchor = new HSSFClientAnchor();
                 anchor.setCol1(cell.getColumnIndex());
                 anchor.setRow1(cell.getRowIndex());
+
+
                 HSSFPicture my_picture = patri.createPicture(anchor, my_picture_id);
 
-                my_picture.resize(a,b);
+                my_picture.resize(2.3,1);
+
+
+
             }else {
                 // modi at 2016年11月14日14:27:51 by zhang
                 // 补充设置单元格类型，避免编码类被当作数字类型
@@ -485,6 +483,22 @@ public class ExcelExport {
             cell.setCellValue(strValue);
         }
 
+    }
+
+    private static int getAnchorX(int px, int colWidth){
+        return (int) Math.round(( (double)701*16000.0/301)*((double)1/colWidth)*px);
+    }
+
+    private static int getAnchorY(int px, int rowHeight){
+        return (int) Math.round(( (double)144 * 8000/301)*((double)1/rowHeight)*px);
+    }
+
+    private static int getRowHeight(int px){
+        return (int) Math.round(((double)4480/300) * px);
+    }
+
+    private static int getColWidth(int px){
+        return (int) Math.round(((double)10971/300) * px);
     }
 
     public static  InputStream getInputStream(String path) {
