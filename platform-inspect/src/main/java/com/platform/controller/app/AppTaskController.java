@@ -2,18 +2,14 @@ package com.platform.controller.app;
 
 import com.alibaba.druid.util.StringUtils;
 import com.platform.entity.task.TaskEntity;
-import com.platform.entity.task.vo.TaskVo;
 import com.platform.service.task.TaskGroupService;
 import com.platform.service.task.TaskService;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
 import com.platform.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.HashMap;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
