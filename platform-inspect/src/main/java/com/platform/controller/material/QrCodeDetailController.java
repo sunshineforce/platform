@@ -48,9 +48,9 @@ public class QrCodeDetailController {
     @RequestMapping("/export")
     public void export(@RequestParam Map<String, Object> params,HttpServletResponse response) {
         List<QrCodeDetailEntity> list = qrCodeDetailService.queryQrCodeDetails(params);
-        ExcelExport excelExport = new ExcelExport();
+        String exportFileName = "物品二维码详情信息" + System.currentTimeMillis()+ ExcelExport.EXCEL07_EXTENSION;
+        ExcelExport excelExport = new ExcelExport(exportFileName);
         String[] colCaption = {"二维码","批次号","生成人员","生成时间","绑定人姓名","绑定时间","物品名称","物品类型"};
-        String sheetName = "物品二维码详情信息" + System.currentTimeMillis()+".xls";
         List<Object[]> objectList = new ArrayList<>();
         for (QrCodeDetailEntity detail : list) {
             Object[] obj = new Object[colCaption.length];
@@ -65,7 +65,7 @@ public class QrCodeDetailController {
             objectList.add(obj);
         }
         try {
-            excelExport.addSheetByArray(sheetName,objectList,colCaption);
+            excelExport.addSheetByArray(null,objectList,colCaption);
             excelExport.export(response);
         } catch (IOException e) {
             e.printStackTrace();
