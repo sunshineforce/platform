@@ -83,4 +83,6 @@ public interface SysRegionService {
      * @return
      */
     List<TreeVo> buildRegionTree();
+
+    List<TreeVo> queryRegionSimple();
 }

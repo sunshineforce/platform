@@ -17,11 +17,10 @@ import java.util.Map;
 
 /**
  * Service实现类
- *
  * @author admin
- *
  * @date 2017-11-04 11:19:31
  */
+
 @Service("regionService")
 public class SysRegionServiceImpl implements SysRegionService {
     @Autowired
@@ -75,5 +74,10 @@ public class SysRegionServiceImpl implements SysRegionService {
         TreeBuilder treeBuilder = new TreeBuilder(rootList);
         List<TreeVo> list = treeBuilder.buildTree();
         return list;
+    }
+
+    @Override
+    public List<TreeVo> queryRegionSimple() {
+        return sysRegionDao.queryRegionSimple();
     }
 }
