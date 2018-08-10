@@ -77,4 +77,10 @@ public interface SysRegionService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+    /**
+     * 构造区域树
+     * @return
+     */
+    List<TreeVo> buildRegionTree();
 }

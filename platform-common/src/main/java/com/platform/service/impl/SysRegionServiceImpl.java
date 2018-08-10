@@ -1,12 +1,17 @@
 package com.platform.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.platform.dao.SysRegionDao;
 import com.platform.entity.SysRegionEntity;
+import com.platform.entity.Tree;
 import com.platform.service.SysRegionService;
+import com.platform.utils.TreeBuilder;
+import com.platform.utils.TreeUtils;
 import com.platform.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +49,8 @@ public class SysRegionServiceImpl implements SysRegionService {
 
     @Override
     public int save(SysRegionEntity region) {
+        Integer parentId = region.getParentId()==null?0:region.getParentId();
+        region.setParentId(parentId);
         return sysRegionDao.save(region);
     }
 
@@ -60,5 +67,13 @@ public class SysRegionServiceImpl implements SysRegionService {
     @Override
     public int deleteBatch(Integer[] ids) {
         return sysRegionDao.deleteBatch(ids);
+    }
+
+    @Override
+    public List<TreeVo> buildRegionTree() {
+        List<TreeVo> rootList = sysRegionDao.queryRegionSimple();
+        TreeBuilder treeBuilder = new TreeBuilder(rootList);
+        List<TreeVo> list = treeBuilder.buildTree();
+        return list;
     }
 }

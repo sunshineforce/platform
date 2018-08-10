@@ -1,6 +1,7 @@
 package com.platform.vo;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -18,6 +19,7 @@ public class TreeVo implements Serializable {
     private Long id;
     private String name;
     private Long pid;
+    List<TreeVo> children;
 
     public TreeVo() {
     }
@@ -50,5 +52,13 @@ public class TreeVo implements Serializable {
 
     public void setPid(Long pid) {
         this.pid = pid;
+    }
+
+    public List<TreeVo> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<TreeVo> children) {
+        this.children = children;
     }
 }

@@ -8,6 +8,8 @@ import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
 import com.platform.utils.TreeUtils;
+import com.platform.vo.SelectVo;
+import com.platform.vo.TreeVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +90,20 @@ public class SysRegionController {
         sysRegionService.deleteBatch(ids);
 
         return R.ok();
+    }
+
+    @RequestMapping("/buildTree")
+    public R buildTree(){
+        List<TreeVo> roots = sysRegionService.buildRegionTree();
+
+        return R.ok().put("list",roots);
+    }
+
+    @RequestMapping("/getRootNodes")
+    public R getRootNodes(){
+        List<TreeVo> roots = sysRegionService.queryAllRegion();
+
+        return R.ok().put("list",roots);
     }
 
     /**

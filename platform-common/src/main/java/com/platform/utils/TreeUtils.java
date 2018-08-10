@@ -1,5 +1,6 @@
 package com.platform.utils;
 
+import com.platform.vo.TreeVo;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.lang.reflect.Field;
@@ -79,5 +80,22 @@ public class TreeUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static List<TreeVo> buildTree(List<TreeVo> treeVoList, Long parentId) {
+        List<TreeVo> tree = new ArrayList<TreeVo>();
+        for (TreeVo node : treeVoList) {
+
+            Long id = node.getId();
+            Long pid = node.getPid();
+            if (parentId == pid) {
+                List<TreeVo> menuLists = buildTree(treeVoList, id);
+
+                node.setChildren(menuLists);
+                tree.add(node);
+            }
+        }
+
+        return tree;
     }
 }
