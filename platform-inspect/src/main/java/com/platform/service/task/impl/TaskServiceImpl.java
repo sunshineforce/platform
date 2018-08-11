@@ -5,16 +5,11 @@ import com.platform.entity.SysRegionEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.notice.NoticeEntity;
 import com.platform.entity.task.TaskEntity;
-import com.platform.entity.task.vo.TaskStatisticsVo;
 import com.platform.entity.task.vo.TaskUserVo;
-import com.platform.entity.task.vo.TaskVo;
 import com.platform.service.SysRegionService;
 import com.platform.service.SysUserService;
 import com.platform.service.notice.INoticeService;
-import com.platform.service.task.TaskGroupMaterialService;
 import com.platform.service.task.TaskService;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
 import com.platform.utils.enums.NoticeStatusEnum;
 import com.platform.vo.SelectVo;
 import com.platform.vo.TreeVo;
@@ -40,9 +35,6 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private INoticeService noticeService;
-
-    @Autowired
-    private TaskGroupMaterialService taskGroupMaterialService;
 
     @Autowired
     private SysRegionService sysRegionService;
@@ -113,80 +105,6 @@ public class TaskServiceImpl implements TaskService {
         return taskDao.deleteBatch(ids);
     }
 
-    /********************************** APP 接口部分  ******************************/
-
-
-
-    @Override
-    public PageUtils queryListForApp(Map<String, Object> map) {
-//        SysUserEntity sysUser = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
-        SysUserEntity sysUser = new SysUserEntity();
-        sysUser.setUserId(11L);
-        map.put("userId",sysUser.getUserId());
-
-        Query query  = new Query(map);
-        String status = String.valueOf(map.get("status"));
-        List<TaskVo> taskList = taskDao.queryListSimple(map);
-        List<TaskStatisticsVo> statistics;
-        for (TaskVo taskVo : taskList) {
-            taskVo.setProgressRate(calcProgressRate(taskVo.getId(),Integer.valueOf(status)));
-            statistics = taskGroupMaterialService.queryMaterialStatisticsByTaskId(Long.valueOf(taskVo.getId()));
-            taskVo.setStatistics(statistics);
-        }
-        int total = taskDao.queryListSimpleTotal(query);
-
-        return new PageUtils(taskList, total, query.getLimit(), query.getPage());
-    }
-
-
-
-    /**
-     * 计算任务完成进度
-     * @return
-     */
-    private String calcProgressRate(Long taskId,Integer type){
-        String progressRate = "0/0";
-        if (taskId == null) {
-            return progressRate;
-        }
-        TaskStatisticsVo statisticsVo = taskDao.selectTaskProgressRate(taskId);
-        Integer total;
-        Integer unfinished;
-        Integer finish;
-        Integer timeout;
-        if (statisticsVo != null) {
-            total = statisticsVo.getTotal() == null ? 0 : statisticsVo.getTotal();
-            unfinished = statisticsVo.getUnfinished() == null ? 0 : statisticsVo.getUnfinished();
-            finish = statisticsVo.getFinish() == null ? 0 : statisticsVo.getFinish();
-            timeout = statisticsVo.getTimeout() == null ? 0 : statisticsVo.getTimeout();
-            if (type == 0) { //未完成进度
-                progressRate =  unfinished + "/" + total;
-            }else if (type == 1) {//已完成进度
-                progressRate =  finish + "/" + total;
-            }else  if (type == 2) {//已超时进度
-                progressRate =  timeout + "/" + total;
-            }
-        }
-        return progressRate;
-    }
-
-    /**
-     * 查询任务消息的状态名称
-     * @param userId 当前登录用户Id
-     * @param taskId 任务Id
-     * @return
-     */
-    private String getNoticeStatus(Long userId,Long taskId){
-        NoticeEntity condition = new NoticeEntity();
-        condition.setUserId(userId);
-        condition.setTaskId(taskId);
-        NoticeEntity notice = noticeService.queryObjectByCondition(condition);
-        if (notice != null) {
-            return notice.getName().equals("")?"":notice.getName();
-        }
-        return "";
-    }
-
     @Override
     public TaskUserVo choiceUser(Integer regionId) {
 //        Subject subject = SecurityUtils.getSubject();
@@ -208,4 +126,5 @@ public class TaskServiceImpl implements TaskService {
         taskUser.setChildren(children);
         return taskUser;
     }
+
 }

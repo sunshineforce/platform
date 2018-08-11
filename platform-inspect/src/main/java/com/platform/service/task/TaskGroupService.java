@@ -2,6 +2,7 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskGroupEntity;
+import com.platform.entity.task.vo.TaskVo;
 import com.platform.utils.PageUtils;
 import com.platform.vo.SelectVo;
 
@@ -44,6 +45,8 @@ public interface TaskGroupService {
      * @return
      */
     List<SelectVo> queryAllTaskGroupMembers();
+
+    PageUtils queryTaskGroup(Map<String, Object> map);
 
     /**
      * 分页统计总数

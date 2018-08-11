@@ -2,7 +2,6 @@ package com.platform.entity.task.vo;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -18,23 +17,28 @@ import java.util.List;
 public class TaskVo implements Serializable {
     private static final long serialVersionUID = -8557678875044410963L;
 
+    //任务Id
     private Long id;
-
-    private Long taskGroupId;
-
-    private Long materialId;
-
+    //任务名称
     private String name;
-
+    //完成进度
     private String progressRate;
-
+    //开始时间
     private Date startTime;
-
+    //结束时间
     private Date endTime;
-
+    //区域Id
+    private Integer regionId;
+    //企业名称
+    private String enterpriseName;
+    //任务地点
     private String location;
-
-    private List<TaskStatisticsVo> statistics;
+    //任务状态
+    private Integer status;
+    //任务状态名称
+    private String taskStatus;
+    //检查人
+    private String checkUser;
 
     public Long getId() {
         return id;
@@ -42,22 +46,6 @@ public class TaskVo implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public Long getTaskGroupId() {
-        return taskGroupId;
-    }
-
-    public void setTaskGroupId(Long taskGroupId) {
-        this.taskGroupId = taskGroupId;
-    }
-
-    public Long getMaterialId() {
-        return materialId;
-    }
-
-    public void setMaterialId(Long materialId) {
-        this.materialId = materialId;
     }
 
     public String getName() {
@@ -92,6 +80,22 @@ public class TaskVo implements Serializable {
         this.endTime = endTime;
     }
 
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
     public String getLocation() {
         return location;
     }
@@ -100,12 +104,44 @@ public class TaskVo implements Serializable {
         this.location = location;
     }
 
-    public List<TaskStatisticsVo> getStatistics() {
-        return statistics;
+    public Integer getStatus() {
+        return status;
     }
 
-    public void setStatistics(List<TaskStatisticsVo> statistics) {
-        this.statistics = statistics;
+    public void setStatus(Integer status) {
+        this.status = status;
     }
 
+    public String getTaskStatus() {
+        return taskStatus;
+    }
+
+    public void setTaskStatus(String taskStatus) {
+        this.taskStatus = taskStatus;
+    }
+
+    public String getCheckUser() {
+        return checkUser;
+    }
+
+    public void setCheckUser(String checkUser) {
+        this.checkUser = checkUser;
+    }
+
+    @Override
+    public String toString() {
+        return "TaskVo{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", progressRate='" + progressRate + '\'' +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", regionId=" + regionId +
+                ", enterpriseName='" + enterpriseName + '\'' +
+                ", location='" + location + '\'' +
+                ", status=" + status +
+                ", taskStatus='" + taskStatus + '\'' +
+                ", checkUser='" + checkUser + '\'' +
+                '}';
+    }
 }
