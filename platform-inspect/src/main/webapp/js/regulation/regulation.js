@@ -35,6 +35,23 @@ $(function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
+
+    ///知识内容
+    $('#content').editable({
+        inlineMode: false,
+        alwaysBlank: true,
+        height: '500px', //高度
+        minHeight: '200px',
+        language: "zh_cn",
+        spellcheck: false,
+        plainPaste: true,
+        enableScript: false,
+        imageButtons: ["floatImageLeft", "floatImageNone", "floatImageRight", "linkImage", "replaceImage", "removeImage"],
+        allowedImageTypes: ["jpeg", "jpg", "png", "gif"],
+        imageUploadURL: '../sys/oss/uploadFtp?platformCode=mall&dirFolderName=goods',
+        imageUploadParams: {id: "edit"},
+        imagesLoadURL: '../sys/oss/queryAll'
+    })
 });
 
 ///格式图片
@@ -68,12 +85,15 @@ var vm = new Vue({
 			vm.regulation = {
                 type:0,
 			};
+            vm.regulation.content = null;
+            $('#content').editable('setHTML', "");
 			vm.getExamList();
 		},
         ///获取考试列表
-        getExamList:function () {
+        getExamList:function (id) {
             $.get("../exam/queryAll", function (r) {
                 vm.examList = r.list;
+
             });
         },
 		update: function (event) {
@@ -83,11 +103,12 @@ var vm = new Vue({
 			}
 			vm.showList = false;
             vm.title = "修改";
-
+            vm.getExamList();
             vm.getInfo(id)
 		},
 		saveOrUpdate: function (event) {
             var url = vm.regulation.id == null ? "../regulation/save" : "../regulation/update";
+            vm.regulation.content = $('#content').editable('getHTML');
 			$.ajax({
 				type: "POST",
 			    url: url,
@@ -118,6 +139,7 @@ var vm = new Vue({
 				    data: JSON.stringify(ids),
 				    success: function (r) {
 						if (r.code == 0) {
+                            vm.regulation.content = null;
 							alert('操作成功', function (index) {
 								$("#jqGrid").trigger("reloadGrid");
 							});
@@ -131,6 +153,13 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../regulation/info/"+id, function (r) {
                 vm.regulation = r.regulation;
+                if (vm.regulation.content != null){
+                    $('#content').editable('setHTML', vm.regulation.content);
+                }
+                if (vm.regulation.relation != null){
+                    vm.regulation.relation = parseInt(vm.regulation.relation);
+                }
+
             });
 		},
 		reload: function (event) {
@@ -155,6 +184,7 @@ var vm = new Vue({
                 vm.regulation.link = "";
             }else {
                 vm.regulation.content = "";
+                $('#content').editable('setHTML', vm.regulation.content);
             }
         },
         handleFormatError: function (file) {
