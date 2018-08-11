@@ -45,8 +45,8 @@
     		`create_time`,`creator`,`update_time`,`updator`,`enabled`
 		from enterprise
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="enterpriseName != null and enterpriseName.trim() != ''">
+			AND enterprise_name LIKE concat('%',#{name},'%')
 		</if>
 		<if test="regionId != null">
 			AND region_id = #{regionId}
@@ -73,9 +73,9 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from enterprise
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
-        </if>
+		<if test="enterpriseName != null and enterpriseName.trim() != ''">
+			AND enterprise_name LIKE concat('%',#{name},'%')
+		</if>
 		<if test="regionId != null">
 			AND region_id = #{regionId}
 		</if>

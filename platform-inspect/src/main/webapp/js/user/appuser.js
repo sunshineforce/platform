@@ -4,9 +4,9 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '姓名', name: 'realname', index: 'realname', align: 'center', width:'80px'},
-			{label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'80px'},
-            {label: '帐号', name: 'username', index: 'username', align: 'center', width:'80px'},
+			{label: '姓名', name: 'realname', index: 'realname', align: 'center', width:'100px'},
+			{label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'120px'},
+            {label: '帐号', name: 'username', index: 'username', align: 'center', width:'100px'},
             {
                 label: '身份', name: 'identify', width: '60px', formatter: function (value) {
                     return value === 0 ?
@@ -15,16 +15,16 @@ $(function () {
                 }
             },
             {
-                label: '是否启用', name: 'status', width: '60px', formatter: function (value) {
+                label: '是否启用', name: 'status', width: '80px', formatter: function (value) {
                     return value === 0 ?
                         '<span>否</span>' :
                         '<span>是</span>';
                 }
             },
-            {label: '上级领导', name: 'superiorStr', index: 'superior', align: 'center', width:'80px'},
+            {label: '上级领导', name: 'superiorStr', index: 'superior', align: 'center', width:'160px'},
             {label: '区域', name: 'regionName', index: '', align: 'center', width:'120px'},
             {label: '所属企业', name: 'enterpriseName', index: '', align: 'center', width:'120px'},
-			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
+			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'139px'},
 			{label: '修改人', name: 'updateUserName', index: 'update_user_id', align: 'center', width:'80px'}],
 		viewrecords: true,
         height: 555,
@@ -34,6 +34,9 @@ $(function () {
         rownumWidth: 25,
         autowidth: true,
         multiselect: true,
+        shrinkToFit: false,
+        autoScroll: true,          //shrinkToFit: false,autoScroll: true,这两个属性产生水平滚动条
+        autowidth: true,          //必须要,否则没有水平滚动条
         pager: "#jqGridPager",
         jsonReader: {
             root: "page.list",
@@ -47,7 +50,41 @@ $(function () {
             order: "order"
         },
         gridComplete: function () {
-            $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+           // $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+        }
+    });
+
+    $("#jqGrid1").jqGrid({
+        url: '../enterprise/list',
+        datatype: "json",
+        colModel: [
+            {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 210}
+        ],
+        viewrecords: true,
+        height: 555,
+        rowNum: 10,
+        rowList: [10, 30, 50],
+        rownumWidth: 25,
+        autowidth: true,
+        multiselect: true,
+        shrinkToFit: false,
+        autoScroll: true,          //shrinkToFit: false,autoScroll: true,这两个属性产生水平滚动条
+        autowidth: true,          //必须要,否则没有水平滚动条
+        pager: "#jqGridPager1",
+        jsonReader: {
+            root: "page.list",
+            page: "page.currPage",
+            total: "page.totalPage",
+            records: "page.totalCount"
+        },
+        prmNames: {
+            page: "page",
+            rows: "limit",
+            order: "order"
+        },
+        gridComplete: function () {
+           // $("#jqGrid1").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
 });
@@ -87,6 +124,10 @@ var vm = new Vue({
 		    name: '',
             regionId:null,
 		},
+        eq: {
+            name: '',
+            regionId:null,
+        },
         enabled:'0',
         identifyList: [
             {id:0,name:"安全员"},
@@ -116,11 +157,26 @@ var vm = new Vue({
         })
     },
 	methods: {
+        reloadEnterprise: function (event) {
+            vm.showList = true;
+            var page = $("#jqGrid1").jqGrid('getGridParam', 'page');
+            $("#jqGrid1").jqGrid('setGridParam', {
+                postData: {'enterpriseName': vm.eq.name,'regionId':vm.eq.regionId},
+                page: page
+            }).trigger("reloadGrid");
+        },
         ztreeClick:function () {
             var node = ztree.getSelectedNodes();
             //alert(node[0].id)
-            vm.q.regionId = node[0].id;
-            vm.reload();
+            if (node[0].id == 0){
+                vm.eq.regionId = null;
+                vm.q.regionId = null;
+            }else{
+                vm.eq.regionId = node[0].id;
+                vm.q.regionId = node[0].id;
+            }
+
+            vm.reloadEnterprise();
         },
         getRegionTree: function () {
             //加载树
@@ -276,10 +332,17 @@ var vm = new Vue({
             });
 		},
 		reload: function (event) {
+		    var enterpriseArr = $("#jqGrid1").getGridParam("selarrrow");
+		    var enterpriseIdsArr = [];
+		    if (null != enterpriseArr && enterpriseArr.length > 0){
+		        for (var i = 0 ; i < enterpriseArr.length ; i++){
+                    enterpriseIdsArr[i] = enterpriseArr[i];
+                }
+            }
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'realname': vm.q.name,'regionId':vm.q.regionId},
+                postData: {'realname': vm.q.name,'regionId':vm.q.regionId,'enterpriseIds':enterpriseIdsArr.join(","),},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
