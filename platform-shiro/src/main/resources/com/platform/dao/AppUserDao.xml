@@ -165,6 +165,11 @@
 		</set>
 		where id = #{id}
 	</update>
+
+	<update id="updatePassword" parameterType="map">
+		update app_user set `password` = #{newPassword}
+			where user_id = #{userId} and password = #{password}
+	</update>
 	
 	<delete id="delete">
 		delete from app_user where id = #{value}

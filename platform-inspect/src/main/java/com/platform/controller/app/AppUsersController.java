@@ -3,11 +3,11 @@ package com.platform.controller.app;
 import com.platform.annotation.SysLog;
 import com.platform.constants.CommonConstant;
 import com.platform.controller.AbstractController;
+import com.platform.entity.AppUserEntity;
 import com.platform.entity.AppUserVo;
 import com.platform.entity.SysRegionEntity;
-import com.platform.entity.SysUserEntity;
+import com.platform.service.AppUserService;
 import com.platform.service.SysRegionService;
-import com.platform.service.SysUserService;
 import com.platform.utils.BeanUtils;
 import com.platform.utils.DateUtils;
 import com.platform.utils.R;
@@ -45,7 +45,7 @@ public class AppUsersController extends AbstractController{
     public static final String RESET_PASSOWRD_SMS = "";
 
     @Autowired
-    private SysUserService sysUserService;
+    private AppUserService appUserService;
 
     @Autowired
     private SysRegionService regionService;
@@ -58,13 +58,13 @@ public class AppUsersController extends AbstractController{
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             if (token == null) {
-                //R.loginError();
+                R.loginError();
             }
             subject.login(token);
-            SysUserEntity sysUser = (SysUserEntity) subject.getPrincipal();
-            logger.info(sysUser.getUsername() +" login system at :" + DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
-            subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,sysUser);
-            return R.ok();
+            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+            logger.info(appUser.getUsername() +" login system at :" + DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+            subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,appUser);
+            return R.succeed();
         } catch (AuthenticationException e) {
             return R.error();
         } catch (InvalidSessionException e) {
@@ -86,7 +86,7 @@ public class AppUsersController extends AbstractController{
         newPassword = new Sha256Hash(newPassword).toHex();
 
         //更新密码
-        int count = sysUserService.updatePassword(getUserId(), password, newPassword);
+        int count = appUserService.resetPassword(getUserId(), password, newPassword);
         if (count == 0) {
             return R.error(SystemCode.PASSWORD_VALID.getCode(),"原密码不正确");
         }
@@ -98,11 +98,11 @@ public class AppUsersController extends AbstractController{
      */
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
-        SysUserEntity sysUser = sysUserService.queryObject(11L);
-        sysUser.setRegionName(getRegionName(sysUser.getRegionId()));
+        AppUserEntity appUserEntity = appUserService.queryObject(11L);
+        appUserEntity.setRegionName(getRegionName(appUserEntity.getRegionId()));
 
         AppUserVo appUser = new AppUserVo();
-        BeanUtils.copyProperties(sysUser,appUser);
+        BeanUtils.copyProperties(appUserEntity,appUser);
 
         return R.ok().put("data", appUser);
     }
@@ -112,7 +112,7 @@ public class AppUsersController extends AbstractController{
      */
     @RequestMapping(value="/user/info/{userId}", method = RequestMethod.GET)
     public R info(@PathVariable("userId") Long userId) {
-        SysUserEntity user = sysUserService.queryObject(userId);
+        AppUserEntity user = appUserService.queryObject(userId);
         return R.ok().put("user", user);
     }
 

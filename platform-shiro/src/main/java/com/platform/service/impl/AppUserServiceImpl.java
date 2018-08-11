@@ -6,16 +6,16 @@ import com.platform.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 /**
  * app用户表Service实现类
- *
  * @author admin
- *  
  * @date 2018-08-11 14:33:44
  */
+
 @Service("appUserService")
 public class AppUserServiceImpl implements AppUserService {
     @Autowired
@@ -54,5 +54,15 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public int deleteBatch(Long[]ids) {
         return appUserDao.deleteBatch(ids);
+    }
+
+    @Override
+    public int resetPassword(Long userId, String password, String newPassword) {
+        Map<String, Object> paramsMap = new HashMap<>();
+        paramsMap.put("userId", userId);
+        paramsMap.put("password", password);
+        paramsMap.put("newPassword", newPassword);
+
+        return appUserDao.updatePassword(paramsMap);
     }
 }

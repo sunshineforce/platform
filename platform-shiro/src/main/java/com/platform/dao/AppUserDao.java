@@ -2,6 +2,8 @@ package com.platform.dao;
 
 import com.platform.entity.AppUserEntity;
 
+import java.util.Map;
+
 /**
  * app用户表Dao
  *
@@ -11,4 +13,5 @@ import com.platform.entity.AppUserEntity;
  */
 public interface AppUserDao extends BaseDao<AppUserEntity> {
 
+    int updatePassword(Map<String, Object> map);
 }
