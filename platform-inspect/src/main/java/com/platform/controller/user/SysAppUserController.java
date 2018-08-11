@@ -7,7 +7,6 @@ import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysRegionEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.service.AppUserService;
-import com.platform.utils.Constant;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
@@ -39,10 +38,6 @@ public class SysAppUserController extends AbstractController {
     @RequestMapping("/list")
     @RequiresPermissions("appUser:list")
     public R list(@RequestParam Map<String, Object> params) {
-        //只有超级管理员，才能查看所有管理员列表
-        if (getUserId() != Constant.SUPER_ADMIN) {
-            params.put("createUserId", getUserId());
-        }
 
         if (null != params.get("regionId") && org.apache.commons.lang.StringUtils.isNotBlank(String.valueOf(params.get("regionId")))){
             Integer regionId = Integer.parseInt(String.valueOf(params.get("regionId")));
@@ -104,37 +99,43 @@ public class SysAppUserController extends AbstractController {
         }
     }
 
+
     /**
-     * 领导下拉选项
-     * @param
+     * 根据app用户省份获取下拉列表信息
+     * @param identify
      * @return
      */
-    @RequestMapping("/superiorList/{userId}")
-    public R superiorList(@PathVariable("userId") Long userId) {
-
-
-        List<Map<String,Object>> superiorList = getSuperiorList(userId);
-
-        return R.ok().put("superiorList", superiorList);
+    @RequestMapping("/appUserListByIdentify/{identify}")
+    public R appUserListByIdentify(@PathVariable("identify") Integer identify) {
+        return R.ok().put("list", getList(identify));
     }
 
-    private List<Map<String,Object>> getSuperiorList(Long userId){
+    private List<Map<String,Object>> getList(Integer identify){
+        List<Map<String,Object>> list = new ArrayList<>();
 
-        List<AppUserEntity> userList = appUserService.queryList(new HashMap<String, Object>());
-        List<Map<String,Object>> superiorList = new ArrayList<>();
+        Map<String, Object> params = new HashMap<>();
+        SysUserEntity user = getUser();
+        ///如果是企业用户登录，查询该企业下的用户
+        if (null != user && null != user.getEnterpriseId()){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
+        if (null != identify){
+            params.put("identify",identify);
+        }
+        List<AppUserEntity> userList = appUserService.queryList(params);
         if (null != userList && userList.size() > 0){
             Map<String,Object> superiorMap = null;
             for (AppUserEntity sysUserEntity : userList) {
-                if (userId == null || (userId != null && userId.intValue() != sysUserEntity.getId().intValue())) { //刨除自身
-                    superiorMap = new HashMap<>();
-                    superiorMap.put("id",sysUserEntity.getId());
-                    superiorMap.put("name",sysUserEntity.getRealname());
-                    superiorList.add(superiorMap);
-                }
+                superiorMap = new HashMap<>();
+                superiorMap.put("id",sysUserEntity.getId());
+                superiorMap.put("name",sysUserEntity.getRealname());
+                list.add(superiorMap);
             }
         }
-        return superiorList;
+        return list;
     }
+
+
 
     /**
      * 获取登录的用户信息
@@ -153,7 +154,7 @@ public class SysAppUserController extends AbstractController {
         AppUserEntity user = appUserService.queryObject(userId);
 
 
-        List<Map<String,Object>> superiorList = getSuperiorList(userId);
+        List<Map<String,Object>> superiorList = getList(1); // 领导
         user.setSuperiorList(superiorList);
         return R.ok().put("user", user);
     }
@@ -167,7 +168,7 @@ public class SysAppUserController extends AbstractController {
     public R save(@RequestBody AppUserEntity user) {
         //ValidatorUtils.validateEntity(user, AddGroup.class);
         SysUserEntity sysUserEntity = getUser();
-        if (null != user){
+        if (null != sysUserEntity){
             user.setCreateUserId(sysUserEntity.getUserId());
         }
         user.setCreateTime(new Date());
@@ -189,7 +190,7 @@ public class SysAppUserController extends AbstractController {
        // ValidatorUtils.validateEntity(user, UpdateGroup.class);
 
         SysUserEntity sysUserEntity = getUser();
-        if (null != user){
+        if (null != sysUserEntity){
             user.setUpdateUserId(sysUserEntity.getUserId());
         }
         user.setUpdateTime(new Date());

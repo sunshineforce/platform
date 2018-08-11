@@ -18,5 +18,5 @@ public interface TaskGroupDao extends BaseDao<TaskGroupEntity> {
 
     List<SelectVo> queryAllTaskGroupMembers();
 
-    List<SelectVo> selectTaskByTaskGroupId(Long id);
+    List<SelectVo> selectTaskByTaskGroupId(Integer id);
 }

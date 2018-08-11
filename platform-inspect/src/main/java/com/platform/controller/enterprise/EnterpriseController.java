@@ -74,7 +74,7 @@ public class EnterpriseController extends AbstractController {
     @RequestMapping("/info/{id}")
     @RequiresPermissions("enterprise:info")
     @ResponseBody
-    public R info(@PathVariable("id") Long id) {
+    public R info(@PathVariable("id") Integer id) {
         EnterpriseEntity enterprise = enterpriseService.queryObject(id);
 
         return R.ok().put("enterprise", enterprise);
@@ -115,7 +115,10 @@ public class EnterpriseController extends AbstractController {
         //添加企业信息
         enterpriseService.save(enterprise);
 
-
+        SysUserEntity userEntity = new SysUserEntity();
+        userEntity.setUserId(sysUserEntity.getUserId());
+        userEntity.setEnterpriseId(enterprise.getId());
+        sysUserService.update(userEntity);
         return R.ok();
     }
 

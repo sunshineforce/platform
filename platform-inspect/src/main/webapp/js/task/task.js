@@ -99,6 +99,8 @@ var vm = new Vue({
             {id:"1",name:"单次任务"},
         ],
         userList:[],
+        //接受选择结果
+        userArr:[],
 		///循环周期
         scheduleCycleList:[
 			{id:0,name:"每天"},
@@ -113,6 +115,14 @@ var vm = new Vue({
         });
     },
 	methods: {
+        queryAppUserList:function (arr) {
+            $.get("../sys/app/user/appUserListByIdentify/0", function (r) {
+                vm.userList = r.list;
+                if (arr){
+                    vm.userArr = arr;
+                }
+            });
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -121,7 +131,8 @@ var vm = new Vue({
 			vm.title = "新增";
 			vm.task = { type: 0 ,status:0};
 			vm.getTaskGroups(); ///加载任务组
-
+            var arr = [];
+            vm.queryAppUserList(arr);
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -135,6 +146,8 @@ var vm = new Vue({
 		},
 		saveOrUpdate: function (event) {
             var url = vm.task.id == null ? "../task/save" : "../task/update";
+            vm.task.userIds = vm.userArr.length > 0 ? vm.userArr.join(",") : null;
+            console.log("vm.task.userIds ----- " + vm.task.userIds)
 			$.ajax({
 				type: "POST",
 			    url: url,
@@ -142,6 +155,7 @@ var vm = new Vue({
 			    data: JSON.stringify(vm.task),
                 success: function (r) {
                     if (r.code === 0) {
+                        vm.userArr = [];
                         alert('操作成功', function (index) {
                             vm.reload();
                         });
@@ -178,6 +192,15 @@ var vm = new Vue({
 		getInfo: function(id){
 			$.get("../task/info/"+id, function (r) {
                 vm.task = r.task;
+                var arr = [];
+                if(vm.task.userIds){
+                    var ids = vm.task.userIds.split(",");
+                    for (var i = 0; i <ids.length; i++){
+                        arr[i] = parseInt(ids[i]);
+                    }
+                }
+                vm.queryAppUserList(arr);
+
             });
 		},
 		reload: function (event) {

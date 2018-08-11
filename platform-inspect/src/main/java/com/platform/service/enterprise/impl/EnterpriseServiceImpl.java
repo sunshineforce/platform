@@ -25,7 +25,7 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
     private EnterpriseDao enterpriseDao;
 
     @Override
-    public EnterpriseEntity queryObject(Long id) {
+    public EnterpriseEntity queryObject(Integer id) {
         return enterpriseDao.queryObject(id);
     }
 

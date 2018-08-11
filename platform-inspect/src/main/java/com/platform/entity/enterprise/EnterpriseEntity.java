@@ -14,7 +14,7 @@ public class EnterpriseEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     //主键Id
-    private Long id;
+    private Integer id;
     /** 用户ID */
     private Long userId;
     //区域Id
@@ -42,18 +42,12 @@ public class EnterpriseEntity implements Serializable {
     //是否启用（0：启用；1：禁用）
     private Integer enabled;
 
-    /**
-     * 设置：主键Id
-     */
-    public void setId(Long id) {
-        this.id = id;
+    public Integer getId() {
+        return id;
     }
 
-    /**
-     * 获取：主键Id
-     */
-    public Long getId() {
-        return id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public Long getUserId() {

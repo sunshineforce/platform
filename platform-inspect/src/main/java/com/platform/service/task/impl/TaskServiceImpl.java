@@ -78,7 +78,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public int save(TaskEntity task) {
         int effectRows = taskDao.save(task);
-        if (effectRows > 0) {
+        if (effectRows > 0 && null != task.getUserIds()) {
             String[] userIds = task.getUserIds().split(",");
             String content;
             for (int i = 0; i < userIds.length; i++) {

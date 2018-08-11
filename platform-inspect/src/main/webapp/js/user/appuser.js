@@ -234,9 +234,9 @@ var vm = new Vue({
                 }
             });
         },
-	    querySuperiorList:function (id) {
-            $.get("../sys/app/user/superiorList/"+id, function (r) {
-                vm.superiorList = r.superiorList;
+	    querySuperiorList:function () {
+            $.get("../sys/app/user/appUserListByIdentify/1", function (r) {
+                vm.superiorList = r.list;
             });
         },
 		query: function () {
@@ -247,7 +247,7 @@ var vm = new Vue({
 			vm.title = "新增";
             vm.roleList = {};
 			vm.appUser = { identify:1,status:1,enterpriseId:''};
-            vm.querySuperiorList(0);
+            vm.querySuperiorList();
             vm.getRegionTree();
             vm.enterpriseList = [];
             //this.getRoleList();

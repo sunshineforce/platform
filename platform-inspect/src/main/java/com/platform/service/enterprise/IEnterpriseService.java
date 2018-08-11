@@ -21,7 +21,7 @@ public interface IEnterpriseService {
      * @param id 主键
      * @return 实体
      */
-    EnterpriseEntity queryObject(Long id);
+    EnterpriseEntity queryObject(Integer id);
 
     /**
      * 分页查询

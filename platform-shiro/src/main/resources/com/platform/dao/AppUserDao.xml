@@ -73,6 +73,12 @@
 		<if test="realname != null and realname.trim() != ''">
 			AND u.realname LIKE concat('%',#{realname},'%')
 		</if>
+		<if test="identify != null">
+			AND u.identify = #{identify}
+		</if>
+		<if test="enterpriseId != null">
+			AND u.enterprise_id = #{enterpriseId}
+		</if>
 		<if test="regionIdList != null">
 			AND u.region_id IN
 			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
@@ -106,6 +112,12 @@
 		WHERE 1=1
 		<if test="realname != null and realname.trim() != ''">
 			AND u.realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test="identify != null">
+			AND u.identify = #{identify}
+		</if>
+		<if test="enterpriseId != null">
+			AND u.enterprise_id = #{enterpriseId}
 		</if>
 		<if test="regionIdList != null">
 			AND u.region_id IN

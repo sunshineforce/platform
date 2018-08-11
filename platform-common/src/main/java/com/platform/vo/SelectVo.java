@@ -15,22 +15,22 @@ import java.io.Serializable;
 public class SelectVo implements Serializable {
     private static final long serialVersionUID = 4869912229957397175L;
 
-    private Long id;
+    private Integer id;
     private String name;
 
     public SelectVo() {
     }
 
-    public SelectVo(Long id, String name) {
+    public SelectVo(Integer id, String name) {
         this.id = id;
         this.name = name;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
