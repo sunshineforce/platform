@@ -52,6 +52,11 @@ public class SysAppUserController extends AbstractController {
         }
         params.put("regionId",null);
 
+        if (null != params.get("enterpriseIds") && StringUtils.isNotBlank(String.valueOf(params.get("enterpriseIds")))){
+            String[] enterpriseIdss = String.valueOf(params.get("enterpriseIds")).split(",");
+            params.put("enterpriseList",enterpriseIdss);
+        }
+
         //查询列表数据
         Query query = new Query(params);
         List<AppUserEntity> userList = appUserService.queryList(query);

@@ -21,6 +21,9 @@ $(function () {
         rownumWidth: 25,
         autowidth: true,
         multiselect: true,
+        shrinkToFit: false,
+        autoScroll: true,          //shrinkToFit: false,autoScroll: true,这两个属性产生水平滚动条
+        autowidth: true,          //必须要,否则没有水平滚动条
         pager: "#jqGridPager",
         jsonReader: {
             root: "page.list",
@@ -34,7 +37,7 @@ $(function () {
             order: "order"
         },
         gridComplete: function () {
-            $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+           // $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
 });

@@ -79,6 +79,12 @@
 				#{regionId}
 			</foreach>
 		</if>
+		<if test="enterpriseList != null">
+			AND u.enterprise_id IN
+			<foreach collection="enterpriseList" item="enterpriseId" index="index" open="(" close=")" separator=",">
+				#{enterpriseId}
+			</foreach>
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
