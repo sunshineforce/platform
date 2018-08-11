@@ -24,7 +24,7 @@ $(function () {
             {label: '上级领导', name: 'superiorStr', index: 'superior', align: 'center', width:'160px'},
             {label: '区域', name: 'regionName', index: '', align: 'center', width:'120px'},
             {label: '所属企业', name: 'enterpriseName', index: '', align: 'center', width:'120px'},
-			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'120px'},
+			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'139px'},
 			{label: '修改人', name: 'updateUserName', index: 'update_user_id', align: 'center', width:'80px'}],
 		viewrecords: true,
         height: 555,
@@ -59,7 +59,7 @@ $(function () {
         datatype: "json",
         colModel: [
             {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-            {label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 80}
+            {label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 210}
         ],
         viewrecords: true,
         height: 555,
@@ -68,6 +68,9 @@ $(function () {
         rownumWidth: 25,
         autowidth: true,
         multiselect: true,
+        shrinkToFit: false,
+        autoScroll: true,          //shrinkToFit: false,autoScroll: true,这两个属性产生水平滚动条
+        autowidth: true,          //必须要,否则没有水平滚动条
         pager: "#jqGridPager1",
         jsonReader: {
             root: "page.list",
@@ -81,7 +84,7 @@ $(function () {
             order: "order"
         },
         gridComplete: function () {
-            $("#jqGrid1").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+           // $("#jqGrid1").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
 });
