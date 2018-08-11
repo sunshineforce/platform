@@ -21,6 +21,9 @@ $(function () {
                     if (value == '3') {
                         return '区县';
                     }
+                    if (value == '4') {
+                        return '街道';
+                    }
                 }
             }],
         viewrecords: true,

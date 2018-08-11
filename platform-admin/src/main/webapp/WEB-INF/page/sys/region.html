@@ -9,12 +9,6 @@
     <div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-input v-model="q.parentName" @on-enter="query" placeholder="上级区域"/>
-            </i-col>
-            <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="区域"/>
-            </i-col>
-            <i-col span="4">
                 <i-select v-model="q.type">
                     <i-option value="">请选择</i-option>
                     <i-option value="0">国家</i-option>
@@ -22,6 +16,9 @@
                     <i-option value="2">地市</i-option>
                     <i-option value="3">区县</i-option>
                 </i-select>
+            </i-col>
+            <i-col span="4">
+                <i-input v-model="q.name" @on-enter="query" placeholder="按区域名称查询"/>
             </i-col>
             <i-button @click="query">查询</i-button>
             #if($shiro.hasPermission("sys:region:save"))
