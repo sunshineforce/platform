@@ -1,6 +1,7 @@
 package com.platform.controller.app;
 
 import com.platform.entity.task.TaskEntity;
+import com.platform.entity.task.vo.TaskUserVo;
 import com.platform.service.task.TaskGroupService;
 import com.platform.service.task.TaskService;
 import com.platform.utils.R;
@@ -22,7 +23,7 @@ import java.util.HashMap;
  */
 
 @RestController
-@RequestMapping("/app")
+@RequestMapping("/app/task")
 public class AppTaskController {
 
     @Resource
@@ -31,7 +32,7 @@ public class AppTaskController {
     @Autowired
     private TaskGroupService taskGroupService;
 
-    @RequestMapping(value = "/task/list")
+    @RequestMapping(value = "/list")
     public R taskList(@RequestParam HashMap<String,Object> params){
         //查询列表数据
         if (params == null) {
@@ -44,7 +45,7 @@ public class AppTaskController {
         return R.succeed().put("page", taskService.queryListForApp(params));
     }
 
-    @RequestMapping(value = "/task/create",method = RequestMethod.POST)
+    @RequestMapping(value = "/create",method = RequestMethod.POST)
     public R createTask(@RequestBody TaskEntity taskEntity){
         if (taskEntity == null) {
             return R.succeed();
@@ -53,11 +54,21 @@ public class AppTaskController {
         return R.succeed();
     }
 
+    @RequestMapping("/choiceUser")
+    public R choiceUser(@RequestParam HashMap<String,Object> params){
+        Integer regionId = Integer.valueOf(String.valueOf(params.get("regionId")));
+        if (regionId == null || regionId==0) {
+            return R.paramsIllegal();
+        }
+        TaskUserVo taskUser = taskService.choiceUser(regionId);
+        return R.succeed().put("list",taskUser);
+    }
+
     /**
      * 加载所有的任务组
      * @return
      */
-    @RequestMapping("/task/group/list")
+    @RequestMapping("/group/list")
     public R queryAllTaskGroup(){
         return R.succeed().put("list",taskGroupService.queryAllTaskGroupForApp());
     }
@@ -66,7 +77,7 @@ public class AppTaskController {
      * 加载任务组人员
      * @return
      */
-    @RequestMapping("/task/group/members")
+    @RequestMapping("/group/members")
     public R queryTaskGroupMembers(){
         return R.succeed().put("list",taskGroupService.queryAllTaskGroupMembers());
     }

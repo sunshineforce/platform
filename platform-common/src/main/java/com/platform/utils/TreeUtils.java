@@ -82,12 +82,12 @@ public class TreeUtils {
         return null;
     }
 
-    public static List<TreeVo> buildTree(List<TreeVo> treeVoList, Long parentId) {
+    public static List<TreeVo> buildTree(List<TreeVo> treeVoList, Integer parentId) {
         List<TreeVo> tree = new ArrayList<TreeVo>();
         for (TreeVo node : treeVoList) {
 
-            Long id = node.getId();
-            Long pid = node.getPid();
+            Integer id = node.getId();
+            Integer pid = node.getPid();
             if (parentId == pid) {
                 List<TreeVo> menuLists = buildTree(treeVoList, id);
 

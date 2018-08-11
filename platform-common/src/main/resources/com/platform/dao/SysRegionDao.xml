@@ -55,8 +55,14 @@
     </select>
 
     <!-- 查询所有的根节点 -->
-    <select id="queryRegionSimple" resultType="com.platform.vo.TreeVo">
-        select id,parent_Id as pid,name from sys_region
+    <select id="queryRegionSimple" parameterType="com.platform.entity.SysRegionEntity" resultType="com.platform.vo.TreeVo">
+        SELECT id,parent_Id as pid,name FROM sys_region WHERE 1=1
+        <if test="id != null and id != ''">
+            AND id = #{id}
+        </if>
+        <if test="parentId != null and parentId != ''">
+            AND parent_Id = #{parentId}
+        </if>
     </select>
 
     <select id="queryTotal" resultType="int">

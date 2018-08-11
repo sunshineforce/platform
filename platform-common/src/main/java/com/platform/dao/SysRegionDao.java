@@ -13,5 +13,5 @@ public interface SysRegionDao extends BaseDao<SysRegionEntity> {
     List<TreeVo> queryAllRegion();
 
     //查询所有的根节点
-    List<TreeVo> queryRegionSimple();
+    List<TreeVo> queryRegionSimple(SysRegionEntity region);
 }

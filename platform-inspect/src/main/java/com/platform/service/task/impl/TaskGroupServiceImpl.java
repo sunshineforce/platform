@@ -1,6 +1,5 @@
 package com.platform.service.task.impl;
 
-import com.platform.dao.task.TaskDao;
 import com.platform.dao.task.TaskGroupDao;
 import com.platform.entity.task.TaskGroupEntity;
 import com.platform.entity.task.vo.TaskGroupVo;
@@ -30,9 +29,6 @@ public class TaskGroupServiceImpl implements TaskGroupService {
 
     @Autowired
     private TaskGroupDao taskGroupDao;
-
-    @Autowired
-    private TaskDao taskDao;
 
     @Override
     public TaskGroupEntity queryObject(Integer id) {

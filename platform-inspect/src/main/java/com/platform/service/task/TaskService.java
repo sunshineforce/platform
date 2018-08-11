@@ -2,6 +2,7 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskEntity;
+import com.platform.entity.task.vo.TaskUserVo;
 import com.platform.utils.PageUtils;
 
 import java.util.List;
@@ -88,4 +89,8 @@ public interface TaskService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+
+    /**********************************APP 接口 ********************************/
+    TaskUserVo choiceUser(Integer regionId);
 }

@@ -16,25 +16,25 @@ import java.util.List;
 public class TreeVo implements Serializable {
     private static final long serialVersionUID = 6417017624744971017L;
 
-    private Long id;
+    private Integer id;
     private String name;
-    private Long pid;
+    private Integer pid;
     List<TreeVo> children;
 
     public TreeVo() {
     }
 
-    public TreeVo(Long id, String name, Long pid) {
+    public TreeVo(Integer id, String name, Integer pid) {
         this.id = id;
         this.name = name;
         this.pid = pid;
     }
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -46,11 +46,11 @@ public class TreeVo implements Serializable {
         this.name = name;
     }
 
-    public Long getPid() {
+    public Integer getPid() {
         return pid;
     }
 
-    public void setPid(Long pid) {
+    public void setPid(Integer pid) {
         this.pid = pid;
     }
 

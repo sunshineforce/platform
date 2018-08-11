@@ -84,5 +84,5 @@ public interface SysRegionService {
      */
     List<TreeVo> buildRegionTree();
 
-    List<TreeVo> queryRegionSimple();
+    List<TreeVo> queryRegionSimple(SysRegionEntity region);
 }

@@ -3,6 +3,7 @@ package com.platform.service;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.UserWindowDto;
 import com.platform.page.Page;
+import com.platform.vo.SelectVo;
 
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,9 @@ public interface SysUserService {
     int queryTotal(Map<String, Object> map);
 
     Integer queryAppUserTotal(Map<String, Object> map);
+
+    //查询区域下所有人员
+    List<SelectVo> queryUsersByRegionId(Integer regionId);
 
     /**
      * 保存用户

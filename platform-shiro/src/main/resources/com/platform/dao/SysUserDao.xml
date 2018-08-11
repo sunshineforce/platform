@@ -142,6 +142,11 @@
 	<select id="queryByUserName" resultType="com.platform.entity.SysUserEntity">
 		select * from sys_user where username = #{username}
 	</select>
+
+	<!-- 根据区域查询用户 -->
+	<select id="queryUserByRegionId" parameterType="java.lang.Integer" resultType="com.platform.vo.SelectVo">
+		SELECT user_id AS id,username AS name FROM sys_user WHERE region_id=#{regionId}
+	</select>
 	
 	<insert id="save" parameterType="com.platform.entity.SysUserEntity" useGeneratedKeys="true" keyProperty="userId">
 		insert into sys_user

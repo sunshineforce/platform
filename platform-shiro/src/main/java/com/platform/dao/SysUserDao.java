@@ -2,6 +2,7 @@ package com.platform.dao;
 
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.UserWindowDto;
+import com.platform.vo.SelectVo;
 
 import java.util.List;
 import java.util.Map;
@@ -46,4 +47,6 @@ public interface SysUserDao extends BaseDao<SysUserEntity> {
     List<SysUserEntity> queryAppUserList(Map<String, Object> map);
 
     Integer queryAppUserTotal(Map<String, Object> map);
+
+    List<SelectVo> queryUserByRegionId(Integer regionId);
 }

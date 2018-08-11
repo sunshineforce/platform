@@ -11,6 +11,7 @@ import com.platform.service.SysUserRoleService;
 import com.platform.service.SysUserService;
 import com.platform.utils.Constant;
 import com.platform.utils.RRException;
+import com.platform.vo.SelectVo;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,6 +79,11 @@ public class SysUserServiceImpl implements SysUserService {
     @Override
     public Integer queryAppUserTotal(Map<String, Object> map) {
         return sysUserDao.queryAppUserTotal(map);
+    }
+
+    @Override
+    public List<SelectVo> queryUsersByRegionId(Integer regionId) {
+        return sysUserDao.queryUserByRegionId(regionId);
     }
 
     @Override
