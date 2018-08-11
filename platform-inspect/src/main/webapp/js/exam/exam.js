@@ -78,6 +78,8 @@ $(function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
+
+
 });
 
 var vm = new Vue({
@@ -101,7 +103,7 @@ var vm = new Vue({
 	},
 	methods: {
         queryUserList:function (id) {
-            $.get("../sys/app/user/superiorList/"+id, function (r) {
+            $.get("../sys/app/user/appUserListByIdentify/0", function (r) {
                 vm.userList = r.superiorList;
             });
         },
@@ -253,6 +255,29 @@ var vm = new Vue({
                 }
                 vm.memberArr = arr;
                 vm.calScore();
+
+                if (vm.questionList){
+                    for (var  i = 0; i < vm.questionList.length; i++ ){
+                        ///知识内容
+                        $('#question_'+ i).editable({
+                            inlineMode: false,
+                            alwaysBlank: true,
+                            height: '300px', //高度
+                            minHeight: '200px',
+                            language: "zh_cn",
+                            spellcheck: false,
+                            plainPaste: true,
+                            enableScript: false,
+                            imageButtons: ["floatImageLeft", "floatImageNone", "floatImageRight", "linkImage", "replaceImage", "removeImage"],
+                            allowedImageTypes: ["jpeg", "jpg", "png", "gif"],
+                            imageUploadURL: '../sys/oss/uploadFtp?platformCode=mall&dirFolderName=goods',
+                            imageUploadParams: {id: "edit"},
+                            imagesLoadURL: '../sys/oss/queryAll'
+                        })
+                        var targetObj =  $('#question_'+ i);
+                        $.parser.parse(targetObj); //对添加元素区
+                    }
+                }
             });
 		},
 		reload: function (event) {
@@ -271,6 +296,9 @@ var vm = new Vue({
         },
         handleReset: function (name) {
             handleResetForm(this, name);
+        },
+        generateId:function(index){
+		    return "question_" + index;
         }
 	}
 });

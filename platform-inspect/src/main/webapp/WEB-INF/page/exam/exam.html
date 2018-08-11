@@ -59,7 +59,8 @@
                             <i-input type="number" v-model="question.score" @on-blur="calScore()" min="0" max="100" placeholder="本题分值"/>
                         </Form-item>
                         <Form-item label="题目" prop="introduce">
-                            <i-input v-model="question.question"  placeholder="题目"/>
+                            <!--<i-input v-model="question.question"  placeholder="题目"/>-->
+                            <div :id="generateId(q)"></div>
                         </Form-item>
                         <template>
                             <Row v-for=" (item, i) in question.questionItems">
@@ -103,5 +104,6 @@
 
 
 <script src="${rc.contextPath}/js/exam/exam.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/statics/libs/jquery.easyui.min.js?_${date.systemTime}"></script>
 </body>
 </html>
