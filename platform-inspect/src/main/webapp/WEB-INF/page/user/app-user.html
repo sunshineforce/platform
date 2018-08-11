@@ -73,7 +73,7 @@
                 <i-input v-model="appUser.password" type="password" placeholder="初始密码"/>
             </Form-item>
 
-            <Row v-if="appUser.identify==1 ">
+            <Row v-if="appUser.identify==0 ">
                 <i-col span="16">
                     <Form-item label="安全证" prop="certificateUrl">
                         <i-input v-model="appUser.certificateUrl" placeholder="安全证" readonly/>

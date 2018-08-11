@@ -1,9 +1,12 @@
-package com.platform.controller;
+package com.platform.controller.user;
 
 import com.platform.annotation.SysLog;
+import com.platform.cache.RegionCacheUtil;
+import com.platform.controller.AbstractController;
+import com.platform.entity.AppUserEntity;
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.SysUserEntity;
-import com.platform.service.SysUserRoleService;
-import com.platform.service.SysUserService;
+import com.platform.service.AppUserService;
 import com.platform.utils.Constant;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
@@ -23,12 +26,12 @@ import java.util.*;
  */
 @RestController
 @RequestMapping("/sys/app/user")
-public class AppUserController extends SysUserController {
+public class SysAppUserController extends AbstractController {
 
     @Autowired
-    private SysUserService sysUserService;
-    @Autowired
-    private SysUserRoleService sysUserRoleService;
+    private AppUserService appUserService;
+
+
 
     /**
      * 所有用户列表
@@ -41,14 +44,20 @@ public class AppUserController extends SysUserController {
             params.put("createUserId", getUserId());
         }
 
+        if (null != params.get("regionId") && org.apache.commons.lang.StringUtils.isNotBlank(String.valueOf(params.get("regionId")))){
+            Integer regionId = Integer.parseInt(String.valueOf(params.get("regionId")));
+            SysRegionEntity region = RegionCacheUtil.getAreaByAreaId(regionId);
+            List<Integer> regionIdList = RegionCacheUtil.getRegionIdList(region.getId(), region.getType());
+            params.put("regionIdList",regionIdList);
+        }
+        params.put("regionId",null);
+
         //查询列表数据
         Query query = new Query(params);
-        List<SysUserEntity> userList = sysUserService.queryAllAppUser(query);
-        int total = sysUserService.queryAppUserTotal(query);
+        List<AppUserEntity> userList = appUserService.queryList(query);
+        int total = appUserService.queryTotal(query);
 
-        Map<String, Object> params1 = new HashMap<>();
-//        Query query1 = new Query(params1);
-        List<SysUserEntity> allAppUsers = sysUserService.queryAllAppUser(params1);
+        List<AppUserEntity> allAppUsers = appUserService.queryList(new HashMap<String, Object>());
         setSuperior(allAppUsers,userList);
         PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
 
@@ -56,16 +65,21 @@ public class AppUserController extends SysUserController {
     }
 
     ///格式化领导字符串
-    private void setSuperior(List<SysUserEntity> allAppUsers, List<SysUserEntity> userList){
-        for (SysUserEntity user : userList) {
+    private void setSuperior(List<AppUserEntity> allAppUsers, List<AppUserEntity> userList){
+
+        for (AppUserEntity user : userList) {
+            if(null != user.getRegionId()){
+                user.setRegionName(RegionCacheUtil.getAreaNameByAreaId(user.getRegionId()));
+            }
+
             if (StringUtils.isNotBlank(user.getSuperior())){
                 String superiorStrArr [] = user.getSuperior().split(",");
                 StringBuffer superiorStr = new StringBuffer("");
 
                 for (String s : superiorStrArr) {
                     if (null != allAppUsers && allAppUsers.size() > 0){
-                        for (SysUserEntity allAppUser : allAppUsers) {
-                            if (allAppUser.getUserId() != null && s.equals(String.valueOf(allAppUser.getUserId()))) {
+                        for (AppUserEntity allAppUser : allAppUsers) {
+                            if (allAppUser.getId() != null && s.equals(String.valueOf(allAppUser.getId()))) {
                                 if (superiorStr.length() > 0){
                                     superiorStr.append(",").append(allAppUser.getRealname());
                                 }else {
@@ -100,17 +114,15 @@ public class AppUserController extends SysUserController {
     }
 
     private List<Map<String,Object>> getSuperiorList(Long userId){
-        Map<String, Object> params = new HashMap<>();
-        // Query query = new Query(params);
-        List<SysUserEntity> userList = sysUserService.queryAllAppUser(params);
 
+        List<AppUserEntity> userList = appUserService.queryList(new HashMap<String, Object>());
         List<Map<String,Object>> superiorList = new ArrayList<>();
         if (null != userList && userList.size() > 0){
             Map<String,Object> superiorMap = null;
-            for (SysUserEntity sysUserEntity : userList) {
-                if (userId == null || (userId != null && userId.intValue() != sysUserEntity.getUserId().intValue())) { //刨除自身
+            for (AppUserEntity sysUserEntity : userList) {
+                if (userId == null || (userId != null && userId.intValue() != sysUserEntity.getId().intValue())) { //刨除自身
                     superiorMap = new HashMap<>();
-                    superiorMap.put("id",sysUserEntity.getUserId());
+                    superiorMap.put("id",sysUserEntity.getId());
                     superiorMap.put("name",sysUserEntity.getRealname());
                     superiorList.add(superiorMap);
                 }
@@ -133,11 +145,9 @@ public class AppUserController extends SysUserController {
     @RequestMapping("/info/{userId}")
     @RequiresPermissions("appUser:info")
     public R info(@PathVariable("userId") Long userId) {
-        SysUserEntity user = sysUserService.queryObject(userId);
+        AppUserEntity user = appUserService.queryObject(userId);
 
-        //获取用户所属的角色列表
-//        List<Long> roleIdList = sysUserRoleService.queryRoleIdList(userId);
-//        user.setRoleIdList(roleIdList);
+
         List<Map<String,Object>> superiorList = getSuperiorList(userId);
         user.setSuperiorList(superiorList);
         return R.ok().put("user", user);
@@ -149,7 +159,7 @@ public class AppUserController extends SysUserController {
     @SysLog("保存用户")
     @RequestMapping("/save")
     @RequiresPermissions("appUser:save")
-    public R save(@RequestBody SysUserEntity user) {
+    public R save(@RequestBody AppUserEntity user) {
         //ValidatorUtils.validateEntity(user, AddGroup.class);
         SysUserEntity sysUserEntity = getUser();
         if (null != user){
@@ -159,10 +169,7 @@ public class AppUserController extends SysUserController {
         user.setCreateUserId(getUserId());
         user.setUpdateTime(new Date());
         user.setUpdateUserId(getUserId());
-        List<Long> roleIdList = new ArrayList<Long>();
-        roleIdList.add(2L);
-        user.setRoleIdList(roleIdList);
-        sysUserService.save(user);
+        appUserService.save(user);
 
         return R.ok();
     }
@@ -173,7 +180,7 @@ public class AppUserController extends SysUserController {
     @SysLog("修改用户")
     @RequestMapping("/update")
     @RequiresPermissions("appUser:update")
-    public R update(@RequestBody SysUserEntity user) {
+    public R update(@RequestBody AppUserEntity user) {
        // ValidatorUtils.validateEntity(user, UpdateGroup.class);
 
         SysUserEntity sysUserEntity = getUser();
@@ -181,7 +188,7 @@ public class AppUserController extends SysUserController {
             user.setUpdateUserId(sysUserEntity.getUserId());
         }
         user.setUpdateTime(new Date());
-        sysUserService.update(user);
+        appUserService.update(user);
 
         return R.ok();
     }
@@ -201,7 +208,7 @@ public class AppUserController extends SysUserController {
             return R.error("当前用户不能删除");
         }
 
-        sysUserService.deleteBatch(userIds);
+        appUserService.deleteBatch(userIds);
 
         return R.ok();
     }

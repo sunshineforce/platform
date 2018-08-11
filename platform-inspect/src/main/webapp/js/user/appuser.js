@@ -3,13 +3,13 @@ $(function () {
         url: '../sys/app/user/list',
         datatype: "json",
         colModel: [
-			{label: 'id', name: 'userId', index: 'user_id', key: true, hidden: true},
+			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
 			{label: '姓名', name: 'realname', index: 'realname', align: 'center', width:'80px'},
 			{label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'80px'},
             {label: '帐号', name: 'username', index: 'username', align: 'center', width:'80px'},
             {
-                label: '身份', name: 'status', width: '60px', formatter: function (value) {
-                    return value === 1 ?
+                label: '身份', name: 'identify', width: '60px', formatter: function (value) {
+                    return value === 0 ?
                         '<span>安全员</span>' :
                         '<span>领导</span>';
                 }
@@ -25,7 +25,7 @@ $(function () {
             {label: '区域', name: 'regionName', index: '', align: 'center', width:'120px'},
             {label: '所属企业', name: 'enterpriseName', index: '', align: 'center', width:'120px'},
 			{label: '修改时间', name: 'updateTime', index: 'update_time', align: 'center', width:'80px'},
-			{label: '修改人', name: 'updateUserId', index: 'update_user_id', align: 'center', width:'80px'}],
+			{label: '修改人', name: 'updateUserName', index: 'update_user_id', align: 'center', width:'80px'}],
 		viewrecords: true,
         height: 555,
         rowNum: 10,
@@ -84,12 +84,13 @@ var vm = new Vue({
             ]
 		},
 		q: {
-		    name: ''
+		    name: '',
+            regionId:null,
 		},
         enabled:'0',
         identifyList: [
-            {id:1,name:"安全员"},
-            {id:2,name:"领导"},
+            {id:0,name:"安全员"},
+            {id:1,name:"领导"},
         ],
         ///上级列表
         superiorList:[],
@@ -204,6 +205,7 @@ var vm = new Vue({
             vm.title = "修改";
             vm.showPaw = false;
             //vm.getRoleList();
+            console.log("id----------------------" + id)
             vm.getInfo(id)
 
 		},
@@ -269,7 +271,7 @@ var vm = new Vue({
                 vm.superiorArr = arr;
                 vm.getRegionTree();
                 //加载企业信息
-                vm.queryEnterpriseList(vm.appUser.enterpriseId);
+                vm.queryEnterpriseList(vm.appUser.regionId);
                // console.log("superiorArr-----------" + vm.superiorArr)
             });
 		},
@@ -277,7 +279,7 @@ var vm = new Vue({
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'realname': vm.q.name,'regionId':vm.q.regionId},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

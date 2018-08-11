@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.platform.dao.AppUserDao">
+
+    <resultMap type="com.platform.entity.AppUserEntity" id="appUserMap">
+        <result property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="realname" column="realname"/>
+        <result property="password" column="password"/>
+        <result property="email" column="email"/>
+        <result property="mobile" column="mobile"/>
+        <result property="status" column="status"/>
+        <result property="identify" column="identify"/>
+        <result property="superior" column="superior"/>
+        <result property="certificateUrl" column="certificate_url"/>
+        <result property="createUserId" column="create_user_id"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserId" column="update_user_id"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+        <result property="regionId" column="region_id"/>
+    </resultMap>
+
+	<select id="queryObject" resultType="com.platform.entity.AppUserEntity">
+		select
+			`id`,
+			`username`,
+			`realname`,
+			`password`,
+			`email`,
+			`mobile`,
+			`status`,
+			`identify`,
+			`superior`,
+			`certificate_url`,
+			`create_user_id`,
+			`create_time`,
+			`update_time`,
+			`update_user_id`,
+			`enterprise_id`,
+			`region_id`
+		from app_user
+		where id = #{id}
+	</select>
+
+	<select id="queryList" resultType="com.platform.entity.AppUserEntity">
+		SELECT
+			u.id,
+			u.username,
+			u.realname,
+			u.`password`,
+			u.email,
+			u.mobile,
+			u.`status`,
+			u.identify,
+			u.superior,
+			u.certificate_url,
+			u.create_user_id,
+			u.create_time,
+			u.update_time,
+			u.update_user_id,
+			u.enterprise_id,
+			u.region_id,
+			e.enterprise_name AS enterpriseName,
+			su.realname AS updateUserName
+		FROM
+		app_user AS u
+		LEFT JOIN enterprise AS e ON u.enterprise_id = e.id
+		LEFT JOIN sys_user AS su ON su.user_id = u.update_user_id
+
+		WHERE 1=1
+		<if test="realname != null and realname.trim() != ''">
+			AND u.realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test="regionIdList != null">
+			AND u.region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
+		</if>
+        <choose>
+            <when test="sidx != null and sidx.trim() != ''">
+                order by ${sidx} ${order}
+            </when>
+			<otherwise>
+                order by id desc
+			</otherwise>
+        </choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+	
+ 	<select id="queryTotal" resultType="int">
+		select count(*) FROM
+		app_user AS u
+		LEFT JOIN enterprise AS e ON u.enterprise_id = e.id
+		LEFT JOIN sys_user AS su ON su.user_id = u.update_user_id
+		WHERE 1=1
+		<if test="realname != null and realname.trim() != ''">
+			AND u.realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test="regionIdList != null">
+			AND u.region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
+		</if>
+	</select>
+	 
+	<insert id="save" parameterType="com.platform.entity.AppUserEntity" useGeneratedKeys="true" keyProperty="id">
+		insert into app_user(
+			`username`,
+			`realname`,
+			`password`,
+			`email`,
+			`mobile`,
+			`status`,
+			`identify`,
+			`superior`,
+			`certificate_url`,
+			`create_user_id`,
+			`create_time`,
+			`update_time`,
+			`update_user_id`,
+			`enterprise_id`,
+			`region_id`)
+		values(
+			#{username},
+			#{realname},
+			#{password},
+			#{email},
+			#{mobile},
+			#{status},
+			#{identify},
+			#{superior},
+			#{certificateUrl},
+			#{createUserId},
+			#{createTime},
+			#{updateTime},
+			#{updateUserId},
+			#{enterpriseId},
+			#{regionId})
+	</insert>
+	 
+	<update id="update" parameterType="com.platform.entity.AppUserEntity">
+		update app_user 
+		<set>
+			<if test="username != null">`username` = #{username}, </if>
+			<if test="realname != null">`realname` = #{realname}, </if>
+			<if test="password != null">`password` = #{password}, </if>
+			<if test="email != null">`email` = #{email}, </if>
+			<if test="mobile != null">`mobile` = #{mobile}, </if>
+			<if test="status != null">`status` = #{status}, </if>
+			<if test="identify != null">`identify` = #{identify}, </if>
+			<if test="superior != null">`superior` = #{superior}, </if>
+			<if test="certificateUrl != null">`certificate_url` = #{certificateUrl}, </if>
+			<if test="createUserId != null">`create_user_id` = #{createUserId}, </if>
+			<if test="createTime != null">`create_time` = #{createTime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUserId != null">`update_user_id` = #{updateUserId}, </if>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
+			<if test="regionId != null">`region_id` = #{regionId}</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="delete">
+		delete from app_user where id = #{value}
+	</delete>
+	
+	<delete id="deleteBatch">
+		delete from app_user where id in 
+		<foreach item="id" collection="array" open="(" separator="," close=")">
+			#{id}
+		</foreach>
+	</delete>
+
+</mapper>
