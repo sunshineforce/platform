@@ -4,7 +4,6 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-            {label: '任务名称', name: 'name', index: 'name', align: 'center',width: '160px'},
 			{label: '任务组', name: 'taskGroupName', index: 'task_group_id', align: 'center',width: '120px'},
             {label: '任务类型', name: 'type', index: 'type',align: 'center', width: '70px',formatter:formatType},
             {label: '开始时间', name: 'startTime', index: 'start_time', align: 'center',width: '80px',formatter:formatDay},

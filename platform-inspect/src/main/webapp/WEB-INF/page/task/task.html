@@ -9,9 +9,6 @@
 	<div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
-            </i-col>
-            <i-col span="4">
                 <i-select v-model="q.taskGroupId" filterable placeholder="任务组">
                     <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
                     </i-option>
@@ -52,9 +49,6 @@
                     <Radio label="0">单次任务</Radio>
                     <Radio label="1">循环任务</Radio>
                 </Radio-group>
-            </Form-item>
-            <Form-item label="任务名称" prop="name">
-                <i-input v-model="task.name" placeholder="任务名称"/>
             </Form-item>
             <Form-item label="任务组" prop="taskGroupId">
                 <i-select v-model="task.taskGroupId" filterable placeholder="请选择任务组">
