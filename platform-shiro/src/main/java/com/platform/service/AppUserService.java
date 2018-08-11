@@ -69,4 +69,6 @@ public interface AppUserService {
      * @return 删除条数
      */
     int deleteBatch(Long[] ids);
+
+    int resetPassword(Long userId, String password, String newPassword);
 }
