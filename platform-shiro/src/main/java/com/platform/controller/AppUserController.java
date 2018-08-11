@@ -157,7 +157,6 @@ public class AppUserController extends SysUserController {
         }
         user.setCreateTime(new Date());
         user.setCreateUserId(getUserId());
-        user.setRoleId(2);
         user.setUpdateTime(new Date());
         user.setUpdateUserId(getUserId());
         List<Long> roleIdList = new ArrayList<Long>();

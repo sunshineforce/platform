@@ -15,8 +15,10 @@ public class EnterpriseEntity implements Serializable {
 
     //主键Id
     private Long id;
+    /** 用户ID */
+    private Long userId;
     //区域Id
-    private Long regionId;
+    private Integer regionId;
     //企业名称
     private String enterpriseName;
     //联系电话
@@ -54,17 +56,19 @@ public class EnterpriseEntity implements Serializable {
         return id;
     }
 
-    /**
-     * 获取：区域Id
-     */
-    public Long getRegionId() {
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
+    public Integer getRegionId() {
         return regionId;
     }
 
-    /**
-     * 设置：区域Id
-     */
-    public void setRegionId(Long regionId) {
+    public void setRegionId(Integer regionId) {
         this.regionId = regionId;
     }
 

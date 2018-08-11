@@ -43,7 +43,8 @@ public class SysUserEntity implements Serializable {
     /** 状态  0：禁用   1：正常 */
     private Integer status;
 
-    private Integer roleId;
+    //角色名称
+    private String roleNames;
 
     /** 角色ID列表 */
     private List<Long> roleIdList;
@@ -237,13 +238,6 @@ public class SysUserEntity implements Serializable {
         return createTime;
     }
 
-    public Integer getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Integer roleId) {
-        this.roleId = roleId;
-    }
 
     public List<Long> getRoleIdList() {
         return roleIdList;
@@ -359,5 +353,11 @@ public class SysUserEntity implements Serializable {
         this.superiorList = superiorList;
     }
 
+    public String getRoleNames() {
+        return roleNames;
+    }
 
+    public void setRoleNames(String roleNames) {
+        this.roleNames = roleNames;
+    }
 }

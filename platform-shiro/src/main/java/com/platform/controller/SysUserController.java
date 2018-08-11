@@ -1,7 +1,11 @@
 package com.platform.controller;
 
 import com.platform.annotation.SysLog;
+import com.platform.cache.RegionCacheUtil;
+import com.platform.entity.SysRegionEntity;
+import com.platform.entity.SysRoleEntity;
 import com.platform.entity.SysUserEntity;
+import com.platform.service.SysRoleService;
 import com.platform.service.SysUserRoleService;
 import com.platform.service.SysUserService;
 import com.platform.utils.*;
@@ -9,12 +13,13 @@ import com.platform.validator.Assert;
 import com.platform.validator.ValidatorUtils;
 import com.platform.validator.group.AddGroup;
 import com.platform.validator.group.UpdateGroup;
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang.*;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,6 +37,9 @@ public class SysUserController extends AbstractController {
     @Autowired
     private SysUserRoleService sysUserRoleService;
 
+    @Autowired
+    private SysRoleService sysRoleService;
+
     /**
      * 所有用户列表
      */
@@ -43,14 +51,52 @@ public class SysUserController extends AbstractController {
             params.put("createUserId", getUserId());
         }
 
+        if (null != params.get("regionId") && org.apache.commons.lang.StringUtils.isNotBlank(String.valueOf(params.get("regionId")))){
+            Integer regionId = Integer.parseInt(String.valueOf(params.get("regionId")));
+            SysRegionEntity region = RegionCacheUtil.getAreaByAreaId(regionId);
+            List<Integer> regionIdList = RegionCacheUtil.getRegionIdList(region.getId(), region.getType());
+            params.put("regionIdList",regionIdList);
+        }
+        params.put("regionId",null);
+
+        List<SysRoleEntity> roleList = sysRoleService.queryList(new HashMap<String, Object>());
         //查询列表数据
         Query query = new Query(params);
         List<SysUserEntity> userList = sysUserService.queryList(query);
         int total = sysUserService.queryTotal(query);
-
+        adduserRoleInfos(userList,roleList);
         PageUtils pageUtil = new PageUtils(userList, total, query.getLimit(), query.getPage());
 
         return R.ok().put("page", pageUtil);
+    }
+
+    private void adduserRoleInfos(List<SysUserEntity> userList,List<SysRoleEntity> roleList){
+        if (userList == null) {
+            return;
+        }
+
+        for (SysUserEntity sysUserEntity : userList) {
+            if(null != sysUserEntity.getRegionId()){
+                sysUserEntity.setRegionName(RegionCacheUtil.getAreaNameByAreaId(sysUserEntity.getRegionId()));
+            }
+            List<Long> roleIdList = sysUserRoleService.queryRoleIdList(sysUserEntity.getUserId());
+            if (roleList != null && roleIdList != null && roleIdList.size() > 0) {
+                String roleNames = "";
+                for (Long roleId : roleIdList) {
+                    for (SysRoleEntity roleEntity : roleList) {
+                       if (roleId.equals(roleEntity.getRoleId())){
+                           if (roleNames.length() > 0){
+                               roleNames += ","+roleEntity.getRoleName();
+                           }else {
+                               roleNames += roleEntity.getRoleName();
+                           }
+                       }
+                    }
+                }
+              sysUserEntity.setRoleNames(roleNames);
+            }
+        }
+
     }
 
     /**

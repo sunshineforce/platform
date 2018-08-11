@@ -24,4 +24,7 @@ public class CommonConstant {
     public static final String APP_LOGIN_USER="";
 
     public static final String DATA_KEY = "list";
+
+    /** 企业账户角色Id */
+    public static final long COMPANY_ROLE_ID =  3;
 }

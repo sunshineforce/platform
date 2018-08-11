@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.enterprise.EnterpriseEntity" id="enterpriseMap">
         <result property="id" column="id"/>
+		<result property="userId" column="user_id"/>
         <result property="regionId" column="region_id"/>
         <result property="enterpriseName" column="enterprise_name"/>
         <result property="mobile" column="mobile"/>
@@ -22,6 +23,7 @@
 	<select id="queryObject" resultType="com.platform.entity.enterprise.EnterpriseEntity">
 		select
 			`id`,
+			 user_id,
 			 region_id,
 			`enterprise_name`,
 			`mobile`,
@@ -39,7 +41,7 @@
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.enterprise.EnterpriseEntity">
-		select `id`,region_id,`enterprise_name`,`mobile`,`owner`,`address`,`account`,`password`,
+		select `id`, user_id, region_id,`enterprise_name`,`mobile`,`owner`,`address`,`account`,`password`,
     		`create_time`,`creator`,`update_time`,`updator`,`enabled`
 		from enterprise
 		WHERE 1=1
@@ -87,6 +89,7 @@
 	 
 	<insert id="save" parameterType="com.platform.entity.enterprise.EnterpriseEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into enterprise(
+		     user_id,
 			`enterprise_name`,
 			 region_id,
 			`mobile`,
@@ -100,6 +103,7 @@
 			`updator`,
 			`enabled`)
 		values(
+		    #{userId},
 			#{enterpriseName},
 			#{regionId},
 			#{mobile},
@@ -119,6 +123,7 @@
 		<set>
 			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
+			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="owner != null">`owner` = #{owner}, </if>
 			<if test="address != null">`address` = #{address}, </if>
