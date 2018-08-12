@@ -108,9 +108,13 @@
 		</set>
 		where id = #{id}
 	</update>
-	
+
 	<delete id="delete">
 		delete from exam_question where id = #{value}
+	</delete>
+
+	<delete id="deleteByExamId">
+		delete from exam_question where exam_id = #{value}
 	</delete>
 	
 	<delete id="deleteBatch">

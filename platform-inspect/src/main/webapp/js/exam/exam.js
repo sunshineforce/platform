@@ -116,13 +116,25 @@ var vm = new Vue({
                 {
                     id : 0,
                     questionId:0,
-                    label:"选项" + (vm.questionList.length + 1),
+                    label:"",
                     item:"",
                     isRight:0, // 0 否 1 是
                 }
             ]
             };
             vm.questionList.push(questionVo);
+            //重新渲染文本编辑器
+            vm.$nextTick(function(){
+                if (vm.questionList){
+                    for (var  i = 0; i < vm.questionList.length; i++ ){
+                        var question = "";
+                        if(i != vm.questionList.length - 1){
+                            question = $('#question_'+ i).editable('getHTML');
+                        }
+                        initQ(i,question);
+                    }
+                }
+            })
         },
         //设置答案
         setRightAnswer:function (q, i ,r) {
@@ -137,7 +149,7 @@ var vm = new Vue({
             var item = {
                 id : 0,
                 questionId:0,
-                label:"选项" + (questionVo.questionItems.length + 1),
+                label:"",
                 item:"",
                 isRight:0, // 0 否 1 是
             };
@@ -174,7 +186,7 @@ var vm = new Vue({
                 questionItems:[
                     {
                         id : "",
-                        label:"选项" + (vm.questionList.length + 1),
+                        label:"",
                         item:"",
                         isRight:0, // 0 否 1 是
                     }
@@ -197,6 +209,11 @@ var vm = new Vue({
 		saveOrUpdate: function (event) {
             var url = vm.exam.id == null ? "../exam/save" : "../exam/update";
             vm.exam.member = vm.memberArr.length > 0 ? vm.memberArr.join(",") : "";
+            if (vm.questionList){
+                for (var  i = 0; i < vm.questionList.length; i++ ){
+                    vm.questionList[i].question = $('#question_'+ i).editable('getHTML');
+                }
+            }
             vm.exam.questionJson = JSON.stringify(vm.questionList);
             vm.exam.totalScore = vm.totalSocre;
             vm.exam.questionNum = vm.questionList.length;
@@ -246,6 +263,7 @@ var vm = new Vue({
 			$.get("../exam/info/"+id, function (r) {
                 vm.exam = r.exam;
                 vm.questionList = vm.exam.questionList;
+
                 var arr = [];
                 if (vm.exam.member != null){
                     var sArr = vm.exam.member.split(",");
@@ -255,29 +273,18 @@ var vm = new Vue({
                 }
                 vm.memberArr = arr;
                 vm.calScore();
-
-                if (vm.questionList){
-                    for (var  i = 0; i < vm.questionList.length; i++ ){
-                        ///知识内容
-                        $('#question_'+ i).editable({
-                            inlineMode: false,
-                            alwaysBlank: true,
-                            height: '300px', //高度
-                            minHeight: '200px',
-                            language: "zh_cn",
-                            spellcheck: false,
-                            plainPaste: true,
-                            enableScript: false,
-                            imageButtons: ["floatImageLeft", "floatImageNone", "floatImageRight", "linkImage", "replaceImage", "removeImage"],
-                            allowedImageTypes: ["jpeg", "jpg", "png", "gif"],
-                            imageUploadURL: '../sys/oss/uploadFtp?platformCode=mall&dirFolderName=goods',
-                            imageUploadParams: {id: "edit"},
-                            imagesLoadURL: '../sys/oss/queryAll'
-                        })
-                        var targetObj =  $('#question_'+ i);
-                        $.parser.parse(targetObj); //对添加元素区
+                //重新渲染文本编辑器
+                vm.$nextTick(function(){
+                    if (vm.questionList){
+                        for (var  i = 0; i < vm.questionList.length; i++ ){
+                            ///知识内容
+                            var question = vm.questionList[i].question != null ? vm.questionList[i].question : "";
+                            initQ(i,question);
+                        }
                     }
-                }
+                })
+
+
             });
 		},
 		reload: function (event) {
@@ -302,3 +309,25 @@ var vm = new Vue({
         }
 	}
 });
+
+function initQ(i,question) {
+    $('#question_'+ i).editable({
+        inlineMode: false,
+        alwaysBlank: true,
+        height: '300px', //高度
+        minHeight: '200px',
+        language: "zh_cn",
+        spellcheck: false,
+        plainPaste: true,
+        enableScript: false,
+        imageButtons: ["floatImageLeft", "floatImageNone", "floatImageRight", "linkImage", "replaceImage", "removeImage"],
+        allowedImageTypes: ["jpeg", "jpg", "png", "gif"],
+        imageUploadURL: '../sys/oss/uploadFtp?platformCode=mall&dirFolderName=goods',
+        imageUploadParams: {id: "edit"},
+        imagesLoadURL: '../sys/oss/queryAll'
+    });
+
+    $('#question_'+ i).editable('setHTML', question);
+
+
+}

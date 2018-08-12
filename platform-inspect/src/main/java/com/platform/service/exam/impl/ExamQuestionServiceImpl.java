@@ -57,4 +57,9 @@ public class ExamQuestionServiceImpl implements ExamQuestionService {
     public int deleteBatch(Long[]ids) {
         return examQuestionDao.deleteBatch(ids);
     }
+
+    @Override
+    public int deleteByExamId(Long examId) {
+        return examQuestionDao.deleteByExamId(examId);
+    }
 }
