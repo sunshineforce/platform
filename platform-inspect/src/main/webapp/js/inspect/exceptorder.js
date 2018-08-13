@@ -39,6 +39,38 @@ $(function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
+
+    $("#jqGrid1").jqGrid({
+        url: '../sys/app/user/list?identify=1',
+        datatype: "json",
+        colModel: [
+            {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: '姓名', name: 'realname', index: 'realname', align: 'center', width:'120px'},
+            {label: '手机号', name: 'mobile', index: 'mobile', align: 'center', width:'120px'},
+            {label: '区域', name: 'regionName', index: '', align: 'center', width:'120px'},
+            {label: '所属企业', name: 'enterpriseName', index: '', align: 'center', width:'160px'}],
+        viewrecords: true,
+        height: 260,
+        rowNum: 10,
+        rowList: [10, 30, 50],
+        multiselect: true,
+        autowidth: true,
+        pager: "#jqGridPager1",
+        jsonReader: {
+            root: "page.list",
+            page: "page.currPage",
+            total: "page.totalPage",
+            records: "page.totalCount"
+        },
+        prmNames: {
+            page: "page",
+            rows: "limit",
+            order: "order"
+        },
+        gridComplete: function () {
+            // $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+        }
+    });
 });
 ///格式化工单状态
 const InspectStatus = ["正常","异常"];
@@ -94,9 +126,64 @@ var vm = new Vue({
 		},
 		q: {
 		    name: ''
-		}
+		},
+        u: {
+            name: ''
+        }
 	},
 	methods: {
+        reloadUser: function (event) {
+            var page = $("#jqGrid1").jqGrid('getGridParam', 'page');
+            $("#jqGrid1").jqGrid('setGridParam', {
+                postData: {'realname': vm.u.name},
+                page: page
+            }).trigger("reloadGrid");
+        },
+        replace:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+
+            openWindow({
+                title: "选择上级",
+                area: ['575px', '500px'],
+                content: jQuery("#userDiv"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var grid = $("#jqGrid1");
+                    var rowKey = grid.getGridParam("selrow");
+                    if (!rowKey) {
+                        iview.Message.error("请选择一条记录");
+                        return;
+                    }
+
+                    var selectedIDs = grid.getGridParam("selarrrow");
+                    if (selectedIDs.length > 1) {
+                        iview.Message.error("只能选择一条记录");
+                        return;
+                    }
+
+                    var rowData = $("#jqGrid1").jqGrid('getRowData', selectedIDs[0]);
+                    $.ajax({
+                        type: "POST",
+                        url: "../inspectorder/replace",
+                        contentType: "application/json",
+                        data: JSON.stringify({id:id,chiefIds:rowData.id,chiefName:rowData.realname}),
+                        success: function (r) {
+                            if (r.code === 0) {
+                                alert('操作成功', function (index) {
+                                    vm.reload();
+                                });
+                            } else {
+                                alert(r.msg);
+                            }
+                        }
+                    });
+                    layer.close(index);
+                }
+            });
+        },
         eyeImages:function () {
             var data = getSelectedRowData();
             var imgs = t.split(",");

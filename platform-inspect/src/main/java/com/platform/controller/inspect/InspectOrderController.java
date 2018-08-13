@@ -1,5 +1,7 @@
 package com.platform.controller.inspect;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.inspect.InspectOrderEntity;
 import com.platform.entity.inspect.InspectOrderFlowEntity;
 import com.platform.entity.inspect.InspectOrderRelSpecificEntity;
@@ -17,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -29,7 +32,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("inspectorder")
-public class InspectOrderController {
+public class InspectOrderController extends AbstractController {
     @Autowired
     private IInspectOrderService inspectOrderService;
 
@@ -149,6 +152,9 @@ public class InspectOrderController {
     @RequestMapping("/replace")
     @ResponseBody
     public R replace(@RequestBody InspectOrderEntity inspectOrder) {
+        SysUserEntity user = getUser();
+        if (null != user){}
+        inspectOrder.setUpdateTime(new Date());
         inspectOrderService.update(inspectOrder);
         return R.ok();
     }
