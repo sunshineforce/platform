@@ -17,8 +17,10 @@ import java.util.Date;
 public class TaskVo implements Serializable {
     private static final long serialVersionUID = -8557678875044410963L;
 
-    //任务Id
-    private Long id;
+    //任务组Id
+    private Long taskGroupId;
+
+    private Long taskId;
     //任务名称
     private String name;
     //完成进度
@@ -40,12 +42,20 @@ public class TaskVo implements Serializable {
     //检查人
     private String checkUser;
 
-    public Long getId() {
-        return id;
+    public Long getTaskGroupId() {
+        return taskGroupId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTaskGroupId(Long taskGroupId) {
+        this.taskGroupId = taskGroupId;
+    }
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public String getName() {
@@ -131,7 +141,8 @@ public class TaskVo implements Serializable {
     @Override
     public String toString() {
         return "TaskVo{" +
-                "id=" + id +
+                "taskGroupId=" + taskGroupId +
+                ", taskId=" + taskId +
                 ", name='" + name + '\'' +
                 ", progressRate='" + progressRate + '\'' +
                 ", startTime=" + startTime +

@@ -2,6 +2,7 @@ package com.platform.dao.material;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.material.QrCodeDetailEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import java.util.Map;
  *  
  * @date 2018-08-04 10:17:20
  */
+
+@Repository
 public interface QrCodeDetailDao extends BaseDao<QrCodeDetailEntity> {
 
     /**

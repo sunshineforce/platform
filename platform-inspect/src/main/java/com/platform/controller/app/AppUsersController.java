@@ -5,9 +5,8 @@ import com.platform.constants.CommonConstant;
 import com.platform.controller.AbstractController;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.AppUserVo;
-import com.platform.entity.SysRegionEntity;
 import com.platform.service.AppUserService;
-import com.platform.service.SysRegionService;
+import com.platform.service.common.CommonService;
 import com.platform.utils.BeanUtils;
 import com.platform.utils.DateUtils;
 import com.platform.utils.R;
@@ -48,7 +47,7 @@ public class AppUsersController extends AbstractController{
     private AppUserService appUserService;
 
     @Autowired
-    private SysRegionService regionService;
+    private CommonService commonService;
 
     @ResponseBody
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
@@ -99,7 +98,7 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
         AppUserEntity appUserEntity = appUserService.queryObject(11L);
-        appUserEntity.setRegionName(getRegionName(appUserEntity.getRegionId()));
+        appUserEntity.setRegionName(commonService.getRegionName(appUserEntity.getRegionId()));
 
         AppUserVo appUser = new AppUserVo();
         BeanUtils.copyProperties(appUserEntity,appUser);
@@ -123,26 +122,6 @@ public class AppUsersController extends AbstractController{
     public String logout() {
         ShiroUtils.logout();
         return "redirect:/";
-    }
-
-    /**
-     * 获取某个区域的全名，自动拼接上上级区域名称
-     * @return
-     */
-    public String getRegionName(Integer regionId) {
-        String regionName = "";
-        if (regionId == null) {
-            return regionName;
-        }
-        SysRegionEntity region = regionService.queryObject(regionId);
-
-        if(region != null) {
-            if (region.getParentId() != 0) {
-                regionName =  getRegionName(region.getParentId()) + region.getName();  //  递归调用方法getRegionString(Long regionId)，停止条件设为regionId==null为真
-            }
-        }
-        regionName = regionName.replace("市辖区","");
-        return regionName;
     }
 
 }

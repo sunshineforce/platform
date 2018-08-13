@@ -3,6 +3,7 @@ package com.platform.dao.specific;
 import com.platform.dao.BaseDao;
 import com.platform.entity.specific.CheckSpecificItemEntity;
 import com.platform.vo.SelectVo;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -13,6 +14,8 @@ import java.util.List;
  *  
  * @date 2018-07-23 20:03:40
  */
+
+@Repository
 public interface CheckSpecificItemDao extends BaseDao<CheckSpecificItemEntity> {
 
     /**

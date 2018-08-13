@@ -1,14 +1,16 @@
 package com.platform.service.task.impl;
 
 import com.platform.dao.task.TaskGroupDao;
-import com.platform.entity.SysRegionEntity;
 import com.platform.entity.task.TaskGroupEntity;
+import com.platform.entity.task.vo.MaterialDetailsVo;
 import com.platform.entity.task.vo.TaskGroupVo;
+import com.platform.entity.task.vo.TaskStatisticsVo;
 import com.platform.entity.task.vo.TaskVo;
-import com.platform.service.SysRegionService;
+import com.platform.service.common.CommonService;
 import com.platform.service.task.TaskGroupService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
+import com.platform.utils.enums.MaterialStatusEnum;
 import com.platform.utils.enums.TaskStatusEnum;
 import com.platform.vo.SelectVo;
 import org.springframework.beans.BeanUtils;
@@ -35,7 +37,7 @@ public class TaskGroupServiceImpl implements TaskGroupService {
     private TaskGroupDao taskGroupDao;
 
     @Autowired
-    private SysRegionService regionService;
+    private CommonService commonService;
 
     @Override
     public TaskGroupEntity queryObject(Integer id) {
@@ -106,13 +108,18 @@ public class TaskGroupServiceImpl implements TaskGroupService {
     public PageUtils queryTaskGroup(Map<String, Object> map) {
         Query query = new Query(map);
         String status = String.valueOf(map.get("status"));
-        List<TaskVo> taskGroupList = taskGroupDao.selectTaskGroupSimple(map);
+        List<TaskVo> taskGroupList = taskGroupDao.selectTaskGroupSimple(query);
+        Map<String, Object> processRateQueryMap = new HashMap<String, Object>();
+        processRateQueryMap.put("status",status);
+
         for (TaskVo taskVo : taskGroupList) {
-            taskVo.setLocation(getRegionName(taskVo.getRegionId()).concat(taskVo.getEnterpriseName()));
+            taskVo.setLocation(commonService.getRegionName(taskVo.getRegionId()).concat(taskVo.getEnterpriseName()));
             taskVo.setTaskStatus(TaskStatusEnum.getDesc(taskVo.getStatus()));
-            taskVo.setProgressRate(calcProgressRate(taskVo.getId(),Integer.valueOf(status)));
+            processRateQueryMap.put("taskGroupId",taskVo.getTaskGroupId());
+            processRateQueryMap.put("taskId",taskVo.getTaskId());
+            taskVo.setProgressRate(calcProgressRate(processRateQueryMap));
         }
-        int total = taskGroupDao.selectTaskGroupSimpleTotal(query);
+        Integer total = taskGroupDao.selectTaskGroupSimpleTotal(query);
 
         return new PageUtils(taskGroupList, total, query.getLimit(), query.getPage());
     }
@@ -121,33 +128,63 @@ public class TaskGroupServiceImpl implements TaskGroupService {
      * 计算任务完成进度
      * @return
      */
-    private String calcProgressRate(Long taskId,Integer type){
+    private String calcProgressRate(Map<String, Object> map){
+        Integer total=0;
+        Integer finished=0;
         String progressRate = "0/0";
-        if (taskId == null) {
+        if (map == null) {
             return progressRate;
         }
 
+        TaskStatisticsVo taskStatistics = taskGroupDao.selectTaskGroupProcessRate(map);
+        if (taskStatistics != null) {
+            total = taskStatistics.getTotal();
+            finished = taskStatistics.getFinish();
+        }
+        progressRate = (total + "/" + finished);
         return progressRate;
     }
 
-    /**
-     * 获取某个区域的全名，自动拼接上上级区域名称
-     * @return
-     */
-    public String getRegionName(Integer regionId) {
-        String regionName = "";
-        if (regionId == null) {
-            return regionName;
-        }
-        SysRegionEntity region = regionService.queryObject(regionId);
-
-        if(region != null) {
-            if (region.getParentId() != 0) {
-                regionName =  getRegionName(region.getParentId()) + region.getName();  //  递归调用方法getRegionString(Long regionId)，停止条件设为regionId==null为真
-            }
-        }
-        regionName = regionName.replace("市辖区","");
-        return regionName;
+    @Override
+    public PageUtils queryMaterialTypeByTaskId(Map<String, Object> map) {
+        Query query = new Query(map);
+        List<TaskStatisticsVo> list = taskGroupDao.selectTaskGroupMaterialType(query);
+        Integer total = taskGroupDao.selectTaskGroupMaterialTypeTotal(query);
+        return new PageUtils(list, total, query.getLimit(), query.getPage());
     }
 
+    @Override
+    public PageUtils queryRegionByTaskId(Map<String, Object> map) {
+        Query query = new Query(map);
+
+        List<TaskStatisticsVo> list = taskGroupDao.selectTaskGroupRegion(query);
+        Integer total = taskGroupDao.selectTaskGroupRegionTotal(query);
+        return new PageUtils(list, total, query.getLimit(), query.getPage());
+    }
+
+    @Override
+    public PageUtils queryTaskGroupMaterialDetails(Map<String, Object> map) {
+        Query query = new Query(map);
+        List<MaterialDetailsVo> list = taskGroupDao.selectMaterialDetails(query);
+        for (MaterialDetailsVo materialDetails : list) {
+            materialDetails.setLocation(commonService.getRegionName(materialDetails.getRegionId()));
+            materialDetails.setMaterialStatus(MaterialStatusEnum.getDesc(materialDetails.getStatus()));
+        }
+        Integer total = taskGroupDao.selectMaterialDetailsTotal(query);
+
+        return new PageUtils(list, total, query.getLimit(), query.getPage());
+    }
+
+    @Override
+    public PageUtils queryTaskGroupRegionDetails(Map<String, Object> map) {
+        Query query = new Query(map);
+        List<MaterialDetailsVo> list = taskGroupDao.selectTaskGroupRegionDetails(query);
+        for (MaterialDetailsVo materialDetails : list) {
+            materialDetails.setLocation(commonService.getRegionName(materialDetails.getRegionId()));
+            materialDetails.setMaterialStatus(MaterialStatusEnum.getDesc(materialDetails.getStatus()));
+        }
+        Integer total = taskGroupDao.selectTaskGroupRegionDetailsTotal(query);
+
+        return new PageUtils(list, total, query.getLimit(), query.getPage());
+    }
 }

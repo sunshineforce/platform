@@ -92,7 +92,25 @@ public interface TaskGroupService {
 
     /**********************************************APP 接口部分 **************************************/
 
+    /**
+     * 加载所有任务组（下拉列表）
+     * @return
+     */
     PageUtils queryAllTaskGroupForApp();
 
+    /**
+     * 根据任务Id查询物品各类统计数据
+     * @return
+     */
+    PageUtils queryMaterialTypeByTaskId(Map<String, Object> map);
 
+    /**
+     * 根据任务Id查询企业统计数据
+     * @return
+     */
+    PageUtils queryRegionByTaskId(Map<String, Object> map);
+
+    PageUtils queryTaskGroupMaterialDetails(Map<String, Object> map);
+
+    PageUtils queryTaskGroupRegionDetails(Map<String, Object> map);
 }

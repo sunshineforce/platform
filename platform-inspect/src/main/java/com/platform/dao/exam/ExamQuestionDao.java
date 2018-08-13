@@ -2,6 +2,7 @@ package com.platform.dao.exam;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.exam.ExamQuestionEntity;
+import org.springframework.stereotype.Repository;
 
 /**
  * 试题题目表Dao
@@ -10,6 +11,8 @@ import com.platform.entity.exam.ExamQuestionEntity;
  *  
  * @date 2018-07-24 09:45:45
  */
+
+@Repository
 public interface ExamQuestionDao extends BaseDao<ExamQuestionEntity> {
 
     /**

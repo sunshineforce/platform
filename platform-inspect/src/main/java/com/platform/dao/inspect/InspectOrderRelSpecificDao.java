@@ -2,6 +2,7 @@ package com.platform.dao.inspect;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.inspect.InspectOrderRelSpecificEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
@@ -12,6 +13,8 @@ import java.util.List;
  *  
  * @date 2018-07-22 21:48:11
  */
+
+@Repository
 public interface InspectOrderRelSpecificDao extends BaseDao<InspectOrderRelSpecificEntity> {
 
     /**

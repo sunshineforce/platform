@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -48,7 +47,78 @@ public class AppTaskController {
             return R.paramsIllegal();
         }
 
-        return R.succeed().put("page", new ArrayList<>());
+        return R.succeed().put("page", taskGroupService.queryTaskGroup(params));
+    }
+
+
+    @RequestMapping(value = "/statistics/material")
+    public R statMaterial(@RequestParam HashMap<String,Object> params){
+        //查询列表数据
+        if (params == null) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskId")))) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskGroupId")))) {
+            return R.paramsIllegal();
+        }
+
+        return R.succeed().put("page", taskGroupService.queryMaterialTypeByTaskId(params));
+    }
+
+    @RequestMapping(value = "/statistics/material/details")
+    public R statMaterialDetail(@RequestParam HashMap<String,Object> params){
+        //查询列表数据
+        if (params == null) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskId")))) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskGroupId")))) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("id")))) {
+            return R.paramsIllegal();
+        }
+
+        return R.succeed().put("page", taskGroupService.queryTaskGroupMaterialDetails(params));
+    }
+
+    @RequestMapping(value = "/statistics/region")
+    public R statRegion(@RequestParam HashMap<String,Object> params){
+        //查询列表数据
+        if (params == null) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskId")))) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskGroupId")))) {
+            return R.paramsIllegal();
+        }
+
+        return R.succeed().put("page", taskGroupService.queryRegionByTaskId(params));
+    }
+
+    @RequestMapping(value = "/statistics/region/details")
+    public R statRegionDetail(@RequestParam HashMap<String,Object> params){
+        //查询列表数据
+        if (params == null) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskId")))) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("taskGroupId")))) {
+            return R.paramsIllegal();
+        }
+        if (StringUtils.isEmpty(String.valueOf(params.get("id")))) {
+            return R.paramsIllegal();
+        }
+
+        return R.succeed().put("page", taskGroupService.queryTaskGroupRegionDetails(params));
     }
 
     /**

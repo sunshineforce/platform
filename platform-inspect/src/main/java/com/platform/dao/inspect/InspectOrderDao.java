@@ -3,6 +3,7 @@ package com.platform.dao.inspect;
 import com.platform.dao.BaseDao;
 import com.platform.entity.inspect.InspectOrderEntity;
 import com.platform.entity.inspect.vo.AnomalyVo;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,8 @@ import java.util.Map;
  *  
  * @date 2018-07-22 21:48:11
  */
+
+@Repository
 public interface InspectOrderDao extends BaseDao<InspectOrderEntity> {
 
     List<AnomalyVo> search(Map<String,Object> queryParams);

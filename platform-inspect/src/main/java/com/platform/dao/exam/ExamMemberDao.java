@@ -2,6 +2,7 @@ package com.platform.dao.exam;
 
 import com.platform.dao.BaseDao;
 import com.platform.entity.exam.ExamMemberEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,8 @@ import java.util.Map;
  *  
  * @date 2018-07-24 09:45:45
  */
+
+@Repository
 public interface ExamMemberDao extends BaseDao<ExamMemberEntity> {
 
     /**

@@ -26,6 +26,15 @@ public enum MaterialStatusEnum {
         this.desc = desc;
     }
 
+    public static String getDesc(Integer value){
+        for (MaterialStatusEnum c : MaterialStatusEnum.values()) {
+            if (c.getCode() == value) {
+                return c.desc;
+            }
+        }
+        return null;
+    }
+
     public Integer getCode() {
         return code;
     }
