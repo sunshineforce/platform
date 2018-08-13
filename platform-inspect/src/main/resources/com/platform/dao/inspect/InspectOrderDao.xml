@@ -39,24 +39,34 @@
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.inspect.InspectOrderEntity">
-		select
-    		`id`,
-    		`material_id`,
-    		`status`,
-    		`inspect_time`,
-    		`user_id`,
-    		`user_name`,
-    		`inspect_status`,
-    		`chief_ids`,
-    		`chief_name`,
-    		`photos`,
-    		`create_time`,
-    		`update_time`,
-    		`data_status`
-		from inspect_order
+		SELECT
+			o.id,
+			o.material_id,
+			o.`status`,
+			o.inspect_time,
+			o.user_id,
+			o.user_name,
+			o.inspect_status,
+			o.description,
+			o.chief_ids,
+			o.chief_name,
+			o.photos,
+			o.create_time,
+			o.update_time,
+			o.data_status,
+			m.material_name AS materialName
+		FROM
+		inspect_order AS o
+		LEFT JOIN material AS m ON m.id = o.material_id
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+		<if test="materialName != null and materialName.trim() != ''">
+			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="status != null">
+			AND o.`status` = #{status}
+		</if>
+		<if test="inspectStatus != null">
+			AND o.`inspect_status` = #{inspectStatus}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -91,11 +101,20 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(1) from inspect_order
+		select
+		   count(*)
+		FROM inspect_order AS o
+		LEFT JOIN material AS m ON m.id = o.material_id
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
-        </if>
+		<if test="materialName != null and materialName.trim() != ''">
+			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="status != null">
+			AND o.`status` = #{status}
+		</if>
+		<if test="inspectStatus != null">
+			AND o.`inspect_status` = #{inspectStatus}
+		</if>
 	</select>
 
 	<select id="searchTotal" resultType="int">

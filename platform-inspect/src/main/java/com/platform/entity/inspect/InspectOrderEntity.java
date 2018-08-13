@@ -57,6 +57,9 @@ public class InspectOrderEntity implements Serializable {
     //检查项信息
     private List<InspectOrderRelSpecificEntity> specificList;
 
+    //物品名称
+    private String  materialName;
+
     /**
      * 设置：主键ID
      */
@@ -237,5 +240,21 @@ public class InspectOrderEntity implements Serializable {
 
     public void setSpecificList(List<InspectOrderRelSpecificEntity> specificList) {
         this.specificList = specificList;
+    }
+
+    public String getChiefIds() {
+        return chiefIds;
+    }
+
+    public void setChiefIds(String chiefIds) {
+        this.chiefIds = chiefIds;
+    }
+
+    public String getMaterialName() {
+        return materialName;
+    }
+
+    public void setMaterialName(String materialName) {
+        this.materialName = materialName;
     }
 }

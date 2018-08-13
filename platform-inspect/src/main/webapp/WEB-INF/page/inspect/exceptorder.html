@@ -9,7 +9,7 @@
 	<div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                <i-input v-model="q.name" @on-enter="query" placeholder="物品名称"/>
             </i-col>
             <i-button @click="query">查询</i-button>
             <i-button type="info" @click="toDetail"><i class="fa fa-eye"></i>&nbsp;查看详情</i-button>
@@ -75,6 +75,6 @@
 	</Card>
 </div>
 
-<script src="${rc.contextPath}/js/inspect/inspectorder.js?_${date.systemTime}"></script>
+<script src="${rc.contextPath}/js/inspect/exceptorder.js?_${date.systemTime}"></script>
 </body>
 </html>

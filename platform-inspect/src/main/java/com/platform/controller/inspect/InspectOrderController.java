@@ -139,4 +139,17 @@ public class InspectOrderController {
 
         return R.ok().put("order", order);
     }
+
+
+    /**
+     * 更换上级
+     * @param inspectOrder
+     * @return
+     */
+    @RequestMapping("/replace")
+    @ResponseBody
+    public R replace(@RequestBody InspectOrderEntity inspectOrder) {
+        inspectOrderService.update(inspectOrder);
+        return R.ok();
+    }
 }

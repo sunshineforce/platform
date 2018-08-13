@@ -1,11 +1,11 @@
 var photosMap  = new Map();
 $(function () {
     $("#jqGrid").jqGrid({
-        url: '../inspectorder/list',
+        url: '../inspectorder/list?inspectStatus=1',
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '物料ID', name: 'materialId', index: 'material_id', align: 'center', width:'80px'},
+			{label: '物品名称', name: 'materialId', index: 'material_id', align: 'center', width:'80px'},
 			{label: '工单状态 ', name: 'status', index: 'status', align: 'center', width:'80px',formatter:formatOrderStatus},
 			{label: '检查时间', name: 'inspectTime', index: 'inspect_time', align: 'center', width:'80px'},
 			{label: '检查人', name: 'userId', index: 'user_id', align: 'center', width:'80px'},
