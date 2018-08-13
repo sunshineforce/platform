@@ -94,8 +94,8 @@ var vm = new Vue({
         ],
         typeList:[
             {id:"",name:"类型"},
-            {id:"0",name:"循环任务"},
-            {id:"1",name:"单次任务"},
+            {id:"0",name:"单次任务"},
+            {id:"1",name:"循环任务"},
         ],
         userList:[],
         //接受选择结果
