@@ -78,8 +78,20 @@
 		from material AS m
 		LEFT JOIN material_type AS t ON  m.material_type_id = t.id
 		WHERE 1=1
-		<if test="name != null and name.trim() != ''">
-			AND m.name LIKE concat('%',#{name},'%')
+		<if test="materialName != null and materialName.trim() != ''">
+			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="regionIdList != null">
+			AND m.region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
+		</if>
+		<if test="enterpriseList != null">
+			AND m.enterprise_id IN
+			<foreach collection="enterpriseList" item="enterpriseId" index="index" open="(" close=")" separator=",">
+				#{enterpriseId}
+			</foreach>
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -98,9 +110,21 @@
 		select count(1) from material AS m
 		LEFT JOIN material_type AS t ON  m.material_type_id = t.id
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND m.name LIKE concat('%',#{name},'%')
-        </if>
+		<if test="materialName != null and materialName.trim() != ''">
+			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="regionIdList != null">
+			AND m.region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
+		</if>
+		<if test="enterpriseList != null">
+			AND m.enterprise_id IN
+			<foreach collection="enterpriseList" item="enterpriseId" index="index" open="(" close=")" separator=",">
+				#{enterpriseId}
+			</foreach>
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.material.MaterialEntity" useGeneratedKeys="true" keyProperty="id">

@@ -58,6 +58,41 @@ $(function () {
             $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
+
+    $("#jqGrid1").jqGrid({
+        url: '../enterprise/list',
+        datatype: "json",
+        colModel: [
+            {label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: '企业名称', name: 'enterpriseName', index: 'enterprise_name', width: 210}
+        ],
+        viewrecords: true,
+        height: 555,
+        rowNum: 10,
+        rowList: [10, 30, 50],
+        rownumWidth: 25,
+        autowidth: true,
+        multiselect: true,
+        shrinkToFit: false,
+        autoScroll: true,          //shrinkToFit: false,autoScroll: true,这两个属性产生水平滚动条
+        autowidth: true,          //必须要,否则没有水平滚动条
+        pager: "#jqGridPager1",
+        jsonReader: {
+            root: "page.list",
+            page: "page.currPage",
+            total: "page.totalPage",
+            records: "page.totalCount"
+        },
+        prmNames: {
+            page: "page",
+            rows: "limit",
+            order: "order"
+        },
+        gridComplete: function () {
+            // $("#jqGrid1").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+        }
+    });
+
 });
 
 ///格式二维码
@@ -70,6 +105,20 @@ const Status = ["未检查","正常","异常","报废"];
 function formatStatus(t) {
     return '<span>' + Status[t] + '</span>';
 }
+
+
+
+///添加到任务组
+function add2TaskGroup(tgId,mId) {
+    vm.add2TaskGroup(tgId,mId);
+}
+///从任务组移除
+function removeTaskGroup(tgId,mId) {
+    vm.removeTaskGroup(tgId,mId);
+}
+
+var ztree;
+var ztree0;
 
 var setting = {
     data: {
@@ -84,16 +133,9 @@ var setting = {
         }
     }
 };
-var ztree;
 
-///添加到任务组
-function add2TaskGroup(tgId,mId) {
-    vm.add2TaskGroup(tgId,mId);
-}
-///从任务组移除
-function removeTaskGroup(tgId,mId) {
-    vm.removeTaskGroup(tgId,mId);
-}
+
+
 
 var vm = new Vue({
 	el: '#rrapp',
@@ -109,9 +151,48 @@ var vm = new Vue({
 		q: {
 		    name: ''
 		},
+        eq: {
+            name: '',
+            regionId:null,
+        },
 
 	},
+    created:function () {
+        //加载树
+        $.get("../sys/region/getAreaTree", function (r) {
+            var datas = r.node;
+            ztree0 = $.fn.zTree.init($("#regionTree"), setting0,datas );
+
+            var treeObj = $.fn.zTree.getZTreeObj("regionTree");
+            var nodes = treeObj.getNodes();
+
+            for (var i = 0; i < nodes.length; i++) { //设置节点展开
+                treeObj.expandNode(nodes[i], true, false, true);
+            }
+        })
+    },
 	methods: {
+        reloadEnterprise: function (event) {
+            vm.showList = true;
+            var page = $("#jqGrid1").jqGrid('getGridParam', 'page');
+            $("#jqGrid1").jqGrid('setGridParam', {
+                postData: {'enterpriseName': vm.eq.name,'regionId':vm.eq.regionId},
+                page: page
+            }).trigger("reloadGrid");
+        },
+        ztreeClick:function () {
+            var node = ztree0.getSelectedNodes();
+            //alert(node[0].id)
+            if (node[0].id == 0){
+                vm.eq.regionId = null;
+                vm.q.regionId = null;
+            }else{
+                vm.eq.regionId = node[0].id;
+                vm.q.regionId = node[0].id;
+            }
+
+            vm.reloadEnterprise();
+        },
         retunList:function () {
             window.location.href="/task/taskgroup.html";
         },
@@ -304,9 +385,17 @@ var vm = new Vue({
             });
 		},
         getQueryParams:function () {
-            return {'name': vm.q.name,'taskGroupId':taskGroupId};
+            var enterpriseArr = $("#jqGrid1").getGridParam("selarrrow");
+            var enterpriseIdsArr = [];
+            if (null != enterpriseArr && enterpriseArr.length > 0){
+                for (var i = 0 ; i < enterpriseArr.length ; i++){
+                    enterpriseIdsArr[i] = enterpriseArr[i];
+                }
+            }
+            return {'name': vm.q.name,'taskGroupId':taskGroupId,'regionId':vm.q.regionId,'enterpriseIds':enterpriseIdsArr.join(",")};
         },
 		reload: function (event) {
+
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
@@ -344,3 +433,20 @@ var vm = new Vue({
         }
 	}
 });
+
+var setting0 = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
+    },
+    callback:{
+        onClick:vm.ztreeClick,
+    }
+};

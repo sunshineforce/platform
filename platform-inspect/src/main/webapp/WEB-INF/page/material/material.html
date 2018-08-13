@@ -6,29 +6,49 @@
 </head>
 <body>
 <div id="rrapp" v-cloak>
-	<div v-show="showList">
-        <Row :gutter="16">
-            <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
-            </i-col>
-            <i-button @click="query">查询</i-button>
 
-			#if($shiro.hasPermission("material:update"))
-            <i-button id="updateBtn" type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
-			#end
-            #if($shiro.hasPermission("material:giveUp"))
-            <i-button id="giveupBtn" type="info" @click="giveup"><i class="fa fa-eraser"></i>&nbsp;报废</i-button>
-            #end
-			#if($shiro.hasPermission("material:delete"))
-            <i-button id="delBtn" type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
-			#end
-            <i-button id="addAllBtn" type="error" @click="addAll2TaskGroup"><i class="fa fa-plus"></i>&nbsp;全部添加</i-button>
-            <i-button id="removeAllBtn" type="error" @click="removeAllFromTaskGroup"><i class="fa fa-trash-o"></i>&nbsp;全部移除</i-button>
-            <i-button id="retunListBtn" type="error" @click="retunList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回任务组列表</i-button>
-        </Row>
-	    <table id="jqGrid"></table>
-	    <div id="jqGridPager"></div>
+    <div v-show="showList">
+        <div class="row">
+            <div class="col-sm-1" style="height: 669px; width: 200px; overflow-y: scroll;">
+                <ul id="regionTree" class="ztree"></ul>
+            </div>
+            <div class="col-sm-2" style="height: 669px;width: 280px;">
+                <Row :gutter="16">
+                    <i-col span="14">
+                        <i-input v-model="eq.name" @on-enter="reloadEnterprise" placeholder="企业名称"/>
+                    </i-col>
+                    <i-button @click="reloadEnterprise">查询</i-button>
+                </Row>
+                <table id="jqGrid1"></table>
+                <div id="jqGridPager1"></div>
+            </div>
+            <div class="col-sm-8">
+                <Row :gutter="16">
+                    <i-col span="4">
+                        <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                    </i-col>
+                    <i-button @click="query">查询</i-button>
+
+                    #if($shiro.hasPermission("material:update"))
+                    <i-button id="updateBtn" type="warning" @click="update"><i class="fa fa-pencil-square-o"></i>&nbsp;修改</i-button>
+                    #end
+                    #if($shiro.hasPermission("material:giveUp"))
+                    <i-button id="giveupBtn" type="info" @click="giveup"><i class="fa fa-eraser"></i>&nbsp;报废</i-button>
+                    #end
+                    #if($shiro.hasPermission("material:delete"))
+                    <i-button id="delBtn" type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
+                    #end
+                    <i-button id="addAllBtn" type="error" @click="addAll2TaskGroup"><i class="fa fa-plus"></i>&nbsp;全部添加</i-button>
+                    <i-button id="removeAllBtn" type="error" @click="removeAllFromTaskGroup"><i class="fa fa-trash-o"></i>&nbsp;全部移除</i-button>
+                    <i-button id="retunListBtn" type="error" @click="retunList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回任务组列表</i-button>
+                </Row>
+                <table id="jqGrid"></table>
+                <div id="jqGridPager"></div>
+            </div>
+        </div>
+
     </div>
+
 
     <Card v-show="!showList">
         <p slot="title">{{title}}</p>

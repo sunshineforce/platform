@@ -46,7 +46,7 @@
 		from enterprise
 		WHERE 1=1
 		<if test="enterpriseName != null and enterpriseName.trim() != ''">
-			AND enterprise_name LIKE concat('%',#{name},'%')
+			AND enterprise_name LIKE concat('%',#{enterpriseName},'%')
 		</if>
 		<if test="regionId != null">
 			AND region_id = #{regionId}
@@ -74,7 +74,7 @@
 		select count(*) from enterprise
 		WHERE 1=1
 		<if test="enterpriseName != null and enterpriseName.trim() != ''">
-			AND enterprise_name LIKE concat('%',#{name},'%')
+			AND enterprise_name LIKE concat('%',#{enterpriseName},'%')
 		</if>
 		<if test="regionId != null">
 			AND region_id = #{regionId}
