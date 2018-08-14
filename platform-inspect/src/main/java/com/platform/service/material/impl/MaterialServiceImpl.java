@@ -1,5 +1,6 @@
 package com.platform.service.material.impl;
 
+import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.material.MaterialDao;
 import com.platform.dao.material.MaterialTypeDao;
 import com.platform.entity.material.MaterialEntity;
@@ -8,6 +9,7 @@ import com.platform.entity.material.MaterialVo;
 import com.platform.service.common.CommonService;
 import com.platform.service.material.MaterialService;
 import com.platform.utils.StringUtils;
+import com.platform.utils.enums.MaterialStatusEnum;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +33,10 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Autowired
     private CommonService commonService;
+
+
+    @Autowired
+    private InspectOrderDao inspectOrderDao;
 
     @Override
     public MaterialEntity queryObject(Integer id) {
@@ -87,6 +93,9 @@ public class MaterialServiceImpl implements MaterialService {
                 String[] materialUrl = materialEntity.getMaterialUrl().split(",");
                 materialVo.setMaterialUrl(materialUrl[0]);
                 materialVo.setUrls(materialEntity.getMaterialUrl());
+            }
+            if (materialEntity.getMaterialStatus().equals(MaterialStatusEnum.ANOMALY.getCode())) {
+
             }
         }
         return materialVo;
