@@ -24,13 +24,13 @@ import java.util.Map;
 public class AppAnomalyController {
 
     @Autowired
-    private IInspectOrderService orderService;
+    private IInspectOrderService inspectOrderService;
 
     @RequestMapping("/anomaly/list")
     @ResponseBody
     public R anomalyList(@RequestParam Map<String, Object> queryParams){
 
-        return R.succeed().put("page",orderService.search(queryParams));
+        return R.succeed().put("page",inspectOrderService.search(queryParams));
     }
 
     @RequestMapping("/anomaly/process")

@@ -3,6 +3,7 @@ package com.platform.service.material.impl;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.material.MaterialDao;
 import com.platform.dao.material.MaterialTypeDao;
+import com.platform.entity.inspect.vo.AnomalyVo;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.material.MaterialTypeEntity;
 import com.platform.entity.material.MaterialVo;
@@ -14,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +35,6 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Autowired
     private CommonService commonService;
-
 
     @Autowired
     private InspectOrderDao inspectOrderDao;
@@ -95,9 +96,33 @@ public class MaterialServiceImpl implements MaterialService {
                 materialVo.setUrls(materialEntity.getMaterialUrl());
             }
             if (materialEntity.getMaterialStatus().equals(MaterialStatusEnum.ANOMALY.getCode())) {
+                materialVo.setAnomalyReasons(getAnomalyReason(materialEntity.getId()));
 
             }
         }
         return materialVo;
     }
+
+    /**
+     * 封装异常原因
+     * @param materialId
+     * @return
+     */
+    private String getAnomalyReason(Integer materialId){
+        Map<String,Object> params = new HashMap<String,Object>();
+        params.put("inspectStatus",MaterialStatusEnum.ANOMALY.getCode());
+        params.put("materialId",materialId);
+        List<AnomalyVo> anomalyVoList = inspectOrderDao.search(params);
+        StringBuilder reasonStr = new StringBuilder();
+        for (AnomalyVo anomalyVo : anomalyVoList) {
+            reasonStr.append(anomalyVo.getDescription());
+            reasonStr.append(",");
+        }
+        if (reasonStr.length() > 0) {
+            reasonStr.setLength(reasonStr.length()-1);
+        }
+
+        return reasonStr.toString();
+    }
+
 }

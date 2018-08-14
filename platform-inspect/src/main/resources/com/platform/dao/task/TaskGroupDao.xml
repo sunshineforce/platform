@@ -292,7 +292,7 @@
 	</select>
 
 
-	<select id="selectTaskGroupRegionDetails" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
+	<select id="selectTaskGroupRegionDetails" resultType="com.platform.entity.task.vo.MaterialDetailsVo">
 		SELECT m.id,m.material_name AS name,m.region_id AS regionId,m.material_status AS status
 		FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
