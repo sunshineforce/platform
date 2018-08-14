@@ -16,10 +16,21 @@ public class AppMaterialController {
     @Autowired
     private MaterialService materialService;
 
-    @RequestMapping("/material/detail/")
+    @RequestMapping("/material/details")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        if (!checkParams(params)) {
+            return R.paramsIllegal();
+        }
+        Integer id = Integer.valueOf(String.valueOf(params.get("id")));
+        return R.succeed().put("list",materialService.queryMaterialById(id));
+    }
 
-        return R.succeed().put("page",null);
+    private boolean checkParams(Map<String, Object> params){
+        Integer id = Integer.valueOf(String.valueOf(params.get("id")));
+        if (id == null || id ==0) {
+            return false;
+        }
+        return true;
     }
 }

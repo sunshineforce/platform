@@ -44,6 +44,16 @@ public class AppCheckSpecificController {
         return R.succeed().put("page",checkSpecificService.search(params));
     }
 
+    @RequestMapping(value = "/check/specific/query")
+    public R queryObject(@RequestParam Map<String,Object> params){
+        Integer id = Integer.valueOf(String.valueOf(params.get("materialTypeId")));
+        if (id == null || id==0) {
+            return R.paramsIllegal();
+        }
+
+        return R.succeed().put("list",checkSpecificService.queryCheckSpecificAndItem(id));
+    }
+
     @RequestMapping(value = "/check/specific/create",method = RequestMethod.POST)
     public R create(@RequestParam CheckSpecificEntity entity){
         boolean valid = checkParams(entity);

@@ -263,7 +263,7 @@
 
 	<!-- 查询物品详情 -->
 	<select id="selectMaterialDetails" resultType="com.platform.entity.task.vo.MaterialDetailsVo">
-		SELECT mt.id,mt.name,m.region_id AS regionId,m.material_status AS status
+		SELECT m.id,mt.name,m.region_id AS regionId,m.material_status AS status
 				FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 				LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 				LEFT JOIN material m ON m.id = gm.material_id
@@ -293,7 +293,7 @@
 
 
 	<select id="selectTaskGroupRegionDetails" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
-		SELECT r.id,m.material_name AS name,m.region_id AS regionId,m.material_status AS status
+		SELECT m.id,m.material_name AS name,m.region_id AS regionId,m.material_status AS status
 		FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 		LEFT JOIN material m ON m.id = gm.material_id

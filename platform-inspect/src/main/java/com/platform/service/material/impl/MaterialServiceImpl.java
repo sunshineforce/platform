@@ -77,9 +77,10 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialVo queryMaterialById(Integer id) {
         MaterialEntity materialEntity = materialDao.queryObject(id);
+        MaterialVo materialVo = new MaterialVo();
         if (materialEntity != null) {
-            MaterialVo materialVo = new MaterialVo();
             BeanUtils.copyProperties(materialEntity,materialVo);
+            materialVo.setId(Long.valueOf(materialEntity.getId()));
             Integer regionId = Integer.valueOf(String.valueOf(materialEntity.getRegionId()));
             materialVo.setLocation(commonService.getRegionName(regionId));
             if (StringUtils.isNotEmpty(materialEntity.getMaterialUrl())) {
@@ -88,6 +89,6 @@ public class MaterialServiceImpl implements MaterialService {
                 materialVo.setUrls(materialEntity.getMaterialUrl());
             }
         }
-        return null;
+        return materialVo;
     }
 }

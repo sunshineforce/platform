@@ -83,4 +83,15 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
     public int deleteBatch(Integer[]ids) {
         return checkSpecificDao.deleteBatch(ids);
     }
+
+    @Override
+    public CheckSpecificVo queryCheckSpecificAndItem(Integer id) {
+        CheckSpecificEntity checkSpecific = checkSpecificDao.queryObject(id);
+        List<SelectVo> items = checkSpecificItemDao.queryListSimple(Long.valueOf(id));
+        CheckSpecificVo result = new CheckSpecificVo();
+        result.setId(Long.valueOf(checkSpecific.getId()));
+        result.setName(checkSpecific.getSpecificName());
+        result.setItemList(items);
+        return result;
+    }
 }

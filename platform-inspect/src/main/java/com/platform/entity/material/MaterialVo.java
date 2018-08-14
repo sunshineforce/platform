@@ -12,6 +12,9 @@ public class MaterialVo implements Serializable{
     //物品url
     private String materialUrl;
 
+    //物品类型Id
+    private Integer materialTypeId;
+
     //检查规范Id
     private Long checkSpecificId;
 
@@ -25,7 +28,7 @@ public class MaterialVo implements Serializable{
     private String location;
 
     //生产日期
-    private Date produceDate;
+    private Date producedDate;
 
     //过期日期
     private Date expireDate;
@@ -67,6 +70,14 @@ public class MaterialVo implements Serializable{
         this.materialUrl = materialUrl;
     }
 
+    public Integer getMaterialTypeId() {
+        return materialTypeId;
+    }
+
+    public void setMaterialTypeId(Integer materialTypeId) {
+        this.materialTypeId = materialTypeId;
+    }
+
     public Long getCheckSpecificId() {
         return checkSpecificId;
     }
@@ -99,12 +110,12 @@ public class MaterialVo implements Serializable{
         this.location = location;
     }
 
-    public Date getProduceDate() {
-        return produceDate;
+    public Date getProducedDate() {
+        return producedDate;
     }
 
-    public void setProduceDate(Date produceDate) {
-        this.produceDate = produceDate;
+    public void setProducedDate(Date producedDate) {
+        this.producedDate = producedDate;
     }
 
     public Date getExpireDate() {
@@ -180,7 +191,7 @@ public class MaterialVo implements Serializable{
                 ", qrCode='" + qrCode + '\'' +
                 ", materialName='" + materialName + '\'' +
                 ", location='" + location + '\'' +
-                ", produceDate=" + produceDate +
+                ", producedDate=" + producedDate +
                 ", expireDate=" + expireDate +
                 ", checkDate=" + checkDate +
                 ", checkUser='" + checkUser + '\'' +
