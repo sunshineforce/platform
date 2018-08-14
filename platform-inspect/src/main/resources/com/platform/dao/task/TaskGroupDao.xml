@@ -107,7 +107,7 @@
 
 
 	<!-- -->
-	<select id="selectTaskByTaskGroupId" parameterType="java.lang.Long" resultType="com.platform.vo.SelectVo">
+	<select id="selectTaskByTaskGroupId" parameterType="java.lang.Integer" resultType="com.platform.vo.SelectVo">
 		SELECT t.id,t.name FROM task_group tg LEFT JOIN task t ON tg.id = t.task_group_id WHERE tg.id=#{id};
 	</select>
 
