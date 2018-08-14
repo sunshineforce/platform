@@ -20,16 +20,15 @@ public class TaskStatisticsVo implements Serializable {
     private Integer id;
     //物料类型名称
     private String materialType;
+    //区域名称
+    private String region;
     //总数量
     private Integer total;
-    //未完成
-    private Integer unfinished;
     //完成数量
     private Integer finish;
     //异常数量
     private Integer anomaly;
-    //超时
-    private Integer timeout;
+
 
     public Integer getId() {
         return id;
@@ -47,20 +46,20 @@ public class TaskStatisticsVo implements Serializable {
         this.materialType = materialType;
     }
 
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
+    }
+
     public Integer getTotal() {
         return total;
     }
 
     public void setTotal(Integer total) {
         this.total = total;
-    }
-
-    public Integer getUnfinished() {
-        return unfinished;
-    }
-
-    public void setUnfinished(Integer unfinished) {
-        this.unfinished = unfinished;
     }
 
     public Integer getFinish() {
@@ -77,13 +76,5 @@ public class TaskStatisticsVo implements Serializable {
 
     public void setAnomaly(Integer anomaly) {
         this.anomaly = anomaly;
-    }
-
-    public Integer getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Integer timeout) {
-        this.timeout = timeout;
     }
 }
