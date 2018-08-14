@@ -4,7 +4,11 @@ import com.platform.dao.material.MaterialDao;
 import com.platform.dao.material.MaterialTypeDao;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.material.MaterialTypeEntity;
+import com.platform.entity.material.MaterialVo;
+import com.platform.service.common.CommonService;
 import com.platform.service.material.MaterialService;
+import com.platform.utils.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +28,9 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Autowired
     private MaterialTypeDao materialTypeDao;
+
+    @Autowired
+    private CommonService commonService;
 
     @Override
     public MaterialEntity queryObject(Integer id) {
@@ -65,5 +72,22 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public int deleteBatch(Integer[]ids) {
         return materialDao.deleteBatch(ids);
+    }
+
+    @Override
+    public MaterialVo queryMaterialById(Integer id) {
+        MaterialEntity materialEntity = materialDao.queryObject(id);
+        if (materialEntity != null) {
+            MaterialVo materialVo = new MaterialVo();
+            BeanUtils.copyProperties(materialEntity,materialVo);
+            Integer regionId = Integer.valueOf(String.valueOf(materialEntity.getRegionId()));
+            materialVo.setLocation(commonService.getRegionName(regionId));
+            if (StringUtils.isNotEmpty(materialEntity.getMaterialUrl())) {
+                String[] materialUrl = materialEntity.getMaterialUrl().split(",");
+                materialVo.setMaterialUrl(materialUrl[0]);
+                materialVo.setUrls(materialEntity.getMaterialUrl());
+            }
+        }
+        return null;
     }
 }

@@ -2,6 +2,7 @@ package com.platform.service.material;
 
 
 import com.platform.entity.material.MaterialEntity;
+import com.platform.entity.material.MaterialVo;
 
 import java.util.List;
 import java.util.Map;
@@ -70,4 +71,7 @@ public interface MaterialService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+    //APP接口
+    MaterialVo queryMaterialById(Integer id);
 }
