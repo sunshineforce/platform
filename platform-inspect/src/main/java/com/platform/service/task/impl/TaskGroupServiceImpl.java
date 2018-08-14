@@ -1,11 +1,13 @@
 package com.platform.service.task.impl;
 
 import com.platform.dao.task.TaskGroupDao;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskGroupEntity;
 import com.platform.entity.task.vo.MaterialDetailsVo;
 import com.platform.entity.task.vo.TaskGroupVo;
 import com.platform.entity.task.vo.TaskStatisticsVo;
 import com.platform.entity.task.vo.TaskVo;
+import com.platform.service.SysUserService;
 import com.platform.service.common.CommonService;
 import com.platform.service.task.TaskGroupService;
 import com.platform.utils.PageUtils;
@@ -38,6 +40,9 @@ public class TaskGroupServiceImpl implements TaskGroupService {
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private SysUserService userService;
 
     @Override
     public TaskGroupEntity queryObject(Integer id) {
@@ -112,12 +117,15 @@ public class TaskGroupServiceImpl implements TaskGroupService {
         Map<String, Object> processRateQueryMap = new HashMap<String, Object>();
         processRateQueryMap.put("status",status);
 
+        SysUserEntity sysUser;
         for (TaskVo taskVo : taskGroupList) {
             taskVo.setLocation(commonService.getRegionName(taskVo.getRegionId()).concat(taskVo.getEnterpriseName()));
             taskVo.setTaskStatus(TaskStatusEnum.getDesc(taskVo.getStatus()));
             processRateQueryMap.put("taskGroupId",taskVo.getTaskGroupId());
             processRateQueryMap.put("taskId",taskVo.getTaskId());
             taskVo.setProgressRate(calcProgressRate(processRateQueryMap));
+            sysUser = userService.queryObject(taskVo.getCheckUserId());
+            taskVo.setCheckUser(sysUser.getUsername());
         }
         Integer total = taskGroupDao.selectTaskGroupSimpleTotal(query);
 

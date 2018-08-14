@@ -39,6 +39,8 @@ public class TaskVo implements Serializable {
     private Integer status;
     //任务状态名称
     private String taskStatus;
+    //检查人Id
+    private Long checkUserId;
     //检查人
     private String checkUser;
 
@@ -128,6 +130,14 @@ public class TaskVo implements Serializable {
 
     public void setTaskStatus(String taskStatus) {
         this.taskStatus = taskStatus;
+    }
+
+    public Long getCheckUserId() {
+        return checkUserId;
+    }
+
+    public void setCheckUserId(Long checkUserId) {
+        this.checkUserId = checkUserId;
     }
 
     public String getCheckUser() {
