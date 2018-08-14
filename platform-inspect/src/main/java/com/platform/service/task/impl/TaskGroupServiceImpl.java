@@ -126,7 +126,7 @@ public class TaskGroupServiceImpl implements TaskGroupService {
             taskVo.setProgressRate(calcProgressRate(processRateQueryMap));
             if (taskVo.getCheckUserId() != null && taskVo.getCheckUserId()>0) {
                 sysUser = userService.queryObject(taskVo.getCheckUserId());
-                taskVo.setCheckUser(sysUser.getUsername());
+                taskVo.setCheckUser(sysUser.getRealname());
             }else {
                 taskVo.setCheckUser("");
             }
