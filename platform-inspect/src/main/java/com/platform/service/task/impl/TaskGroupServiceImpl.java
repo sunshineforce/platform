@@ -124,8 +124,13 @@ public class TaskGroupServiceImpl implements TaskGroupService {
             processRateQueryMap.put("taskGroupId",taskVo.getTaskGroupId());
             processRateQueryMap.put("taskId",taskVo.getTaskId());
             taskVo.setProgressRate(calcProgressRate(processRateQueryMap));
-            sysUser = userService.queryObject(taskVo.getCheckUserId());
-            taskVo.setCheckUser(sysUser.getUsername());
+            if (taskVo.getCheckUserId() != null && taskVo.getCheckUserId()>0) {
+                sysUser = userService.queryObject(taskVo.getCheckUserId());
+                taskVo.setCheckUser(sysUser.getUsername());
+            }else {
+                taskVo.setCheckUser("");
+            }
+
         }
         Integer total = taskGroupDao.selectTaskGroupSimpleTotal(query);
 
