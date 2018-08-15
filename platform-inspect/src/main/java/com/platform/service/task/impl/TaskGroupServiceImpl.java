@@ -119,7 +119,9 @@ public class TaskGroupServiceImpl implements TaskGroupService {
 
         SysUserEntity sysUser;
         for (TaskVo taskVo : taskGroupList) {
-            taskVo.setLocation(commonService.getRegionName(taskVo.getRegionId()).concat(taskVo.getEnterpriseName()));
+            if (taskVo.getRegionId()!=null) {
+                taskVo.setLocation(commonService.getRegionName(taskVo.getRegionId()).concat(taskVo.getEnterpriseName()));
+            }
             taskVo.setTaskStatus(TaskStatusEnum.getDesc(taskVo.getStatus()));
             processRateQueryMap.put("taskGroupId",taskVo.getTaskGroupId());
             processRateQueryMap.put("taskId",taskVo.getTaskId());
