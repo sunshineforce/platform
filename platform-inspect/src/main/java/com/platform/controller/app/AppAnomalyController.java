@@ -2,6 +2,7 @@ package com.platform.controller.app;
 
 import com.platform.service.inspect.IInspectOrderService;
 import com.platform.utils.R;
+import com.platform.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,9 @@ public class AppAnomalyController {
     @RequestMapping("/anomaly/list")
     @ResponseBody
     public R anomalyList(@RequestParam Map<String, Object> queryParams){
-
+        if (!checkParams(queryParams)) {
+            return R.paramsIllegal();
+        }
         return R.succeed().put("page",inspectOrderService.search(queryParams));
     }
 
@@ -60,6 +63,17 @@ public class AppAnomalyController {
     public R anomalyHistories(){
 
         return R.succeed();
+    }
+
+    private boolean checkParams(Map<String, Object> queryParams){
+        if (queryParams == null || queryParams.size()==0) {
+            return false;
+        }else {
+            if (StringUtils.isNullOrEmpty(queryParams.get("status"))) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }

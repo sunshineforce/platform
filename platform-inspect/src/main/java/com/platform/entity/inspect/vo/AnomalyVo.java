@@ -48,6 +48,8 @@ public class AnomalyVo implements Serializable {
     private String chiefIds;
     //检查上级名称
     private String chiefName;
+    //现场照片
+    private String urls;
 
     public Long getId() {
         return id;
@@ -167,5 +169,13 @@ public class AnomalyVo implements Serializable {
 
     public void setChiefName(String chiefName) {
         this.chiefName = chiefName;
+    }
+
+    public String getUrls() {
+        return urls;
+    }
+
+    public void setUrls(String urls) {
+        this.urls = urls;
     }
 }

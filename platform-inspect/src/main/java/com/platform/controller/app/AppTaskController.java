@@ -92,10 +92,10 @@ public class AppTaskController {
         if (params == null) {
             return R.paramsIllegal();
         }
-        if (StringUtils.isEmpty(String.valueOf(params.get("taskId")))) {
+        if (StringUtils.isEmpty(params.get("taskId"))) {
             return R.paramsIllegal();
         }
-        if (StringUtils.isEmpty(String.valueOf(params.get("taskGroupId")))) {
+        if (StringUtils.isEmpty(params.get("taskGroupId"))) {
             return R.paramsIllegal();
         }
 
@@ -108,13 +108,13 @@ public class AppTaskController {
         if (params == null) {
             return R.paramsIllegal();
         }
-        if (StringUtils.isEmpty(String.valueOf(params.get("taskId")))) {
+        if (StringUtils.isEmpty(params.get("taskId"))) {
             return R.paramsIllegal();
         }
-        if (StringUtils.isEmpty(String.valueOf(params.get("taskGroupId")))) {
+        if (StringUtils.isEmpty(params.get("taskGroupId"))) {
             return R.paramsIllegal();
         }
-        if (StringUtils.isEmpty(String.valueOf(params.get("id")))) {
+        if (StringUtils.isEmpty(params.get("id"))) {
             return R.paramsIllegal();
         }
 

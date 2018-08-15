@@ -2,6 +2,7 @@ package com.platform.controller.app;
 
 import com.platform.service.material.MaterialService;
 import com.platform.utils.R;
+import com.platform.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,8 +28,7 @@ public class AppMaterialController {
     }
 
     private boolean checkParams(Map<String, Object> params){
-        Integer id = Integer.valueOf(String.valueOf(params.get("id")));
-        if (id == null || id ==0) {
+        if (StringUtils.isNullOrEmpty(params.get("id"))) {
             return false;
         }
         return true;

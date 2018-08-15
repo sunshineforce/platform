@@ -85,12 +85,12 @@
 	<select id="search" resultType="com.platform.entity.inspect.vo.AnomalyVo">
 		SELECT
 		m.id,m.qr_code AS qrcode,m.material_name AS materialName,m.location,o.inspect_time AS checkTime,
-		o.inspect_status AS checkResult,o.description,o.user_name AS checkUserName,
+		(CASE WHEN o.inspect_status=0 THEN '正常' ELSE '异常' END) AS checkResult,o.description,o.user_name AS checkUserName,
 		m.material_url AS materialUrl,m.produced_date AS producedDate,m.expire_date AS expireDate,
 		o.chief_ids AS chiefIds,m.material_type_id AS materialTypeId
 		FROM inspect_order o
 		LEFT JOIN material m ON m.id = o.material_id
-		WHERE o.inspect_status=#{inspectStatus}
+		WHERE o.inspect_status=1 AND o.status = #{status}
 			<if test="materialId != null and materialId != ''">
 				AND m.materialId=#{materialId}
 			</if>
@@ -105,15 +105,9 @@
 		   count(*)
 		FROM inspect_order AS o
 		LEFT JOIN material AS m ON m.id = o.material_id
-		WHERE 1=1
+		WHERE o.inspect_status=1 AND o.status = #{status}
 		<if test="materialName != null and materialName.trim() != ''">
 			AND m.material_name LIKE concat('%',#{materialName},'%')
-		</if>
-		<if test="status != null">
-			AND o.`status` = #{status}
-		</if>
-		<if test="inspectStatus != null">
-			AND o.`inspect_status` = #{inspectStatus}
 		</if>
 	</select>
 
