@@ -27,6 +27,16 @@ public class AppMaterialController {
         return R.succeed().put("list",materialService.queryMaterialById(id));
     }
 
+    @RequestMapping("/material/history")
+    @ResponseBody
+    public R history(@RequestParam Map<String, Object> params) {
+        if (StringUtils.isNullOrEmpty(params.get("id"))) {
+            return R.paramsIllegal();
+        }
+        Integer id = Integer.valueOf(String.valueOf(params.get("id")));
+        return R.succeed().put("list",materialService.queryMaterialById(id));
+    }
+
     private boolean checkParams(Map<String, Object> params){
         if (StringUtils.isNullOrEmpty(params.get("id"))) {
             return false;

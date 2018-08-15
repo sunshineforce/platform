@@ -92,7 +92,7 @@
 		LEFT JOIN material m ON m.id = o.material_id
 		WHERE o.inspect_status=1 AND o.status = #{status}
 			<if test="materialId != null and materialId != ''">
-				AND m.materialId=#{materialId}
+				AND m.id=#{materialId}
 			</if>
 			<if test="offset != null and limit != null">
 				limit #{offset}, #{limit}

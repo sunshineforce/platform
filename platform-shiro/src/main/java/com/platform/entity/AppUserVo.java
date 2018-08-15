@@ -9,6 +9,7 @@ public class AppUserVo implements Serializable{
     private String username;
     private String realname;
     private String mobile;
+    private Long regionId;
     private String regionName;
     private Integer identify;
 
@@ -42,6 +43,14 @@ public class AppUserVo implements Serializable{
 
     public void setMobile(String mobile) {
         this.mobile = mobile;
+    }
+
+    public Long getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Long regionId) {
+        this.regionId = regionId;
     }
 
     public String getRegionName() {

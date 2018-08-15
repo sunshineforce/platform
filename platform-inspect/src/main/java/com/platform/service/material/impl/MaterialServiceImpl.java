@@ -103,6 +103,12 @@ public class MaterialServiceImpl implements MaterialService {
         return materialVo;
     }
 
+    @Override
+    public List<MaterialVo> materialHistory(Map<String, Object> map) {
+
+        return null;
+    }
+
     /**
      * 封装异常原因
      * @param materialId

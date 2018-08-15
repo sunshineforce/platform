@@ -74,4 +74,6 @@ public interface MaterialService {
 
     //APP接口
     MaterialVo queryMaterialById(Integer id);
+
+    List<MaterialVo> materialHistory(Map<String, Object> map);
 }
