@@ -96,6 +96,7 @@ public class AppUsersController extends AbstractController{
 
         AppUserVo appUser = new AppUserVo();
         BeanUtils.copyProperties(appUserEntity,appUser);
+        appUser.setUserId(appUserEntity.getId());
 
         return R.ok().put("data", appUser);
     }
