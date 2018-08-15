@@ -90,13 +90,16 @@
 		o.chief_ids AS chiefIds,m.material_type_id AS materialTypeId,o.photos as urls
 		FROM inspect_order o
 		LEFT JOIN material m ON m.id = o.material_id
-		WHERE o.inspect_status=1 AND o.status = #{status}
-			<if test="materialId != null and materialId != ''">
-				AND m.id=#{materialId}
-			</if>
-			<if test="offset != null and limit != null">
-				limit #{offset}, #{limit}
-			</if>
+		WHERE o.inspect_status=1
+		<if test="status != null and status != ''">
+			AND o.status = #{status}
+		</if>
+		<if test="materialId != null and materialId != ''">
+			AND m.id=#{materialId}
+		</if>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
 		ORDER BY o.id DESC
 	</select>
 	
@@ -177,5 +180,9 @@
 			#{id}
 		</foreach>
 	</delete>
+
+	<select id="selectMaterialInspectHistory" resultType="com.platform.entity.material.MaterialVo">
+
+	</select>
 
 </mapper>

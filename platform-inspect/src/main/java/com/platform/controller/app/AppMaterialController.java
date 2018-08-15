@@ -1,5 +1,6 @@
 package com.platform.controller.app;
 
+import com.platform.service.inspect.IInspectOrderService;
 import com.platform.service.material.MaterialService;
 import com.platform.utils.R;
 import com.platform.utils.StringUtils;
@@ -14,8 +15,12 @@ import java.util.Map;
 @Controller
 @RequestMapping("/app")
 public class AppMaterialController {
+
     @Autowired
     private MaterialService materialService;
+
+    @Autowired
+    private IInspectOrderService inspectOrderService;
 
     @RequestMapping("/material/details")
     @ResponseBody
@@ -34,7 +39,8 @@ public class AppMaterialController {
             return R.paramsIllegal();
         }
         Integer id = Integer.valueOf(String.valueOf(params.get("id")));
-        return R.succeed().put("list",materialService.queryMaterialById(id));
+        params.put("materialId",id);
+        return R.succeed().put("page",inspectOrderService.search(params));
     }
 
     private boolean checkParams(Map<String, Object> params){
