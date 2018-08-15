@@ -84,10 +84,10 @@
 	<!-- APP异常接口 -->
 	<select id="search" resultType="com.platform.entity.inspect.vo.AnomalyVo">
 		SELECT
-		m.id,m.qr_code AS qrcode,m.material_name AS materialName,m.location,o.inspect_time AS checkTime,
+		o.id,m.id as materialId,m.qr_code AS qrCode,m.material_name AS materialName,m.location,o.inspect_time AS checkTime,
 		(CASE WHEN o.inspect_status=0 THEN '正常' ELSE '异常' END) AS checkResult,o.description,o.user_name AS checkUserName,
 		m.material_url AS materialUrl,m.produced_date AS producedDate,m.expire_date AS expireDate,
-		o.chief_ids AS chiefIds,m.material_type_id AS materialTypeId
+		o.chief_ids AS chiefIds,m.material_type_id AS materialTypeId,o.photos as urls
 		FROM inspect_order o
 		LEFT JOIN material m ON m.id = o.material_id
 		WHERE o.inspect_status=1 AND o.status = #{status}
@@ -162,6 +162,7 @@
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
+			<if test="description != null">`description` = #{description}</if>
 		</set>
 		where id = #{id}
 	</update>

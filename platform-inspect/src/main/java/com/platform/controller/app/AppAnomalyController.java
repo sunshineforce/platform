@@ -39,7 +39,7 @@ public class AppAnomalyController {
     @RequestMapping("/anomaly/process")
     @ResponseBody
     public R process(@RequestParam Map<String, Object> queryParams){
-
+        inspectOrderService.processAnomaly(queryParams);
         return R.succeed();
     }
 

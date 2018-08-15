@@ -78,4 +78,18 @@ public interface IInspectOrderService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+    /**
+     * 异常处理
+     * @param map
+     * @return
+     */
+    int processAnomaly(Map<String, Object> map);
+
+    /**
+     * 上报上级
+     * @param map
+     * @return
+     */
+    int report(Map<String, Object> map);
 }

@@ -3,15 +3,18 @@ package com.platform.service.inspect.impl;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.inspect.InspectOrderEntity;
+import com.platform.entity.inspect.InspectOrderFlowEntity;
 import com.platform.entity.inspect.vo.AnomalyVo;
+import com.platform.entity.notice.NoticeEntity;
 import com.platform.service.AppUserService;
 import com.platform.service.inspect.IInspectOrderService;
-import com.platform.utils.PageUtils;
-import com.platform.utils.Query;
-import com.platform.utils.StringUtils;
+import com.platform.service.inspect.InspectOrderFlowService;
+import com.platform.utils.*;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +31,9 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
 
     @Autowired
     private InspectOrderDao inspectOrderDao;
+
+    @Autowired
+    private InspectOrderFlowService inspectOrderFlowService;
 
     @Autowired
     private AppUserService userService;
@@ -50,7 +56,6 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             if (StringUtils.isNotEmpty(anomalyVo.getMaterialUrl())) {
                 String[] urls = anomalyVo.getMaterialUrl().split(",");
                 anomalyVo.setMaterialUrl(urls[0]);
-                anomalyVo.setUrls(anomalyVo.getMaterialUrl());
             }
             anomalyVo.setChiefName(chiefName(anomalyVo.getChiefIds()));
         }
@@ -83,6 +88,56 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     @Override
     public int deleteBatch(Integer[]ids) {
         return inspectOrderDao.deleteBatch(ids);
+    }
+
+    @Override
+    public int processAnomaly(Map<String, Object> map) {
+        Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
+        String descr = String.valueOf(map.get("descr"));
+        String photos = String.valueOf(map.get("photos"));
+
+        InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
+        anomalyItem.setType(0);
+        anomalyItem.setOrderId(orderId);
+        anomalyItem.setDescr(descr);
+        anomalyItem.setCreateTime(new Date());
+        anomalyItem.setPhotos(photos);
+
+        Subject subject = ShiroUtils.getSubject();
+        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+
+        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+        anomalyItem.setUserName(appUser.getRealname());
+
+        //处理异常
+        int effectRows = inspectOrderFlowService.update(anomalyItem);
+        //生成下级待办事项（即通知）
+        return inspectOrderFlowService.update(anomalyItem);
+    }
+
+    @Override
+    public int report(Map<String, Object> map) {
+        Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
+        String descr = String.valueOf(map.get("descr"));
+        String ids;
+        if (!StringUtils.isNullOrEmpty(map.get("ids"))) {
+            ids = String.valueOf(map.get("ids"));
+            String[] arr = ids.split(",");
+            for (String s : arr) {
+                InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
+                anomalyItem.setOrderId(orderId);
+                anomalyItem.setDescr(descr);
+                anomalyItem.setType(1);
+//                anomalyItem.setUserId();
+                inspectOrderFlowService.save(anomalyItem);
+            }
+
+            //上报上级
+            NoticeEntity noticeEntity = new NoticeEntity();
+        }
+
+
+        return 0;
     }
 
     private String chiefName(String chiefIds){

@@ -7,12 +7,10 @@ import com.platform.entity.AppUserEntity;
 import com.platform.entity.AppUserVo;
 import com.platform.service.AppUserService;
 import com.platform.service.common.CommonService;
-import com.platform.utils.BeanUtils;
-import com.platform.utils.DateUtils;
-import com.platform.utils.R;
-import com.platform.utils.ShiroUtils;
+import com.platform.utils.*;
 import com.platform.utils.enums.SystemCode;
 import com.platform.validator.Assert;
+import com.platform.vo.SelectVo;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.crypto.hash.Sha256Hash;
@@ -23,7 +21,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -53,7 +53,6 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public R login(String username, String password){
         Subject subject = ShiroUtils.getSubject();
-        password = new Sha256Hash(password).toHex();
         try {
             UsernamePasswordToken token = new UsernamePasswordToken(username, password);
             if (token == null) {
@@ -78,11 +77,6 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value="/user/password/reset",method = RequestMethod.POST)
     public R password(String password, String newPassword) {
         Assert.isBlank(newPassword, "新密码不为能空");
-
-        //sha256加密
-        password = new Sha256Hash(password).toHex();
-        //sha256加密
-        newPassword = new Sha256Hash(newPassword).toHex();
 
         //更新密码
         int count = appUserService.resetPassword(getUserId(), password, newPassword);
@@ -122,6 +116,23 @@ public class AppUsersController extends AbstractController{
     public String logout() {
         ShiroUtils.logout();
         return "redirect:/";
+    }
+
+    @RequestMapping(value = "/user/superior")
+    public List<SelectVo> querySuperior(){
+        Subject subject = ShiroUtils.getSubject();
+        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+        if (appUser != null && StringUtils.isNotEmpty(appUser.getSuperior())) {
+            String[] arr = appUser.getSuperior().split(",");
+            List<SelectVo> userList = new ArrayList<SelectVo>(arr.length);
+            for (String s : arr) {
+                AppUserEntity user = appUserService.queryObject(Long.valueOf(s));
+                SelectVo selectVo = new SelectVo(Integer.valueOf(String.valueOf(user.getId())),user.getRealname());
+                userList.add(selectVo);
+            }
+            return userList;
+        }
+        return null;
     }
 
 }
