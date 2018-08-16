@@ -14,5 +14,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MaterialDao extends BaseDao<MaterialEntity> {
-
+    MaterialEntity queryMaterialByQrCode(String qrCode);
 }

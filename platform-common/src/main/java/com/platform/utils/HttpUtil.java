@@ -1,19 +1,26 @@
 package com.platform.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.httpclient.*;
 import org.apache.commons.httpclient.cookie.CookiePolicy;
 import org.apache.commons.httpclient.cookie.CookieSpec;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URLEncoder;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * 作者: @author Harmon <br>
@@ -248,6 +255,60 @@ public class HttpUtil {
         }
 
         return response;
+    }
+
+    /**
+     * form方式post提交
+     * @param url
+     * @param jsonParams
+     * @return
+     */
+    public static String postJsonWithForm(String url,String jsonParams){
+        org.apache.http.client.HttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        String s = "";
+        try {
+            JSONObject jsonObject = JSON.parseObject(jsonParams);
+            List<BasicNameValuePair> pairList = new ArrayList<BasicNameValuePair>();
+            Iterator<String> iterator = jsonObject.keySet().iterator();
+            String key;
+            String value;
+            while (iterator.hasNext()){
+                key = iterator.next();
+                value = jsonObject.getString(key);
+                pairList.add(new BasicNameValuePair(key, value));
+            }
+            httpPost.setEntity(new UrlEncodedFormEntity(pairList,"UTF-8"));
+            httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+            HttpResponse response = client.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode == org.apache.http.HttpStatus.SC_OK){
+                HttpEntity entity = response.getEntity();
+                s = EntityUtils.toString(entity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
+    }
+
+    public static String postJsonWithForm(String url,List<BasicNameValuePair> postParams){
+        org.apache.http.client.HttpClient client = HttpClients.createDefault();
+        HttpPost httpPost = new HttpPost(url);
+        String s = "";
+        try {
+            httpPost.setEntity(new UrlEncodedFormEntity(postParams,"UTF-8"));
+            httpPost.setHeader("Content-type", "application/x-www-form-urlencoded");
+            HttpResponse response = client.execute(httpPost);
+            int statusCode = response.getStatusLine().getStatusCode();
+            if(statusCode == org.apache.http.HttpStatus.SC_OK){
+                HttpEntity entity = response.getEntity();
+                s = EntityUtils.toString(entity);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return s;
     }
 
     /**

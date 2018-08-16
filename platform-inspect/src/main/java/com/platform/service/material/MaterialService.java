@@ -25,6 +25,13 @@ public interface MaterialService {
     MaterialEntity queryObject(Integer id);
 
     /**
+     * 根据物品识别码查询实体
+     * @param qrCode 物品识别码
+     * @return 实体
+     */
+    MaterialEntity queryMaterialByQrCode(String qrCode);
+
+    /**
      * 分页查询
      *
      * @param map 参数

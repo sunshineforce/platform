@@ -30,4 +30,11 @@ public class AppMaterialBindController extends AbstractController {
          materialService.save(entity);
         return R.succeed();
     }
+
+    private void checkExists(String qrCode){
+        MaterialEntity material = materialService.queryMaterialByQrCode(qrCode);
+        if (material == null) {
+
+        }
+    }
 }

@@ -52,6 +52,33 @@
 		where id = #{id}
 	</select>
 
+	<!-- 根据识别码查询物品 -->
+	<select id="queryMaterialByQrCode" resultType="com.platform.entity.material.MaterialEntity">
+		select
+			`id`,
+			`qr_code`,
+			`material_name`,
+			`location`,
+			 region_id,
+			 enterprise_id,
+			`material_type_id`,
+			 check_specific_id,
+			`produced_date`,
+			`expire_date`,
+			`check_date`,
+			`material_status`,
+			`material_url`,
+			 remark,
+			`create_time`,
+			`update_time`,
+			`creator`,
+			`creator_id`,
+			`updator`,
+			`updator_id`
+		from material
+		where qr_code = #{qrCode}
+	</select>
+
 	<select id="queryList" resultType="com.platform.entity.material.MaterialEntity">
 		select
 		m.`id`,

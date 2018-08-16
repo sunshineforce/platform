@@ -52,6 +52,11 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
+    public MaterialEntity queryMaterialByQrCode(String qrCode) {
+        return materialDao.queryMaterialByQrCode(qrCode);
+    }
+
+    @Override
     public List<MaterialEntity> queryList(Map<String, Object> map) {
         return materialDao.queryList(map);
     }
