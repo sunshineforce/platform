@@ -6,6 +6,9 @@
     <resultMap type="com.platform.entity.stat.StaExceptionDayEntity" id="staExceptionDayMap">
         <result property="id" column="id"/>
         <result property="statDate" column="stat_date"/>
+		<result property="provinceId" column="province_id"/>
+		<result property="cityId" column="city_id"/>
+		<result property="districtId" column="district_id"/>
         <result property="pendingNum" column="pending_num"/>
         <result property="reviewNum" column="review_num"/>
         <result property="finishNum" column="finish_num"/>
@@ -15,6 +18,9 @@
 		select
 			`id`,
 			`stat_date`,
+			province_id,
+			city_id,
+			district_id,
 			`pending_num`,
 			`review_num`,
 			`finish_num`
@@ -26,6 +32,9 @@
 		select
     		`id`,
     		`stat_date`,
+			province_id,
+			city_id,
+			district_id,
     		`pending_num`,
     		`review_num`,
     		`finish_num`
@@ -58,11 +67,17 @@
 	<insert id="save" parameterType="com.platform.entity.stat.StaExceptionDayEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into sta_exception_day(
 			`stat_date`,
+			province_id,
+			city_id,
+			district_id,
 			`pending_num`,
 			`review_num`,
 			`finish_num`)
 		values(
 			#{statDate},
+			#{provinceId},
+			#{cityId},
+			#{districtId},
 			#{pendingNum},
 			#{reviewNum},
 			#{finishNum})
@@ -72,6 +87,9 @@
 		update sta_exception_day 
 		<set>
 			<if test="statDate != null">`stat_date` = #{statDate}, </if>
+			<if test="provinceId != null">`province_id` = #{provinceId}, </if>
+			<if test="cityId != null">`city_id` = #{cityId}, </if>
+			<if test="districtId != null">`district_id` = #{districtId}, </if>
 			<if test="pendingNum != null">`pending_num` = #{pendingNum}, </if>
 			<if test="reviewNum != null">`review_num` = #{reviewNum}, </if>
 			<if test="finishNum != null">`finish_num` = #{finishNum}</if>

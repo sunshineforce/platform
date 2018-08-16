@@ -6,6 +6,9 @@
     <resultMap type="com.platform.entity.stat.StaTaskDayEntity" id="staTaskDayMap">
         <result property="id" column="id"/>
         <result property="statDate" column="stat_date"/>
+		<result property="provinceId" column="province_id"/>
+		<result property="cityId" column="city_id"/>
+		<result property="districtId" column="district_id"/>
         <result property="pendingNum" column="pending_num"/>
         <result property="executingNum" column="executing_num"/>
         <result property="finishNum" column="finish_num"/>
@@ -16,6 +19,9 @@
 		select
 			`id`,
 			`stat_date`,
+			province_id,
+			city_id,
+			district_id,
 			`pending_num`,
 			`executing_num`,
 			`finish_num`,
@@ -28,6 +34,9 @@
 		select
     		`id`,
     		`stat_date`,
+		province_id,
+		city_id,
+		district_id,
     		`pending_num`,
     		`executing_num`,
     		`finish_num`,
@@ -61,12 +70,18 @@
 	<insert id="save" parameterType="com.platform.entity.stat.StaTaskDayEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into sta_task_day(
 			`stat_date`,
+			province_id,
+			city_id,
+			district_id,
 			`pending_num`,
 			`executing_num`,
 			`finish_num`,
 			`timeout_num`)
 		values(
 			#{statDate},
+			#{provinceId},
+			#{cityId},
+			#{districtId},
 			#{pendingNum},
 			#{executingNum},
 			#{finishNum},
@@ -77,7 +92,10 @@
 		update sta_task_day 
 		<set>
 			<if test="statDate != null">`stat_date` = #{statDate}, </if>
-			<if test="pendingNum != null">`pending_num` = #{pendingNum}, </if>
+			<if test="statDate != null">`stat_date` = #{statDate}, </if>
+			<if test="provinceId != null">`province_id` = #{provinceId}, </if>
+			<if test="cityId != null">`city_id` = #{cityId}, </if>
+			<if test="districtId != null">`district_id` = #{districtId}, </if>
 			<if test="executingNum != null">`executing_num` = #{executingNum}, </if>
 			<if test="finishNum != null">`finish_num` = #{finishNum}, </if>
 			<if test="timeoutNum != null">`timeout_num` = #{timeoutNum}</if>

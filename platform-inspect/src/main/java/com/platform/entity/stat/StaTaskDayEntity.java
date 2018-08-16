@@ -1,7 +1,6 @@
 package com.platform.entity.stat;
 
 import java.io.Serializable;
-import java.util.Date;
 
 
 /**
@@ -19,6 +18,13 @@ public class StaTaskDayEntity implements Serializable {
     private Integer id;
     //统计日期
     private Integer statDate;
+    //省份
+    private Integer provinceId;
+    //城市
+    private Integer cityId;
+    //区县id
+    private Integer districtId;
+
     //待执行数量
     private Integer pendingNum;
     //执行中
@@ -105,5 +111,29 @@ public class StaTaskDayEntity implements Serializable {
      */
     public Integer getTimeoutNum() {
         return timeoutNum;
+    }
+
+    public Integer getProvinceId() {
+        return provinceId;
+    }
+
+    public void setProvinceId(Integer provinceId) {
+        this.provinceId = provinceId;
+    }
+
+    public Integer getCityId() {
+        return cityId;
+    }
+
+    public void setCityId(Integer cityId) {
+        this.cityId = cityId;
+    }
+
+    public Integer getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(Integer districtId) {
+        this.districtId = districtId;
     }
 }
