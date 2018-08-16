@@ -114,7 +114,7 @@ public class TaskController extends AbstractController {
     @ResponseBody
     public R save(@RequestBody TaskEntity task) {
         Date time = new Date();
-        task.setUpdateTime(time);
+        //task.setUpdateTime(time);
         task.setCreateTime(time);
         task.setDataStatus(CommonConstant.USEABLE_STATUS);
         taskService.save(task);
@@ -130,7 +130,7 @@ public class TaskController extends AbstractController {
     @ResponseBody
     public R update(@RequestBody TaskEntity task) {
         Date time = new Date();
-        task.setUpdateTime(time);
+        //task.setUpdateTime(time);
         task.setDataStatus(CommonConstant.USEABLE_STATUS);
         taskService.update(task);
 

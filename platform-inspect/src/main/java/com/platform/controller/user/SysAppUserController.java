@@ -101,23 +101,35 @@ public class SysAppUserController extends AbstractController {
 
 
     /**
-     * 根据app用户省份获取下拉列表信息
+     * 根据app用户身份获取下拉列表信息
      * @param identify
      * @return
      */
     @RequestMapping("/appUserListByIdentify/{identify}")
     public R appUserListByIdentify(@PathVariable("identify") Integer identify) {
-        return R.ok().put("list", getList(identify));
+        return R.ok().put("list", getList(identify,null));
     }
 
-    private List<Map<String,Object>> getList(Integer identify){
+    @RequestMapping("/appUserList")
+    public R appUserList(@RequestBody AppUserEntity user) {
+        return R.ok().put("list", getList(user.getIdentify(),user.getEnterpriseId()));
+    }
+
+    private List<Map<String,Object>> getList(Integer identify,Integer enterpriseId){
         List<Map<String,Object>> list = new ArrayList<>();
 
         Map<String, Object> params = new HashMap<>();
         SysUserEntity user = getUser();
         ///如果是企业用户登录，查询该企业下的用户
-        if (null != user && null != user.getEnterpriseId()){
-            params.put("enterpriseId",user.getEnterpriseId());
+        if (null != user){
+            if (null != user.getEnterpriseId()){
+                params.put("enterpriseId",user.getEnterpriseId());
+            }else{
+                if (null != enterpriseId){
+                    params.put("enterpriseId",enterpriseId);
+                }
+            }
+
         }
         if (null != identify){
             params.put("identify",identify);
@@ -154,7 +166,7 @@ public class SysAppUserController extends AbstractController {
         AppUserEntity user = appUserService.queryObject(userId);
 
 
-        List<Map<String,Object>> superiorList = getList(1); // 领导
+        List<Map<String,Object>> superiorList = getList(1,null); // 领导
         user.setSuperiorList(superiorList);
         return R.ok().put("user", user);
     }

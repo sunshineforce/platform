@@ -196,7 +196,7 @@ var vm = new Vue({
         },
         layerTree: function () {
             openWindow({
-                title: "选择菜单",
+                title: "选择区域",
                 area: ['300px', '450px'],
                 content: jQuery("#regionLayer"),
                 btn: ['确定', '取消'],

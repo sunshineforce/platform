@@ -30,6 +30,10 @@ public class TaskEntity implements Serializable {
     private Integer type;
     //任务状态  0 
     private Integer status;
+    //企业id
+    private Integer enterpriseId;
+    //区域id
+    private Integer regionId;
     //人员ids
     private String userIds;
     //人员姓名
@@ -51,6 +55,12 @@ public class TaskEntity implements Serializable {
     //任务超时原因
     private String delayReason;
 
+
+    //区域名称
+    private String regionName;
+
+    //企业名称
+    private String enterpriseName;
 
     ////业务属性
     //任务组名称
@@ -321,5 +331,37 @@ public class TaskEntity implements Serializable {
 
     public void setStatistics(List<TaskStatisticsVo> statistics) {
         this.statistics = statistics;
+    }
+
+    public String getRegionName() {
+        return regionName;
+    }
+
+    public void setRegionName(String regionName) {
+        this.regionName = regionName;
+    }
+
+    public String getEnterpriseName() {
+        return enterpriseName;
+    }
+
+    public void setEnterpriseName(String enterpriseName) {
+        this.enterpriseName = enterpriseName;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
     }
 }

@@ -56,6 +56,16 @@
                     </i-option>
                 </i-select>
             </Form-item>
+            <Form-item label="区域">
+                <i-input v-model="task.regionName" @on-click="layerTree" icon="eye" readonly="readonly"
+                         placeholder="选择区域"/>
+            </Form-item>
+            <Form-item label="所属企业" prop="enterpriseId">
+                <i-select v-model="task.enterpriseId"  placeholder="请选择所属企业" @on-change="listenEnterpriseChange">
+                    <i-option v-for="enterprise in enterpriseList" :value="enterprise.id" :key="enterprise.id">{{enterprise.enterpriseName}}
+                    </i-option>
+                </i-select>
+            </Form-item>
             <Form-item label="人员" prop="userNames">
                 <i-select v-model="userArr" multiple placeholder="请选择人员">
                     <i-option v-for="user in userList" :value="user.id" :key="user.id">{{user.name}}
@@ -87,6 +97,12 @@
             </Form-item>
         </i-form>
 	</Card>
+
+    <!-- 选择区域 -->
+    <div id="regionLayer" style="display: none;padding:10px;">
+        <ul id="editRegionTree" class="ztree"></ul>
+    </div>
+
 </div>
 
 <script src="${rc.contextPath}/js/task/task.js?_${date.systemTime}"></script>

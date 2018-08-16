@@ -10,11 +10,11 @@ $(function () {
             {label: '截止时间', name: 'endTime', index: 'end_time', align: 'center',width: '80px',formatter:formatDay},
             {label: '执行时限', name: 'schedule', index: 'schedule',align: 'center', width: '80px'},
             {label: '循环周期', name: 'scheduleCycle', index: 'schedule_cycle',align: 'center', width: '50px',formatter:formatScheduleCycle},
-            {label: '检查区域', name: 'chekArea', index: '', align: 'center',width: '120px'},
-            {label: '检查企业', name: 'checkCompany', index: '', align: 'center',width: '120px'},
+            {label: '检查区域', name: 'regionName', index: 'regionP_id', align: 'center',width: '120px'},
+            {label: '检查企业', name: 'enterpriseName', index: 'enterprise_id', align: 'center',width: '120px'},
             {label: '检查人', name: 'userNames', index: 'user_names', align: 'center',width: '80px'},
             {label: '状态', name: 'status', index: 'status',align: 'center', width: '60px',formatter:formatStatus},
-            {label: '最后执行时间', name: 'createTime', index: 'create_time', align: 'center'},
+            {label: '最后执行时间', name: 'updateTime', index: 'update_time', align: 'center'},
             {label: '备注', name: 'remark', index: 'remark', align: 'center',width: '100px'}
         ],
 		viewrecords: true,
@@ -65,6 +65,20 @@ function formatStatus(t) {
 function formatType(t) {
 	return (t == 1) ? "循环任务":"单次任务";
 }
+var ztree1;
+var setting1 = {
+    data: {
+        simpleData: {
+            enable: true,
+            idKey: "id",
+            pIdKey: "parentId",
+            rootPId: -1
+        },
+        key: {
+            id: 0
+        }
+    }
+};
 var vm = new Vue({
 	el: '#rrapp',
 
@@ -107,6 +121,8 @@ var vm = new Vue({
             {id:2,name:"每月"},
             {id:3,name:"每年"},
 		],
+        //所属企业
+        enterpriseList:[],
 	},
     created:function () {
         $.get("../taskgroup/queryAll", function (r) {
@@ -122,6 +138,97 @@ var vm = new Vue({
                 }
             });
         },
+        getRegionTree: function () {
+            //加载树
+            $.get("../sys/region/getAreaTree", function (r) {
+                var datas = r.node;
+                ztree1 = $.fn.zTree.init($("#editRegionTree"), setting1,datas );
+
+                console.log("id-----------------" + vm.task.regionId)
+                var node = ztree1.getNodeByParam("id", vm.task.regionId);
+                if (node) {
+                    console.log("name-----------------" + node.name)
+                    ztree1.selectNode(node);
+                    Vue.set(vm.task,'regionName',node.name);
+                }
+            })
+        },
+        layerTree: function () {
+            openWindow({
+                title: "选择区域",
+                area: ['300px', '450px'],
+                content: jQuery("#regionLayer"),
+                btn: ['确定', '取消'],
+                btn1: function (index) {
+                    var node = ztree1.getSelectedNodes();
+
+                    //选择地域
+                    Vue.set(vm.task,'regionId',node[0].id);
+                    Vue.set(vm.task,'regionName',node[0].name);
+                    //console.log("name ---------" + node[0].name)
+                    vm.task.enterpriseId = null;
+                    vm.enterpriseList = [];
+                    vm.userList = [];
+                    vm.userArr = [];
+                    //加载企业信息
+                    vm.queryEnterpriseList(node[0].id);
+
+                    layer.close(index);
+                }
+            });
+        },
+        ///通过区域id加载企业列表
+        queryEnterpriseList:function (regionId) {
+            if (undefined == regionId || null == regionId){return;}
+            $.ajax({
+                type: "GET",
+                url: "../enterprise/queryAll",
+                contentType: "application/json",
+                data: {
+                    regionId:regionId,
+                },
+                success: function (r) {
+                    if (r.code == 0) {
+                        vm.enterpriseList = []; //清空上一次数据
+                        vm.enterpriseList = r.list;
+                    } else {
+                        console.log("error msg ---- " + r.msg)
+                    }
+                }
+            });
+        },
+        listenEnterpriseChange : function () {
+           vm.queryUserByEnterpriseId(vm.task.enterpriseId,[]);
+        },
+        ///查询企业下app 用户
+        queryUserByEnterpriseId : function(enterpriseId,arr){
+            if (undefined == enterpriseId || null == enterpriseId){return;}
+            $.ajax({
+                type: "POST",
+                url: "../sys/app/user/appUserList",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    identify:0,
+                    enterpriseId:enterpriseId,
+                }),
+                success: function (r) {
+                    if (r.code == 0) {
+                        vm.userList = []; //清空上一次数据
+                        vm.userList = r.list;
+
+                        if (arr){
+                            //vm.userArr = arr;
+                            for(var i =0 ; i < arr.length; i++){
+                                Vue.set(vm.userArr,i,arr[i]);
+                            }
+                        }
+                    } else {
+                        console.log("error msg ---- " + r.msg)
+                    }
+                }
+            });
+
+        },
 		query: function () {
 			vm.reload();
 		},
@@ -130,8 +237,8 @@ var vm = new Vue({
 			vm.title = "新增";
 			vm.task = { type: 0 ,status:0};
 			vm.getTaskGroups(); ///加载任务组
-            var arr = [];
-            vm.queryAppUserList(arr);
+            vm.getRegionTree();
+
 		},
 		update: function (event) {
             var id = getSelectedRow();
@@ -198,7 +305,9 @@ var vm = new Vue({
                         arr[i] = parseInt(ids[i]);
                     }
                 }
-                vm.queryAppUserList(arr);
+                vm.getRegionTree();
+                vm.queryEnterpriseList(vm.task.regionId);
+                vm.queryUserByEnterpriseId(vm.task.enterpriseId,arr);
 
             });
 		},

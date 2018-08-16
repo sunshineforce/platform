@@ -10,7 +10,9 @@
 		<result property="name" column="name"/>
 		<result property="remark" column="remark"/>
         <result property="status" column="status"/>
-        <result property="userIds" column="user_ids"/>
+        <result property="enterpriseId" column="enterprise_id"/>
+		<result property="regionId" column="region_id"/>
+		<result property="userIds" column="user_ids"/>
         <result property="userNames" column="user_names"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
@@ -39,12 +41,14 @@
 			`create_time`,
 			`update_time`,
 			`data_status`,
-			`delay_reason`
+			`delay_reason`,
+			 enterprise_id,
+		     region_id
 		from task
 		where id = #{id}
 	</select>
 	<select id="selectTaskList" resultType="com.platform.entity.task.TaskEntity">
-		select
+		SELECT
 			t.`id`,
 			t.`name`,
 			t.`remark`,
@@ -60,10 +64,17 @@
 			t.`create_time`,
 			t.`update_time`,
 			t.`data_status`,
+			t.enterprise_id,
+			t.region_id,
 			tg.`name` AS taskGroupName,
-			`delay_reason` as delayReason
-		from task AS t
+			t.`delay_reason` AS delayReason,
+			e.enterprise_name AS enterpriseName,
+			r.`name` AS regionName
+		FROM
+		task AS t
 		LEFT JOIN task_group AS tg ON t.task_group_id = tg.id
+		LEFT JOIN enterprise AS e ON e.id = t.enterprise_id
+		LEFT JOIN sys_region AS r ON r.id = t.region_id
 		WHERE 1=1 AND t.data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
@@ -92,8 +103,11 @@
 
 	<select id="selectTaskTotal" resultType="int">
 		select COUNT(1)
-		from task AS t
+		FROM
+		task AS t
 		LEFT JOIN task_group AS tg ON t.task_group_id = tg.id
+		LEFT JOIN enterprise AS e ON e.id = t.enterprise_id
+		LEFT JOIN sys_region AS r ON r.id = t.region_id
 		WHERE 1=1 AND t.data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
@@ -160,7 +174,10 @@
 			`create_time`,
 			`update_time`,
 			`data_status`,
-			`delay_reason`)
+			`delay_reason`,
+			 enterprise_id,
+		     region_id
+			)
 		values(
 			#{taskGroupId},
 			#{name},
@@ -176,7 +193,10 @@
 			#{createTime},
 			#{updateTime},
 			#{dataStatus},
-			#{delayReason})
+			#{delayReason},
+			#{enterpriseId},
+			#{regionId}
+			)
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.task.TaskEntity">
@@ -189,13 +209,15 @@
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="userIds != null">`user_ids` = #{userIds}, </if>
 			<if test="userNames != null">`user_names` = #{userNames}, </if>
+			<if test="regionId != null">`region_id` = #{regionId}, </if>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="startTime != null">`start_time` = #{startTime}, </if>
 			<if test="endTime != null">`end_time` = #{endTime}, </if>
 			<if test="schedule != null">`schedule` = #{schedule}, </if>
 			<if test="scheduleCycle != null">`schedule_cycle` = #{scheduleCycle}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
-			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
+			<if test="dataStatus != null">`data_status` = #{dataStatus},</if>
 			<if test="delayReason != null and delayReason!= ''">`delay_reason` = #{delayReason}</if>
 		</set>
 		where id = #{id}
