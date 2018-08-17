@@ -37,13 +37,7 @@ function statTask(xData,tasksSeries) {
         toolbox: {
             show: true,
             orient: 'vertical',
-            y: 'center',
-            feature: {
-                // mark: {show: true},
-                // dataView: {show: true, readOnly: false},
-                // restore: {show: true},
-               // saveAsImage: {show: true}
-            }
+            y: 'center'
         },
         calculable: true,
         grid: {
@@ -73,7 +67,7 @@ function statTask(xData,tasksSeries) {
     chart.setOption(option);
 }
 
-function statExceptions(orderSeries) {
+function statExceptions(xData,pendingData,reviewData,finishData) {
     var option = {
         title : {
             text: '异常处理统计',
@@ -86,37 +80,30 @@ function statExceptions(orderSeries) {
         legend: {
             orient : 'vertical',
             x : 'left',
-            data:['待处理','待复查','已完成']
-        },
-        toolbox: {
-            // show : true,
-            // feature : {
-            //     mark : {show: true},
-            //     dataView : {show: true, readOnly: false},
-            //     magicType : {
-            //         show: true,
-            //         type: ['pie', 'funnel'],
-            //         option: {
-            //             funnel: {
-            //                 x: '25%',
-            //                 width: '50%',
-            //                 funnelAlign: 'left',
-            //                 max: 1548
-            //             }
-            //         }
-            //     },
-            //     restore : {show: true},
-            //     saveAsImage : {show: true}
-            // }
+            data:xData
         },
         calculable : true,
         series : [
             {
-                name:'处理状态',
+                name:'待处理',
                 type:'pie',
                 radius : '55%',
-                center: ['50%', '60%'],
-                data:orderSeries
+                center: ['25%', '50%'],
+                data:pendingData
+            },
+            {
+                name:'待复查',
+                type:'pie',
+                radius : '55%',
+                center: ['55%', '50%'],
+                data:reviewData
+            },
+            {
+                name:'已完成',
+                type:'pie',
+                radius : '55%',
+                center: ['85%', '50%'],
+                data:finishData
             }
         ]
     }
@@ -128,9 +115,28 @@ function statExceptions(orderSeries) {
 var vm = new Vue({
     el: '#rrapp',
     data: {
-        regionId:"",
+        regionId:12718,
         startTime: DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-8),1),
         endTime:DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-1),1),
+        cityList:[],
+    },
+    created:function () {
+        $.ajax({
+            type: "GET",
+            url: "../sys/region/getAllCity",
+            contentType: "application/json",
+            data: {
+                areaId:12717 //浙江省
+            },
+            success: function (r) {
+                if (r.code == 0 && r.list) {
+                    for (var i = 0 ; i < r.list.length; i++){
+                        Vue.set(vm.cityList,i,r.list[i]);
+                    }
+
+                }
+            }
+        });
     },
     methods: {
        queryStatDatas:function(){
@@ -147,7 +153,7 @@ var vm = new Vue({
                success: function (r) {
                    if (r.code == 0) {
                        statTask(r.xData,r.tasksSeries);
-                       statExceptions(r.orderSeries);
+                       statExceptions(r.xData,r.pendingData,r.reviewData,r.finishData);
                    }
                }
            });

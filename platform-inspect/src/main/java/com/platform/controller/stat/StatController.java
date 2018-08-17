@@ -1,5 +1,7 @@
 package com.platform.controller.stat;
 
+import com.platform.cache.RegionCacheUtil;
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.stat.StaExceptionDayEntity;
 import com.platform.entity.stat.StaTaskDayEntity;
 import com.platform.service.stat.StaExceptionDayService;
@@ -39,33 +41,97 @@ public class StatController {
     public R statTaskAndOrder(@RequestParam Map<String, Object> params) {
         String startTime = String.valueOf(params.get("startTime"));
         String endTime = String.valueOf(params.get("endTime"));
-        Date sTime = DateUtils.convertStringToDate(startTime);
-        Date eTime = DateUtils.convertStringToDate(endTime);
-        List<String> dateList = DateUtils.getDateList(sTime, eTime, DateUtils.DATE_PATTERN);
+        int cityId = 12718; // 默认是杭州市
+        if (null != params.get("regionId")){
+            cityId = Integer.parseInt(String.valueOf(params.get("regionId")));
+        }
 
-        params.put("startTime",DateUtils.dateToIntStr(startTime));
-        params.put("endTime",DateUtils.dateToIntStr(endTime));
+        List<SysRegionEntity> districtList = RegionCacheUtil.getChildrenDistrict(cityId);
+        List<StaTaskDayEntity> tasks = null;
+        List<StaExceptionDayEntity> orders = null;
 
-        List<StaExceptionDayEntity> orders = staExceptionDayService.queryList(params);
-        List<StaTaskDayEntity> tasks = staTaskDayService.queryList(params);
 
-        List<Map<String,Object>> tasksSeries = new ArrayList<>();
+        if (null != districtList && districtList.size() > 0){
+            params.put("cityId",cityId);
+            params.put("startTime",DateUtils.dateToIntStr(startTime));
+            params.put("endTime",DateUtils.dateToIntStr(endTime));
+            orders = staExceptionDayService.queryList(params);
+            tasks = staTaskDayService.queryList(params);
+        }
+
+
+        List<Map<String,Object>> tasksSeries = getTaskSeries(districtList,tasks);
+        List<Map<String,Object>> pendingData = getOrderSeries(0,districtList,orders);
+        List<Map<String,Object>> reviewData = getOrderSeries(1,districtList,orders);
+        List<Map<String,Object>> finishData = getOrderSeries(2,districtList,orders);
+
+        return R.ok()
+                 .put("tasksSeries", tasksSeries)
+                 .put("pendingData",pendingData)
+                 .put("reviewData",reviewData)
+                 .put("finishData",finishData)
+                 .put("xData",getXDatas(districtList));
+    }
+
+    private List<String> getXDatas(List<SysRegionEntity> districtList){
+        List<String> list = new ArrayList<>();
+        if (null != districtList && districtList.size() > 0 ){
+            for (SysRegionEntity r : districtList) {
+                list.add(r.getName());
+            }
+        }
+        return list;
+    }
+
+
+    private List<Map<String,Object>> getOrderSeries(int type , List<SysRegionEntity> districtList ,List<StaExceptionDayEntity> orders){
         List<Map<String,Object>> orderSeries = new ArrayList<>();
-        if (null != tasks && tasks.size() > 0){
+        if (null != orders && orders.size() > 0 && null != districtList && districtList.size() > 0){
+            Map<String,Object> m  = null;
+            for (SysRegionEntity r : districtList) {
+                m  = new HashMap<>();
+                int num = 0;
+                m.put("name",r.getName());
+
+                for (StaExceptionDayEntity order : orders) {
+                    if (order.getDistrictId() != null &&  r.getId().intValue() == order.getDistrictId().intValue()){
+                        switch (type){
+                            case 0 : num += order.getPendingNum(); break;
+                            case 1 : num += order.getReviewNum();break;
+                            case 2 : num += order.getFinishNum();break;
+                        }
+
+
+
+                    }
+                }
+                m.put("value",num);
+
+
+                orderSeries.add(m);
+            }
+        }
+        return orderSeries;
+    }
+
+
+    private List<Map<String,Object>> getTaskSeries(List<SysRegionEntity> districtList , List<StaTaskDayEntity> tasks){
+        List<Map<String,Object>> tasksSeries = new ArrayList<>();
+        if (null != tasks && tasks.size() > 0 && null != districtList && districtList.size() > 0){
             Map<String,Object> m1 = new HashMap<>();
             Map<String,Object> m2 = new HashMap<>();
             Map<String,Object> m3 = new HashMap<>();
             Map<String,Object> m4 = new HashMap<>();
 
-            int []d1 = new int[dateList.size()];
-            int []d2 = new int[dateList.size()];
-            int []d3 = new int[dateList.size()];
-            int []d4 = new int[dateList.size()];
+            int []d1 = new int[districtList.size()];
+            int []d2 = new int[districtList.size()];
+            int []d3 = new int[districtList.size()];
+            int []d4 = new int[districtList.size()];
 
-            for (int i = 0 ; i < dateList.size(); i++) {
+            for (int i = 0 ; i < districtList.size(); i++) {
                 boolean has = false;
                 for (StaTaskDayEntity  task : tasks) {
-                    if (dateList.get(i).equals(DateUtils.subDate(String.valueOf(task.getStatDate()),0)) ){
+                    if (task.getDistrictId() != null && districtList.get(i).getId().intValue() == task.getDistrictId().intValue()){
                         d1[i] = task.getPendingNum() != null ? task.getPendingNum() : 0 ;
                         d2[i] = task.getExecutingNum() != null ? task.getExecutingNum() : 0 ;
                         d3[i] = task.getFinishNum() != null ? task.getFinishNum() : 0;
@@ -107,37 +173,7 @@ public class StatController {
             tasksSeries.add(m4);
 
         }
-
-        if (null != orders && orders.size() > 0){
-            Map<String,Object> m1 = new HashMap<>();
-            Map<String,Object> m2 = new HashMap<>();
-            Map<String,Object> m3 = new HashMap<>();
-            int pendingNum = 0;
-            int reviewNum = 0;
-            int finishNum = 0;
-            for (StaExceptionDayEntity  order : orders) {
-                 pendingNum += order.getPendingNum() != null ? order.getPendingNum() : 0;
-                 reviewNum += order.getReviewNum() != null ? order.getReviewNum() : 0;
-                 finishNum += order.getFinishNum() != null ? order.getFinishNum() : 0;
-            }
-           /* {value:335, name:'待处理'},
-            {value:310, name:'待复查'},
-            {value:234, name:'已完成'}*/
-            m1.put("name","待处理");
-            m1.put("value",pendingNum);
-
-            m2.put("name","待复查");
-            m2.put("value",reviewNum);
-
-            m3.put("name","已完成");
-            m3.put("value",finishNum);
-
-            orderSeries.add(m1);
-            orderSeries.add(m2);
-            orderSeries.add(m3);
-        }
-
-        return R.ok().put("tasksSeries", tasksSeries).put("orderSeries",orderSeries).put("xData",dateList);
+        return tasksSeries;
     }
 
 

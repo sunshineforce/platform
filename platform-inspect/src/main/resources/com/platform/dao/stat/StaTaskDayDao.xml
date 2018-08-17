@@ -46,6 +46,9 @@
 		<if test="startTime != null and endTime != null">
 			<![CDATA[	AND #{startTime} <= `stat_date` AND  `stat_date` <= #{endTime} ]]>
 		</if>
+		<if test="cityId != null">
+			AND  `city_id` = #{cityId}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

@@ -8,29 +8,38 @@
 
     <div class="mb15">
         <Card>
+            <i-form :label-width="80">
             <Row>
-                <!--<i-col span="6">-->
-                    <!--<label class="fl mr10 mt5" style="font-size: 13px; color: #666;">统计节点</label>-->
-                    <!--<i-select v-model="regionId" filterable style="float: left; width:70%;">-->
-                        <!--<i-option value="0">杭州</i-option>-->
-                    <!--</i-select>-->
-                <!--</i-col>-->
-                <i-col span="8" > <!--style="margin-left: 159px;"-->
+                <div style="width: 300px; float: left;">
+                    <Form-item label="统计节点" prop="superior">
+                        <i-select v-model="regionId" filterable >
+                            <i-option v-for="city in cityList" :value="city.id" :key="city.id">{{city.name}}
+                            </i-option>
+                        </i-select>
+                    </Form-item>
+                </div>
+
+                <div style="margin-left: 159px; float: left;">
                     <Row style="margin: 0;">
-                        <i-col span="12">
-                            <Date-picker v-model="startTime" type="date" placeholder="选择开始时间"></Date-picker>
+                        <i-col span="12" >
+                            <Form-item label="开始时间" prop="superior">
+                                <Date-picker v-model="startTime" type="date" placeholder="选择开始时间"></Date-picker>
+                            </Form-item>
                         </i-col>
                         <i-col span="12">
-                            <Date-picker v-model="endTime" type="date" placeholder="选择结束时间"></Date-picker>
+                            <Form-item label="结束时间" prop="superior">
+                                <Date-picker v-model="endTime" type="date" placeholder="选择结束时间"></Date-picker>
+                            </Form-item>
                         </i-col>
                     </Row>
 
 
-                </i-col>
-                <i-col>
+                </div>
+                <div style="margin-left: 100px; float: left;">
                     <i-button type="primary" @click="queryStatDatas">查询</i-button>
-                </i-col>
+                </div>
             </Row>
+            </i-form>
         </Card>
     </div>
 
@@ -39,7 +48,7 @@
     <Card style="margin-bottom: 15px;">
         <p slot="title">
             <span class="fl">任务执行统计</span>
-            <span class="fr" alt="查看表格数据"><a href="/task/task.html"><i class="fa fa-bars"></i></a> </span>
+            <span class="fr" alt="查看表格数据"><a href="/task/task.html"><i class="fa fa-bars"></i>&nbsp;查看表格数据</a> </span>
         </p>
         <div id="taskStatDiv" style="height: 399px;"></div>
     </Card>
@@ -47,7 +56,7 @@
     <Card>
         <p slot="title">
             <span class="fl">异常处理统计</span>
-            <span class="fr" alt="查看表格数据"><a href="/inspect/exceptorder.html"><i class="fa fa-bars"></i></a></span>
+            <span class="fr" alt="查看表格数据"><a href="/inspect/exceptorder.html"><i class="fa fa-bars"></i>&nbsp;查看表格数据</a></span>
         </p>
         <div id="exceptionStatDiv" style="height: 399px;"></div>
     </Card>

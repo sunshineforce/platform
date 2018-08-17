@@ -7,7 +7,6 @@ import com.platform.service.SysRegionService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
-import com.platform.utils.TreeUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -118,7 +117,7 @@ public class SysRegionController {
      * @return
      */
     @RequestMapping("/getAllCity")
-    public R getAllCity(@RequestParam(required = false) Integer areaId) {
+    public R getAllCity(@RequestParam(name = "areaId" , required = false) Integer areaId) {
         List<SysRegionEntity> list = RegionCacheUtil.getChildrenCity(areaId);
         return R.ok().put("list", list);
     }
