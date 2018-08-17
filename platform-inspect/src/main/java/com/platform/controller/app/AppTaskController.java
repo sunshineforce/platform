@@ -127,7 +127,7 @@ public class AppTaskController {
      * @return
      */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public R createTask(@RequestBody TaskEntity taskEntity){
+    public R createTask(@RequestParam TaskEntity taskEntity){
         if (taskEntity == null) {
             return R.paramsIllegal();
         }
