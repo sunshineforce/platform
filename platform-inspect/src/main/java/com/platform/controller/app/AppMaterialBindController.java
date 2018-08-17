@@ -31,10 +31,22 @@ public class AppMaterialBindController extends AbstractController {
         return R.succeed();
     }
 
-    private void checkExists(String qrCode){
+    @RequestMapping(value = "/material/exists",method = RequestMethod.POST)
+    @ResponseBody
+    public R checkExists(@RequestParam String qrCode){
         MaterialEntity material = materialService.queryMaterialByQrCode(qrCode);
         if (material == null) {
-
+            return R.succeed().put("data",new String[]{});
+        }else {
+            return null;
         }
+    }
+
+    @RequestMapping(value = "/material/check/qrcode",method = RequestMethod.POST)
+    @ResponseBody
+    public R checkQrCodeType(@RequestParam String url){
+        String[] prefix = "http://i.0t.com.cn/nb/d/,http://i.0t.com.cn/nb/s".split(",");
+
+        return null;
     }
 }
