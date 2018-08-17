@@ -127,7 +127,7 @@ public class AppTaskController {
      * @return
      */
     @RequestMapping(value = "/create",method = RequestMethod.POST)
-    public R createTask(@RequestParam TaskEntity taskEntity){
+    public R createTask(TaskEntity taskEntity){
         if (taskEntity == null) {
             return R.paramsIllegal();
         }
@@ -174,7 +174,7 @@ public class AppTaskController {
      * @return
      */
     @RequestMapping(value = "/timeout",method = RequestMethod.POST)
-    public R taskTimeout(@RequestParam TaskTimeoutVo taskTimeout){
+    public R taskTimeout(@ModelAttribute TaskTimeoutVo taskTimeout){
         if (taskTimeout == null) {
             return R.paramsIllegal();
         }else {
