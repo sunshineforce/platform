@@ -174,7 +174,7 @@ public class AppTaskController {
      * @return
      */
     @RequestMapping(value = "/timeout",method = RequestMethod.POST)
-    public R taskTimeout(@RequestBody TaskTimeoutVo taskTimeout){
+    public R taskTimeout(@RequestParam TaskTimeoutVo taskTimeout){
         if (taskTimeout == null) {
             return R.paramsIllegal();
         }else {
