@@ -8,6 +8,7 @@
         <result property="name" column="name"/>
         <result property="mobile" column="mobile"/>
         <result property="position" column="position"/>
+        <result property="createTime" column="create_time"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.telephone.AddressBookEntity">
@@ -64,7 +65,7 @@
 			#{name},
 			#{mobile},
 			#{position},
-			#{createTime})
+			NOW())
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.telephone.AddressBookEntity">
@@ -73,7 +74,6 @@
 			<if test="name != null">`name` = #{name}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="position != null">`position` = #{position}, </if>
-			<if test="createTime != null">`create_time` = #{createTime}</if>
 		</set>
 		where id = #{id}
 	</update>
