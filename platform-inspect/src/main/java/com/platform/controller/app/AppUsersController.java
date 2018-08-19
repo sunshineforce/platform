@@ -5,8 +5,10 @@ import com.platform.constants.CommonConstant;
 import com.platform.controller.AbstractController;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.AppUserVo;
+import com.platform.entity.regulation.vo.KnowledgeCollectVo;
 import com.platform.service.AppUserService;
 import com.platform.service.common.CommonService;
+import com.platform.service.regulation.UserRegulationRelService;
 import com.platform.utils.*;
 import com.platform.utils.enums.SystemCode;
 import com.platform.validator.Assert;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA
@@ -47,6 +50,9 @@ public class AppUsersController extends AbstractController{
 
     @Autowired
     private CommonService commonService;
+
+    @Autowired
+    private UserRegulationRelService knowledgeService;
 
     @ResponseBody
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
@@ -133,6 +139,17 @@ public class AppUsersController extends AbstractController{
             return userList;
         }
         return null;
+    }
+
+    @RequestMapping(value = "/user/knowledge")
+    public R queryKnowledgeList(@RequestParam Map<String, Object> params){
+        PageUtils pageUtils = null;
+        try {
+            pageUtils = knowledgeService.queryKnowledgeList(params);
+            return R.succeed().put("page",pageUtils);
+        } catch (Exception e) {
+            return R.failure();
+        }
     }
 
 }
