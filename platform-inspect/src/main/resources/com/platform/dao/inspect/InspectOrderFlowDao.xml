@@ -45,6 +45,13 @@
 			limit #{offset}, #{limit}
 		</if>
 	</select>
+
+	<!-- 查询异常历史记录 -->
+	<select id="queryAnomalyList" resultType="com.platform.entity.inspect.vo.AnomalyFlowVo">
+	SELECT `user_name` AS userName,`create_time` AS createTime,`descr` AS descr,photos
+	FROM inspect_order_flow
+	WHERE order_id = #{orderId}
+	</select>
 	
  	<select id="queryTotal" resultType="int">
 		select count(1) from inspect_order_flow

@@ -3,10 +3,13 @@ package com.platform.service.inspect.impl;
 import com.platform.constants.CommonConstant;
 import com.platform.dao.AppUserDao;
 import com.platform.dao.inspect.InspectOrderDao;
+import com.platform.dao.inspect.InspectOrderFlowDao;
+import com.platform.dao.material.MaterialDao;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.inspect.InspectOrderEntity;
 import com.platform.entity.inspect.InspectOrderFlowEntity;
 import com.platform.entity.inspect.vo.AnomalyVo;
+import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.notice.NoticeEntity;
 import com.platform.service.AppUserService;
 import com.platform.service.inspect.IInspectOrderService;
@@ -22,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -43,10 +47,10 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     private AppUserDao appUserDao;
 
     @Autowired
-    private InspectOrderFlowService inspectOrderFlowService;
+    private InspectOrderFlowDao inspectOrderFlowDao;
 
     @Autowired
-    private MaterialService materialService;
+    private MaterialDao materialDao;
 
     @Override
     public InspectOrderEntity queryObject(Integer id) {
@@ -62,12 +66,16 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     public PageUtils search(Map<String, Object> map) {
         Query query = new Query(map);
         List<AnomalyVo> resultList = inspectOrderDao.search(map);
+        Map<String,Object> queryParams = new HashMap<String, Object>();
         for (AnomalyVo anomalyVo : resultList) {
             if (StringUtils.isNotEmpty(anomalyVo.getMaterialUrl())) {
                 String[] urls = anomalyVo.getMaterialUrl().split(",");
                 anomalyVo.setMaterialUrl(urls[0]);
             }
             anomalyVo.setChiefName(chiefName(anomalyVo.getChiefIds()));
+            queryParams.put("orderId",anomalyVo.getId());
+
+            anomalyVo.setAnomalys(inspectOrderFlowDao.queryAnomalyList(queryParams));
         }
         int total = inspectOrderDao.searchTotal(map);
 
@@ -173,7 +181,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         }
 
         //处理异常
-        return inspectOrderFlowService.save(anomalyItem);
+        return inspectOrderFlowDao.save(anomalyItem);
     }
 
     private int saveOrUpdateInspectOrder(Integer orderId,Integer materialId){
@@ -183,7 +191,8 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         if (inspectOrder == null) {
             InspectOrderEntity entity = new InspectOrderEntity();
             entity.setMaterialId(materialId);
-
+            MaterialEntity material = materialDao.queryObject(materialId);
+            entity.setRegionId(material.getRegionId());
             entity.setStatus(InspectStatusEnum.PENDING.getCode());
             entity.setInspectTime(currentDate);
             entity.setUserId(11);

@@ -24,7 +24,7 @@ public class InspectOrderEntity implements Serializable {
     private Integer materialId;
 
     //物品所属区域Id
-    private Integer regionId;
+    private Long regionId;
 
     //工单状态 0 正常  1 异常
     private Integer status;
@@ -91,11 +91,11 @@ public class InspectOrderEntity implements Serializable {
         return materialId;
     }
 
-    public Integer getRegionId() {
+    public Long getRegionId() {
         return regionId;
     }
 
-    public void setRegionId(Integer regionId) {
+    public void setRegionId(Long regionId) {
         this.regionId = regionId;
     }
 

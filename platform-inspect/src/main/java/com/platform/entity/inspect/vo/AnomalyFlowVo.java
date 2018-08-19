@@ -18,23 +18,21 @@ public class AnomalyFlowVo implements Serializable {
 
     private static final long serialVersionUID = 4394719562763961808L;
 
-    //上级名称
-    private String chiefName;
+    //操作人
+    private String userName;
     //创建时间
     private Date createTime;
     //描述
-    private String desc;
+    private String descr;
     //现场照片
     private String photos;
 
-
-
-    public String getChiefName() {
-        return chiefName;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setChiefName(String chiefName) {
-        this.chiefName = chiefName;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
     public Date getCreateTime() {
@@ -45,12 +43,12 @@ public class AnomalyFlowVo implements Serializable {
         this.createTime = createTime;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getDescr() {
+        return descr;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setDescr(String descr) {
+        this.descr = descr;
     }
 
     public String getPhotos() {

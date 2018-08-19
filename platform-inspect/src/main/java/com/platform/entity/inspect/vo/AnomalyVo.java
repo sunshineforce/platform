@@ -2,6 +2,7 @@ package com.platform.entity.inspect.vo;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -52,7 +53,7 @@ public class AnomalyVo implements Serializable {
     //现场照片
     private String urls;
 
-//    List<>
+    List<AnomalyFlowVo> anomalys;
 
     public Long getId() {
         return id;
@@ -188,5 +189,13 @@ public class AnomalyVo implements Serializable {
 
     public void setUrls(String urls) {
         this.urls = urls;
+    }
+
+    public List<AnomalyFlowVo> getAnomalys() {
+        return anomalys;
+    }
+
+    public void setAnomalys(List<AnomalyFlowVo> anomalys) {
+        this.anomalys = anomalys;
     }
 }
