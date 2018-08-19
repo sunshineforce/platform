@@ -158,7 +158,7 @@
 		update inspect_order 
 		<set>
 			<if test="materialId != null">`material_id` = #{materialId}, </if>
-			<if test="regionId != null">`region_id`, = #{regionId}, </if>
+			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="inspectTime != null">`inspect_time` = #{inspectTime}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
