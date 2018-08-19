@@ -1,5 +1,7 @@
-package com.platform.controller.stat;
+package com.platform.controller.app;
 
+import com.platform.cache.RegionCacheUtil;
+import com.platform.entity.SysRegionEntity;
 import com.platform.service.stat.IStatService;
 import com.platform.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,33 +10,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.List;
 import java.util.Map;
 
 /**
- * 异常处理统计Controller
+ * app端统计
  *
- * @author admin
- *  
- * @date 2018-08-06 19:30:48
- */
+ * @author bjsonghongxu
+ * @create 2018-08-19 9:56
+ **/
 @Controller
-@RequestMapping("stat")
-public class StatController {
+@RequestMapping("/app/stat")
+public class AppStatController {
+
 
 
     @Autowired
     private IStatService iStatService;
 
+
     /**
      *  统计获取统计工单和异常数据
      */
-    @RequestMapping("/statTaskAndOrder")
+    @RequestMapping("/statTask")
     @ResponseBody
     public R statTaskAndOrder(@RequestParam Map<String, Object> params) {
         return iStatService.stat(params);
     }
 
-
-
-
+    /**
+     * 查询所有城市
+     *
+     * @return
+     */
+    @RequestMapping("/getAllCity")
+    public R getAllCity(@RequestParam(name = "areaId" , required = false) Integer areaId) {
+        List<SysRegionEntity> list = RegionCacheUtil.getChildrenCity(areaId);
+        return R.ok().put("list", list);
+    }
 }
