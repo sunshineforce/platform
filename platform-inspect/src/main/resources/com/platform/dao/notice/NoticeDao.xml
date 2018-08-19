@@ -36,13 +36,13 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="userId != null and userId.trim() != ''">
+		<if test="userId != null">
 			AND user_id =#{userId}
 		</if>
-		<if test="taskId != null and taskId.trim() != ''">
+		<if test="taskId != null">
 			AND task_id =#{taskId}
 		</if>
-		<if test="status != null and status.trim() != ''">
+		<if test="status != null">
 			AND status =#{status}
 		</if>
 	</select>
@@ -60,11 +60,11 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="taskId != null and taskId.trim() != ''">
+		<if test="taskId != null">
 			AND task_id LIKE concat('%',#{taskId},'%')
 		</if>
-		<if test="userId != null and userId.trim() != ''">
-			AND user_id LIKE concat('%',#{userId},'%')
+		<if test="userId != null">
+			AND user_id = #{userId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -82,9 +82,9 @@
  	<select id="queryTotal" resultType="int">
 		select count(*) from notice
 		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
-        </if>
+		<if test="userId != null and userId.trim() != ''">
+			AND user_id = #{userId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.notice.NoticeEntity" useGeneratedKeys="true" keyProperty="id">
@@ -99,7 +99,7 @@
 			#{status},
 			#{taskId},
 			#{userId},
-			#{createTime})
+			NOW())
 	</insert>
 	 
 	<update id="update" parameterType="com.platform.entity.notice.NoticeEntity">
@@ -109,7 +109,6 @@
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="taskId != null">`task_id` = #{taskId}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
-			<if test="createTime != null">`create_time` = #{createTime}</if>
 		</set>
 		where id = #{id}
 	</update>

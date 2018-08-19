@@ -8,6 +8,7 @@ import com.platform.utils.R;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -31,10 +32,7 @@ public class AppNoticeController extends AbstractController {
     private INoticeService noticeService;
 
     @RequestMapping("/notice/list")
-    public R queryAllNotice(){
-        HashMap<String,Object> params = new HashMap<String,Object>();
-        SysUserEntity user = (SysUserEntity) SecurityUtils.getSubject().getPrincipal();
-        params.put("userId",user.getUserId());
+    public R queryAllNotice(@RequestParam HashMap<String,Object> params){
         List<NoticeEntity> list = noticeService.queryList(params);
         return R.succeed().put("list",list);
     }
