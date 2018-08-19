@@ -26,13 +26,13 @@ public class StaTaskDayEntity implements Serializable {
     private Integer districtId;
 
     //待执行数量
-    private Integer pendingNum;
+    private Integer pendingNum = 0 ;
     //执行中
-    private Integer executingNum;
+    private Integer executingNum = 0;
     //已完成
-    private Integer finishNum;
+    private Integer finishNum = 0;
     //超时数量
-    private Integer timeoutNum;
+    private Integer timeoutNum = 0;
 
     /**
      * 设置：主键id

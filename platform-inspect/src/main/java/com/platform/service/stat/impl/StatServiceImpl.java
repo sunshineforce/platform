@@ -7,7 +7,6 @@ import com.platform.entity.stat.StaTaskDayEntity;
 import com.platform.service.stat.IStatService;
 import com.platform.service.stat.StaExceptionDayService;
 import com.platform.service.stat.StaTaskDayService;
-import com.platform.utils.DateUtils;
 import com.platform.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,10 +46,11 @@ public class StatServiceImpl implements IStatService {
 
         if (null != districtList && districtList.size() > 0){
             params.put("cityId",cityId);
-            params.put("startTime", DateUtils.dateToIntStr(startTime));
-            params.put("endTime",DateUtils.dateToIntStr(endTime));
-            orders = staExceptionDayService.queryList(params);
-            tasks = staTaskDayService.queryList(params);
+            params.put("regionIdList",getIds(districtList));
+            params.put("startTime", startTime);
+            params.put("endTime",endTime);
+            orders = staExceptionDayService.statExceptionOrder(params,districtList);
+            tasks = staTaskDayService.statTask(params,districtList);
         }
 
 
@@ -67,6 +67,13 @@ public class StatServiceImpl implements IStatService {
                 .put("xData",getXDatas(districtList));
     }
 
+    private List<Integer> getIds(List<SysRegionEntity> districtList){
+        List<Integer> ids = new ArrayList<>();
+        for (SysRegionEntity sysRegionEntity : districtList) {
+            ids.add(sysRegionEntity.getId());
+        }
+        return ids;
+    }
 
 
     private List<String> getXDatas(List<SysRegionEntity> districtList){
@@ -88,19 +95,20 @@ public class StatServiceImpl implements IStatService {
                 m  = new HashMap<>();
                 int num = 0;
                 m.put("name",r.getName());
+               if (null != orders){
+                   for (StaExceptionDayEntity order : orders) {
+                       if (order.getDistrictId() != null &&  r.getId().intValue() == order.getDistrictId().intValue()){
+                           switch (type){
+                               case 0 : num += order.getPendingNum(); break;
+                               case 1 : num += order.getReviewNum();break;
+                               case 2 : num += order.getFinishNum();break;
+                           }
 
-                for (StaExceptionDayEntity order : orders) {
-                    if (order.getDistrictId() != null &&  r.getId().intValue() == order.getDistrictId().intValue()){
-                        switch (type){
-                            case 0 : num += order.getPendingNum(); break;
-                            case 1 : num += order.getReviewNum();break;
-                            case 2 : num += order.getFinishNum();break;
-                        }
 
 
-
-                    }
-                }
+                       }
+                   }
+               }
                 m.put("value",num);
 
 

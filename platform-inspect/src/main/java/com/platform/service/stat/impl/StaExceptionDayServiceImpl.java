@@ -1,11 +1,15 @@
 package com.platform.service.stat.impl;
 
+import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.stat.StaExceptionDayDao;
+import com.platform.entity.SysRegionEntity;
+import com.platform.entity.dto.StatDto;
 import com.platform.entity.stat.StaExceptionDayEntity;
 import com.platform.service.stat.StaExceptionDayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -23,6 +27,9 @@ public class StaExceptionDayServiceImpl implements StaExceptionDayService {
     @Autowired
     private StaExceptionDayDao staExceptionDayDao;
 
+    @Autowired
+    private InspectOrderDao inspectOrderDao;
+
     @Override
     public StaExceptionDayEntity queryObject(Integer id) {
         return staExceptionDayDao.queryObject(id);
@@ -31,6 +38,37 @@ public class StaExceptionDayServiceImpl implements StaExceptionDayService {
     @Override
     public List<StaExceptionDayEntity> queryList(Map<String, Object> map) {
         return staExceptionDayDao.queryList(map);
+    }
+
+    @Override
+    public List<StaExceptionDayEntity> statExceptionOrder(Map<String, Object> map, List<SysRegionEntity> districtList) {
+        List<StaExceptionDayEntity> list = null;
+        List<StatDto> statDtos = inspectOrderDao.statExceptionOrder(map);
+        if (statDtos != null) {
+            list = new ArrayList<>();
+            for (SysRegionEntity region : districtList) {
+                StaExceptionDayEntity st = new StaExceptionDayEntity();
+                st.setCityId(Integer.parseInt(String.valueOf(map.get("cityId"))));
+                st.setDistrictId(region.getId());
+                for (StatDto statDto : statDtos) {
+                    if (null != statDto.getRegionId() && statDto.getRegionId().intValue() == region.getId().intValue()){
+                        if (null != statDto.getStatus()){
+                            switch (statDto.getStatus().intValue()){
+                                case 0 : st.setPendingNum(statDto.getNum()); break;
+                                case 1 : st.setReviewNum(statDto.getNum()); break;
+                                case 2 : st.setFinishNum(statDto.getNum()); break;
+                            }
+                        }
+
+
+                    }
+
+                }
+                list.add(st);
+            }
+        }
+
+        return list;
     }
 
     @Override

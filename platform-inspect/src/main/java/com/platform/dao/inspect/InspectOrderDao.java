@@ -1,6 +1,7 @@
 package com.platform.dao.inspect;
 
 import com.platform.dao.BaseDao;
+import com.platform.entity.dto.StatDto;
 import com.platform.entity.inspect.InspectOrderEntity;
 import com.platform.entity.inspect.vo.AnomalyVo;
 import org.springframework.stereotype.Repository;
@@ -22,4 +23,11 @@ public interface InspectOrderDao extends BaseDao<InspectOrderEntity> {
     List<AnomalyVo> search(Map<String,Object> queryParams);
 
     Integer searchTotal(Map<String,Object> queryParams);
+
+    /**
+     * 异常工单统计
+     * @param queryParams
+     * @return
+     */
+    List<StatDto> statExceptionOrder(Map<String,Object> queryParams);
 }

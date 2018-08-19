@@ -1,6 +1,7 @@
 package com.platform.service.stat;
 
 
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.stat.StaTaskDayEntity;
 
 import java.util.List;
@@ -70,4 +71,8 @@ public interface StaTaskDayService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+
+
+    List<StaTaskDayEntity> statTask(Map<String, Object> map , List<SysRegionEntity> districtList);
 }

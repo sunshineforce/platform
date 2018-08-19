@@ -115,6 +115,9 @@ public class TaskController extends AbstractController {
     public R save(@RequestBody TaskEntity task) {
         Date time = new Date();
         //task.setUpdateTime(time);
+        if (null != task.getType() && task.getType() == 1){
+           // task.setEndTime(DateUtils.getAfterOneDay(task.getStartTime(),));
+        }
         task.setCreateTime(time);
         task.setDataStatus(CommonConstant.USEABLE_STATUS);
         taskService.save(task);

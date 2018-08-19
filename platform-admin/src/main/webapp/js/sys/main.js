@@ -116,8 +116,8 @@ var vm = new Vue({
     el: '#rrapp',
     data: {
         regionId:12718,
-        startTime: DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-8),1),
-        endTime:DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-1),1),
+        startTime: DateUtils.date2String(DateUtils.dateOffset(new Date(),"day",-7),1),
+        endTime:DateUtils.date2String(new Date(),1),
         cityList:[],
     },
     created:function () {

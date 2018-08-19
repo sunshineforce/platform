@@ -25,11 +25,11 @@ public class StaExceptionDayEntity implements Serializable {
     //区县id
     private Integer districtId;
     //待处理
-    private Integer pendingNum;
+    private Integer pendingNum = 0;
     //待复查数量
-    private Integer reviewNum;
+    private Integer reviewNum = 0;
     //已完成
-    private Integer finishNum;
+    private Integer finishNum = 0;
 
     /**
      * 设置：主键id

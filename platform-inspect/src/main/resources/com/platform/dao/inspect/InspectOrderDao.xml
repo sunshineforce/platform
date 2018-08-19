@@ -122,6 +122,31 @@
 		LEFT JOIN material m ON m.id = o.material_id
 		WHERE o.inspect_status=#{inspectStatus}
 	</select>
+
+	<!-- 异常工单统计 -->
+	<select id="statExceptionOrder" resultType="com.platform.entity.dto.StatDto">
+		SELECT
+		region_id,
+		`status` AS `status`,
+		COUNT(*) AS num
+		FROM
+		inspect_order
+		WHERE 1 = 1
+		AND  inspect_status = 1
+		<if test="status != null">
+			AND status =#{status}
+		</if>
+		<if test="startTime != null and endTime != null">
+			<![CDATA[	AND #{startTime} <= `update_time` AND  `update_time`<= #{endTime}  ]]>
+		</if>
+		<if test="regionIdList != null">
+			AND region_id IN
+			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
+				#{regionId}
+			</foreach>
+		</if>
+		GROUP BY  region_id,`status`
+	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into inspect_order(

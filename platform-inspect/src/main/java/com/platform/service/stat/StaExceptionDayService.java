@@ -1,6 +1,7 @@
 package com.platform.service.stat;
 
 
+import com.platform.entity.SysRegionEntity;
 import com.platform.entity.stat.StaExceptionDayEntity;
 
 import java.util.List;
@@ -30,6 +31,13 @@ public interface StaExceptionDayService {
      * @return list
      */
     List<StaExceptionDayEntity> queryList(Map<String, Object> map);
+
+    /**
+     * 统计异常工单信息
+     * @param map
+     * @return
+     */
+    List<StaExceptionDayEntity> statExceptionOrder(Map<String, Object> map,List<SysRegionEntity> districtList);
 
     /**
      * 分页统计总数

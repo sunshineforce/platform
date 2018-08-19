@@ -1,6 +1,7 @@
 package com.platform.dao.task;
 
 import com.platform.dao.BaseDao;
+import com.platform.entity.dto.StatDto;
 import com.platform.entity.task.TaskEntity;
 import org.springframework.stereotype.Repository;
 
@@ -31,5 +32,12 @@ public interface TaskDao extends BaseDao<TaskEntity> {
      * @return
      */
     int selectTaskTotal(Map<String, Object> map);
+
+    /**
+     * 统计任务
+     * @param map
+     * @return
+     */
+    List<StatDto> statTask(Map<String, Object> map);
 
 }
