@@ -10,6 +10,10 @@ import com.platform.service.AppUserService;
 import com.platform.service.inspect.IInspectOrderService;
 import com.platform.service.inspect.InspectOrderFlowService;
 import com.platform.utils.*;
+import com.platform.utils.enums.DataStatusEnum;
+import com.platform.utils.enums.InspectStatusEnum;
+import com.platform.utils.enums.MaterialStatusEnum;
+import com.platform.utils.enums.TaskStatusEnum;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -103,15 +107,29 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         anomalyItem.setCreateTime(new Date());
         anomalyItem.setPhotos(photos);
 
-        Subject subject = ShiroUtils.getSubject();
-        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+//        Subject subject = ShiroUtils.getSubject();
+//        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
 
-        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
-        anomalyItem.setUserName(appUser.getRealname());
+//        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+//        anomalyItem.setUserName(appUser.getRealname());
+        anomalyItem.setUserId(11);
+        anomalyItem.setUserName("小六");
 
         //处理异常
-        int effectRows = inspectOrderFlowService.update(anomalyItem);
-        //生成下级待办事项（即通知）
+        inspectOrderFlowService.save(anomalyItem);
+
+        InspectOrderEntity inspectOrder = inspectOrderDao.queryObject(orderId);
+        if (inspectOrder == null) {
+            inspectOrder.setMaterialId(0);
+            inspectOrder.setStatus(InspectStatusEnum.PENDING.getCode());
+            inspectOrder.setInspectTime(new Date());
+            inspectOrder.setUserId(11);
+            inspectOrder.setUserName("小六");
+            inspectOrder.setInspectStatus(MaterialStatusEnum.ANOMALY.getCode());
+            inspectOrder.setCreateTime(new Date());
+            inspectOrder.setDataStatus(DataStatusEnum.UNREAD.getCode());
+        }
+
         return inspectOrderFlowService.update(anomalyItem);
     }
 
@@ -119,21 +137,18 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     public int report(Map<String, Object> map) {
         Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
         String descr = String.valueOf(map.get("descr"));
-        String ids;
-        if (!StringUtils.isNullOrEmpty(map.get("ids"))) {
-            ids = String.valueOf(map.get("ids"));
-            String[] arr = ids.split(",");
-            for (String s : arr) {
-                InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
-                anomalyItem.setOrderId(orderId);
-                anomalyItem.setDescr(descr);
-                anomalyItem.setType(1);
-//                anomalyItem.setUserId();
-                inspectOrderFlowService.save(anomalyItem);
-            }
+        String ids = String.valueOf(map.get("ids"));
 
-            //上报上级
-            NoticeEntity noticeEntity = new NoticeEntity();
+        InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
+        anomalyItem.setType(1);
+        anomalyItem.setOrderId(orderId);
+        anomalyItem.setDescr(descr);
+
+        InspectOrderEntity inspectOrder = inspectOrderDao.queryObject(orderId);
+        if (inspectOrder != null) {
+            inspectOrder.setStatus(InspectStatusEnum.REVIEW.getCode());
+            inspectOrder.setUpdateTime(new Date());
+            inspectOrder.setChiefIds(ids);
         }
 
 

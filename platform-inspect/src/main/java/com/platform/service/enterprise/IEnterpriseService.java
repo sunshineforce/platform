@@ -1,6 +1,7 @@
 package com.platform.service.enterprise;
 
 import com.platform.entity.enterprise.EnterpriseEntity;
+import com.platform.utils.PageUtils;
 import com.platform.vo.SelectVo;
 
 import java.util.List;
@@ -77,4 +78,6 @@ public interface IEnterpriseService {
      * @return 删除条数
      */
     int deleteBatch(Long[]ids);
+
+    PageUtils search(Map<String, Object> map);
 }

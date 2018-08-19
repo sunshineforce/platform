@@ -4,8 +4,13 @@ import com.platform.constants.CommonConstant;
 import com.platform.dao.enterprise.EnterpriseDao;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.enterprise.EnterpriseEntity;
+import com.platform.entity.enterprise.EnterpriseVo;
 import com.platform.service.enterprise.IEnterpriseService;
+import com.platform.utils.BeanUtils;
+import com.platform.utils.PageUtils;
+import com.platform.utils.Query;
 import com.platform.vo.SelectVo;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -74,6 +79,22 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
     @Override
     public int deleteBatch(Long[]ids) {
         return enterpriseDao.deleteBatch(ids);
+    }
+
+    @Override
+    public PageUtils search(Map<String, Object> params) {
+        Query query = new Query(params);
+        List<EnterpriseEntity> enterpriseList = queryList(query);
+        int total=0;
+        List<EnterpriseVo> list = new ArrayList<>();
+        if (CollectionUtils.isNotEmpty(enterpriseList)) {
+            for (EnterpriseEntity enterpriseEntity : enterpriseList) {
+                EnterpriseVo vo = new EnterpriseVo(enterpriseEntity.getId(),enterpriseEntity.getEnterpriseName());
+                list.add(vo);
+            }
+            total = queryTotal(query);
+        }
+        return new PageUtils(list, total, query.getLimit(), query.getPage());
     }
 
     private void setDefaultValue(EnterpriseEntity enterprise){

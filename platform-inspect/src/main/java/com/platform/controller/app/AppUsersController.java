@@ -13,7 +13,6 @@ import com.platform.validator.Assert;
 import com.platform.vo.SelectVo;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.apache.shiro.session.InvalidSessionException;
 import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
