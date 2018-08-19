@@ -108,7 +108,7 @@
 			#{relation},
 			#{createTime},
 			#{creator},
-			#{creator_id},
+			#{creatorId},
 			#{updateTime},
 			#{updatorId},
 			#{updator}
