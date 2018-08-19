@@ -13,7 +13,7 @@ $(function () {
 			{label: '申请人', name: 'applicantName', index: 'applicant', align: 'center', width:'80px'},
 			{label: '状态', name: 'qrCodeStatusStr', index: 'qr_code_status', align: 'center', width:'80px',formatter:formatQrCodeStatus}
 			],
-		viewrecords: true,
+        viewrecords: true,
         height: 555,
         rowNum: 10,
         rowList: [10, 30, 50],
@@ -21,9 +21,6 @@ $(function () {
         rownumWidth: 25,
         autowidth: true,
         multiselect: true,
-        shrinkToFit: false,
-        autoScroll: true,          //shrinkToFit: false,autoScroll: true,这两个属性产生水平滚动条
-        autowidth: true,          //必须要,否则没有水平滚动条
         pager: "#jqGridPager",
         jsonReader: {
             root: "page.list",
@@ -37,7 +34,7 @@ $(function () {
             order: "order"
         },
         gridComplete: function () {
-           // $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
+           $("#jqGrid").closest(".ui-jqgrid-bdiv").css({"overflow-x": "hidden"});
         }
     });
 });

@@ -50,6 +50,9 @@
                     <Radio label="1">循环任务</Radio>
                 </Radio-group>
             </Form-item>
+            <Form-item label="任务名称" prop="name">
+                <i-input v-model="task.name" placeholder="任务名称"/>
+            </Form-item>
             <Form-item label="任务组" prop="taskGroupId">
                 <i-select v-model="task.taskGroupId" filterable placeholder="请选择任务组">
                     <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
