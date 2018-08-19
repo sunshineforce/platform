@@ -44,7 +44,7 @@
 		SELECT
 			o.id,
 			o.material_id,
-			o,region_id,
+			o.region_id,
 			o.`status`,
 			o.inspect_time,
 			o.user_id,
