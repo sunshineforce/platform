@@ -35,7 +35,7 @@ public class AppStatController {
     @RequestMapping("/statTask")
     @ResponseBody
     public R statTaskAndOrder(@RequestParam Map<String, Object> params) {
-        return iStatService.stat(params);
+        return iStatService.stat(params).put("code",200);
     }
 
     /**
@@ -46,6 +46,6 @@ public class AppStatController {
     @RequestMapping("/getAllCity")
     public R getAllCity(@RequestParam(name = "areaId" , required = false) Integer areaId) {
         List<SysRegionEntity> list = RegionCacheUtil.getChildrenCity(areaId);
-        return R.ok().put("list", list);
+        return R.succeed().put("list", list);
     }
 }
