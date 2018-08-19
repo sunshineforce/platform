@@ -52,6 +52,8 @@ public class AnomalyVo implements Serializable {
     //现场照片
     private String urls;
 
+//    List<>
+
     public Long getId() {
         return id;
     }

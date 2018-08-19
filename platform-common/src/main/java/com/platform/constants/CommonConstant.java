@@ -30,6 +30,11 @@ public class CommonConstant {
 
     public static final String DATA_KEY = "list";
 
+    //异常处理
+    public static final int ANOMALY_PROCESS=0;
+    //上报上级
+    public static final int ANOMALY_REPORT=1;
+
     /** 企业账户角色Id */
     public static final long COMPANY_ROLE_ID =  3;
 

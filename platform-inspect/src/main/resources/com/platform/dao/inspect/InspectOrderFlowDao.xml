@@ -12,36 +12,20 @@
         <result property="createTime" column="create_time"/>
         <result property="descr" column="descr"/>
 		<result property="photos" column="photos"/>
+		<result property="chiefIds" column="chief_ids"/>
+		<result property="chiefNames" column="chief_names"/>
         <result property="dataStatus" column="data_status"/>
     </resultMap>
 
 	<select id="queryObject" resultType="com.platform.entity.inspect.InspectOrderFlowEntity">
-		select
-			`id`,
-			`order_id`,
-			`type`,
-			`user_id`,
-			`user_name`,
-			`create_time`,
-			`descr`,
-			`photos`,
-			`data_status`
+		select `id`,`order_id`,`type`,`user_id`,`user_name`,`create_time`,`descr`,`photos`,chief_ids,chief_names,`data_status`
 		from inspect_order_flow
 		where id = #{id}
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.inspect.InspectOrderFlowEntity">
-		select
-    		`id`,
-    		`order_id`,
-    		`type`,
-    		`user_id`,
-    		`user_name`,
-    		`create_time`,
-    		`descr`,
-		     `photos`,
-    		`data_status`
-		from inspect_order_flow
+		SELECT `id`,`order_id`,`type`,`user_id`,`user_name`,`create_time`,`descr`,`photos`,chief_ids,chief_names,`data_status`
+		FROM inspect_order_flow
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
@@ -63,7 +47,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select count(*) from inspect_order_flow
+		select count(1) from inspect_order_flow
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
@@ -82,6 +66,8 @@
 			`create_time`,
 			`descr`,
 			`photos`,
+			chief_ids,
+			 chief_names,
 			`data_status`)
 		values(
 			#{orderId},
@@ -91,6 +77,8 @@
 			#{createTime},
 			#{descr},
 			#{photos},
+			#{chiefIds},
+			#{chiefNames},
 			#{dataStatus})
 	</insert>
 	 
@@ -104,6 +92,8 @@
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="descr != null">`descr` = #{descr}, </if>
 			<if test="photos != null">`descr` = #{photos}, </if>
+			<if test="chiefIds != null">`chief_ids` = #{chiefIds}, </if>
+			<if test="chiefNames != null">`chief_names` = #{chiefNames}, </if>
 			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
 		</set>
 		where id = #{id}

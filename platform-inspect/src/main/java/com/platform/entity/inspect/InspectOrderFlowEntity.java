@@ -33,6 +33,11 @@ public class InspectOrderFlowEntity implements Serializable {
     //现场照片
     private String photos;
 
+    //执行上级id集合
+    private String chiefIds;
+    //执行上级name集合
+    private String chiefNames;
+
     //数据状态 0 正常  1 删除
     private Integer dataStatus;
 
@@ -147,5 +152,21 @@ public class InspectOrderFlowEntity implements Serializable {
 
     public void setPhotos(String photos) {
         this.photos = photos;
+    }
+
+    public String getChiefIds() {
+        return chiefIds;
+    }
+
+    public void setChiefIds(String chiefIds) {
+        this.chiefIds = chiefIds;
+    }
+
+    public String getChiefNames() {
+        return chiefNames;
+    }
+
+    public void setChiefNames(String chiefNames) {
+        this.chiefNames = chiefNames;
     }
 }

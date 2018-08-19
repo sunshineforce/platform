@@ -5,6 +5,7 @@ import com.platform.utils.R;
 import com.platform.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,31 +39,25 @@ public class AppAnomalyController {
 
     @RequestMapping("/anomaly/process")
     @ResponseBody
-    public R process(@RequestParam Map<String, Object> queryParams){
-        inspectOrderService.processAnomaly(queryParams);
-        return R.succeed();
+    public R process(@ModelAttribute Map<String, Object> queryParams){
+        try {
+            inspectOrderService.processAnomaly(queryParams);
+            return R.succeed();
+        } catch (Exception e) {
+            return R.failure();
+        }
     }
 
     @RequestMapping("/anomaly/report")
     @ResponseBody
-    public R report(@RequestParam Map<String, Object> queryParams){
+    public R report(@ModelAttribute Map<String, Object> queryParams){
+        try {
+            inspectOrderService.report(queryParams);
+            return R.succeed();
+        } catch (Exception e) {
+            return R.failure();
+        }
 
-        return R.succeed();
-    }
-
-    @RequestMapping("/anomaly/details")
-    @ResponseBody
-    public R anomalyDetails(){
-
-        return R.succeed();
-    }
-
-
-    @RequestMapping("/anomaly/histories")
-    @ResponseBody
-    public R anomalyHistories(){
-
-        return R.succeed();
     }
 
     private boolean checkParams(Map<String, Object> queryParams){

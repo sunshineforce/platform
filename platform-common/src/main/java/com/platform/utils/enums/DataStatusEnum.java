@@ -12,8 +12,8 @@ package com.platform.utils.enums;
 
 
 public enum DataStatusEnum {
-    UNREAD(0,"正常"),
-    READ(1,"删除");
+    NORMAL(0,"正常"),
+    DELETED(1,"删除");
 
     private Integer code;
     private String desc;

@@ -6,6 +6,7 @@
     <resultMap type="com.platform.entity.inspect.InspectOrderEntity" id="inspectOrderMap">
         <result property="id" column="id"/>
         <result property="materialId" column="material_id"/>
+        <result property="regionId" column="region_id"/>
         <result property="status" column="status"/>
         <result property="inspectTime" column="inspect_time"/>
         <result property="userId" column="user_id"/>
@@ -23,6 +24,7 @@
 		select
 			`id`,
 			`material_id`,
+			`region_id`,
 			`status`,
 			`inspect_time`,
 			`user_id`,
@@ -42,6 +44,7 @@
 		SELECT
 			o.id,
 			o.material_id,
+			o,region_id,
 			o.`status`,
 			o.inspect_time,
 			o.user_id,
@@ -104,8 +107,7 @@
 	</select>
 	
  	<select id="queryTotal" resultType="int">
-		select
-		   count(*)
+		SELECT count(1)
 		FROM inspect_order AS o
 		LEFT JOIN material AS m ON m.id = o.material_id
 		WHERE o.inspect_status=1 AND o.status = #{status}
@@ -124,6 +126,7 @@
 	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into inspect_order(
 			`material_id`,
+			`region_id`,
 			`status`,
 			`inspect_time`,
 			`user_id`,
@@ -137,6 +140,7 @@
 			`data_status`)
 		values(
 			#{materialId},
+			#{regionId},
 			#{status},
 			#{inspectTime},
 			#{userId},
@@ -154,6 +158,7 @@
 		update inspect_order 
 		<set>
 			<if test="materialId != null">`material_id` = #{materialId}, </if>
+			<if test="regionId != null">`region_id`, = #{regionId}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="inspectTime != null">`inspect_time` = #{inspectTime}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>

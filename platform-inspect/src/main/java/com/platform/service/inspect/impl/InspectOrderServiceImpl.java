@@ -1,5 +1,7 @@
 package com.platform.service.inspect.impl;
 
+import com.platform.constants.CommonConstant;
+import com.platform.dao.AppUserDao;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.inspect.InspectOrderEntity;
@@ -9,6 +11,7 @@ import com.platform.entity.notice.NoticeEntity;
 import com.platform.service.AppUserService;
 import com.platform.service.inspect.IInspectOrderService;
 import com.platform.service.inspect.InspectOrderFlowService;
+import com.platform.service.material.MaterialService;
 import com.platform.utils.*;
 import com.platform.utils.enums.DataStatusEnum;
 import com.platform.utils.enums.InspectStatusEnum;
@@ -37,10 +40,13 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     private InspectOrderDao inspectOrderDao;
 
     @Autowired
+    private AppUserDao appUserDao;
+
+    @Autowired
     private InspectOrderFlowService inspectOrderFlowService;
 
     @Autowired
-    private AppUserService userService;
+    private MaterialService materialService;
 
     @Override
     public InspectOrderEntity queryObject(Integer id) {
@@ -97,62 +103,31 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     @Override
     public int processAnomaly(Map<String, Object> map) {
         Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
+        Integer materialId = Integer.valueOf(String.valueOf(map.get("materialId")));
         String descr = String.valueOf(map.get("descr"));
         String photos = String.valueOf(map.get("photos"));
 
-        InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
-        anomalyItem.setType(0);
-        anomalyItem.setOrderId(orderId);
-        anomalyItem.setDescr(descr);
-        anomalyItem.setCreateTime(new Date());
-        anomalyItem.setPhotos(photos);
+        //记录最终异常状态
+        int er = saveOrUpdateInspectOrder(orderId,materialId);
 
-//        Subject subject = ShiroUtils.getSubject();
-//        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+        //保存异常流水
+        int effectRows = saveInspectOrderFlow(orderId, photos, descr,"", CommonConstant.ANOMALY_PROCESS);
 
-//        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
-//        anomalyItem.setUserName(appUser.getRealname());
-        anomalyItem.setUserId(11);
-        anomalyItem.setUserName("小六");
-
-        //处理异常
-        inspectOrderFlowService.save(anomalyItem);
-
-        InspectOrderEntity inspectOrder = inspectOrderDao.queryObject(orderId);
-        if (inspectOrder == null) {
-            inspectOrder.setMaterialId(0);
-            inspectOrder.setStatus(InspectStatusEnum.PENDING.getCode());
-            inspectOrder.setInspectTime(new Date());
-            inspectOrder.setUserId(11);
-            inspectOrder.setUserName("小六");
-            inspectOrder.setInspectStatus(MaterialStatusEnum.ANOMALY.getCode());
-            inspectOrder.setCreateTime(new Date());
-            inspectOrder.setDataStatus(DataStatusEnum.UNREAD.getCode());
-        }
-
-        return inspectOrderFlowService.update(anomalyItem);
+        return (effectRows + er);
     }
 
     @Override
     public int report(Map<String, Object> map) {
         Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
         String descr = String.valueOf(map.get("descr"));
-        String ids = String.valueOf(map.get("ids"));
+        String ids = String.valueOf(map.get("chiefIds"));
 
-        InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
-        anomalyItem.setType(1);
-        anomalyItem.setOrderId(orderId);
-        anomalyItem.setDescr(descr);
+        //保存异常记录
+        int effectRows = saveOrUpdateInspectOrder(orderId,null);
 
-        InspectOrderEntity inspectOrder = inspectOrderDao.queryObject(orderId);
-        if (inspectOrder != null) {
-            inspectOrder.setStatus(InspectStatusEnum.REVIEW.getCode());
-            inspectOrder.setUpdateTime(new Date());
-            inspectOrder.setChiefIds(ids);
-        }
+        int flow = saveInspectOrderFlow(orderId,"",descr,ids,CommonConstant.ANOMALY_REPORT);
 
-
-        return 0;
+        return (effectRows+flow);
     }
 
     private String chiefName(String chiefIds){
@@ -163,7 +138,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         String[] ids = chiefIds.split(",");
 
         for (String id : ids) {
-            AppUserEntity appUser = userService.queryObject(Long.valueOf(id));
+            AppUserEntity appUser = appUserDao.queryObject(Long.valueOf(id));
             builder.append(appUser.getRealname());
             builder.append(",");
         }
@@ -173,4 +148,59 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
 
         return builder.toString();
     }
+
+    //保存物品工单
+    private int saveInspectOrderFlow(Integer orderId,String photos,String descr,String ids,int type){
+        InspectOrderFlowEntity anomalyItem = new InspectOrderFlowEntity();
+        anomalyItem.setType(type); //处理异常
+        anomalyItem.setOrderId(orderId);
+        anomalyItem.setDescr(descr);
+        anomalyItem.setCreateTime(new Date());
+        if (StringUtils.isNotEmpty(photos)) {
+            anomalyItem.setPhotos(photos);
+        }
+
+//        Subject subject = ShiroUtils.getSubject();
+//        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+
+//        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+//        anomalyItem.setUserName(appUser.getRealname());
+        anomalyItem.setUserId(11);
+        anomalyItem.setUserName("小六");
+        if (StringUtils.isNotEmpty(ids)) {
+            anomalyItem.setChiefIds(ids);
+            anomalyItem.setChiefNames(chiefName(ids));
+        }
+
+        //处理异常
+        return inspectOrderFlowService.save(anomalyItem);
+    }
+
+    private int saveOrUpdateInspectOrder(Integer orderId,Integer materialId){
+        InspectOrderEntity inspectOrder = inspectOrderDao.queryObject(orderId);
+        int effectRows =0;
+        Date currentDate = new Date();
+        if (inspectOrder == null) {
+            InspectOrderEntity entity = new InspectOrderEntity();
+            entity.setMaterialId(materialId);
+
+            entity.setStatus(InspectStatusEnum.PENDING.getCode());
+            entity.setInspectTime(currentDate);
+            entity.setUserId(11);
+            entity.setUserName("小六");
+            entity.setInspectStatus(MaterialStatusEnum.ANOMALY.getCode());
+            entity.setCreateTime(currentDate);
+            entity.setDataStatus(DataStatusEnum.NORMAL.getCode());
+            effectRows = inspectOrderDao.save(entity);
+        }else {
+            inspectOrder.setStatus(InspectStatusEnum.REVIEW.getCode());
+            inspectOrder.setUserId(11);
+            inspectOrder.setUserName("小六");
+            inspectOrder.setUpdateTime(currentDate);
+
+            effectRows = inspectOrderDao.update(inspectOrder);
+        }
+        return effectRows;
+    }
+
 }
