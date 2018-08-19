@@ -10,6 +10,7 @@ import com.platform.service.SysRegionService;
 import com.platform.service.SysUserService;
 import com.platform.service.notice.INoticeService;
 import com.platform.service.task.TaskService;
+import com.platform.utils.DateUtils;
 import com.platform.utils.enums.NoticeStatusEnum;
 import com.platform.vo.SelectVo;
 import com.platform.vo.TreeVo;
@@ -75,7 +76,7 @@ public class TaskServiceImpl implements TaskService {
             String content;
             for (int i = 0; i < userIds.length; i++) {
                 NoticeEntity notice = new NoticeEntity();
-                content = "您收到一个任务：" + task.getName()+", 截止时间 " + task.getEndTime() + " 请尽快开始执行";
+                content = "您收到一个任务：" + task.getName()+", 截止时间 " + DateUtils.format(task.getEndTime(),DateUtils.DATE_PATTERN) + " 请尽快开始执行";
                 notice.setName(content);
                 notice.setCreateTime(new Date());
                 notice.setStatus(NoticeStatusEnum.UNREAD.getCode());
