@@ -123,6 +123,8 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value = "/user/logout", method = RequestMethod.GET)
     public String logout() {
         ShiroUtils.logout();
+        Subject subject = ShiroUtils.getSubject();
+        subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,null);
         return "redirect:/";
     }
 
