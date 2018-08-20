@@ -22,6 +22,8 @@ public interface AppUserService {
      */
     AppUserEntity queryObject(Long id);
 
+    AppUserEntity queryAppUser(Map<String, Object> map);
+
     /**
      * 分页查询
      *

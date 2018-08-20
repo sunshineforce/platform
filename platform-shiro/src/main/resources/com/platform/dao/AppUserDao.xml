@@ -44,6 +44,22 @@
 		where id = #{id}
 	</select>
 
+	<select id="queryObjectByUserName" resultType="com.platform.entity.AppUserEntity">
+		select
+			`id`,
+			`username`,
+			`realname`,
+			`password`,
+			`mobile`,
+			`identify`,
+			`superior`,
+			`certificate_url`
+			`enterprise_id`,
+			`region_id`
+		from app_user
+		where username = #{username}
+	</select>
+
 	<select id="queryList" resultType="com.platform.entity.AppUserEntity">
 		SELECT
 			u.id,

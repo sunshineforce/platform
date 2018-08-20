@@ -14,4 +14,6 @@ import java.util.Map;
 public interface AppUserDao extends BaseDao<AppUserEntity> {
 
     int updatePassword(Map<String, Object> map);
+
+    AppUserEntity queryObjectByUserName(Map<String, Object> map);
 }

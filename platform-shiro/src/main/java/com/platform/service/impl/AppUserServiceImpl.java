@@ -27,6 +27,11 @@ public class AppUserServiceImpl implements AppUserService {
     }
 
     @Override
+    public AppUserEntity queryAppUser(Map<String, Object> map) {
+        return appUserDao.queryObjectByUserName(map);
+    }
+
+    @Override
     public List<AppUserEntity> queryList(Map<String, Object> map) {
         return appUserDao.queryList(map);
     }

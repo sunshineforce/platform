@@ -22,10 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA
@@ -58,16 +55,22 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value = "/user/login", method = RequestMethod.POST)
     public R login(String username, String password){
         Subject subject = ShiroUtils.getSubject();
+        Map<String,Object> params = new HashMap<String, Object>(2);
+        params.put("username",username);
+        params.put("password",password);
+        AppUserEntity appUser = appUserService.queryAppUser(params);
         try {
-            UsernamePasswordToken token = new UsernamePasswordToken(username, password);
-            if (token == null) {
-                R.loginError();
+            if (appUser == null) {
+                return R.loginError();
+            }else {
+                if (appUser.getPassword().equals(password)) {
+                    logger.info(appUser.getUsername() +" login system at :" + DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
+                    subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,appUser);
+                    return R.succeed();
+                }else {
+                    return R.error(SystemCode.PASSWORD_VALID.getCode(),"密码不正确");
+                }
             }
-            subject.login(token);
-            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
-            logger.info(appUser.getUsername() +" login system at :" + DateUtils.format(new Date(),"yyyy-MM-dd HH:mm:ss"));
-            subject.getSession().setAttribute(CommonConstant.APP_LOGIN_USER,appUser);
-            return R.succeed();
         } catch (AuthenticationException e) {
             return R.error();
         } catch (InvalidSessionException e) {
