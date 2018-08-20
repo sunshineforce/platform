@@ -13,10 +13,12 @@ import com.platform.entity.material.MaterialEntity;
 import com.platform.service.inspect.IInspectOrderService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
+import com.platform.utils.ShiroUtils;
 import com.platform.utils.StringUtils;
 import com.platform.utils.enums.DataStatusEnum;
 import com.platform.utils.enums.InspectStatusEnum;
 import com.platform.utils.enums.MaterialStatusEnum;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -164,13 +166,13 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             anomalyItem.setPhotos(photos);
         }
 
-//        Subject subject = ShiroUtils.getSubject();
-//        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+        Subject subject = ShiroUtils.getSubject();
+        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
 
-//        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
-//        anomalyItem.setUserName(appUser.getRealname());
-        anomalyItem.setUserId(11);
-        anomalyItem.setUserName("小六");
+        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+        anomalyItem.setUserName(appUser.getRealname());
+//        anomalyItem.setUserId(11);
+//        anomalyItem.setUserName("小六");
         if (StringUtils.isNotEmpty(ids)) {
             anomalyItem.setChiefIds(ids);
             anomalyItem.setChiefNames(chiefName(ids));
@@ -191,16 +193,22 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             entity.setRegionId(material.getRegionId());
             entity.setStatus(InspectStatusEnum.PENDING.getCode());
             entity.setInspectTime(currentDate);
-            entity.setUserId(11);
-            entity.setUserName("小六");
+            Subject subject = ShiroUtils.getSubject();
+            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+
+            entity.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+            entity.setUserName(appUser.getRealname());
             entity.setInspectStatus(MaterialStatusEnum.ANOMALY.getCode());
             entity.setCreateTime(currentDate);
             entity.setDataStatus(DataStatusEnum.NORMAL.getCode());
             effectRows = inspectOrderDao.save(entity);
         }else {
             inspectOrder.setStatus(InspectStatusEnum.REVIEW.getCode());
-            inspectOrder.setUserId(11);
-            inspectOrder.setUserName("小六");
+            Subject subject = ShiroUtils.getSubject();
+            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+
+            inspectOrder.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+            inspectOrder.setUserName(appUser.getRealname());
             inspectOrder.setUpdateTime(currentDate);
 
             effectRows = inspectOrderDao.update(inspectOrder);

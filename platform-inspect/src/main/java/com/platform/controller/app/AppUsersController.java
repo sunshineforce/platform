@@ -96,12 +96,13 @@ public class AppUsersController extends AbstractController{
      */
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
-        AppUserEntity appUserEntity = appUserService.queryObject(11L);
-        appUserEntity.setRegionName(commonService.getRegionName(appUserEntity.getRegionId()));
+        Subject subject = ShiroUtils.getSubject();
+        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+        appUser.setRegionName(commonService.getRegionName(appUser.getRegionId()));
 
-        AppUserVo appUser = new AppUserVo();
-        BeanUtils.copyProperties(appUserEntity,appUser);
-        appUser.setUserId(appUserEntity.getId());
+        AppUserVo userVo = new AppUserVo();
+        BeanUtils.copyProperties(userVo,appUser);
+        userVo.setUserId(appUser.getId());
 
         return R.ok().put("data", appUser);
     }
