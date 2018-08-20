@@ -87,6 +87,11 @@ public interface TaskService {
      */
     int deleteBatch(Integer[] ids);
 
+    /**
+     * 定时更新任务状态
+     */
+    void updateTaskStatus();
+
 
     /**********************************APP 接口 ********************************/
     TaskUserVo choiceUser(Integer regionId);

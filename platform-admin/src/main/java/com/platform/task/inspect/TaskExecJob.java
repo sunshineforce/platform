@@ -1,6 +1,6 @@
-package com.platform.task.stat;
+package com.platform.task.inspect;
 
-import com.platform.service.stat.StaTaskDayService;
+import com.platform.service.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -15,9 +15,9 @@ import org.springframework.stereotype.Component;
 public class TaskExecJob {
 
     @Autowired
-    private StaTaskDayService staTaskDayService;
+    private TaskService taskService;
 
     public void run(){
-
+        taskService.updateTaskStatus();
     }
 }
