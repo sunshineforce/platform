@@ -1,5 +1,6 @@
 package com.platform.controller.app;
 
+import com.platform.entity.inspect.InspectOrderFlowEntity;
 import com.platform.service.inspect.IInspectOrderService;
 import com.platform.utils.R;
 import com.platform.utils.StringUtils;
@@ -50,7 +51,7 @@ public class AppAnomalyController {
 
     @RequestMapping("/anomaly/report")
     @ResponseBody
-    public R report(@ModelAttribute Map<String, Object> queryParams){
+    public R report(@ModelAttribute InspectOrderFlowEntity queryParams){
         try {
             inspectOrderService.report(queryParams);
             return R.succeed();

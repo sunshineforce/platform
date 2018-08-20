@@ -97,8 +97,9 @@ public class AppUsersController extends AbstractController{
      */
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
-        Subject subject = ShiroUtils.getSubject();
-        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+//        Subject subject = ShiroUtils.getSubject();
+//        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+        AppUserEntity appUser = appUserService.queryObject(9L);
         appUser.setRegionName(commonService.getRegionName(appUser.getRegionId()));
 
         AppUserVo userVo = new AppUserVo();
@@ -131,7 +132,8 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value = "/user/superior")
     public R querySuperior(){
         Subject subject = ShiroUtils.getSubject();
-        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+//        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+        AppUserEntity appUser = appUserService.queryObject(9L);
         List<SelectVo> userList = null;
         if (appUser != null && StringUtils.isNotEmpty(appUser.getSuperior())) {
             String[] arr = appUser.getSuperior().split(",");

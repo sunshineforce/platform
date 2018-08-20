@@ -123,10 +123,10 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     }
 
     @Override
-    public int report(Map<String, Object> map) {
-        Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
-        String descr = String.valueOf(map.get("descr"));
-        String ids = String.valueOf(map.get("chiefIds"));
+    public int report(InspectOrderFlowEntity queryParams) {
+        Integer orderId = queryParams.getOrderId();
+        String descr = queryParams.getDescr();
+        String ids = queryParams.getChiefIds();
 
         //保存异常记录
         int effectRows = saveOrUpdateInspectOrder(orderId,null);
@@ -166,13 +166,13 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             anomalyItem.setPhotos(photos);
         }
 
-        Subject subject = ShiroUtils.getSubject();
-        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
-
-        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
-        anomalyItem.setUserName(appUser.getRealname());
-//        anomalyItem.setUserId(11);
-//        anomalyItem.setUserName("小六");
+//        Subject subject = ShiroUtils.getSubject();
+//        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+//
+//        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+//        anomalyItem.setUserName(appUser.getRealname());
+        anomalyItem.setUserId(11);
+        anomalyItem.setUserName("小六");
         if (StringUtils.isNotEmpty(ids)) {
             anomalyItem.setChiefIds(ids);
             anomalyItem.setChiefNames(chiefName(ids));
@@ -193,11 +193,14 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             entity.setRegionId(material.getRegionId());
             entity.setStatus(InspectStatusEnum.PENDING.getCode());
             entity.setInspectTime(currentDate);
-            Subject subject = ShiroUtils.getSubject();
-            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+//            Subject subject = ShiroUtils.getSubject();
+//            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+//
+//            entity.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+//            entity.setUserName(appUser.getRealname());
 
-            entity.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
-            entity.setUserName(appUser.getRealname());
+            entity.setUserId(11);
+            entity.setUserName("小六");
             entity.setInspectStatus(MaterialStatusEnum.ANOMALY.getCode());
             entity.setCreateTime(currentDate);
             entity.setDataStatus(DataStatusEnum.NORMAL.getCode());
@@ -205,13 +208,19 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         }else {
             inspectOrder.setStatus(InspectStatusEnum.REVIEW.getCode());
             Subject subject = ShiroUtils.getSubject();
-            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+//            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+            AppUserEntity appUser = appUserDao.queryObject(9L);
 
             inspectOrder.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
             inspectOrder.setUserName(appUser.getRealname());
             inspectOrder.setUpdateTime(currentDate);
 
-            effectRows = inspectOrderDao.update(inspectOrder);
+
+            try {
+                effectRows = inspectOrderDao.update(inspectOrder);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return effectRows;
     }

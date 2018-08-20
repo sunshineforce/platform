@@ -20,9 +20,7 @@ import java.util.Date;
  * 上传
  * </p>
  * 
- * @Company 动力威视
  * @Copyright
- * @author (shx@sxw100.com)
  * @version 1.0
  * @CreateDate 2016年5月30日 下午4:25:47
  */
