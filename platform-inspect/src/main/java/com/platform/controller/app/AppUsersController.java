@@ -102,7 +102,7 @@ public class AppUsersController extends AbstractController{
         appUser.setRegionName(commonService.getRegionName(appUser.getRegionId()));
 
         AppUserVo userVo = new AppUserVo();
-        BeanUtils.copyProperties(userVo,appUser);
+        BeanUtils.copyProperties(userVo,appUser) ;
         userVo.setUserId(appUser.getId());
 
         return R.ok().put("data", appUser);
