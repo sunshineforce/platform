@@ -19,6 +19,9 @@ public class InspectOrderFlowEntity implements Serializable {
     private Integer id;
     //工单id
     private Integer orderId;
+
+    private Integer materialId;
+
     //处理类型  0 处理   1 报告上级  2 复查
     private Integer type;
     //操作人id
@@ -67,6 +70,15 @@ public class InspectOrderFlowEntity implements Serializable {
     public Integer getOrderId() {
         return orderId;
     }
+
+    public Integer getMaterialId() {
+        return materialId;
+    }
+
+    public void setMaterialId(Integer materialId) {
+        this.materialId = materialId;
+    }
+
     /**
      * 设置：处理类型  0 处理   1 报告上级  2 复查
      */

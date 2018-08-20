@@ -82,10 +82,10 @@ public interface IInspectOrderService {
 
     /**
      * 异常处理
-     * @param map
+     * @param params
      * @return
      */
-    int processAnomaly(Map<String, Object> map);
+    int processAnomaly(InspectOrderFlowEntity params);
 
     /**
      * 上报上级

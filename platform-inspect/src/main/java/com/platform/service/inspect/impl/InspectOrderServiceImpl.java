@@ -107,11 +107,11 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     }
 
     @Override
-    public int processAnomaly(Map<String, Object> map) {
-        Integer orderId = Integer.valueOf(String.valueOf(map.get("orderId")));
-        Integer materialId = Integer.valueOf(String.valueOf(map.get("materialId")));
-        String descr = String.valueOf(map.get("descr"));
-        String photos = String.valueOf(map.get("photos"));
+    public int processAnomaly(InspectOrderFlowEntity params) {
+        Integer orderId = params.getOrderId();
+        Integer materialId = params.getMaterialId();
+        String descr = params.getDescr();
+        String photos = params.getPhotos();
 
         //记录最终异常状态
         int er = saveOrUpdateInspectOrder(orderId,materialId);

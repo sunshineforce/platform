@@ -40,7 +40,7 @@ public class AppAnomalyController {
 
     @RequestMapping("/anomaly/process")
     @ResponseBody
-    public R process(@ModelAttribute Map<String, Object> queryParams){
+    public R process(@ModelAttribute InspectOrderFlowEntity queryParams){
         try {
             inspectOrderService.processAnomaly(queryParams);
             return R.succeed();
