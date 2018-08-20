@@ -44,9 +44,20 @@ public class AppMaterialBindController extends AbstractController {
 
     @RequestMapping(value = "/material/check/qrcode",method = RequestMethod.POST)
     @ResponseBody
-    public R checkQrCodeType(@RequestParam String url){
-        String[] prefix = "http://i.0t.com.cn/nb/d/,http://i.0t.com.cn/nb/s".split(",");
+    public R checkQrCodeType(@RequestParam String url,String code){
+        if (isMaterial(url)) {
 
+        }
         return null;
+    }
+
+    private boolean isMaterial(String url){
+        String[] prefixArr = "http://i.0t.com.cn/nb/d/,http://i.0t.com.cn/nb/s/".split(",");
+        for (String prefix : prefixArr) {
+            if (prefix.equals(url)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
