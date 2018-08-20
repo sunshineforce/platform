@@ -107,6 +107,12 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public void updateTaskStatus() {
+        taskDao.startSingleTask();
+        taskDao.singleTaskTimeOut();
+    }
+
+    @Override
     public TaskUserVo choiceUser(Integer regionId) {
 //        Subject subject = SecurityUtils.getSubject();
 //        SysUserEntity user = (SysUserEntity) subject.getPrincipal();

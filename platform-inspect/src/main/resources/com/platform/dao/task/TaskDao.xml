@@ -246,6 +246,31 @@
 		</set>
 		where id = #{id}
 	</update>
+
+
+    <!-- 开启单次任务 -->
+	<update id="startSingleTask">
+        UPDATE
+		 task
+		SET `status` = 1
+		WHERE
+		  `status` = 0
+		AND  type = 0
+		AND (TO_DAYS(NOW()) - TO_DAYS(start_time)) >= 0
+	</update>
+
+	<!-- 单次任务超时 -->
+	<update id="singleTaskTimeOut">
+        UPDATE
+		 task
+		SET `status` = 3
+		WHERE
+		 `status` = 1
+		AND  type = 0
+		AND (TO_DAYS(NOW()) - TO_DAYS(end_time)) >= 0
+	</update>
+
+
 	
 	<delete id="delete">
 		delete from task where id = #{value}
