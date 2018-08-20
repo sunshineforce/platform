@@ -98,7 +98,7 @@ public class AppUsersController extends AbstractController{
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
         Subject subject = ShiroUtils.getSubject();
-        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
         appUser.setRegionName(commonService.getRegionName(appUser.getRegionId()));
 
         AppUserVo userVo = new AppUserVo();
