@@ -36,28 +36,9 @@ public class AppMaterialBindController extends AbstractController {
     public R checkExists(@RequestParam String qrCode){
         MaterialEntity material = materialService.queryMaterialByQrCode(qrCode);
         if (material == null) {
-            return R.succeed().put("data",new String[]{});
+            return R.succeed().put("exists",true);
         }else {
-            return null;
+            return R.succeed().put("exists",false);
         }
-    }
-
-    @RequestMapping(value = "/material/check/qrcode",method = RequestMethod.POST)
-    @ResponseBody
-    public R checkQrCodeType(@RequestParam String url,String code){
-        if (isMaterial(url)) {
-
-        }
-        return null;
-    }
-
-    private boolean isMaterial(String url){
-        String[] prefixArr = "http://i.0t.com.cn/nb/d/,http://i.0t.com.cn/nb/s/".split(",");
-        for (String prefix : prefixArr) {
-            if (prefix.equals(url)) {
-                return true;
-            }
-        }
-        return false;
     }
 }
