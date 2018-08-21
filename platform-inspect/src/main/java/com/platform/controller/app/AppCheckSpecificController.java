@@ -6,11 +6,9 @@ import com.platform.service.specific.CheckSpecificItemService;
 import com.platform.service.specific.CheckSpecificService;
 import com.platform.utils.R;
 import com.platform.utils.StringUtils;
+import com.platform.utils.enums.DataStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -55,16 +53,17 @@ public class AppCheckSpecificController {
     }
 
     @RequestMapping(value = "/check/specific/create",method = RequestMethod.POST)
-    public R create(@RequestParam CheckSpecificEntity entity){
+    public R create(@ModelAttribute CheckSpecificEntity entity){
         boolean valid = checkParams(entity);
         if (!valid) {
             return R.paramsIllegal();
         }
+
         checkSpecificService.save(entity);
         List<CheckSpecificItemEntity> itemList = entity.getSpecificItems();
         for (CheckSpecificItemEntity specificItem : itemList) {
             specificItem.setSpecificId(entity.getId());
-
+            specificItem.setDataStatus(DataStatusEnum.NORMAL.getCode());
             checkSpecificItemService.save(specificItem);
         }
 

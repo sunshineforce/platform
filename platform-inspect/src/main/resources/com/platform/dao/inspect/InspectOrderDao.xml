@@ -178,7 +178,7 @@
 			#{chiefIds},
 			#{chiefName},
 			#{photos},
-			#{desc},
+			#{descr},
 			#{createTime},
 			#{updateTime},
 			#{dataStatus})
@@ -215,9 +215,5 @@
 			#{id}
 		</foreach>
 	</delete>
-
-	<select id="selectMaterialInspectHistory" resultType="com.platform.entity.material.MaterialVo">
-
-	</select>
 
 </mapper>

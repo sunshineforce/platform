@@ -5,20 +5,20 @@ import com.platform.dao.AppUserDao;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.inspect.InspectOrderFlowDao;
 import com.platform.dao.material.MaterialDao;
+import com.platform.dao.notice.NoticeDao;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.inspect.InspectOrderEntity;
 import com.platform.entity.inspect.InspectOrderFlowEntity;
 import com.platform.entity.inspect.vo.AnomalyVo;
 import com.platform.entity.material.MaterialEntity;
+import com.platform.entity.notice.NoticeEntity;
+import com.platform.service.common.CommonService;
 import com.platform.service.inspect.IInspectOrderService;
+import com.platform.utils.DateUtils;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
-import com.platform.utils.ShiroUtils;
 import com.platform.utils.StringUtils;
-import com.platform.utils.enums.DataStatusEnum;
-import com.platform.utils.enums.InspectStatusEnum;
-import com.platform.utils.enums.MaterialStatusEnum;
-import org.apache.shiro.subject.Subject;
+import com.platform.utils.enums.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,10 +45,16 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     private AppUserDao appUserDao;
 
     @Autowired
+    private CommonService commonService;
+
+    @Autowired
     private InspectOrderFlowDao inspectOrderFlowDao;
 
     @Autowired
     private MaterialDao materialDao;
+
+    @Autowired
+    private NoticeDao noticeDao;
 
     @Override
     public InspectOrderEntity queryObject(Integer id) {
@@ -70,7 +76,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
                 String[] urls = anomalyVo.getMaterialUrl().split(",");
                 anomalyVo.setMaterialUrl(urls[0]);
             }
-            anomalyVo.setChiefName(chiefName(anomalyVo.getChiefIds()));
+            anomalyVo.setChiefName(commonService.getChiefNames(anomalyVo.getChiefIds()));
             queryParams.put("orderId",anomalyVo.getId());
 
             anomalyVo.setAnomalys(inspectOrderFlowDao.queryAnomalyList(queryParams));
@@ -136,23 +142,66 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         return (effectRows+flow);
     }
 
-    private String chiefName(String chiefIds){
-        if (StringUtils.isNullOrEmpty(chiefIds)) {
-            return "";
+    @Override
+    public int materialCheck(InspectOrderEntity inspectOrder) {
+        //保存异常信息
+        setInspectOrder(inspectOrder);
+        if (inspectOrder.getInspectStatus().intValue() == InspectStatusEnum.NORMAL.getCode().intValue()) {
+            inspectOrder.setStatus(InspectOrderStatusEnum.FINISHED.getCode());
         }
-        StringBuilder builder = new StringBuilder();
-        String[] ids = chiefIds.split(",");
+        //保存异常记录
+        int effectRows = save(inspectOrder);
+        if (inspectOrder.getInspectStatus().intValue() == InspectStatusEnum.ABNORMAL.getCode().intValue()) {
+            InspectOrderFlowEntity orderFlow = new InspectOrderFlowEntity();
+            orderFlow.setOrderId(inspectOrder.getId());
+            orderFlow.setMaterialId(inspectOrder.getMaterialId());
+            orderFlow.setType(1); //上报上级
+//            AppUserEntity appUser = commonService.getCurrentLoginUser();
+//            orderFlow.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+//            orderFlow.setUserName(appUser.getRealname());
 
-        for (String id : ids) {
-            AppUserEntity appUser = appUserDao.queryObject(Long.valueOf(id));
-            builder.append(appUser.getRealname());
-            builder.append(",");
-        }
-        if (builder.length()>0) {
-            builder.setLength(builder.length()-1);
-        }
+            orderFlow.setUserId(11);
+            orderFlow.setUserName("曹操");
+            orderFlow.setCreateTime(new Date());
+            orderFlow.setDescr(inspectOrder.getDescr());
+            orderFlow.setPhotos(inspectOrder.getPhotos());
+            orderFlow.setChiefIds(inspectOrder.getChiefIds());
+            if (StringUtils.isNotEmpty(inspectOrder.getChiefIds())) {
+                orderFlow.setChiefNames(commonService.getChiefNames(inspectOrder.getChiefIds()));
+            }
+            orderFlow.setDataStatus(DataStatusEnum.NORMAL.getCode());
 
-        return builder.toString();
+            inspectOrderFlowDao.save(orderFlow);
+
+            //发送任务通知
+            NoticeEntity notice = new NoticeEntity();
+            if (StringUtils.isNotEmpty(inspectOrder.getChiefIds())) {
+                Date date = new Date();
+                notice.setUserIds(inspectOrder.getChiefIds());
+                notice.setStatus(NoticeStatusEnum.UNREAD.getCode());
+                MaterialEntity material = materialDao.queryObject(inspectOrder.getMaterialId());
+                notice.setCreateTime(date);
+                notice.setName("异常-"+material.getMaterialName()+DateUtils.format(date,DateUtils.DATE_TIME_PATTERN));
+
+                noticeDao.save(notice);
+            }
+        }
+        return effectRows;
+    }
+
+    private void setInspectOrder(InspectOrderEntity entity){
+        Date date = new Date();
+        entity.setInspectTime(date);
+//        AppUserEntity appUser = commonService.getCurrentLoginUser();
+//        entity.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
+//        entity.setUserName(appUser.getRealname());
+
+        entity.setUserId(11);
+        entity.setUserName("曹操");
+        entity.setChiefName(commonService.getChiefNames(entity.getChiefIds()));
+        entity.setCreateTime(date);
+        entity.setDataStatus(DataStatusEnum.NORMAL.getCode());
+
     }
 
     //保存物品工单
@@ -165,17 +214,14 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         if (StringUtils.isNotEmpty(photos)) {
             anomalyItem.setPhotos(photos);
         }
-
-//        Subject subject = ShiroUtils.getSubject();
-//        AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
-//
+//        AppUserEntity appUser =commonService.getCurrentLoginUser();
 //        anomalyItem.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
 //        anomalyItem.setUserName(appUser.getRealname());
         anomalyItem.setUserId(11);
         anomalyItem.setUserName("小六");
         if (StringUtils.isNotEmpty(ids)) {
             anomalyItem.setChiefIds(ids);
-            anomalyItem.setChiefNames(chiefName(ids));
+            anomalyItem.setChiefNames(commonService.getChiefNames(ids));
         }
 
         //处理异常
@@ -191,10 +237,10 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             entity.setMaterialId(materialId);
             MaterialEntity material = materialDao.queryObject(materialId);
             entity.setRegionId(material.getRegionId());
-            entity.setStatus(InspectStatusEnum.PENDING.getCode());
+            entity.setStatus(InspectOrderStatusEnum.PENDING.getCode());
             entity.setInspectTime(currentDate);
-//            Subject subject = ShiroUtils.getSubject();
-//            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+
+//            AppUserEntity appUser = commonService.getCurrentLoginUser();
 //
 //            entity.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
 //            entity.setUserName(appUser.getRealname());
@@ -206,9 +252,8 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
             entity.setDataStatus(DataStatusEnum.NORMAL.getCode());
             effectRows = inspectOrderDao.save(entity);
         }else {
-            inspectOrder.setStatus(InspectStatusEnum.REVIEW.getCode());
-            Subject subject = ShiroUtils.getSubject();
-//            AppUserEntity appUser = (AppUserEntity) subject.getPrincipal();
+            inspectOrder.setStatus(InspectOrderStatusEnum.REVIEW.getCode());
+//            AppUserEntity appUser = commonService.getCurrentLoginUser();
             AppUserEntity appUser = appUserDao.queryObject(9L);
 
             inspectOrder.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));

@@ -11,14 +11,15 @@ package com.platform.utils.enums;
  */
 
 
-public enum InspectStatusEnum {
-    NORMAL(0,"正常"),
-    ABNORMAL(1,"异常");
+public enum InspectOrderStatusEnum {
+    PENDING(0,"待处理"),
+    REVIEW(1,"待复查"),
+    FINISHED(2,"已完成");
 
     private Integer code;
     private String desc;
 
-    InspectStatusEnum(Integer code, String desc) {
+    InspectOrderStatusEnum(Integer code, String desc) {
         this.code = code;
         this.desc = desc;
     }

@@ -93,4 +93,12 @@ public interface IInspectOrderService {
      * @return
      */
     int report(InspectOrderFlowEntity queryParams);
+
+    /**
+     * 物料检查
+     * @param inspectOrder
+     * @return
+     */
+    int materialCheck(InspectOrderEntity inspectOrder);
+
 }

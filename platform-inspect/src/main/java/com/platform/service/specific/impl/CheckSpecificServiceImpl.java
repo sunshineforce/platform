@@ -1,16 +1,21 @@
 package com.platform.service.specific.impl;
 
+import com.platform.constants.CommonConstant;
 import com.platform.dao.specific.CheckSpecificDao;
 import com.platform.dao.specific.CheckSpecificItemDao;
+import com.platform.entity.AppUserEntity;
 import com.platform.entity.specific.CheckSpecificEntity;
 import com.platform.entity.specific.vo.CheckSpecificVo;
 import com.platform.service.specific.CheckSpecificService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
+import com.platform.utils.ShiroUtils;
 import com.platform.vo.SelectVo;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -66,6 +71,10 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
 
     @Override
     public int save(CheckSpecificEntity checkSpecific) {
+        checkSpecific.setCreateTime(new Date());
+        Subject subject = ShiroUtils.getSubject();
+        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+        checkSpecific.setCreator(appUser.getRealname());
         return checkSpecificDao.save(checkSpecific);
     }
 

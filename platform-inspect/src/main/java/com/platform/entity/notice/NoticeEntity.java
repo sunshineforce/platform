@@ -21,8 +21,10 @@ public class NoticeEntity implements Serializable {
     private Integer status;
     //任务Id
     private Long taskId;
-    //用户Id
-    private Long userId;
+    //登录用户
+    private Integer userId;
+    //用户Id集合
+    private String userIds;
     //创建时间
     private Date createTime;
 
@@ -72,6 +74,14 @@ public class NoticeEntity implements Serializable {
         this.taskId = taskId;
     }
 
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
     /**
      * 获取：任务Id
      */
@@ -81,15 +91,15 @@ public class NoticeEntity implements Serializable {
     /**
      * 设置：用户Id
      */
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUserIds(String userIds) {
+        this.userIds = userIds;
     }
 
     /**
      * 获取：用户Id
      */
-    public Long getUserId() {
-        return userId;
+    public String getUserIds() {
+        return userIds;
     }
     /**
      * 设置：创建时间
