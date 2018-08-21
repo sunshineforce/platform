@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -110,6 +111,14 @@ public class TaskServiceImpl implements TaskService {
     public void updateTaskStatus() {
         taskDao.startSingleTask();
         taskDao.singleTaskTimeOut();
+    }
+
+    @Override
+    public void createCircleChildTask() {
+        Map<String, Object> params = new HashMap<>();
+        params.put("outNexTime",DateUtils.format(new Date(),DateUtils.DATE_PATTERN) + " 00:00:00");
+        params.put("statusList",null);
+        taskDao.selectTaskList(params);
     }
 
     @Override

@@ -93,6 +93,9 @@ public interface TaskService {
     void updateTaskStatus();
 
 
+    void createCircleChildTask();
+
+
     /**********************************APP 接口 ********************************/
     TaskUserVo choiceUser(Integer regionId);
 }
