@@ -61,6 +61,10 @@ public class ExamEntity implements Serializable {
     private Double score = 0.0;
 
 
+    //已答题数量
+    private Integer answerNum;
+
+
     /**
      * 设置：主键Id
      */
@@ -255,5 +259,13 @@ public class ExamEntity implements Serializable {
 
     public void setScore(Double score) {
         this.score = score;
+    }
+
+    public Integer getAnswerNum() {
+        return answerNum;
+    }
+
+    public void setAnswerNum(Integer answerNum) {
+        this.answerNum = answerNum;
     }
 }
