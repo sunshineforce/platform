@@ -77,17 +77,12 @@ public class AppExamController {
         Date now = new Date();
 
         for (ExamEntity exam : examList) {
-            ExamMemberEntity memberEntity = new ExamMemberEntity();
-            memberEntity.setExamId(exam.getId());
-            memberEntity.setMemberId(userId);
-            ExamMemberEntity member = examMemberService.queryExamMember(memberEntity);
-            exam.setScore((member !=null && member.getScore() != null) ? member.getScore() : 0);
             int status = 0;
             if (DateUtils.getDistanceOfTwoDate(now,exam.getBeginTime()) > 0){
                 status = 0;
             }if (DateUtils.getDistanceOfTwoDate(now,exam.getBeginTime()) <= 0
                     && DateUtils.getDistanceOfTwoDate(now,exam.getEndTime()) >= 0){
-                if (null != member &&  member.getScore() != null){
+                if (exam.getScore() != null){
                     status = 2;
                 }else {
                     status = 1;

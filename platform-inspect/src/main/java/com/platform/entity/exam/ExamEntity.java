@@ -58,7 +58,7 @@ public class ExamEntity implements Serializable {
     private Integer status;
 
     //当前人分数
-    private Double score;
+    private Double score = 0.0;
 
 
     /**
