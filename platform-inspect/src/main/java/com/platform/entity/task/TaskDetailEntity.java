@@ -19,6 +19,8 @@ public class TaskDetailEntity implements Serializable {
     private Long id;
     //任务id
     private Integer taskId;
+    //区域id
+    private Integer regionId;
     //0：待执行；1：执行中；2：已完成；3：已超时
     private Integer status;
     //超时原因
@@ -35,8 +37,9 @@ public class TaskDetailEntity implements Serializable {
 
 
 
-    public TaskDetailEntity(Integer taskId, Integer status, Date startTime, Date endTime) {
+    public TaskDetailEntity(Integer taskId,Integer regionId, Integer status, Date startTime, Date endTime) {
         this.taskId = taskId;
+        this.regionId = regionId;
         this.status = status;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -121,4 +124,11 @@ public class TaskDetailEntity implements Serializable {
         return endTime;
     }
 
+    public Integer getRegionId() {
+        return regionId;
+    }
+
+    public void setRegionId(Integer regionId) {
+        this.regionId = regionId;
+    }
 }

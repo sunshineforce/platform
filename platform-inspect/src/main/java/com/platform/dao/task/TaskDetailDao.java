@@ -1,7 +1,11 @@
 package com.platform.dao.task;
 
 import com.platform.dao.BaseDao;
+import com.platform.entity.dto.StatDto;
 import com.platform.entity.task.TaskDetailEntity;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * 任务详情表Dao
@@ -18,4 +22,14 @@ public interface TaskDetailDao extends BaseDao<TaskDetailEntity> {
      * @return
      */
     int  deleteByTaskId(Integer taskId);
+
+
+    /**
+     * 统计任务
+     * @param map
+     * @return
+     */
+    List<StatDto> statTask(Map<String, Object> map);
+
+
 }

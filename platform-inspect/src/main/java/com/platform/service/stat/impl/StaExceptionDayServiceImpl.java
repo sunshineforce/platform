@@ -1,5 +1,6 @@
 package com.platform.service.stat.impl;
 
+import com.platform.cache.RegionCacheUtil;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.stat.StaExceptionDayDao;
 import com.platform.entity.SysRegionEntity;
@@ -51,7 +52,7 @@ public class StaExceptionDayServiceImpl implements StaExceptionDayService {
                 st.setCityId(Integer.parseInt(String.valueOf(map.get("cityId"))));
                 st.setDistrictId(region.getId());
                 for (StatDto statDto : statDtos) {
-                    if (null != statDto.getRegionId() && statDto.getRegionId().intValue() == region.getId().intValue()){
+                    if (null != statDto.getRegionId() && inRegion(region.getId().intValue(),statDto.getRegionId().intValue()) ){
                         if (null != statDto.getStatus()){
                             switch (statDto.getStatus().intValue()){
                                 case 0 : st.setPendingNum(statDto.getNum()); break;
@@ -69,6 +70,20 @@ public class StaExceptionDayServiceImpl implements StaExceptionDayService {
         }
 
         return list;
+    }
+
+    private boolean inRegion(int districtId, int regionId ){
+        boolean rs = false;
+        List<Integer> regionEntities = RegionCacheUtil.getRegionIdList(districtId,RegionCacheUtil.DISTRICT_TYPE);
+        if (null != regionEntities && regionEntities.size() > 0){
+            for (Integer id : regionEntities) {
+                if (regionId == id.intValue()){
+                    rs = true;
+                    break;
+                }
+            }
+        }
+        return rs;
     }
 
     @Override

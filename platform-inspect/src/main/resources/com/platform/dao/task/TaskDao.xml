@@ -161,29 +161,7 @@
         </if>
 	</select>
 
-    <!-- 任务统计 -->
-	<select id="statTask" resultType="com.platform.entity.dto.StatDto">
-		SELECT
-		   region_id AS  regionId,
-		  `status` AS `status`,
-		  COUNT(*) AS num
-		FROM
-			task
-		WHERE 1 = 1
-		<if test="status != null">
-			AND status =#{status}
-		</if>
-		<if test="startTime != null and endTime != null">
-			<![CDATA[	AND #{startTime} <= `start_time` AND  (`end_time`<= #{endTime} OR `end_time` IS NULL ) ]]>
-		</if>
-		<if test="regionIdList != null">
-			AND region_id IN
-			<foreach collection="regionIdList" item="regionId" index="index" open="(" close=")" separator=",">
-				#{regionId}
-			</foreach>
-		</if>
-		GROUP BY  region_id,`status`
-	</select>
+
 	 
 	<insert id="save" parameterType="com.platform.entity.task.TaskEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into task(

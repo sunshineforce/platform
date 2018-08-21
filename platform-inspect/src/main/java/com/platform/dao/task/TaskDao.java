@@ -33,12 +33,6 @@ public interface TaskDao extends BaseDao<TaskEntity> {
      */
     int selectTaskTotal(Map<String, Object> map);
 
-    /**
-     * 统计任务
-     * @param map
-     * @return
-     */
-    List<StatDto> statTask(Map<String, Object> map);
 
     /**
      * 开启单次任务

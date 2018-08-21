@@ -46,7 +46,7 @@ public class StatServiceImpl implements IStatService {
 
         if (null != districtList && districtList.size() > 0){
             params.put("cityId",cityId);
-            params.put("regionIdList",getIds(districtList));
+            params.put("regionIdList", RegionCacheUtil.getRegionIdList(cityId,RegionCacheUtil.CITY_TYPE));
             params.put("startTime", startTime);
             params.put("endTime",endTime);
             orders = staExceptionDayService.statExceptionOrder(params,districtList);

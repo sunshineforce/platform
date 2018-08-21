@@ -278,6 +278,26 @@ var DateUtils = {
 		return dateStr;
 	},
 
+    /**
+     * 获取当前月的第一天
+     */
+    getCurrentMonthFirst : function (){
+       var date=new Date();
+       date.setDate(1);
+       return date;
+	},
+	/**
+	 * 获取当前月的最后一天
+	 */
+    getCurrentMonthLast : function (){
+		var date=new Date();
+		var currentMonth=date.getMonth();
+		var nextMonth=++currentMonth;
+		var nextMonthFirstDay=new Date(date.getFullYear(),nextMonth,1);
+		var oneDay=1000*60*60*24;
+		return new Date(nextMonthFirstDay-oneDay);
+	},
+
 	/**
 	 * 取得date在域field上偏移amount后的值
 	 * 

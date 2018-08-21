@@ -1,7 +1,9 @@
 package com.platform.service.stat.impl;
 
+import com.platform.cache.RegionCacheUtil;
 import com.platform.dao.stat.StaTaskDayDao;
 import com.platform.dao.task.TaskDao;
+import com.platform.dao.task.TaskDetailDao;
 import com.platform.entity.SysRegionEntity;
 import com.platform.entity.dto.StatDto;
 import com.platform.entity.stat.StaTaskDayEntity;
@@ -27,6 +29,9 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
 
     @Autowired
     private TaskDao taskDao;
+
+    @Autowired
+    private TaskDetailDao taskDetailDao;
 
     @Override
     public StaTaskDayEntity queryObject(Integer id) {
@@ -66,7 +71,7 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
     @Override
     public List<StaTaskDayEntity> statTask(Map<String, Object> map,List<SysRegionEntity> districtList) {
         List<StaTaskDayEntity> list = null;
-        List<StatDto> statDtos = taskDao.statTask(map);
+        List<StatDto> statDtos = taskDetailDao.statTask(map);
         if (statDtos != null) {
             list = new ArrayList<>();
 
@@ -75,7 +80,7 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
                 st.setCityId(Integer.parseInt(String.valueOf(map.get("cityId"))));
                 st.setDistrictId(region.getId());
                 for (StatDto statDto : statDtos) {
-                    if (null != statDto.getRegionId() && statDto.getRegionId().intValue() == region.getId().intValue()){
+                    if (null != statDto.getRegionId() && inRegion(region.getId().intValue(),statDto.getRegionId().intValue())){
                         if (null != statDto.getStatus()){
                             switch (statDto.getStatus().intValue()){
                                 case 0 : st.setPendingNum(statDto.getNum()); break;
@@ -92,5 +97,19 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
         }
 
         return list;
+    }
+
+    private boolean inRegion(int districtId, int regionId ){
+        boolean rs = false;
+        List<Integer> regionEntities = RegionCacheUtil.getRegionIdList(districtId,RegionCacheUtil.DISTRICT_TYPE);
+        if (null != regionEntities && regionEntities.size() > 0){
+            for (Integer id : regionEntities) {
+                if (regionId == id.intValue()){
+                    rs = true;
+                    break;
+                }
+            }
+        }
+        return rs;
     }
 }
