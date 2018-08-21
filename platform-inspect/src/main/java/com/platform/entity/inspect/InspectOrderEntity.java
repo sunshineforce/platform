@@ -49,6 +49,8 @@ public class InspectOrderEntity implements Serializable {
     //数据状态 0 正常 1 删除
     private Integer dataStatus;
 
+    private String descr;
+
 
     /////业务属性
 
@@ -269,5 +271,13 @@ public class InspectOrderEntity implements Serializable {
 
     public void setMaterialName(String materialName) {
         this.materialName = materialName;
+    }
+
+    public String getDescr() {
+        return descr;
+    }
+
+    public void setDescr(String descr) {
+        this.descr = descr;
     }
 }

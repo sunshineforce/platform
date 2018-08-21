@@ -15,6 +15,7 @@
         <result property="chiefIds" column="chief_ids"/>
         <result property="chiefName" column="chief_name"/>
         <result property="photos" column="photos"/>
+        <result property="description" column="descr"/>
         <result property="createTime" column="create_time"/>
         <result property="updateTime" column="update_time"/>
         <result property="dataStatus" column="data_status"/>
@@ -33,6 +34,7 @@
 			`chief_ids`,
 			`chief_name`,
 			`photos`,
+			description,
 			`create_time`,
 			`update_time`,
 			`data_status`
@@ -54,6 +56,7 @@
 			o.chief_ids,
 			o.chief_name,
 			o.photos,
+		    o.description as descr,
 			o.create_time,
 			o.update_time,
 			o.data_status,
@@ -160,6 +163,7 @@
 			`chief_ids`,
 			`chief_name`,
 			`photos`,
+			description,
 			`create_time`,
 			`update_time`,
 			`data_status`)
@@ -174,6 +178,7 @@
 			#{chiefIds},
 			#{chiefName},
 			#{photos},
+			#{desc},
 			#{createTime},
 			#{updateTime},
 			#{dataStatus})
@@ -195,7 +200,7 @@
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
 			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="dataStatus != null">`data_status` = #{dataStatus}</if>
-			<if test="description != null">`description` = #{description}</if>
+			<if test="descr != null">`description` = #{descr}</if>
 		</set>
 		where id = #{id}
 	</update>

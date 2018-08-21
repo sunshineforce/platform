@@ -2,6 +2,7 @@ package com.platform.service.inspect;
 
 
 import com.platform.entity.inspect.InspectOrderEntity;
+import com.platform.entity.inspect.InspectOrderFlowEntity;
 import com.platform.utils.PageUtils;
 
 import java.util.List;
@@ -81,15 +82,15 @@ public interface IInspectOrderService {
 
     /**
      * 异常处理
-     * @param map
+     * @param params
      * @return
      */
-    int processAnomaly(Map<String, Object> map);
+    int processAnomaly(InspectOrderFlowEntity params);
 
     /**
      * 上报上级
-     * @param map
+     * @param queryParams
      * @return
      */
-    int report(Map<String, Object> map);
+    int report(InspectOrderFlowEntity queryParams);
 }

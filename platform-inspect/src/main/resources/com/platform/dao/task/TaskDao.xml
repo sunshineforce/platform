@@ -16,6 +16,7 @@
         <result property="userNames" column="user_names"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
+        <result property="nextTime" column="next_time"/>
         <result property="schedule" column="schedule"/>
         <result property="scheduleCycle" column="schedule_cycle"/>
         <result property="createTime" column="create_time"/>
@@ -36,6 +37,7 @@
 			`user_names`,
 			`start_time`,
 			`end_time`,
+			next_time,
 			`schedule`,
 			`schedule_cycle`,
 			`create_time`,
@@ -59,6 +61,7 @@
 			t.`user_names`,
 			t.`start_time`,
 			t.`end_time`,
+			t.next_time,
 			t.`schedule`,
 			t.`schedule_cycle`,
 			t.`create_time`,
@@ -125,7 +128,7 @@
 
 	<select id="queryList" resultType="com.platform.entity.task.TaskEntity">
 		select `id`, `name`, `remark`,`task_group_id`,`type`,`status`,`user_ids`,`user_names`,
-    		`start_time`,`end_time`,`schedule`,`schedule_cycle`,`create_time`,`update_time`,`data_status`,`delay_reason`
+    		`start_time`,`end_time`,next_time,`schedule`,`schedule_cycle`,`create_time`,`update_time`,`data_status`,`delay_reason`
 		from task
 		WHERE 1=1 AND data_status = 0
 		<if test="name != null and name.trim() != ''">
@@ -193,6 +196,7 @@
 			`user_names`,
 			`start_time`,
 			`end_time`,
+			next_time,
 			`schedule`,
 			`schedule_cycle`,
 			`create_time`,
@@ -212,6 +216,7 @@
 			#{userNames},
 			#{startTime},
 			#{endTime},
+			#{nextTime},
 			#{schedule},
 			#{scheduleCycle},
 			#{createTime},
@@ -237,6 +242,7 @@
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="startTime != null">`start_time` = #{startTime}, </if>
 			<if test="endTime != null">`end_time` = #{endTime}, </if>
+			<if test="nextTime != null">`next_time` = #{nextTime}, </if>
 			<if test="schedule != null">`schedule` = #{schedule}, </if>
 			<if test="scheduleCycle != null">`schedule_cycle` = #{scheduleCycle}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>

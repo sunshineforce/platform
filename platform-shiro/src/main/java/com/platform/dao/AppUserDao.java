@@ -1,6 +1,7 @@
 package com.platform.dao;
 
 import com.platform.entity.AppUserEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.Map;
 
@@ -11,6 +12,8 @@ import java.util.Map;
  *  
  * @date 2018-08-11 14:33:44
  */
+
+@Repository
 public interface AppUserDao extends BaseDao<AppUserEntity> {
 
     int updatePassword(Map<String, Object> map);

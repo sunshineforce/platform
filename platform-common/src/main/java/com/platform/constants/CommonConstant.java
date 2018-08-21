@@ -23,6 +23,11 @@ public class CommonConstant {
     //女
     public static final  int  GENDER_WOMAN = 1;
 
+    //单任务
+    public static final  int  TASK_SIMPLE_TYPE = 0;
+    //循环任务
+    public static final  int  TASK_CIRCLE_TYPE = 1;
+
 
     public static final String LOGIN_USER = "";
 

@@ -48,6 +48,27 @@ public class DateUtils {
                     DATE_TIME_PATTERN_YYYY_MM_DD_HH_MM_SS_SSS}
     };
 
+    private static String[] parsePatterns = {
+            "yyyy-MM-dd", "yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd HH:mm", "yyyy-MM",
+            "yyyyMM","yyyy/MM/dd", "yyyy/MM/dd HH:mm:ss", "yyyy/MM/dd HH:mm",
+            "yyyy/MM","yyyy.MM.dd", "yyyy.MM.dd HH:mm:ss", "yyyy.MM.dd HH:mm", "yyyy.MM"};
+
+
+    public static Date parseDate(Object str,String formatStr) {
+        if (str == null){
+            return null;
+        }
+        if (formatStr == null) {
+            formatStr = DATE_TIME_PATTERN;
+        }
+        try {
+            return  new SimpleDateFormat(formatStr).parse(str.toString());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public static String format(Date date) {
         return format(date, DATE_PATTERN);
     }
