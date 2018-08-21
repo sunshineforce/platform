@@ -31,4 +31,7 @@ public interface ExamMemberDao extends BaseDao<ExamMemberEntity> {
      * @return
      */
     int selectExamMembersTotal(Map<String, Object> map);
+
+    ExamMemberEntity queryExamMember(ExamMemberEntity examMemberEntity);
+
 }

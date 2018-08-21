@@ -23,6 +23,26 @@
 		where id = #{id}
 	</select>
 
+	<select id="queryExamMember" parameterType="com.platform.entity.exam.ExamMemberEntity"  resultType="com.platform.entity.exam.ExamMemberEntity">
+		select
+		`id`,
+		`exam_id`,
+		`answer_num`,
+		`score`,
+		`member_id`
+		from exam_member
+		WHERE 1 = 1
+		<if test="id != null">
+			AND id = #{id}
+		</if>
+		<if test="memberId != null">
+			AND member_id = #{memberId}
+		</if>
+		<if test="examId != null">
+			AND exam_id = #{examId}
+		</if>
+	</select>
+
 	<select id="selectExamMembers" resultType="com.platform.entity.exam.ExamMemberEntity">
 		SELECT
 			m.id AS id,
@@ -39,7 +59,7 @@
 		LEFT JOIN exam AS  e ON  m.exam_id = e.id
 		WHERE 1=1 AND m.data_status = 0
 
-		<if test="examId != null and examId.trim() != ''">
+		<if test="examId != null">
 			AND m.exam_id = #{examId}
 		</if>
 		<choose>

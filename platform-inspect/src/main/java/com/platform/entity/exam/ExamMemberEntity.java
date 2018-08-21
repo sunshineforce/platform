@@ -25,7 +25,7 @@ public class ExamMemberEntity implements Serializable {
     private Integer answerNum;
 
     //得分
-    private Double score;
+    private Double score = 0.00;
 
     //姓名
     private String userName;

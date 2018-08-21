@@ -85,4 +85,8 @@ public interface ExamMemberService {
      * @return
      */
     int queryExamMembersTotal(Map<String, Object> map);
+
+
+    ExamMemberEntity queryExamMember(ExamMemberEntity examMemberEntity);
+
 }

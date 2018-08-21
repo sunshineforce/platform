@@ -66,4 +66,9 @@ public class ExamMemberServiceImpl implements ExamMemberService {
     public int queryExamMembersTotal(Map<String, Object> map) {
         return examMemberDao.selectExamMembersTotal(map);
     }
+
+    @Override
+    public ExamMemberEntity queryExamMember(ExamMemberEntity examMemberEntity) {
+        return examMemberDao.queryExamMember(examMemberEntity);
+    }
 }

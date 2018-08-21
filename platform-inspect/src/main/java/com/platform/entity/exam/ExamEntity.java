@@ -54,6 +54,11 @@ public class ExamEntity implements Serializable {
 
     private List<ExamQuestionEntity> questionList;
 
+    //考试状态  0 未开始 1 进行中 2 已完成 3 已结束
+    private Integer status;
+
+    //当前人分数
+    private Double score;
 
 
     /**
@@ -234,5 +239,21 @@ public class ExamEntity implements Serializable {
 
     public void setUpdator(String updator) {
         this.updator = updator;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Double getScore() {
+        return score;
+    }
+
+    public void setScore(Double score) {
+        this.score = score;
     }
 }
