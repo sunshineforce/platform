@@ -62,4 +62,9 @@ public class TaskDetailServiceImpl implements TaskDetailService {
     public int deleteByTaskId(Integer taskId) {
         return taskDetailDao.deleteByTaskId(taskId);
     }
+
+    @Override
+    public int syncTask() {
+        return taskDetailDao.syncTask();
+    }
 }

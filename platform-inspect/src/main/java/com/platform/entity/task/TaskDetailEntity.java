@@ -29,6 +29,8 @@ public class TaskDetailEntity implements Serializable {
     private Date startTime;
     //结束时间
     private Date endTime;
+    //更新时间
+    private Date updateTime;
 
 
 
@@ -37,12 +39,13 @@ public class TaskDetailEntity implements Serializable {
 
 
 
-    public TaskDetailEntity(Integer taskId,Integer regionId, Integer status, Date startTime, Date endTime) {
+    public TaskDetailEntity(Integer taskId,Integer regionId, Integer status, Date startTime, Date endTime,Date updateTime) {
         this.taskId = taskId;
         this.regionId = regionId;
         this.status = status;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.updateTime = updateTime;
     }
 
     /**
@@ -130,5 +133,13 @@ public class TaskDetailEntity implements Serializable {
 
     public void setRegionId(Integer regionId) {
         this.regionId = regionId;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

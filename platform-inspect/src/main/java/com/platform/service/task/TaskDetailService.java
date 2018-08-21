@@ -77,4 +77,10 @@ public interface TaskDetailService {
      * @return
      */
     int  deleteByTaskId(Integer taskId);
+
+    /**
+     * 同步任务状态
+     * @return
+     */
+    int syncTask();
 }

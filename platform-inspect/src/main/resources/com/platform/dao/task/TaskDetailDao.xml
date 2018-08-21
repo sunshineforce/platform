@@ -10,6 +10,7 @@
         <result property="delayReason" column="delay_reason"/>
         <result property="startTime" column="start_time"/>
         <result property="endTime" column="end_time"/>
+		<result property="updateTime" column="update_time"/>
 		<result property="regionId" column="region_id"/>
     </resultMap>
 
@@ -20,6 +21,7 @@
 			`status`,
 			`delay_reason`,
 			`start_time`,
+			`update_time`,
 			region_id,
 			`end_time`
 		from task_detail
@@ -33,6 +35,7 @@
     		`status`,
     		`delay_reason`,
     		`start_time`,
+		`update_time`,
 		     region_id,
     		`end_time`
 		from task_detail
@@ -91,6 +94,7 @@
 			`status`,
 			`delay_reason`,
 			`start_time`,
+			`update_time`,
 			`end_time`,
 		     region_id)
 		values(
@@ -98,6 +102,7 @@
 			#{status},
 			#{delayReason},
 			#{startTime},
+			#{updateime},
 			#{endTime},
 			#{regionId})
 	</insert>
@@ -110,11 +115,49 @@
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="delayReason != null">`delay_reason` = #{delayReason}, </if>
 			<if test="startTime != null">`start_time` = #{startTime}, </if>
+			<if test="updateime != null">`update_time` = #{updateime}, </if>
 			<if test="endTime != null">`end_time` = #{endTime} </if>
 		</set>
 		where id = #{id}
 	</update>
-	
+
+	<!-- 开启任务 -->
+	<update id="startTask">
+		UPDATE
+		task_detail
+		SET `status` = 1 , `update_time` = now()
+		WHERE
+		`status` = 0
+		AND (TO_DAYS(NOW()) - TO_DAYS(start_time)) >= 0
+	</update>
+
+	<!-- 任务超时 -->
+	<update id="taskTimeOut">
+		UPDATE
+		task
+		SET `status` = 3, `update_time` = now()
+		WHERE
+		`status` = 1
+		AND (TO_DAYS(NOW()) - TO_DAYS(end_time)) >= 0
+	</update>
+
+	<!-- 同步任务状态 -->
+	<update id="syncTask">
+		UPDATE task AS t
+		LEFT JOIN (
+			SELECT
+				task_id,
+				`status`
+			FROM
+				task_detail
+			WHERE
+				(
+					TO_DAYS(NOW()) - TO_DAYS(end_time)
+				) = 0
+		) AS d ON t.id = d.task_id
+		SET t.`status` = d.`status`
+	</update>
+
 	<delete id="delete">
 		delete from task_detail where id = #{value}
 	</delete>

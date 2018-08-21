@@ -1,26 +1,28 @@
 package com.platform.service.task.impl;
 
+import com.platform.constants.CommonConstant;
 import com.platform.dao.task.TaskDao;
+import com.platform.dao.task.TaskDetailDao;
 import com.platform.entity.SysRegionEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.notice.NoticeEntity;
+import com.platform.entity.task.TaskDetailEntity;
 import com.platform.entity.task.TaskEntity;
 import com.platform.entity.task.vo.TaskUserVo;
 import com.platform.service.SysRegionService;
 import com.platform.service.SysUserService;
 import com.platform.service.notice.INoticeService;
 import com.platform.service.task.TaskService;
+import com.platform.util.TaskUtils;
 import com.platform.utils.DateUtils;
 import com.platform.utils.enums.NoticeStatusEnum;
+import com.platform.utils.enums.TaskStatusEnum;
 import com.platform.vo.SelectVo;
 import com.platform.vo.TreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -43,6 +45,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private SysUserService userService;
+
+    @Autowired
+    private TaskDetailDao taskDetailDao;
 
     @Override
     public TaskEntity queryObject(Integer id) {
@@ -82,7 +87,7 @@ public class TaskServiceImpl implements TaskService {
                 notice.setCreateTime(new Date());
                 notice.setStatus(NoticeStatusEnum.UNREAD.getCode());
                 notice.setTaskId(Long.valueOf(task.getId()));
-                notice.setUserId(Long.valueOf(userIds[i]));
+                notice.setUserId(Integer.valueOf(userIds[i]));
 
 
                 effectRows+=noticeService.save(notice);
@@ -109,16 +114,35 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void updateTaskStatus() {
-        taskDao.startSingleTask();
-        taskDao.singleTaskTimeOut();
+        taskDetailDao.startTask();
+        taskDetailDao.taskTimeOut();
     }
 
     @Override
     public void createCircleChildTask() {
         Map<String, Object> params = new HashMap<>();
-        params.put("outNexTime",DateUtils.format(new Date(),DateUtils.DATE_PATTERN) + " 00:00:00");
-        params.put("statusList",null);
-        taskDao.selectTaskList(params);
+        params.put("nexTime",DateUtils.format(new Date(),DateUtils.DATE_PATTERN) + " 00:00:00");
+        params.put("type", CommonConstant.TASK_CIRCLE_TYPE);
+        List<TaskEntity> list = taskDao.selectTaskList(params);
+        if (list != null && list.size() > 0) {
+            for (TaskEntity taskEntity : list) {
+
+            }
+        }
+
+    }
+
+    private void createChildTask(TaskEntity task){
+        Date endTime = TaskUtils.calCircleTaskEndTime(task.getStartTime(),task.getSchedule());
+        TaskDetailEntity detailEntity = new TaskDetailEntity(task.getId(), task.getRegionId(),
+                TaskStatusEnum.PENDING.getCode(), task.getStartTime(), endTime, new Date());
+        taskDetailDao.save(detailEntity);
+
+        TaskEntity t = new TaskEntity();
+        t.setId(task.getId());
+        t.setStatus(TaskStatusEnum.PENDING.getCode());
+        t.setNextTime(TaskUtils.calNexStartTime(task.getNextTime(),task.getScheduleCycle()));
+        taskDao.update(t);
     }
 
     @Override

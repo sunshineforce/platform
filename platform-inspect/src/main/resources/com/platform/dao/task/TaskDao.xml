@@ -82,13 +82,13 @@
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="taskGroupId != null and taskGroupId.trim() != ''">
+		<if test="taskGroupId != null">
 			AND t.`task_group_id` = #{taskGroupId}
 		</if>
-		<if test="status != null and status.trim() != ''">
+		<if test="status != null">
 			AND t.`status` = #{status}
 		</if>
-		<if test="type != null  and type.trim() != ''">
+		<if test="type != null">
 			AND t.`type` = #{type}
 		</if>
 		<choose>
@@ -136,6 +136,12 @@
 		</if>
 		<if test="status != null and status.trim() != ''">
 			AND status =#{status}
+		</if>
+		<if test="type != null">
+			AND `type` = #{type}
+		</if>
+		<if test="nexTime != null">
+			AND TO_DAYS(#{nexTime}) - TO_DAYS(`next_time`) = 0
 		</if>
 		<if test="userId != null">
 			AND #{userId} = user_ids
@@ -232,27 +238,6 @@
 	</update>
 
 
-    <!-- 开启单次任务 -->
-	<update id="startSingleTask">
-        UPDATE
-		 task
-		SET `status` = 1
-		WHERE
-		  `status` = 0
-		AND  type = 0
-		AND (TO_DAYS(NOW()) - TO_DAYS(start_time)) >= 0
-	</update>
-
-	<!-- 单次任务超时 -->
-	<update id="singleTaskTimeOut">
-        UPDATE
-		 task
-		SET `status` = 3
-		WHERE
-		 `status` = 1
-		AND  type = 0
-		AND (TO_DAYS(NOW()) - TO_DAYS(end_time)) >= 0
-	</update>
 
 
 	

@@ -34,24 +34,6 @@ public interface TaskDao extends BaseDao<TaskEntity> {
     int selectTaskTotal(Map<String, Object> map);
 
 
-    /**
-     * 开启单次任务
-     */
-    void startSingleTask();
 
-    /**
-     * 开启循环任务
-     */
-    void startCircleTask();
-
-    /**
-     * 单次任务超时
-     */
-    void singleTaskTimeOut();
-
-    /**
-     * 循环任务超时
-     */
-    void circleTaskTimeOut();
 
 }

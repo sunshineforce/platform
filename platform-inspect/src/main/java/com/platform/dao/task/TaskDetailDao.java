@@ -32,4 +32,22 @@ public interface TaskDetailDao extends BaseDao<TaskDetailEntity> {
     List<StatDto> statTask(Map<String, Object> map);
 
 
+    /**
+     * 任务转化为开始状态
+     * @return
+     */
+    int  startTask();
+
+    /**
+     * 任务过期扫描
+     * @return
+     */
+    int  taskTimeOut();
+
+    /**
+     * 同步任务状态
+     * @return
+     */
+    int syncTask();
+
 }
