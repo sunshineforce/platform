@@ -4,12 +4,16 @@ import com.platform.constants.CommonConstant;
 import com.platform.controller.AbstractController;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysUserEntity;
+import com.platform.entity.task.TaskDetailEntity;
 import com.platform.entity.task.TaskEntity;
 import com.platform.service.AppUserService;
+import com.platform.service.task.TaskDetailService;
 import com.platform.service.task.TaskService;
+import com.platform.util.TaskUtils;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import com.platform.utils.enums.TaskStatusEnum;
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,9 @@ public class TaskController extends AbstractController {
 
     @Autowired
     private AppUserService appUserService;
+
+    @Autowired
+    private TaskDetailService taskDetailService;
 
     /**
      * 查看列表
@@ -114,14 +121,18 @@ public class TaskController extends AbstractController {
     @ResponseBody
     public R save(@RequestBody TaskEntity task) {
         Date time = new Date();
-        //task.setUpdateTime(time);
-        if (null != task.getType() && task.getType() == 1){
-           // task.setEndTime(DateUtils.getAfterOneDay(task.getStartTime(),));
-        }
         task.setCreateTime(time);
         task.setDataStatus(CommonConstant.USEABLE_STATUS);
+        if (CommonConstant.TASK_CIRCLE_TYPE == task.getType().intValue()){ //循环任务
+            task.setNextTime(TaskUtils.calNexStartTime(task.getStartTime(),task.getScheduleCycle()));
+        }
         taskService.save(task);
-
+        Date endTime = task.getEndTime();
+        if (CommonConstant.TASK_CIRCLE_TYPE == task.getType().intValue()){ //循环任务
+            endTime = TaskUtils.calCircleTaskEndTime(task.getStartTime(),task.getSchedule());
+        }
+        TaskDetailEntity detail = new TaskDetailEntity(task.getId(), TaskStatusEnum.PENDING.getCode(),task.getStartTime(),endTime);
+        taskDetailService.save(detail);
         return R.ok();
     }
 
@@ -147,16 +158,15 @@ public class TaskController extends AbstractController {
     @RequiresPermissions("task:delete")
     @ResponseBody
     public R delete(@RequestBody Integer[]ids) {
-        //taskService.deleteBatch(ids);
         if (ids.length > 0 ){
             TaskEntity task = null;
             for (Integer id : ids) {
-                task = new TaskEntity();
-                task.setId(id);
-                Date time = new Date();
-                task.setUpdateTime(time);
-                task.setDataStatus(CommonConstant.UN_USEABLE_STATUS);
-                taskService.update(task);
+                TaskEntity taskEntity = taskService.queryObject(id);
+                if (taskEntity.getLastCheckTime() == null){
+                    taskService.delete(id);
+                    //删除详情中的任务
+                    taskDetailService.deleteByTaskId(id);
+                }
             }
         }
 

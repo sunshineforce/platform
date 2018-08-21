@@ -42,6 +42,8 @@ public class TaskEntity implements Serializable {
     private Date startTime;
     //截止时间
     private Date endTime;
+    //循环下次执行开始时间
+    private Date  nextTime;
     //执行时限(单位天)
     private Integer schedule;
     //循环周期 每天 1 每周 2 每月 3 每年 4
@@ -363,5 +365,13 @@ public class TaskEntity implements Serializable {
 
     public void setRegionId(Integer regionId) {
         this.regionId = regionId;
+    }
+
+    public Date getNextTime() {
+        return nextTime;
+    }
+
+    public void setNextTime(Date nextTime) {
+        this.nextTime = nextTime;
     }
 }
