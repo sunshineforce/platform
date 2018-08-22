@@ -3,6 +3,7 @@ package com.platform.dao.task;
 import com.platform.dao.BaseDao;
 import com.platform.entity.dto.StatDto;
 import com.platform.entity.task.TaskDetailEntity;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import java.util.Map;
  *  
  * @date 2018-08-21 16:48:06
  */
+@Repository
 public interface TaskDetailDao extends BaseDao<TaskDetailEntity> {
 
     /**
