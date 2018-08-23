@@ -105,6 +105,7 @@ public class ExamController extends AbstractController {
     public R save(@RequestBody ExamEntity exam) {
 
         Date time = new Date();
+        exam.setEnabled(0);
         exam.setCreateTime(time);
         exam.setUpdateTime(time);
         SysUserEntity user = getUser();

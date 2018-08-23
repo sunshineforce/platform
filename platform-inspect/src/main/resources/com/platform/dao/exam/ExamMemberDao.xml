@@ -55,7 +55,7 @@
 		    CONCAT_WS("/",e.question_num,m.answer_num) AS answerProcess
 		FROM
 			exam_member AS m
-		LEFT JOIN sys_user AS u ON m.member_id = u.user_id
+		LEFT JOIN app_user AS u ON m.member_id = u.id
 		LEFT JOIN exam AS  e ON  m.exam_id = e.id
 		WHERE 1=1 AND m.data_status = 0
 
@@ -81,7 +81,7 @@
 		   COUNT(*)
 		FROM
 		exam_member AS m
-		LEFT JOIN sys_user AS u ON m.member_id = u.user_id
+		LEFT JOIN app_user AS u ON m.member_id = u.id
 		LEFT JOIN exam AS  e ON  m.exam_id = e.id
 		WHERE 1=1 AND m.data_status = 0
 
