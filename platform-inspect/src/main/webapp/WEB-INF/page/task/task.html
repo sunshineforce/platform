@@ -75,14 +75,15 @@
                     </i-option>
                 </i-select>
             </Form-item>
-            <Form-item label="执行时限" prop="schedule" v-show="task.type==1">
-                <i-input v-model="task.schedule" placeholder="执行时限"/>
-            </Form-item>
             <Form-item label="循环周期 " prop="scheduleCycle" v-show="task.type==1">
-                <i-select v-model="task.scheduleCycle" filterable>
+                <i-select v-model="task.scheduleCycle" filterable @on-change="changeScheduleCycle">
                     <i-option v-for="cycle in scheduleCycleList" :value="cycle.id" :key="cycle.id">{{cycle.name}}
                     </i-option>
                 </i-select>
+            </Form-item>
+            <Form-item label="执行时限" prop="schedule" v-show="task.type==1">
+                <!--<i-input v-model="task.schedule" placeholder="执行时限"/>-->
+                <input-number :max="scheduleMax" :min="scheduleMin" v-model="task.schedule" placeholder="执行时限"></input-number>
             </Form-item>
             <Form-item label="开始时间" prop="startTime">
                 <Date-picker type="date" placeholder="选择开始时间" v-model="task.startTime"></Date-picker>

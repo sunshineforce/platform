@@ -77,7 +77,8 @@ var setting1 = {
         },
         key: {
             id: 0
-        }
+        },
+
     }
 };
 var vm = new Vue({
@@ -124,6 +125,8 @@ var vm = new Vue({
 		],
         //所属企业
         enterpriseList:[],
+        scheduleMin:1,
+        scheduleMax:1,
 	},
     created:function () {
         $.get("../taskgroup/queryAll", function (r) {
@@ -342,6 +345,20 @@ var vm = new Vue({
 			}else {
 				vm.task.endTime = "";
 			}
+        },
+        //
+        changeScheduleCycle:function () {
+		    vm.task.schedule = 1;
+            vm.scheduleMin = 1;
+		    if (vm.task.scheduleCycle == 0){
+		        vm.scheduleMax = 1;
+            }else if (vm.task.scheduleCycle == 1){
+                vm.scheduleMax = 7;
+            }else if (vm.task.scheduleCycle == 2){
+                vm.scheduleMax = 30;
+            }else if (vm.task.scheduleCycle == 3){
+                vm.scheduleMax = 365;
+            }
         },
 		///获取任务组
 		getTaskGroups:function () {
