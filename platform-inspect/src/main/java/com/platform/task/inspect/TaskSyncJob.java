@@ -1,7 +1,6 @@
 package com.platform.task.inspect;
 
 import com.platform.service.task.TaskDetailService;
-import com.platform.service.task.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
