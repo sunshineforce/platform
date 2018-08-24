@@ -2,6 +2,7 @@ package com.platform.constants;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +47,8 @@ public class CommonConstant {
     public static final String AUTH_URL="http://runyapp.s1.natapp.cc/authz/oauth/token";
 
     public static final String AUTH_TYPE="ex";
+
+    public static final String THIRD_PARTY_URL = AUTH_URL.concat(File.separator).concat(AUTH_TYPE);
 
     public static List<BasicNameValuePair> token = new ArrayList<BasicNameValuePair>(4);
 

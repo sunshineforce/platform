@@ -25,4 +25,36 @@ public class EnterpriseMaterialsVo implements Serializable {
     private String addrName;
     //客户详细地址
     private String addrDetail;
+
+    public String getCustomerName() {
+        return customerName;
+    }
+
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public String getAddrName() {
+        return addrName;
+    }
+
+    public void setAddrName(String addrName) {
+        this.addrName = addrName;
+    }
+
+    public String getAddrDetail() {
+        return addrDetail;
+    }
+
+    public void setAddrDetail(String addrDetail) {
+        this.addrDetail = addrDetail;
+    }
 }
