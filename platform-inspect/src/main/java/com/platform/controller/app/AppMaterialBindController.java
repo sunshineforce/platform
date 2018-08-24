@@ -41,4 +41,9 @@ public class AppMaterialBindController extends AbstractController {
             return R.succeed().put("exists",false);
         }
     }
+
+    public R materialBindBatch(){
+
+        return R.succeed();
+    }
 }
