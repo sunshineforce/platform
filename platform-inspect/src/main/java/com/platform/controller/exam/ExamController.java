@@ -59,9 +59,12 @@ public class ExamController extends AbstractController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("exam:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
@@ -103,7 +106,6 @@ public class ExamController extends AbstractController {
     @RequiresPermissions("exam:save")
     @ResponseBody
     public R save(@RequestBody ExamEntity exam) {
-
         Date time = new Date();
         exam.setEnabled(0);
         exam.setCreateTime(time);
@@ -112,6 +114,7 @@ public class ExamController extends AbstractController {
         if (null != user){
             exam.setCreatorId(user.getUserId());
             exam.setCreator(user.getUsername());
+            exam.setEnterpriseId(user.getEnterpriseId());
         }
         examService.save(exam);
         if (StringUtils.isNotBlank(exam.getMember())){

@@ -18,6 +18,8 @@ public class ExamEntity implements Serializable {
 
     //主键Id
     private Long id;
+    //企业id
+    private Integer enterpriseId;
     //试题名称
     private String examName;
     //试题介绍
@@ -267,5 +269,13 @@ public class ExamEntity implements Serializable {
 
     public void setAnswerNum(Integer answerNum) {
         this.answerNum = answerNum;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 }

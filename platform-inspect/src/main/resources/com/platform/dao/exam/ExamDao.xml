@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.exam.ExamEntity" id="examMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="examName" column="exam_name"/>
         <result property="introduce" column="introduce"/>
         <result property="beginTime" column="begin_time"/>
@@ -24,6 +25,7 @@
 	<select id="queryObject" resultType="com.platform.entity.exam.ExamEntity">
 		select
 			`id`,
+			enterprise_id,
 			`exam_name`,
 			`introduce`,
 			`begin_time`,
@@ -45,6 +47,7 @@
 	<select id="queryExamListByUserId" resultType="com.platform.entity.exam.ExamEntity">
 		SELECT
 		e.id AS id,
+		e.enterprise_id AS enterpriseId ,
 		e.exam_name AS examName,
 		e.begin_time AS beginTime,
 		e.end_time AS endTime,
@@ -90,6 +93,7 @@
 	<select id="queryList" resultType="com.platform.entity.exam.ExamEntity">
 		select
     		`id`,
+		     enterprise_id,
     		`exam_name`,
     		`introduce`,
     		`begin_time`,
@@ -97,10 +101,10 @@
     		`member`,
     		`create_time`,
     		`creator`,
-		`creator_id`,
+		    `creator_id`,
     		`update_time`,
     		`updator`,
-		`updator_id`,
+		    `updator_id`,
 			`total_score`,
 			`question_num`,
     		`enabled`
@@ -108,6 +112,9 @@
 		WHERE 1=1 AND  `enabled` = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -132,6 +139,7 @@
 	 
 	<insert id="save" parameterType="com.platform.entity.exam.ExamEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into exam(
+		     enterprise_id,
 			`exam_name`,
 			`introduce`,
 			`begin_time`,
@@ -147,6 +155,7 @@
 			`question_num`,
 			`enabled`)
 		values(
+		    #{enterpriseId},
 			#{examName},
 			#{introduce},
 			#{beginTime},
@@ -166,6 +175,7 @@
 	<update id="update" parameterType="com.platform.entity.exam.ExamEntity">
 		update exam 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="examName != null">`exam_name` = #{examName}, </if>
 			<if test="introduce != null">`introduce` = #{introduce}, </if>
 			<if test="beginTime != null">`begin_time` = #{beginTime}, </if>

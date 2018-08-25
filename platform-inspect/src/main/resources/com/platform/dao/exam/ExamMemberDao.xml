@@ -62,6 +62,9 @@
 		<if test="examId != null">
 			AND m.exam_id = #{examId}
 		</if>
+		<if test="enterpriseId != null">
+			AND u.enterprise_id = #{enterpriseId}
+		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by ${sidx} ${order}

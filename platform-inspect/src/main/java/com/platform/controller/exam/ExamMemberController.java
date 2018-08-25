@@ -1,5 +1,7 @@
 package com.platform.controller.exam;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.exam.ExamMemberEntity;
 import com.platform.service.exam.ExamMemberService;
 import com.platform.utils.PageUtils;
@@ -22,7 +24,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("exammember")
-public class ExamMemberController {
+public class ExamMemberController  extends AbstractController {
     @Autowired
     private ExamMemberService examMemberService;
 
@@ -32,6 +34,10 @@ public class ExamMemberController {
     @RequestMapping("/list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
