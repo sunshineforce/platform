@@ -79,7 +79,7 @@ function formatInspectStatus(t) {
 }
 
 ///格式化工单状态
-const Status = ["正常","异常"];
+const Status = ["待处理","待复查","已完成"];
 function formatOrderStatus(t) {
     return '<span>' + Status[t] + '</span>';
 }
