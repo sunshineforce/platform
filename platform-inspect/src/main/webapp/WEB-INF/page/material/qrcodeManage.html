@@ -9,7 +9,7 @@
 	<div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                <i-input v-model="q.batchNo" @on-enter="query" placeholder="批次号"/>
             </i-col>
             <i-button @click="query">查询</i-button>
             <i-button type="info" @click="openGenerateQr"><i class="fa fa-gavel"></i>&nbsp;生成</i-button>

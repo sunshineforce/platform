@@ -55,7 +55,7 @@ var vm = new Vue({
 			]
 		},
 		q: {
-		    name: ''
+            batchNo: ''
 		},
         rejectReason:"",
 	},
@@ -227,7 +227,7 @@ var vm = new Vue({
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {'batchNo': vm.q.batchNo},
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
