@@ -66,7 +66,7 @@ var vm = new Vue({
         apply: function () {
 			vm.showList = false;
 			vm.title = "申请";
-			vm.qrCodeApply = {};
+			vm.qrCodeApply = {quantity:1,};
 		},
         toDetail:function () {
             var id = getSelectedRow();
