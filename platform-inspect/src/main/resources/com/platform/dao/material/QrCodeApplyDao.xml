@@ -62,7 +62,7 @@
 			AND a.batch_no LIKE concat('%',#{batchNo},'%')
 		</if>
 		<if test="enterpriseId != null ">
-			AND a.enterprise_id = #{enterpriseId} OR  a.enterprise_id IS NULL
+			AND a.enterprise_id = #{enterpriseId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -88,7 +88,7 @@
 			AND a.batch_no LIKE concat('%',#{batchNo},'%')
 		</if>
 		<if test="enterpriseId != null ">
-			AND a.enterprise_id = #{enterpriseId} OR  a.enterprise_id IS NULL
+			AND a.enterprise_id = #{enterpriseId}
 		</if>
 	</select>
 	 
