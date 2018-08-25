@@ -45,6 +45,10 @@ public class CheckSpecificController extends AbstractController {
     @RequiresPermissions("checkspecific:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
@@ -82,6 +86,7 @@ public class CheckSpecificController extends AbstractController {
         if (null != user){
             checkSpecific.setCreatorId(user.getUserId());
             checkSpecific.setCreator(user.getUsername());
+            checkSpecific.setEnterpriseId(user.getEnterpriseId());
         }
         Date time = new Date();
         checkSpecific.setCreateTime(time);

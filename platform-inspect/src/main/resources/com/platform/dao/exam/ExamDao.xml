@@ -135,6 +135,9 @@
 		<if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.exam.ExamEntity" useGeneratedKeys="true" keyProperty="id">

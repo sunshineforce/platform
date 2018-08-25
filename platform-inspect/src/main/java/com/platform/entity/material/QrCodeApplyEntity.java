@@ -17,6 +17,8 @@ public class QrCodeApplyEntity implements Serializable {
 
     //主键Id
     private Integer id;
+    //企业Id
+    private Integer enterpriseId;
     //申请批次号
     private String batchNo;
     //二维码生成数量
@@ -205,5 +207,13 @@ public class QrCodeApplyEntity implements Serializable {
 
     public void setIsGenerated(Integer isGenerated) {
         this.isGenerated = isGenerated;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 }

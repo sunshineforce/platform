@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.telephone.AddressBookEntity" id="addressBookMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="name" column="name"/>
         <result property="mobile" column="mobile"/>
         <result property="position" column="position"/>
@@ -14,6 +15,7 @@
 	<select id="queryObject" resultType="com.platform.entity.telephone.AddressBookEntity">
 		select
 			`id`,
+			 enterprise_id,
 			`name`,
 			`mobile`,
 			`position`,
@@ -25,6 +27,7 @@
 	<select id="queryList" resultType="com.platform.entity.telephone.AddressBookEntity">
 		select
     		`id`,
+		     enterprise_id,
     		`name`,
     		`mobile`,
     		`position`,
@@ -33,6 +36,9 @@
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -53,15 +59,20 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.telephone.AddressBookEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into address_book(
+		enterprise_id,
 			`name`,
 			`mobile`,
 			`position`,
 			`create_time`)
 		values(
+			#{enterpriseId},
 			#{name},
 			#{mobile},
 			#{position},
@@ -71,6 +82,7 @@
 	<update id="update" parameterType="com.platform.entity.telephone.AddressBookEntity">
 		update address_book 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="name != null">`name` = #{name}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
 			<if test="position != null">`position` = #{position}, </if>

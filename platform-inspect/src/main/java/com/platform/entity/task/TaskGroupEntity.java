@@ -17,6 +17,10 @@ public class TaskGroupEntity implements Serializable {
 
     //id
     private Integer id;
+
+    //企业Id
+    private Integer enterpriseId;
+
     //任务组名称
     private String name;
     //备注
@@ -41,6 +45,15 @@ public class TaskGroupEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
     /**
      * 设置：任务组名称
      */

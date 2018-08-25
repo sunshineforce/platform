@@ -9,7 +9,7 @@
         <result property="materialName" column="material_name"/>
         <result property="location" column="location"/>
         <result property="region_id" column="regionId"/>
-        <result property="enterprise_id" column="enterpriseId"/>
+        <result property="enterpriseId" column="enterprise_id"/>
         <result property="materialTypeId" column="material_type_id"/>
         <result property="checkSpecificId" column="check_specific_id"/>
         <result property="producedDate" column="produced_date"/>
@@ -120,6 +120,9 @@
 				#{enterpriseId}
 			</foreach>
 		</if>
+		<if test="enterpriseId != null">
+			AND m.enterprise_id = #{enterpriseId}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -151,6 +154,9 @@
 			<foreach collection="enterpriseList" item="enterpriseId" index="index" open="(" close=")" separator=",">
 				#{enterpriseId}
 			</foreach>
+		</if>
+		<if test="enterpriseId != null">
+			AND m.enterprise_id = #{enterpriseId}
 		</if>
 	</select>
 	 

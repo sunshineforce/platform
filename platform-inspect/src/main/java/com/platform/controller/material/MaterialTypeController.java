@@ -33,9 +33,13 @@ public class MaterialTypeController extends AbstractController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("materialtype:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
+
         //查询列表数据
         Query query = new Query(params);
 
@@ -72,6 +76,7 @@ public class MaterialTypeController extends AbstractController {
         if (null != user){
             materialType.setCreatorId(user.getUserId());
             materialType.setCreator(user.getUsername());
+            materialType.setEnterpriseId(user.getEnterpriseId());
         }
 
         Date time = new Date();

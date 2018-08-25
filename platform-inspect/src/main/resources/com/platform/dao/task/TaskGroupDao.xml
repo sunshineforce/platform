@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.task.TaskGroupEntity" id="taskGroupMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="name" column="name"/>
         <result property="remark" column="remark"/>
         <result property="createTime" column="create_time"/>
@@ -15,6 +16,7 @@
 	<select id="queryObject" resultType="com.platform.entity.task.TaskGroupEntity">
 		select
 			`id`,
+			enterprise_id,
 			`name`,
 			`remark`,
 			`create_time`,
@@ -27,6 +29,7 @@
 	<select id="queryList" resultType="com.platform.entity.task.TaskGroupEntity">
 		select
     		`id`,
+		     enterprise_id,
     		`name`,
     		`remark`,
     		`create_time`,
@@ -36,6 +39,9 @@
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -65,16 +71,21 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.task.TaskGroupEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into task_group(
+		     enterprise_id,
 			`name`,
 			`remark`,
 			`create_time`,
 			`update_time`,
 			`data_status`)
 		values(
+		    #{enterpriseId},
 			#{name},
 			#{remark},
 			#{createTime},
@@ -85,6 +96,7 @@
 	<update id="update" parameterType="com.platform.entity.task.TaskGroupEntity">
 		update task_group 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="name != null">`name` = #{name}, </if>
 			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>

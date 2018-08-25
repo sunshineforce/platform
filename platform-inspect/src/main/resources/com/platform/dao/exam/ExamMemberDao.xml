@@ -91,6 +91,9 @@
 		<if test="examId != null ">
 			AND m.exam_id = #{examId}
 		</if>
+		<if test="enterpriseId != null">
+			AND u.enterprise_id = #{enterpriseId}
+		</if>
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.exam.ExamMemberEntity">

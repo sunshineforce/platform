@@ -38,7 +38,10 @@ public class SysAppUserController extends AbstractController {
     @RequestMapping("/list")
     @RequiresPermissions("appUser:list")
     public R list(@RequestParam Map<String, Object> params) {
-
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         if (null != params.get("regionId") && org.apache.commons.lang.StringUtils.isNotBlank(String.valueOf(params.get("regionId")))){
             Integer regionId = Integer.parseInt(String.valueOf(params.get("regionId")));
             SysRegionEntity region = RegionCacheUtil.getAreaByAreaId(regionId);

@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.material.QrCodeApplyEntity" id="qrCodeApplyMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="batchNo" column="batch_no"/>
         <result property="quantity" column="quantity"/>
         <result property="prefix" column="prefix"/>
@@ -20,6 +21,7 @@
 	<select id="queryObject" resultType="com.platform.entity.material.QrCodeApplyEntity">
 		select
 			`id`,
+			enterprise_id AS  enterpriseId,
 			`batch_no`,
 			`quantity`,
 			`prefix`,
@@ -38,6 +40,7 @@
 	<select id="queryList" resultType="com.platform.entity.material.QrCodeApplyEntity">
 		SELECT
 			a.id,
+		    a.enterprise_id AS enterpriseId,
 			a.batch_no AS  batchNo,
 			a.quantity,
 			a.prefix,
@@ -56,7 +59,10 @@
 		LEFT JOIN  enterprise AS e ON u.enterprise_id = e.id
 		WHERE 1=1
 		<if test="batchNo != null and batchNo.trim() != ''">
-			ANDa.batch_no LIKE concat('%',#{batchNo},'%')
+			AND a.batch_no LIKE concat('%',#{batchNo},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND a.enterprise_id = #{enterpriseId} OR  a.enterprise_id IS NULL
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -79,12 +85,16 @@
 		LEFT JOIN  enterprise AS e ON u.enterprise_id = e.id
 		WHERE 1=1
 		<if test="batchNo != null and batchNo.trim() != ''">
-			ANDa.batch_no LIKE concat('%',#{batchNo},'%')
+			AND a.batch_no LIKE concat('%',#{batchNo},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND a.enterprise_id = #{enterpriseId} OR  a.enterprise_id IS NULL
 		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.material.QrCodeApplyEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into qr_code_apply(
+		     enterprise_id,
 			`batch_no`,
 			`quantity`,
 			`prefix`,
@@ -97,6 +107,7 @@
 			is_generated,
 			`create_date`)
 		values(
+		    #{enterpriseId},
 			#{batchNo},
 			#{quantity},
 			#{prefix},
@@ -113,6 +124,7 @@
 	<update id="update" parameterType="com.platform.entity.material.QrCodeApplyEntity">
 		update qr_code_apply 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="batchNo != null">`batch_no` = #{batchNo}, </if>
 			<if test="quantity != null">`quantity` = #{quantity}, </if>
 			<if test="prefix != null">`prefix` = #{prefix}, </if>

@@ -18,6 +18,10 @@ public class CheckSpecificEntity implements Serializable {
 
     //主键Id
     private Integer id;
+
+    //企业Id
+    private Integer enterpriseId;
+
     //规范名称
     private String specificName;
     //备注
@@ -52,6 +56,15 @@ public class CheckSpecificEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
     /**
      * 设置：规范名称
      */

@@ -15,6 +15,10 @@ public class AddressBookEntity implements Serializable {
 
     //主键
     private Integer id;
+
+    //企业Id
+    private Integer enterpriseId;
+
     //姓名
     private String name;
     //电话
@@ -37,6 +41,15 @@ public class AddressBookEntity implements Serializable {
     public Integer getId() {
         return id;
     }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
+
     /**
      * 设置：姓名
      */

@@ -1,5 +1,7 @@
 package com.platform.controller.task;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskGroupEntity;
 import com.platform.service.task.TaskGroupService;
 import com.platform.utils.PageUtils;
@@ -23,7 +25,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("taskgroup")
-public class TaskGroupController {
+public class TaskGroupController extends AbstractController {
     @Autowired
     private TaskGroupService taskGroupService;
 
@@ -31,9 +33,12 @@ public class TaskGroupController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("taskgroup:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
@@ -64,6 +69,10 @@ public class TaskGroupController {
     @RequiresPermissions("taskgroup:save")
     @ResponseBody
     public R save(@RequestBody TaskGroupEntity taskGroup) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+          taskGroup.setEnterpriseId(user.getEnterpriseId());
+        }
         Date time = new Date();
         taskGroup.setCreateTime(time);
         taskGroup.setUpdateTime(time);

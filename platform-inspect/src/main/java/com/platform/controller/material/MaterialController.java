@@ -40,9 +40,13 @@ public class MaterialController extends AbstractController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("material:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
 
         if (null != params.get("regionId") && org.apache.commons.lang.StringUtils.isNotBlank(String.valueOf(params.get("regionId")))){
             Integer regionId = Integer.parseInt(String.valueOf(params.get("regionId")));
@@ -117,6 +121,7 @@ public class MaterialController extends AbstractController {
         if (null != user){
             material.setCreatorId(user.getUserId());
             material.setCreator(user.getUsername());
+            material.setEnterpriseId(user.getEnterpriseId());
         }
         materialService.save(material);
 

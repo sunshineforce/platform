@@ -17,6 +17,8 @@ public class MaterialTypeEntity implements Serializable {
 
     //主键Id
     private Integer id;
+    //企业Id
+    private Integer enterpriseId;
     //物品名称
     private String name;
     //上级类目Id
@@ -37,6 +39,15 @@ public class MaterialTypeEntity implements Serializable {
     private Long updatorId;
 
     private String updator;
+
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
+    }
 
     /**
      * 设置：主键Id

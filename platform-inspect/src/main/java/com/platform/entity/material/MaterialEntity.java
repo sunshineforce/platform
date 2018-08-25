@@ -21,7 +21,7 @@ public class MaterialEntity implements Serializable {
     //区域Id
     private Long regionId;
     //企业Id
-    private Long enterpriseId;
+    private Integer enterpriseId;
     //所在位置
     private String location;
     //物品类型Id
@@ -94,11 +94,11 @@ public class MaterialEntity implements Serializable {
         this.regionId = regionId;
     }
 
-    public Long getEnterpriseId() {
+    public Integer getEnterpriseId() {
         return enterpriseId;
     }
 
-    public void setEnterpriseId(Long enterpriseId) {
+    public void setEnterpriseId(Integer enterpriseId) {
         this.enterpriseId = enterpriseId;
     }
 

@@ -40,9 +40,12 @@ public class QrCodeApplyController extends AbstractController {
      * 查看列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("qrcodeapply:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
@@ -74,7 +77,10 @@ public class QrCodeApplyController extends AbstractController {
     @ResponseBody
     public R save(@RequestBody QrCodeApplyEntity qrCodeApply) {
         SysUserEntity user = getUser();
-        if (null !=  user){qrCodeApply.setApplicant(user.getUserId());}
+        if (null !=  user){
+            qrCodeApply.setApplicant(user.getUserId());
+            qrCodeApply.setEnterpriseId(user.getEnterpriseId());
+        }
         Date time = new Date();
         qrCodeApply.setCreateDate(time);
         qrCodeApply.setApplyDate(time);

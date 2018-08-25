@@ -119,9 +119,18 @@
 		SELECT count(1)
 		FROM inspect_order AS o
 		LEFT JOIN material AS m ON m.id = o.material_id
-		WHERE o.inspect_status=1 AND o.status = #{status}
+		WHERE 1 = 1
 		<if test="materialName != null and materialName.trim() != ''">
 			AND m.material_name LIKE concat('%',#{materialName},'%')
+		</if>
+		<if test="status != null">
+			AND o.`status` = #{status}
+		</if>
+		<if test="inspectStatus != null">
+			AND o.`inspect_status` = #{inspectStatus}
+		</if>
+		<if test="enterpriseId != null">
+			AND o.enterprise_id = #{enterpriseId}
 		</if>
 	</select>
 

@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.specific.CheckSpecificEntity" id="checkSpecificMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="specificName" column="specific_name"/>
         <result property="remark" column="remark"/>
         <result property="createTime" column="create_time"/>
@@ -18,6 +19,7 @@
 	<select id="queryObject" resultType="com.platform.entity.specific.CheckSpecificEntity">
 		select
 			`id`,
+			enterprise_id,
 			`specific_name`,
 			`remark`,
 			`create_time`,
@@ -33,6 +35,7 @@
 	<select id="queryList" resultType="com.platform.entity.specific.CheckSpecificEntity">
 		select
     		`id`,
+		     enterprise_id,
     		`specific_name`,
     		`remark`,
     		`create_time`,
@@ -45,6 +48,9 @@
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND specific_name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -68,6 +74,9 @@
 		<if test="name != null and name.trim() != ''">
 			AND cs.specific_name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="enterpriseId != null ">
+			AND cs.enterprise_id = #{enterpriseId} OR  cs.enterprise_id IS NULL
+		</if>
 		ORDER BY id
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
@@ -80,6 +89,9 @@
         <if test="name != null and name.trim() != ''">
             AND specific_name LIKE concat('%',#{name},'%')
         </if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
+		</if>
 	</select>
 
 	<select id="queryTotalSimple" resultType="com.platform.entity.specific.vo.CheckSpecificVo">
@@ -90,10 +102,14 @@
 		<if test="name != null and name.trim() != ''">
 			AND cs.specific_name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="enterpriseId != null ">
+			AND cs.enterprise_id = #{enterpriseId} OR  cs.enterprise_id IS NULL
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.specific.CheckSpecificEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into check_specific(
+		     enterprise_id,
 			`specific_name`,
 			`remark`,
 			`create_time`,
@@ -103,6 +119,7 @@
 			`updator_id`,
 			`updator`)
 		values(
+		    #{enterpriseId},
 			#{specificName},
 			#{remark},
 			#{createTime},
@@ -116,6 +133,7 @@
 	<update id="update" parameterType="com.platform.entity.specific.CheckSpecificEntity">
 		update check_specific 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="specificName != null">`specific_name` = #{specificName}, </if>
 			<if test="remark != null">`remark` = #{remark}, </if>
 			<if test="createTime != null">`create_time` = #{createTime}, </if>
