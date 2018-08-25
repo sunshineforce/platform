@@ -32,23 +32,23 @@
             <Form-item label="角色名称" prop="roleName">
                 <i-input v-model="role.roleName" placeholder="角色名称"/>
             </Form-item>
-            <Form-item label="所属部门" prop="deptName">
-                <i-input type="text" v-model="role.deptName" icon="eye" readonly="readonly"
-                         @on-click="deptTree" readonly="readonly" placeholder="所属部门"/>
-            </Form-item>
+            <!--<Form-item label="所属部门" prop="deptName">-->
+                <!--<i-input type="text" v-model="role.deptName" icon="eye" readonly="readonly"-->
+                         <!--@on-click="deptTree" readonly="readonly" placeholder="所属部门"/>-->
+            <!--</Form-item>-->
             <Form-item label="备注" prop="remark">
                 <i-input type="textarea" v-model="role.remark" placeholder="备注"/>
             </Form-item>
             <Form-item label="功能权限">
-                <div style="overflow-y: auto;max-height: 250px">
+                <div style="overflow-y: auto;max-height: 333px">
                     <ul id="menuTree" class="ztree"></ul>
                 </div>
             </Form-item>
-            <Form-item label="数据权限">
-                <div style="overflow-y: auto;max-height: 250px">
-                    <ul id="dataTree" class="ztree"></ul>
-                </div>
-            </Form-item>
+            <!--<Form-item label="数据权限">-->
+                <!--<div style="overflow-y: auto;max-height: 250px">-->
+                    <!--<ul id="dataTree" class="ztree"></ul>-->
+                <!--</div>-->
+            <!--</Form-item>-->
             <Form-item>
                 <i-button type="primary" @click="handleSubmit('formValidate')">提交</i-button>
                 <i-button type="warning" @click="reload" style="margin-left: 8px">返回</i-button>

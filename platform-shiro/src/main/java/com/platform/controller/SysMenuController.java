@@ -1,8 +1,9 @@
 package com.platform.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.platform.annotation.SysLog;
+import com.platform.constants.CommonConstant;
 import com.platform.entity.SysMenuEntity;
+import com.platform.entity.SysUserEntity;
 import com.platform.service.SysMenuService;
 import com.platform.utils.*;
 import com.platform.utils.Constant.MenuType;
@@ -32,7 +33,6 @@ public class SysMenuController extends AbstractController {
      * 所有菜单列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:menu:list")
     public R list(@RequestParam Map<String, Object> params) {
         //查询列表数据
         Query query = new Query(params);
@@ -58,7 +58,6 @@ public class SysMenuController extends AbstractController {
      * 选择菜单(添加、修改菜单)
      */
     @RequestMapping("/select")
-    @RequiresPermissions("sys:menu:select")
     public R select() {
         //查询列表数据
         List<SysMenuEntity> menuList = sysMenuService.queryNotButtonList();
@@ -78,15 +77,22 @@ public class SysMenuController extends AbstractController {
      * 角色授权菜单
      */
     @RequestMapping("/perms")
-    @RequiresPermissions("sys:menu:perms")
     public R perms() {
         //查询列表数据
         List<SysMenuEntity> menuList = null;
-        //只有超级管理员，才能查看所有管理员列表
-        if (getUserId() == Constant.SUPER_ADMIN) {
+        SysUserEntity user = getUser();
+        if (null == user){
+            return R.error("用户未登录！");
+        }
+        if (user.getUserId() == Constant.SUPER_ADMIN) { // 超级管理员可以看到所有的菜单
             menuList = sysMenuService.queryList(new HashMap<String, Object>());
         } else {
-            menuList = sysMenuService.queryUserList(getUserId());
+            if (null != user.getEnterpriseId()){ // 企业用户
+                menuList = sysMenuService.queryMenuListByRoleId(CommonConstant.COMPANY_ROLE_ID); // 企业角色
+            }else{ //总控用户
+                menuList = sysMenuService.queryMenuListByRoleId(CommonConstant.SYSTEM_ROLE_ID); // 总控
+            }
+
         }
         return R.ok().put("menuList", menuList);
     }
@@ -95,7 +101,6 @@ public class SysMenuController extends AbstractController {
      * 菜单信息
      */
     @RequestMapping("/info/{menuId}")
-    @RequiresPermissions("sys:menu:info")
     public R info(@PathVariable("menuId") Long menuId) {
         SysMenuEntity menu = sysMenuService.queryObject(menuId);
         return R.ok().put("menu", menu);

@@ -66,7 +66,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         sysRoleMenuService.saveOrUpdate(role.getRoleId(), role.getMenuIdList());
 
         //保存角色与部门关系
-        sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
+       // sysRoleDeptService.saveOrUpdate(role.getRoleId(), role.getDeptIdList());
     }
 
     @Override

@@ -42,7 +42,10 @@ public class CommonConstant {
     public static final int ANOMALY_REPORT=1;
 
     /** 企业账户角色Id */
-    public static final long COMPANY_ROLE_ID =  3;
+    public static final long COMPANY_ROLE_ID =  3L;
+
+    /** 总控账户角色Id */
+    public static final long SYSTEM_ROLE_ID =  2L;
 
     public static final String AUTH_URL="http://runyapp.s1.natapp.cc/authz/oauth/token";
 

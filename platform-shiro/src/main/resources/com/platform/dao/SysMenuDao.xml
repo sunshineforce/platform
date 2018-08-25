@@ -73,6 +73,14 @@
 		where ur.user_id = #{userId} order by m.order_num asc
 	</select>
 
+    <!-- 通过角色查询权限列表 -->
+    <select id="selectMenuListByRoleId" resultType="com.platform.entity.SysMenuEntity">
+       	select distinct m.*,(select p.name from sys_menu p where p.menu_id = m.parent_id) as parentName
+        FROM sys_menu m
+		LEFT JOIN  sys_role_menu rm ON rm.menu_id = m.menu_id
+		where  m.status = 0 AND rm.role_id = #{roleId} order by m.order_num asc
+    </select>
+
     <select id="queryTotal" resultType="int">
 		select count(*) from sys_menu m WHERE 1=1
         <if test="menuName != null and menuName.trim() != ''">

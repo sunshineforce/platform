@@ -38,7 +38,6 @@ public class SysRoleController extends AbstractController {
      * 角色列表
      */
     @RequestMapping("/list")
-    @RequiresPermissions("sys:role:list")
     public R list(@RequestParam Map<String, Object> params) {
         //如果不是超级管理员，则只查询自己创建的角色列表
         if (getUserId() != Constant.SUPER_ADMIN) {
@@ -76,7 +75,6 @@ public class SysRoleController extends AbstractController {
      * 角色信息
      */
     @RequestMapping("/info/{roleId}")
-    @RequiresPermissions("sys:role:info")
     public R info(@PathVariable("roleId") Long roleId) {
         SysRoleEntity role = sysRoleService.queryObject(roleId);
 
@@ -85,8 +83,8 @@ public class SysRoleController extends AbstractController {
         role.setMenuIdList(menuIdList);
 
         //查询角色对应的部门
-        List<Long> deptIdList = sysRoleDeptService.queryDeptIdList(roleId);
-        role.setDeptIdList(deptIdList);
+        //List<Long> deptIdList = sysRoleDeptService.queryDeptIdList(roleId);
+        //role.setDeptIdList(deptIdList);
 
         return R.ok().put("role", role);
     }

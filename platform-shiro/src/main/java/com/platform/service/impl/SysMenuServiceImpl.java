@@ -89,6 +89,11 @@ public class SysMenuServiceImpl implements SysMenuService {
 		return sysMenuDao.queryUserList(userId);
 	}
 
+	@Override
+	public List<SysMenuEntity> queryMenuListByRoleId(Long roleId) {
+		return sysMenuDao.selectMenuListByRoleId(roleId);
+	}
+
 	/**
 	 * 获取所有菜单列表
 	 */

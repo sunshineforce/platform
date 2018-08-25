@@ -29,4 +29,11 @@ public interface SysMenuDao extends BaseDao<SysMenuEntity> {
      * 查询用户的权限列表
      */
     List<SysMenuEntity> queryUserList(Long userId);
+
+    /**
+     * 通过角色查询权限列表
+     * @param roleId
+     * @return
+     */
+    List<SysMenuEntity> selectMenuListByRoleId(Long roleId);
 }
