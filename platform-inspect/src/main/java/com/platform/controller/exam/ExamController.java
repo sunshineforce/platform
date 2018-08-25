@@ -276,7 +276,10 @@ public class ExamController extends AbstractController {
     @RequestMapping("/queryAll")
     @ResponseBody
     public R queryAll(@RequestParam Map<String, Object> params) {
-
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         List<ExamEntity> list = examService.queryList(params);
 
         return R.ok().put("list", list);
