@@ -90,7 +90,7 @@
             AND specific_name LIKE concat('%',#{name},'%')
         </if>
 		<if test="enterpriseId != null ">
-			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
+			AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
 		</if>
 	</select>
 
@@ -105,7 +105,7 @@
 				AND cs.specific_name LIKE concat('%',#{name},'%')
 			</if>
 			<if test="enterpriseId != null ">
-				AND cs.enterprise_id = #{enterpriseId} OR cs.enterprise_id IS NULL
+				AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
 			</if>
 			GROUP BY m.material_type_id
 		) t
