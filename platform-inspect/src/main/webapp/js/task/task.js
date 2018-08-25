@@ -99,9 +99,7 @@ var vm = new Vue({
 			status:'',
 		},
 		taskGroups:[],
-        taskGroupList:[
-			{id:"",name:"任务组"}
-		], //查询使用
+        taskGroupList:[], //查询使用
         statusList:[
             {id:"",name:"状态"},
             {id:"0",name:"待执行"},
@@ -131,6 +129,10 @@ var vm = new Vue({
     created:function () {
         $.get("../taskgroup/queryAll", function (r) {
             vm.taskGroupList = r.list;
+            if(vm.taskGroupList == null){
+                vm.taskGroupList = [];
+            }
+            vm.taskGroupList.unshift({id:"",name:"选择任务组"});
         });
     },
 	methods: {
@@ -321,9 +323,9 @@ var vm = new Vue({
 			$("#jqGrid").jqGrid('setGridParam', {
                 postData: {
                 	'name': vm.q.name,
-					"status":vm.q.status,
-					"taskGroupId":vm.q.taskGroupId,
-                    "type":vm.q.type
+					"status":(vm.q.status != "") ? vm.q.status : null,
+					"taskGroupId":(vm.q.taskGroupId != "") ? vm.q.taskGroupId : null,
+                    "type":(vm.q.type != "") ? vm.q.type : null,
                 },
                 page: page
             }).trigger("reloadGrid");

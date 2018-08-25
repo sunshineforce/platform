@@ -82,13 +82,16 @@
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="taskGroupId != null">
+		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+			AND t.enterprise_id = #{enterpriseId}
+		</if>
+		<if test="taskGroupId != null and taskGroupId.trim() != ''">
 			AND t.`task_group_id` = #{taskGroupId}
 		</if>
-		<if test="status != null">
+		<if test="status != null and status.trim() != ''">
 			AND t.`status` = #{status}
 		</if>
-		<if test="type != null">
+		<if test="type != null  and type.trim() != ''">
 			AND t.`type` = #{type}
 		</if>
 		<choose>
@@ -115,6 +118,9 @@
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+			AND t.enterprise_id = #{enterpriseId}
+		</if>
 		<if test="taskGroupId != null and taskGroupId.trim() != ''">
 			AND t.`task_group_id` = #{taskGroupId}
 		</if>
@@ -133,6 +139,9 @@
 		WHERE 1=1 AND data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+			AND enterprise_id = #{enterpriseId}
 		</if>
 		<if test="status != null and status.trim() != ''">
 			AND status =#{status}
@@ -165,6 +174,21 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
+		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+			AND enterprise_id = #{enterpriseId}
+		</if>
+		<if test="status != null and status.trim() != ''">
+			AND status =#{status}
+		</if>
+		<if test="type != null">
+			AND `type` = #{type}
+		</if>
+		<if test="nexTime != null">
+			AND TO_DAYS(#{nexTime}) - TO_DAYS(`next_time`) = 0
+		</if>
+		<if test="userId != null">
+			AND #{userId} = user_ids
+		</if>
 	</select>
 
 
