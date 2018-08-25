@@ -1,5 +1,7 @@
 package com.platform.controller.enterprise;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.enterprise.LicenseEntity;
 import com.platform.entity.enterprise.LicenseTypeEntity;
 import com.platform.entity.enterprise.LicenseVo;
@@ -27,7 +29,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("license")
-public class LicenseController {
+public class LicenseController   extends AbstractController {
 
     @Autowired
     private ILicenseService licenseService;
@@ -42,6 +44,10 @@ public class LicenseController {
     @RequiresPermissions("license:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
@@ -72,6 +78,10 @@ public class LicenseController {
     @RequiresPermissions("license:save")
     @ResponseBody
     public R save(@RequestBody LicenseEntity license) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            license.setEnterpriseId(user.getEnterpriseId());
+        }
         license.setCreateTime(new Date());
         licenseService.save(license);
 

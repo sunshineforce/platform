@@ -17,7 +17,8 @@ public class LicenseEntity implements Serializable {
 
     //主键Id
     private Integer id;
-
+    //企业id
+    private Integer enterpriseId;
     //证照类型Id
     private Integer licenseTypeId;
     //证照类型名称
@@ -147,5 +148,13 @@ public class LicenseEntity implements Serializable {
      */
     public String getCreator() {
         return creator;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 }

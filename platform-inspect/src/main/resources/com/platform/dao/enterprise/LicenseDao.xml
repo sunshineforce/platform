@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.enterprise.LicenseEntity" id="licenseMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="licenseTypeId" column="license_type_id"/>
         <result property="licenseType" column="license_type"/>
         <result property="licenseName" column="license_name"/>
@@ -18,6 +19,7 @@
 	<select id="queryObject" resultType="com.platform.entity.enterprise.LicenseEntity">
 		select
 			`id`,
+			 enterprise_id,
 			`license_type_id`,
 			`license_name`,
 			`number`,
@@ -35,6 +37,9 @@
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND m.license_name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND m.enterprise_id = #{enterpriseId}
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -56,6 +61,9 @@
 		<if test="name != null and name.trim() != ''">
 			AND license_name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="enterpriseId != null ">
+			AND m.enterprise_id = #{enterpriseId}
+		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by ${sidx} ${order}
@@ -76,10 +84,14 @@
         <if test="name != null and name.trim() != ''">
             AND license_name LIKE concat('%',#{name},'%')
         </if>
+		<if test="enterpriseId != null ">
+			AND m.enterprise_id = #{enterpriseId}
+		</if>
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.enterprise.LicenseEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into license(
+		     enterprise_id,
 			`license_type_id`,
 			`license_name`,
 			`number`,
@@ -88,6 +100,7 @@
 			`create_time`,
 			`creator`)
 		values(
+			#{enterpriseId},
 			#{licenseTypeId},
 			#{licenseName},
 			#{number},
@@ -100,6 +113,7 @@
 	<update id="update" parameterType="com.platform.entity.enterprise.LicenseEntity">
 		update license 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="licenseTypeId != null">`license_type_id` = #{licenseTypeId}, </if>
 			<if test="licenseName != null">`license_name` = #{licenseName}, </if>
 			<if test="number != null">`number` = #{number}, </if>
