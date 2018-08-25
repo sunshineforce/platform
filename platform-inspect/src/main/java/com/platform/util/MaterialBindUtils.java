@@ -1,8 +1,9 @@
-package com.platform.utils;
+package com.platform.util;
 
 import com.alibaba.fastjson.JSON;
 import com.platform.constants.CommonConstant;
-import com.platform.vo.AuthVo;
+import com.platform.entity.dto.AuthVo;
+import com.platform.utils.HttpUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
