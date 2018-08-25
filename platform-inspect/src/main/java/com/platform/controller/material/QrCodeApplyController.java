@@ -137,7 +137,7 @@ public class QrCodeApplyController extends AbstractController {
         }
         qrCodeApply.setGenerateDate(new Date());
         qrCodeApply.setGenerateMan(user.getUserId());
-        qrCodeApply.setQrCodeStatus(QrCodeEnum.GRANTED.getCode()); //已发放
+        //qrCodeApply.setQrCodeStatus(QrCodeEnum.GRANTED.getCode()); //已发放
         qrCodeApply.setIsGenerated(QrCodeEnum.GENERATED.getCode()); //已生成
         qrCodeApplyService.update(qrCodeApply);
 
