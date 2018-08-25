@@ -65,6 +65,19 @@
 		</if>
 	</select>
 
+ 	<select id="queryTotal" resultType="int">
+		select count(1) from check_specific
+		WHERE 1=1
+        <if test="name != null and name.trim() != ''">
+            AND specific_name LIKE concat('%',#{name},'%')
+        </if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
+		</if>
+	</select>
+
+
+
 	<!-- 查询所有检查规范，下拉选择列表 -->
 	<select id="queryListSimple" resultType="com.platform.entity.specific.vo.CheckSpecificVo">
 		SELECT cs.id,cs.specific_name as name,cs.remark
@@ -77,20 +90,10 @@
 		<if test="enterpriseId != null ">
 			AND cs.enterprise_id = #{enterpriseId} OR  cs.enterprise_id IS NULL
 		</if>
+		GROUP BY m.material_type_id
 		ORDER BY id
 		<if test="offset != null and limit != null">
 			limit #{offset}, #{limit}
-		</if>
-	</select>
-	
- 	<select id="queryTotal" resultType="int">
-		select count(1) from check_specific
-		WHERE 1=1
-        <if test="name != null and name.trim() != ''">
-            AND specific_name LIKE concat('%',#{name},'%')
-        </if>
-		<if test="enterpriseId != null ">
-			AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
 		</if>
 	</select>
 
@@ -105,7 +108,7 @@
 				AND cs.specific_name LIKE concat('%',#{name},'%')
 			</if>
 			<if test="enterpriseId != null ">
-				AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
+				AND (cs.enterprise_id = #{enterpriseId} OR cs.enterprise_id IS NULL)
 			</if>
 			GROUP BY m.material_type_id
 		) t
