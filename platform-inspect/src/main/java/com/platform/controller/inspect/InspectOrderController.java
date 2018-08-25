@@ -53,6 +53,10 @@ public class InspectOrderController extends AbstractController {
     @RequiresPermissions("inspectorder:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (user != null && user.getEnterpriseId() != null){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
