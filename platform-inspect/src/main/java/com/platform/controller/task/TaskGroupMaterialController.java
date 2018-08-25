@@ -1,5 +1,7 @@
 package com.platform.controller.task;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.task.TaskGroupMaterialEntity;
 import com.platform.service.material.MaterialService;
@@ -24,7 +26,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("taskgroupmaterial")
-public class TaskGroupMaterialController {
+public class TaskGroupMaterialController  extends AbstractController {
     @Autowired
     private TaskGroupMaterialService taskGroupMaterialService;
 
@@ -38,6 +40,11 @@ public class TaskGroupMaterialController {
     @RequiresPermissions("taskgroupmaterial:list")
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        ///如果是企业用户登录，查询该企业下的用户
+        if (null != user && null != user.getEnterpriseId()){
+            params.put("enterpriseId",user.getEnterpriseId());
+        }
         //查询列表数据
         Query query = new Query(params);
 
