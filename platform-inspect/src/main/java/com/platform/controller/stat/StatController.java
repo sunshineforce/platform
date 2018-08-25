@@ -1,5 +1,7 @@
 package com.platform.controller.stat;
 
+import com.platform.controller.AbstractController;
+import com.platform.entity.SysUserEntity;
 import com.platform.service.stat.IStatService;
 import com.platform.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("stat")
-public class StatController {
+public class StatController extends AbstractController {
 
 
     @Autowired
@@ -31,6 +33,11 @@ public class StatController {
     @RequestMapping("/statTaskAndOrder")
     @ResponseBody
     public R statTaskAndOrder(@RequestParam Map<String, Object> params) {
+        SysUserEntity user = getUser();
+        if (null == user){
+            return R.error("用户未登录！");
+        }
+        params.put("enterpriseId",user.getEnterpriseId()); // 企业id
         return iStatService.stat(params);
     }
 

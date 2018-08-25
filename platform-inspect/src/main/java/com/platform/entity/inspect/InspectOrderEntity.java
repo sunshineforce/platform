@@ -26,6 +26,9 @@ public class InspectOrderEntity implements Serializable {
     //物品所属区域Id
     private Long regionId;
 
+    /** 用户所属企业 */
+    private Integer enterpriseId;
+
     //工单状态 0 正常  1 异常
     private Integer status;
     //检查时间
@@ -279,5 +282,13 @@ public class InspectOrderEntity implements Serializable {
 
     public void setDescr(String descr) {
         this.descr = descr;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 }
