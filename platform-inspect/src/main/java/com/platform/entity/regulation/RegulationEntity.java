@@ -17,6 +17,8 @@ public class RegulationEntity implements Serializable {
 
     //主键Id
     private Long id;
+    //企业id
+    private Integer enterpriseId;
     //知识名称
     private String knowledgeName;
     //描述
@@ -208,5 +210,13 @@ public class RegulationEntity implements Serializable {
 
     public void setUpdator(String updator) {
         this.updator = updator;
+    }
+
+    public Integer getEnterpriseId() {
+        return enterpriseId;
+    }
+
+    public void setEnterpriseId(Integer enterpriseId) {
+        this.enterpriseId = enterpriseId;
     }
 }

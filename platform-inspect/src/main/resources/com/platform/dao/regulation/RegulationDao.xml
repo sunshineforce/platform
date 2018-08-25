@@ -5,6 +5,7 @@
 
     <resultMap type="com.platform.entity.regulation.RegulationEntity" id="regulationMap">
         <result property="id" column="id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="knowledgeName" column="knowledge_name"/>
         <result property="description" column="description"/>
         <result property="url" column="url"/>
@@ -23,6 +24,7 @@
 	<select id="queryObject" resultType="com.platform.entity.regulation.RegulationEntity">
 		select
 			`id`,
+			enterprise_id,
 			`knowledge_name`,
 			`description`,
 			`url`,
@@ -43,6 +45,7 @@
 	<select id="queryList" resultType="com.platform.entity.regulation.RegulationEntity">
 		select
     		`id`,
+		     enterprise_id,
     		`knowledge_name`,
     		`description`,
     		`url`,
@@ -60,6 +63,9 @@
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="enterpriseId != null ">
+			AND enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL
 		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
@@ -84,6 +90,7 @@
 	 
 	<insert id="save" parameterType="com.platform.entity.regulation.RegulationEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into regulation(
+		     enterprise_id,
 			`knowledge_name`,
 			`description`,
 			`url`,
@@ -99,6 +106,7 @@
 			`updator`
 			)
 		values(
+		    #{enterpriseId},
 			#{knowledgeName},
 			#{description},
 			#{url},
@@ -118,6 +126,7 @@
 	<update id="update" parameterType="com.platform.entity.regulation.RegulationEntity">
 		update regulation 
 		<set>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="knowledgeName != null">`knowledge_name` = #{knowledgeName}, </if>
 			<if test="description != null">`description` = #{description}, </if>
 			<if test="url != null">`url` = #{url}, </if>
