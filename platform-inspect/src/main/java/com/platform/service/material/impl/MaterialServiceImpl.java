@@ -18,12 +18,10 @@ import com.platform.service.common.CommonService;
 import com.platform.service.material.MaterialService;
 import com.platform.util.AppClientUtils;
 import com.platform.util.MaterialBindUtils;
-import com.platform.utils.ShiroUtils;
 import com.platform.utils.StringUtils;
 import com.platform.utils.enums.MaterialStatusEnum;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.message.BasicNameValuePair;
-import org.apache.shiro.subject.Subject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -31,6 +29,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -56,7 +56,9 @@ public class MaterialServiceImpl implements MaterialService {
     private InspectOrderDao inspectOrderDao;
 
     //客户设备列表页索引
-    private volatile Integer pageIndex = 1;
+    private static Integer pageIndex = 1;
+
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(5);
 
     @Override
     public MaterialEntity queryObject(Integer id) {
@@ -128,12 +130,28 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public int materialBindBatch(CustomerVo customer) {
+    public int materialBind(final CustomerVo customer) {
+        String url = CommonConstant.THIRD_PARTY_URL+CommonConstant.CUSTOMER_MATERIAL_URL;
+        String customerId = customer.getId();
+        DeviceListVo deviceListVo = setBindMaterialRequestParams(url, customerId);
+        bindMaterialWithPage(deviceListVo.getRecords());
+        //开始绑定设备
+        threadPool.submit(new Runnable() {
+            @Override
+            public void run() {
+                materialBindBatch(customer);
+            }
+        });
+        return 0;
+    }
+
+    private void materialBindBatch(CustomerVo customer){
         String url = CommonConstant.THIRD_PARTY_URL+CommonConstant.CUSTOMER_MATERIAL_URL;
         String customerId = customer.getId();
         DeviceListVo deviceListVo = setBindMaterialRequestParams(url, customerId);
         Integer pages = deviceListVo.getPages();
         List<DeviceVo> list;
+
         for (int i = 0; i < pages; i++) {
             pageIndex++;
             deviceListVo = setBindMaterialRequestParams(url,customerId);
@@ -142,8 +160,8 @@ public class MaterialServiceImpl implements MaterialService {
                 bindMaterialWithPage(list);
             }
         }
-        return 0;
     }
+
 
     private MaterialTypeEntity saveMaterialType(DeviceVo deviceVo){
         MaterialTypeEntity materialType = materialTypeDao.queryMaterialTypeByName(deviceVo.getTypeName());
@@ -191,7 +209,6 @@ public class MaterialServiceImpl implements MaterialService {
                     logger.error("Bind material exception ! details : " + e);
                 }
             }
-            bindMaterialWithPage(list);
         }
     }
 
@@ -200,13 +217,16 @@ public class MaterialServiceImpl implements MaterialService {
         postParams.add(new BasicNameValuePair("customerId",customerId));
         postParams.add(new BasicNameValuePair("current",String.valueOf(pageIndex)));
         postParams.add(new BasicNameValuePair("size",String.valueOf(20)));
-        Subject subject = ShiroUtils.getSubject();
-        AuthVo loginToken = (AuthVo) subject.getSession().getAttribute(CommonConstant.AUTH_TOKEN);
-        String resultJson = AppClientUtils.sendPost(loginToken,url,postParams);
-        if (StringUtils.isNotEmpty(resultJson)) {
-            DeviceListVo listVo = JSON.parseObject(resultJson,DeviceListVo.class);
-            return listVo;
-        }
+        AuthVo loginToken;
+        do {
+            loginToken = MaterialBindUtils.getLoginToken();
+            String resultJson = AppClientUtils.sendPost(loginToken,url,postParams);
+            if (StringUtils.isNotEmpty(resultJson)) {
+                DeviceListVo listVo = JSON.parseObject(resultJson,DeviceListVo.class);
+                return listVo;
+            }
+        }while (MaterialBindUtils.isExpire(loginToken));
+
         return null;
     }
 

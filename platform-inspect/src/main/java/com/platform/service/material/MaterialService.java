@@ -88,5 +88,5 @@ public interface MaterialService {
      * @param customer
      * @return
      */
-    int materialBindBatch(CustomerVo customer);
+    int materialBind(CustomerVo customer);
 }
