@@ -131,7 +131,7 @@ public class TaskController extends AbstractController {
         if (CommonConstant.TASK_CIRCLE_TYPE == task.getType().intValue()){ //循环任务
             endTime = TaskUtils.calCircleTaskEndTime(task.getStartTime(),task.getSchedule());
         }
-        TaskDetailEntity detail = new TaskDetailEntity(task.getId(), task.getRegionId() , TaskStatusEnum.PENDING.getCode(),task.getStartTime(),endTime,new Date());
+        TaskDetailEntity detail = new TaskDetailEntity(task.getId(), task.getRegionId() ,task.getEnterpriseId(), TaskStatusEnum.PENDING.getCode(),task.getStartTime(),endTime,new Date());
         taskDetailService.save(detail);
         return R.ok();
     }
