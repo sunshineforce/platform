@@ -1,21 +1,22 @@
 package com.platform.service.enterprise.impl;
 
-import com.platform.constants.CommonConstant;
 import com.platform.dao.enterprise.EnterpriseDao;
-import com.platform.entity.SysUserEntity;
+import com.platform.entity.dto.CustomerVo;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.entity.enterprise.EnterpriseVo;
 import com.platform.service.enterprise.IEnterpriseService;
-import com.platform.utils.BeanUtils;
+import com.platform.util.AppClientUtils;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.vo.SelectVo;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 企业管理Service实现类
@@ -26,6 +27,7 @@ import java.util.*;
  */
 @Service("enterpriseService")
 public class EnterpriseServiceImpl implements IEnterpriseService {
+
     @Autowired
     private EnterpriseDao enterpriseDao;
 
@@ -61,13 +63,13 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
 
     @Override
     public int save(EnterpriseEntity enterprise) {
-        setDefaultValue(enterprise);
+        AppClientUtils.setEnterpriseDefaultValue(enterprise);
         return enterpriseDao.save(enterprise);
     }
 
     @Override
     public int update(EnterpriseEntity enterprise) {
-        setDefaultValue(enterprise);
+        AppClientUtils.setEnterpriseDefaultValue(enterprise);
         return enterpriseDao.update(enterprise);
     }
 
@@ -97,14 +99,19 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
         return new PageUtils(list, total, query.getLimit(), query.getPage());
     }
 
-    private void setDefaultValue(EnterpriseEntity enterprise){
-        Date currDate = new Date();
-        SysUserEntity sessionUser = (SysUserEntity) SecurityUtils.getSubject().getSession().getAttribute(CommonConstant.LOGIN_USER);
-        if (enterprise.getId() == null) {
-            enterprise.setCreateTime(currDate);
-            enterprise.setCreator(sessionUser.getUsername());
+    @Override
+    public int enterpriseBind(CustomerVo params) {
+        EnterpriseEntity enterprise = enterpriseDao.queryEnterpriseByName(params);
+        if (enterprise == null) {
+            enterprise = new EnterpriseEntity();
+            enterprise.setEnterpriseName(params.getCustomerName());
+            enterprise.setMobile(params.getPhone());
+            enterprise.setAddress(params.getAddrName()+params.getAddrDetail());
+            AppClientUtils.setEnterpriseDefaultValue(enterprise);
+
+            return enterpriseDao.save(enterprise);
         }
-        enterprise.setUpdateTime(currDate);
-        enterprise.setUpdator(sessionUser.getUsername());
+        return 0;
     }
+
 }

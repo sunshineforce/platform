@@ -18,4 +18,6 @@ import java.util.List;
 @Repository
 public interface MaterialTypeDao extends BaseDao<MaterialTypeEntity> {
     List<TreeVo> queryAllMaterialType();
+
+    MaterialTypeEntity queryMaterialTypeByName(String name);
 }

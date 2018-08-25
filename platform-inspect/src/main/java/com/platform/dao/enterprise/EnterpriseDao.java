@@ -1,6 +1,7 @@
 package com.platform.dao.enterprise;
 
 import com.platform.dao.BaseDao;
+import com.platform.entity.dto.CustomerVo;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import org.springframework.stereotype.Repository;
 
@@ -14,5 +15,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface EnterpriseDao extends BaseDao<EnterpriseEntity> {
-
+    EnterpriseEntity queryEnterpriseByName(CustomerVo params);
 }

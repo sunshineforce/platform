@@ -142,4 +142,9 @@
 		</foreach>
 	</delete>
 
+	<!-- 根据设备类型名称查询设备类型 -->
+	<select id="queryMaterialTypeByName" parameterType="java.lang.String" resultType="com.platform.entity.material.MaterialTypeEntity">
+		SELECT * from material_type t where t.name=#{name}
+	</select>
+
 </mapper>

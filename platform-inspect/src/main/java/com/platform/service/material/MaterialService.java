@@ -1,6 +1,7 @@
 package com.platform.service.material;
 
 
+import com.platform.entity.dto.CustomerVo;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.material.MaterialVo;
 
@@ -82,5 +83,10 @@ public interface MaterialService {
     //APP接口
     MaterialVo queryMaterialById(Integer id);
 
-    List<MaterialVo> materialHistory(Map<String, Object> map);
+    /**
+     * 批量绑定设备
+     * @param customer
+     * @return
+     */
+    int materialBindBatch(CustomerVo customer);
 }

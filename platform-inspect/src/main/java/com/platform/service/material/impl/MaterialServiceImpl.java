@@ -1,23 +1,36 @@
 package com.platform.service.material.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.platform.constants.CommonConstant;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.material.MaterialDao;
 import com.platform.dao.material.MaterialTypeDao;
+import com.platform.entity.AppUserEntity;
+import com.platform.entity.dto.AuthVo;
+import com.platform.entity.dto.CustomerVo;
+import com.platform.entity.dto.DeviceListVo;
+import com.platform.entity.dto.DeviceVo;
 import com.platform.entity.inspect.vo.AnomalyVo;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.material.MaterialTypeEntity;
 import com.platform.entity.material.MaterialVo;
 import com.platform.service.common.CommonService;
 import com.platform.service.material.MaterialService;
+import com.platform.util.AppClientUtils;
+import com.platform.util.MaterialBindUtils;
+import com.platform.utils.ShiroUtils;
 import com.platform.utils.StringUtils;
 import com.platform.utils.enums.MaterialStatusEnum;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.shiro.subject.Subject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 /**
@@ -27,6 +40,9 @@ import java.util.Map;
  */
 @Service("materialService")
 public class MaterialServiceImpl implements MaterialService {
+
+    public static final Logger logger = LoggerFactory.getLogger(MaterialServiceImpl.class);
+
     @Autowired
     private MaterialDao materialDao;
 
@@ -38,6 +54,9 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Autowired
     private InspectOrderDao inspectOrderDao;
+
+    //客户设备列表页索引
+    private volatile Integer pageIndex = 1;
 
     @Override
     public MaterialEntity queryObject(Integer id) {
@@ -109,8 +128,85 @@ public class MaterialServiceImpl implements MaterialService {
     }
 
     @Override
-    public List<MaterialVo> materialHistory(Map<String, Object> map) {
+    public int materialBindBatch(CustomerVo customer) {
+        String url = CommonConstant.THIRD_PARTY_URL+CommonConstant.CUSTOMER_MATERIAL_URL;
+        String customerId = customer.getId();
+        DeviceListVo deviceListVo = setBindMaterialRequestParams(url, customerId);
+        Integer pages = deviceListVo.getPages();
+        List<DeviceVo> list;
+        for (int i = 0; i < pages; i++) {
+            pageIndex++;
+            deviceListVo = setBindMaterialRequestParams(url,customerId);
+            list = deviceListVo.getRecords();
+            if (CollectionUtils.isNotEmpty(list)) {
+                bindMaterialWithPage(list);
+            }
+        }
+        return 0;
+    }
 
+    private MaterialTypeEntity saveMaterialType(DeviceVo deviceVo){
+        MaterialTypeEntity materialType = materialTypeDao.queryMaterialTypeByName(deviceVo.getTypeName());
+        if (materialType == null) {
+            materialType = new MaterialTypeEntity();
+            AppUserEntity appUser = commonService.getCurrentLoginUser();
+            materialType.setName(deviceVo.getTypeName());
+            materialType.setEnterpriseId(appUser.getEnterpriseId());
+            materialType.setCreateTime(new Date());
+            materialType.setCreatorId(appUser.getId());
+            materialType.setCreator(appUser.getRealname());
+
+            materialTypeDao.save(materialType);
+
+        }
+        return materialType;
+    }
+
+    private void bindMaterialWithPage(List<DeviceVo> list){
+        MaterialTypeEntity materialType;
+        if (CollectionUtils.isNotEmpty(list)) {
+            AppUserEntity appUser = commonService.getCurrentLoginUser();
+            for (DeviceVo deviceVo : list) {
+                MaterialEntity material = new MaterialEntity();
+                material.setQrCode("");
+                material.setMaterialName("");
+                material.setLocation(deviceVo.getAddrDetail());
+                material.setRegionId(0L);
+                material.setEnterpriseId(11);
+                //设置物料类型
+                materialType = saveMaterialType(deviceVo);
+                material.setMaterialTypeId(materialType.getId());
+                material.setMaterialTypeName(deviceVo.getTypeName());
+                material.setProducedDate(new Date());
+                material.setExpireDate(new Date());
+                material.setMaterialStatus(MaterialStatusEnum.UNCHECK.getCode());
+                material.setMaterialUrl("");
+                material.setCreateTime(new Date());
+                material.setCreatorId(appUser.getId());
+                material.setCreator(appUser.getRealname());
+
+                try {
+                    materialDao.save(material);
+                } catch (Exception e) {
+                    logger.error("Bind material exception ! details : " + e);
+                }
+            }
+            bindMaterialWithPage(list);
+        }
+    }
+
+    private DeviceListVo setBindMaterialRequestParams(String url,String customerId){
+        List<BasicNameValuePair> postParams = new ArrayList<BasicNameValuePair>();
+        postParams.add(new BasicNameValuePair("customerId",customerId));
+        postParams.add(new BasicNameValuePair("current",String.valueOf(pageIndex)));
+        postParams.add(new BasicNameValuePair("size",String.valueOf(20)));
+        Subject subject = ShiroUtils.getSubject();
+        AuthVo loginToken = (AuthVo) subject.getSession().getAttribute(CommonConstant.AUTH_TOKEN);
+        String resultJson = AppClientUtils.sendPost(loginToken,url,postParams);
+        if (StringUtils.isNotEmpty(resultJson)) {
+            DeviceListVo listVo = JSON.parseObject(resultJson,DeviceListVo.class);
+            return listVo;
+        }
         return null;
     }
 

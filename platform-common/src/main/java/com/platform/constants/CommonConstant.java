@@ -1,10 +1,6 @@
 package com.platform.constants;
 
-import org.apache.http.message.BasicNameValuePair;
-
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created on 2018/2/13.
@@ -53,12 +49,16 @@ public class CommonConstant {
 
     public static final String THIRD_PARTY_URL = AUTH_URL.concat(File.separator).concat(AUTH_TYPE);
 
-    public static List<BasicNameValuePair> token = new ArrayList<BasicNameValuePair>(4);
+    public static final String AUTH_TOKEN="";
 
-    public CommonConstant() {
-        token.add(new BasicNameValuePair("client_id","vQzpPTDRs0fi7pNGmnv4"));
-        token.add(new BasicNameValuePair("client_secret","xVfxCsvtp2HKUGcxEQrh"));
-        token.add(new BasicNameValuePair("grant_type","client_credentials"));
-        token.add(new BasicNameValuePair("scope","read write"));
-    }
+    public static final String client_id = "vQzpPTDRs0fi7pNGmnv4";
+
+    public static final String client_secret = "xVfxCsvtp2HKUGcxEQrh";
+
+    public static final String grant_type = "client_credentials";
+
+    public static final String scope = "read write";
+
+    //客户设备列表url
+    public static final String CUSTOMER_MATERIAL_URL="/customer/deviceList";
 }
