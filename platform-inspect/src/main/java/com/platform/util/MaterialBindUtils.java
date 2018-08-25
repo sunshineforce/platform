@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.platform.constants.CommonConstant;
 import com.platform.entity.dto.AuthVo;
 import com.platform.utils.HttpUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.http.message.BasicNameValuePair;
 
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA
@@ -22,18 +22,22 @@ import java.util.Date;
 
 public class MaterialBindUtils {
 
-    public static final Logger logger = LoggerFactory.getLogger(MaterialBindUtils.class);
-
     public static AuthVo getLoginToken(){
-        String result = HttpUtil.postJsonWithForm(CommonConstant.AUTH_URL,CommonConstant.token);
+        List<BasicNameValuePair> authParams = new ArrayList<BasicNameValuePair>(4);
+        authParams.add(new BasicNameValuePair("client_id",CommonConstant.client_id));
+        authParams.add(new BasicNameValuePair("client_secret",CommonConstant.client_secret));
+        authParams.add(new BasicNameValuePair("grant_type",CommonConstant.grant_type));
+        authParams.add(new BasicNameValuePair("scope",CommonConstant.scope));
+
+        String result = HttpUtil.postJsonWithForm(CommonConstant.AUTH_URL,authParams);
         AuthVo auth = JSON.parseObject(result,AuthVo.class);
-        auth.setEffectTime(new Date().getTime());
+        auth.setEffectTime((System.currentTimeMillis()/1000));
         return auth;
     }
 
     //判断token是否过期
     public static boolean isExpire(AuthVo authVo){
-        Long currentDate = new Date().getTime();
+        Long currentDate = System.currentTimeMillis()/1000;
         if (currentDate-authVo.getEffectTime() > authVo.getExpires_in()) {
             return true;
         }else {

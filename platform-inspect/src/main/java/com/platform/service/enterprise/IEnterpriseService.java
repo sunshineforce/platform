@@ -1,5 +1,6 @@
 package com.platform.service.enterprise;
 
+import com.platform.entity.dto.CustomerVo;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.utils.PageUtils;
 import com.platform.vo.SelectVo;
@@ -80,4 +81,6 @@ public interface IEnterpriseService {
     int deleteBatch(Long[]ids);
 
     PageUtils search(Map<String, Object> map);
+
+    int enterpriseBind(CustomerVo params);
 }

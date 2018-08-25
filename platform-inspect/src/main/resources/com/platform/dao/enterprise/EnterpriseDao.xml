@@ -127,7 +127,7 @@
 	<update id="update" parameterType="com.platform.entity.enterprise.EnterpriseEntity">
 		update enterprise 
 		<set>
-			<if test="enterpriseName != null">`enterprise_name` = #{enterpriseName}, </if>
+			<if test="enterpriseName != null and enterpriseName!='' ">`enterprise_name` = #{enterpriseName}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="userId != null">`user_id` = #{userId}, </if>
 			<if test="mobile != null">`mobile` = #{mobile}, </if>
@@ -154,5 +154,12 @@
 			#{id}
 		</foreach>
 	</delete>
+
+	<select id="queryEnterpriseByName" parameterType="com.platform.entity.dto.CustomerVo" resultType="com.platform.entity.enterprise.EnterpriseEntity">
+		SELECT * FROM enterprise WHERE 1=1
+		<if test="customerName != null and customerName!=''">
+			AND enterprise_name = #{customerName}
+		</if>
+	</select>
 
 </mapper>

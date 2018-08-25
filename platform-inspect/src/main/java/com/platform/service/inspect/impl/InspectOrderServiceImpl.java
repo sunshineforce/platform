@@ -149,6 +149,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
         if (inspectOrder.getInspectStatus().intValue() == InspectStatusEnum.NORMAL.getCode().intValue()) {
             inspectOrder.setStatus(InspectOrderStatusEnum.FINISHED.getCode());
         }
+
         //保存异常记录
         int effectRows = save(inspectOrder);
         if (inspectOrder.getInspectStatus().intValue() == InspectStatusEnum.ABNORMAL.getCode().intValue()) {
@@ -159,6 +160,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
 //            AppUserEntity appUser = commonService.getCurrentLoginUser();
 //            orderFlow.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
 //            orderFlow.setUserName(appUser.getRealname());
+
 
             orderFlow.setUserId(11);
             orderFlow.setUserName("曹操");
@@ -195,6 +197,7 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
 //        AppUserEntity appUser = commonService.getCurrentLoginUser();
 //        entity.setUserId(Integer.valueOf(String.valueOf(appUser.getId())));
 //        entity.setUserName(appUser.getRealname());
+//        entity.setEnterpriseId(appUser.getEnterpriseId());
 
         entity.setUserId(11);
         entity.setUserName("曹操");

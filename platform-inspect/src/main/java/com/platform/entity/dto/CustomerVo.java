@@ -13,10 +13,11 @@ import java.io.Serializable;
  */
 
 
-public class EnterpriseMaterialsVo implements Serializable {
+public class CustomerVo implements Serializable {
 
     private static final long serialVersionUID = 4060555747033077318L;
 
+    private String id;
     //客户名称
     private String customerName;
     //客户电话
@@ -25,6 +26,14 @@ public class EnterpriseMaterialsVo implements Serializable {
     private String addrName;
     //客户详细地址
     private String addrDetail;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getCustomerName() {
         return customerName;

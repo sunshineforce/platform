@@ -55,6 +55,9 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
             checkSpecific.setItemList(checkItems);
         }
         Integer total = checkSpecificDao.queryTotalSimple(map);
+        if (total == null) {
+            total = 0;
+        }
 
         return new PageUtils(resultList, total, query.getLimit(), query.getPage());
     }

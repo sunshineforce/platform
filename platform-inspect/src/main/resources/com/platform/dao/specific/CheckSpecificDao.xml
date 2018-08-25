@@ -95,16 +95,20 @@
 	</select>
 
 	<select id="queryTotalSimple" resultType="com.platform.entity.specific.vo.CheckSpecificVo">
-		SELECT count(1)
-		FROM material m
-		LEFT JOIN check_specific cs ON m.check_specific_id = cs.id
-		where m.material_type_id = #{materialTypeId}
-		<if test="name != null and name.trim() != ''">
-			AND cs.specific_name LIKE concat('%',#{name},'%')
-		</if>
-		<if test="enterpriseId != null ">
-			AND cs.enterprise_id = #{enterpriseId} OR  cs.enterprise_id IS NULL
-		</if>
+		SELECT COUNT(1) FROM
+		(
+			SELECT cs.id
+			FROM material m
+			LEFT JOIN check_specific cs ON m.check_specific_id = cs.id
+			where m.material_type_id = #{materialTypeId}
+			<if test="name != null and name.trim() != ''">
+				AND cs.specific_name LIKE concat('%',#{name},'%')
+			</if>
+			<if test="enterpriseId != null ">
+				AND cs.enterprise_id = #{enterpriseId} OR cs.enterprise_id IS NULL
+			</if>
+			GROUP BY m.material_type_id
+		) t
 	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.specific.CheckSpecificEntity" useGeneratedKeys="true" keyProperty="id">
