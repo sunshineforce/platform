@@ -48,6 +48,9 @@
 		<if test="typeId != null and typeId.trim() != ''">
 			AND t.id = #{typeId}
 		</if>
+		<if test="enterpriseId != null">
+			AND g.enterprise_id = #{enterpriseId} OR g.enterprise_id IS NULL
+		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
 				order by ${sidx} ${order}
@@ -81,6 +84,9 @@
 		</if>
 		<if test="typeId != null and typeId.trim() != ''">
 			AND t.id = #{typeId}
+		</if>
+		<if test="enterpriseId != null">
+			AND g.enterprise_id = #{enterpriseId} OR g.enterprise_id IS NULL
 		</if>
 	</select>
 

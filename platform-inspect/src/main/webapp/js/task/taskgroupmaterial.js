@@ -13,7 +13,7 @@ $(function () {
             {label: '最近检查时间', name: 'updateTime', index: 'update_time', align: 'center'}
 		],
 		viewrecords: true,
-        height: 385,
+        height: 560,
         rowNum: 10,
         rowList: [10, 30, 50],
         rownumbers: true,
@@ -63,7 +63,7 @@ var vm = new Vue({
 		    name: ''
 		},
         taskGroupList:[
-            {id:"",name:"任务组"}
+            {id:"",name:"选择任务组"}
         ], //查询使用
 	},
     created:function () {
@@ -142,7 +142,10 @@ var vm = new Vue({
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {
+                    'materialName': vm.q.name,
+                    'taskGroupId' : (vm.q.taskGroupId != "") ? vm.q.taskGroupId : null,
+                },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');

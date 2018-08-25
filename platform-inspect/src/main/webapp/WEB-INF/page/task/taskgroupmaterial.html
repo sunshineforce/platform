@@ -9,14 +9,15 @@
 	<div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
-            </i-col>
-            <i-col span="4">
-                <i-select v-model="q.taskGroupId" filterable placeholder="任务组">
+                <i-select v-model="q.taskGroupId" filterable placeholder="选择任务组">
                     <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
                     </i-option>
                 </i-select>
             </i-col>
+            <i-col span="4">
+                <i-input v-model="q.name" @on-enter="query" placeholder="物品名称"/>
+            </i-col>
+
             <i-button @click="query">查询</i-button>
 			#if($shiro.hasPermission("taskgroupmaterial:save"))
             <i-button type="info" @click="add"><i class="fa fa-plus"></i>&nbsp;添加</i-button>
