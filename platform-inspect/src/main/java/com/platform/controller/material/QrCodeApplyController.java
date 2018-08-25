@@ -73,7 +73,6 @@ public class QrCodeApplyController extends AbstractController {
      * 保存
      */
     @RequestMapping("/save")
-    @RequiresPermissions("qrcodeapply:save")
     @ResponseBody
     public R save(@RequestBody QrCodeApplyEntity qrCodeApply) {
         SysUserEntity user = getUser();
