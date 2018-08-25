@@ -6,6 +6,7 @@
     <resultMap type="com.platform.entity.task.TaskDetailEntity" id="taskDetailMap">
         <result property="id" column="id"/>
         <result property="taskId" column="task_id"/>
+		<result property="enterpriseId" column="enterprise_id"/>
         <result property="status" column="status"/>
         <result property="delayReason" column="delay_reason"/>
         <result property="startTime" column="start_time"/>
@@ -22,7 +23,8 @@
 			`delay_reason`,
 			`start_time`,
 			`update_time`,
-			region_id,
+			 region_id,
+			 enterprise_id,
 			`end_time`
 		from task_detail
 		where id = #{id}
@@ -35,8 +37,9 @@
     		`status`,
     		`delay_reason`,
     		`start_time`,
-		`update_time`,
+		    `update_time`,
 		     region_id,
+		     enterprise_id,
     		`end_time`
 		from task_detail
 		WHERE 1=1
@@ -85,6 +88,7 @@
 				#{regionId}
 			</foreach>
 		</if>
+		<if test="enterpriseId != null"> AND  `enterprise_id` = #{enterpriseId} </if>
 		GROUP BY  region_id,`status`
 	</select>
 	 
@@ -96,6 +100,7 @@
 			`start_time`,
 			`update_time`,
 			`end_time`,
+			 enterprise_id,
 		     region_id)
 		values(
 			#{taskId},
@@ -104,6 +109,7 @@
 			#{startTime},
 			#{updateime},
 			#{endTime},
+			#{enterpriseId},
 			#{regionId})
 	</insert>
 	 
@@ -113,6 +119,7 @@
 			<if test="taskId != null">`task_id` = #{taskId}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
+			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="delayReason != null">`delay_reason` = #{delayReason}, </if>
 			<if test="startTime != null">`start_time` = #{startTime}, </if>
 			<if test="updateime != null">`update_time` = #{updateime}, </if>

@@ -134,7 +134,7 @@ public class TaskServiceImpl implements TaskService {
 
     private void createChildTask(TaskEntity task){
         Date endTime = TaskUtils.calCircleTaskEndTime(task.getStartTime(),task.getSchedule());
-        TaskDetailEntity detailEntity = new TaskDetailEntity(task.getId(), task.getRegionId(),
+        TaskDetailEntity detailEntity = new TaskDetailEntity(task.getId(), task.getRegionId(), task.getEnterpriseId(),
                 TaskStatusEnum.PENDING.getCode(), task.getStartTime(), endTime, new Date());
         taskDetailDao.save(detailEntity);
 
