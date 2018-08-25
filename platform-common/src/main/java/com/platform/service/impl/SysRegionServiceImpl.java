@@ -4,10 +4,15 @@ import com.platform.dao.SysRegionDao;
 import com.platform.entity.SysRegionEntity;
 import com.platform.service.SysRegionService;
 import com.platform.utils.TreeBuilder;
+import com.platform.utils.TreeUtils;
+import com.platform.utils.WeixinTreeBuilder;
 import com.platform.vo.TreeVo;
+import com.platform.vo.WeixinTreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +80,13 @@ public class SysRegionServiceImpl implements SysRegionService {
     @Override
     public List<TreeVo> queryRegionSimple(SysRegionEntity regionEntity) {
         return sysRegionDao.queryRegionSimple(regionEntity);
+    }
+
+    @Override
+    public List<WeixinTreeVo> buildWeixinTree() {
+        List<WeixinTreeVo> rootList = sysRegionDao.queryAllRegionForWeixin(null);
+        WeixinTreeBuilder treeBuilder = new WeixinTreeBuilder(rootList);
+        List<WeixinTreeVo> list = treeBuilder.buildTree();
+        return list;
     }
 }

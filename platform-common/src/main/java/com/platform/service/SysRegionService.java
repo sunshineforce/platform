@@ -3,6 +3,7 @@ package com.platform.service;
 
 import com.platform.entity.SysRegionEntity;
 import com.platform.vo.TreeVo;
+import com.platform.vo.WeixinTreeVo;
 
 import java.util.List;
 import java.util.Map;
@@ -85,4 +86,6 @@ public interface SysRegionService {
     List<TreeVo> buildRegionTree();
 
     List<TreeVo> queryRegionSimple(SysRegionEntity region);
+
+    List<WeixinTreeVo> buildWeixinTree();
 }
