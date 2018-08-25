@@ -9,7 +9,7 @@
 	<div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-select v-model="q.taskGroupId" filterable placeholder="任务组">
+                <i-select v-model="q.taskGroupId" filterable placeholder="选择任务组">
                     <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
                     </i-option>
                 </i-select>
