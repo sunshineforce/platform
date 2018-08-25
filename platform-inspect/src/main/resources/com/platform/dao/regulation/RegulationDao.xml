@@ -62,7 +62,7 @@
 		from regulation
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+			AND knowledge_name LIKE concat('%',#{name},'%')
 		</if>
 		<if test="enterpriseId != null ">
 			AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
@@ -84,7 +84,7 @@
 		select count(*) from regulation
 		WHERE 1=1
         <if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+            AND knowledge_name LIKE concat('%',#{name},'%')
         </if>
 		<if test="enterpriseId != null ">
 			AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
