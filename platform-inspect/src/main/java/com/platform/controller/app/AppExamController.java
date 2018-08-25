@@ -90,6 +90,7 @@ public class AppExamController {
             }else {
                 status = 3;
             }
+            exam.setStatus(status);
         }
     }
 
