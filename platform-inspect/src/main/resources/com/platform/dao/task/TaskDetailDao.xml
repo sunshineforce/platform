@@ -107,7 +107,7 @@
 			#{status},
 			#{delayReason},
 			#{startTime},
-			#{updateime},
+			#{updateTime},
 			#{endTime},
 			#{enterpriseId},
 			#{regionId})
@@ -122,7 +122,7 @@
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="delayReason != null">`delay_reason` = #{delayReason}, </if>
 			<if test="startTime != null">`start_time` = #{startTime}, </if>
-			<if test="updateime != null">`update_time` = #{updateime}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
 			<if test="endTime != null">`end_time` = #{endTime} </if>
 		</set>
 		where id = #{id}
