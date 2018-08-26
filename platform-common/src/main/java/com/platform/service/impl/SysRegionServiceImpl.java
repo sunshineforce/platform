@@ -4,15 +4,12 @@ import com.platform.dao.SysRegionDao;
 import com.platform.entity.SysRegionEntity;
 import com.platform.service.SysRegionService;
 import com.platform.utils.TreeBuilder;
-import com.platform.utils.TreeUtils;
 import com.platform.utils.WeixinTreeBuilder;
 import com.platform.vo.TreeVo;
 import com.platform.vo.WeixinTreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
