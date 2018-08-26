@@ -68,7 +68,7 @@ public class AppCheckSpecificController {
             checkSpecificItemService.save(specificItem);
         }
 
-        return R.succeed();
+        return R.succeed().put("data",entity);
     }
 
     //检查参数合法性
