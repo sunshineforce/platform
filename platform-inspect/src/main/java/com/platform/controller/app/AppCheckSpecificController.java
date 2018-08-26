@@ -62,6 +62,7 @@ public class AppCheckSpecificController {
 
         checkSpecificService.save(entity);
         List<CheckSpecificItemEntity> itemList = JSON.parseArray(entity.getSpecificItemsJson(),CheckSpecificItemEntity.class);
+        entity.setSpecificItems(itemList);
         for (CheckSpecificItemEntity specificItem : itemList) {
             specificItem.setSpecificId(entity.getId());
             specificItem.setDataStatus(DataStatusEnum.NORMAL.getCode());
