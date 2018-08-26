@@ -32,6 +32,8 @@ public class AnomalyVo implements Serializable {
     private String materialUrl;
     //企业名称
     private String enterpriseName;
+    //区域
+    private String region;
     //位置
     private String location;
     //检查时间
@@ -109,6 +111,14 @@ public class AnomalyVo implements Serializable {
 
     public void setEnterpriseName(String enterpriseName) {
         this.enterpriseName = enterpriseName;
+    }
+
+    public String getRegion() {
+        return region;
+    }
+
+    public void setRegion(String region) {
+        this.region = region;
     }
 
     public String getLocation() {
