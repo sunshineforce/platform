@@ -130,7 +130,7 @@ public class AppExamController {
      */
     @RequestMapping("/subExamResult")
     @ResponseBody
-    public R subExamResult(@RequestBody ExamMemberEntity examMemberEntity ) {
+    public R subExamResult(ExamMemberEntity examMemberEntity ) {
         ///参数校验
         if(null == examMemberEntity.getExamId() || null == examMemberEntity.getMemberId()){
             return  R.paramsIllegal();

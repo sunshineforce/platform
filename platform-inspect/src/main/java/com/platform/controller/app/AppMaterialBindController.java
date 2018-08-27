@@ -49,11 +49,13 @@ public class AppMaterialBindController extends AbstractController {
     }
 
     @RequestMapping(value = "/customer/bind",method = RequestMethod.POST)
+    @ResponseBody
     public R materialBindBatch(@ModelAttribute CustomerVo customer){
         //绑定客户
         enterpriseService.enterpriseBind(customer);
         //绑定设备
-        materialService.materialBindBatch(customer);
+        materialService.materialBind(customer);
         return R.succeed();
     }
+
 }

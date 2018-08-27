@@ -49,8 +49,6 @@ public class CommonConstant {
 
     public static final String THIRD_PARTY_URL = AUTH_URL.concat(File.separator).concat(AUTH_TYPE);
 
-    public static final String AUTH_TOKEN="";
-
     public static final String client_id = "vQzpPTDRs0fi7pNGmnv4";
 
     public static final String client_secret = "xVfxCsvtp2HKUGcxEQrh";

@@ -1,5 +1,6 @@
 package com.platform.controller.app;
 
+import com.alibaba.fastjson.JSON;
 import com.platform.entity.specific.CheckSpecificEntity;
 import com.platform.entity.specific.CheckSpecificItemEntity;
 import com.platform.service.specific.CheckSpecificItemService;
@@ -60,14 +61,15 @@ public class AppCheckSpecificController {
         }
 
         checkSpecificService.save(entity);
-        List<CheckSpecificItemEntity> itemList = entity.getSpecificItems();
+        List<CheckSpecificItemEntity> itemList = JSON.parseArray(entity.getSpecificItemsJson(),CheckSpecificItemEntity.class);
+        entity.setSpecificItems(itemList);
         for (CheckSpecificItemEntity specificItem : itemList) {
             specificItem.setSpecificId(entity.getId());
             specificItem.setDataStatus(DataStatusEnum.NORMAL.getCode());
             checkSpecificItemService.save(specificItem);
         }
 
-        return R.succeed();
+        return R.succeed().put("data",entity);
     }
 
     //检查参数合法性

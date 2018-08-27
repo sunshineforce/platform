@@ -56,4 +56,9 @@ public class AppCommonController{
         return R.succeed().put(CommonConstant.DATA_KEY,regionService.queryAllRegion());
     }
 
+    @RequestMapping(value = "/wx/region/list")
+    public R queryAllRegionForWeixin(){
+        return R.succeed().put(CommonConstant.DATA_KEY,regionService.buildWeixinTree());
+    }
+
 }

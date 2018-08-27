@@ -75,9 +75,10 @@ public class CheckSpecificServiceImpl implements CheckSpecificService {
     @Override
     public int save(CheckSpecificEntity checkSpecific) {
         checkSpecific.setCreateTime(new Date());
-        Subject subject = ShiroUtils.getSubject();
-        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
-        checkSpecific.setCreator(appUser.getRealname());
+//        Subject subject = ShiroUtils.getSubject();
+//        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
+//        checkSpecific.setCreator(appUser.getRealname());
+//        checkSpecific.setEnterpriseId(appUser.getEnterpriseId());
         return checkSpecificDao.save(checkSpecific);
     }
 
