@@ -4,6 +4,7 @@ package com.platform.service.material;
 import com.platform.entity.dto.CustomerVo;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.material.MaterialVo;
+import com.platform.entity.material.vo.MaterialCheckVo;
 
 import java.util.List;
 import java.util.Map;
@@ -31,6 +32,9 @@ public interface MaterialService {
      * @return 实体
      */
     MaterialEntity queryMaterialByQrCode(String qrCode);
+
+
+    MaterialCheckVo materialInfo(String qrCode);
 
     /**
      * 分页查询

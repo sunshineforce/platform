@@ -32,6 +32,15 @@ public class AppMaterialController {
         return R.succeed().put("list",materialService.queryMaterialById(id));
     }
 
+    @RequestMapping("/material/info")
+    @ResponseBody
+    public R MaterialEntity(@RequestParam String qrCode) {
+        if (StringUtils.isNullOrEmpty(qrCode)) {
+            return R.paramsIllegal();
+        }
+        return R.succeed().put("list",materialService.materialInfo(qrCode));
+    }
+
     @RequestMapping("/material/history")
     @ResponseBody
     public R history(@RequestParam Map<String, Object> params) {

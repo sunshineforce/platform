@@ -5,6 +5,7 @@ import com.platform.constants.CommonConstant;
 import com.platform.dao.inspect.InspectOrderDao;
 import com.platform.dao.material.MaterialDao;
 import com.platform.dao.material.MaterialTypeDao;
+import com.platform.dao.specific.CheckSpecificItemDao;
 import com.platform.entity.AppUserEntity;
 import com.platform.entity.dto.AuthVo;
 import com.platform.entity.dto.CustomerVo;
@@ -14,12 +15,15 @@ import com.platform.entity.inspect.vo.AnomalyVo;
 import com.platform.entity.material.MaterialEntity;
 import com.platform.entity.material.MaterialTypeEntity;
 import com.platform.entity.material.MaterialVo;
+import com.platform.entity.material.vo.MaterialCheckVo;
+import com.platform.entity.specific.CheckSpecificItemEntity;
 import com.platform.service.common.CommonService;
 import com.platform.service.material.MaterialService;
 import com.platform.util.AppClientUtils;
 import com.platform.util.MaterialBindUtils;
 import com.platform.utils.StringUtils;
 import com.platform.utils.enums.MaterialStatusEnum;
+import com.platform.vo.SelectVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.http.message.BasicNameValuePair;
 import org.slf4j.Logger;
@@ -53,6 +57,9 @@ public class MaterialServiceImpl implements MaterialService {
     private CommonService commonService;
 
     @Autowired
+    private CheckSpecificItemDao checkSpecificItemDao;
+
+    @Autowired
     private InspectOrderDao inspectOrderDao;
 
     //客户设备列表页索引
@@ -75,6 +82,19 @@ public class MaterialServiceImpl implements MaterialService {
     @Override
     public MaterialEntity queryMaterialByQrCode(String qrCode) {
         return materialDao.queryMaterialByQrCode(qrCode);
+    }
+
+    @Override
+    public MaterialCheckVo materialInfo(String qrCode) {
+        MaterialEntity materialEntity = queryMaterialByQrCode(qrCode);
+        MaterialCheckVo result = new MaterialCheckVo();
+        BeanUtils.copyProperties(materialEntity,result);
+        result.setRegion(commonService.getRegionName(Integer.valueOf(String.valueOf(materialEntity.getRegionId()))));
+        List<SelectVo> list = checkSpecificItemDao.queryListSimple(Long.valueOf(String.valueOf(materialEntity.getCheckSpecificId())));
+        result.setCheckSpecificItems(list);
+        List<SelectVo> chiefs = new ArrayList<>();
+        result.setCheifs(chiefs);
+        return result;
     }
 
     @Override
