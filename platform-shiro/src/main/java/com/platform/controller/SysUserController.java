@@ -19,6 +19,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -155,7 +156,7 @@ public class SysUserController extends AbstractController {
     @RequiresPermissions("sys:user:save")
     public R save(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, AddGroup.class);
-
+        user.setCreateTime(new Date());
         user.setCreateUserId(getUserId());
         sysUserService.save(user);
 
@@ -170,8 +171,8 @@ public class SysUserController extends AbstractController {
     @RequiresPermissions("sys:user:update")
     public R update(@RequestBody SysUserEntity user) {
         ValidatorUtils.validateEntity(user, UpdateGroup.class);
-
-        user.setCreateUserId(getUserId());
+        user.setUpdateTime(new Date());
+        user.setUpdateUserId(getUserId());
         sysUserService.update(user);
 
         return R.ok();

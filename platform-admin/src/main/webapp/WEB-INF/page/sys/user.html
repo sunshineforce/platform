@@ -14,7 +14,13 @@
             <div class="col-sm-10 ml30">
                 <Row :gutter="16">
                     <i-col span="4">
-                        <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                        <i-input v-model="q.realname" @on-enter="query" placeholder="姓名"/>
+                    </i-col>
+                    <i-col span="4">
+                        <i-input v-model="q.username" @on-enter="query" placeholder="账号"/>
+                    </i-col>
+                    <i-col span="4">
+                        <i-input v-model="q.mobile" @on-enter="query" placeholder="手机号"/>
                     </i-col>
                     <i-button @click="query">查询</i-button>
                     #if($shiro.hasPermission("appUser:save"))

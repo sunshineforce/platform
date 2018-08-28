@@ -18,10 +18,16 @@
 		from sys_user u
 		<where>
 			<if test="createUserId != null">
-				and `create_user_id` = #{createUserId} 
+				and `create_user_id` = #{createUserId}
+			</if>
+			<if test="mobile != null and mobile.trim() != ''">
+				and `mobile` like concat('%',#{mobile},'%')
 			</if>
 			<if test="username != null and username.trim() != ''">
 				and u.`username` like concat('%',#{username},'%')
+			</if>
+			<if test="realname != null and realname.trim() != ''">
+				and u.`realname` like concat('%',#{realname},'%')
 			</if>
 			<if test="regionIdList != null">
 				AND region_id IN
@@ -85,16 +91,19 @@
 	</select>
 
 	<select id="queryTotal" resultType="int">
-		select count(1) from sys_user
+		select count(1) from sys_user u
 		<where>
 			<if test="createUserId != null">
-				and `create_user_id` = #{createUserId} 
+				and `create_user_id` = #{createUserId}
+			</if>
+			<if test="mobile != null and mobile.trim() != ''">
+				and `mobile` like concat('%',#{mobile},'%')
 			</if>
 			<if test="username != null and username.trim() != ''">
-				and `username` like concat('%',#{username},'%') 
+				and u.`username` like concat('%',#{username},'%')
 			</if>
-			<if test="status != null and status.trim() != ''">
-				and `status` = #{status}
+			<if test="realname != null and realname.trim() != ''">
+				and u.`realname` like concat('%',#{realname},'%')
 			</if>
 			<if test="regionIdList != null">
 				AND region_id IN
@@ -203,6 +212,8 @@
 			<if test="identify != null">`identify` = #{identify}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="superior != null">`superior` = #{superior}, </if>
+			<if test="updateTime != null">`update_time` = #{updateTime}, </if>
+			<if test="updateUserId != null">`update_user_id` = #{updateUserId}, </if>
 			<if test="certificateUrl != null">`certificate_url` = #{certificateUrl}, </if>
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId} </if>
 		</set>

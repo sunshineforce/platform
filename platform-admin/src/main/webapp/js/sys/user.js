@@ -55,6 +55,8 @@ var vm = new Vue({
         q: {
             username: null,
             regionId:null,
+            realname:null,
+            mobile:null,
         },
         showList: true,
         title: null,
@@ -65,15 +67,19 @@ var vm = new Vue({
             roleIdList: []
         },
         ruleValidate: {
-            username: [
+            realname: [
                 {required: true, message: '姓名不能为空', trigger: 'blur'}
+            ],
+            username: [
+                {required: true, message: '账户不能为空', trigger: 'blur'}
             ],
             email: [
                 {required: true, message: '邮箱不能为空', trigger: 'blur'},
                 {type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
             ],
             mobile: [
-                {required: true, message: '手机号不能为空', trigger: 'blur'}
+                {required: true, message: '手机号不能为空', trigger: 'blur'},
+                { type: 'string',pattern:/^0?(13|15|18|14)[0-9]{9}$/, message:'手机号不符合规范', trigger:'blur'},
             ]
         },
         canSetPwd:true,
@@ -229,7 +235,12 @@ var vm = new Vue({
             vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
             $("#jqGrid").jqGrid('setGridParam', {
-                postData: {'username': vm.q.username,"regionId":vm.q.regionId},
+                postData: {
+                    'username': vm.q.username,
+                    "regionId":vm.q.regionId,
+                    "mobile":vm.q.mobile,
+                    "realname":vm.q.realname,
+                },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
