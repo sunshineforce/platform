@@ -88,4 +88,10 @@ public interface SysRegionService {
     List<TreeVo> queryRegionSimple(SysRegionEntity region);
 
     List<WeixinTreeVo> buildWeixinTree();
+
+    /**
+     * 级联树
+     * @return
+     */
+    List<WeixinTreeVo> buildCascadeTree(SysRegionEntity region);
 }

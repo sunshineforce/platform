@@ -93,4 +93,12 @@ public class SysRegionServiceImpl implements SysRegionService {
         list = JSON.parseArray(json,WeixinTreeVo.class);
         return list;
     }
+
+    @Override
+    public List<WeixinTreeVo> buildCascadeTree(SysRegionEntity region) {
+        List<WeixinTreeVo> rootList = sysRegionDao.queryAllRegionForWeixin(region);
+        WeixinTreeBuilder treeBuilder = new WeixinTreeBuilder(rootList);
+        List<WeixinTreeVo> list = treeBuilder.buildTree();
+        return list;
+    }
 }

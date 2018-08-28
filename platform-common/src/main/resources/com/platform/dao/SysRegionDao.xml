@@ -56,10 +56,13 @@
 
     <select id="queryAllRegionForWeixin" parameterType="com.platform.entity.SysRegionEntity" resultType="com.platform.vo.WeixinTreeVo">
         SELECT id as value,parent_Id as pid,name as label FROM sys_region WHERE 1=1
-        <if test="id != null and id != ''">
+        <if test="id != null">
             AND id = #{id}
         </if>
-        <if test="parentId != null and parentId != ''">
+        <if test="type != null">
+            AND type > #{type}
+        </if>
+        <if test="parentId != null ">
             AND parent_Id = #{parentId}
         </if>
     </select>

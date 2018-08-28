@@ -31,7 +31,7 @@ public class TreeBuilder implements Serializable {
      * @return
      */
     public static List<TreeVo> buildTree() {
-        List<TreeVo>treeNodes = new ArrayList<TreeVo>();
+        List<TreeVo> treeNodes = new ArrayList<TreeVo>();
         List<TreeVo>rootNodes = getRootNodes();
         for (TreeVo rootNode : rootNodes) {
             buildChildNodes(rootNode);
@@ -50,7 +50,7 @@ public class TreeBuilder implements Serializable {
             for(TreeVo child : children) {
                 buildChildNodes(child);
             }
-            node.setChildren(children);
+            node.setChildren(children == null ? new ArrayList<TreeVo>() : children);
         }
     }
 
@@ -60,7 +60,7 @@ public class TreeBuilder implements Serializable {
      * @return
      */
     public static List<TreeVo> getChildNodes(TreeVo parentNode) {
-        List<TreeVo>childNodes = new ArrayList<TreeVo>();
+        List<TreeVo> childNodes = new ArrayList<TreeVo>();
         for (TreeVo n : nodes){
             if (parentNode.getId().equals(n.getPid())) {
                 childNodes.add(n);

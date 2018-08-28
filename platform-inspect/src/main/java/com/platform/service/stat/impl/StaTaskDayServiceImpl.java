@@ -80,7 +80,7 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
                 st.setCityId(Integer.parseInt(String.valueOf(map.get("cityId"))));
                 st.setDistrictId(region.getId());
                 for (StatDto statDto : statDtos) {
-                    if (null != statDto.getRegionId() && inRegion(region.getId().intValue(),statDto.getRegionId().intValue())){
+                    if (null != statDto.getRegionId() && inRegion(region,statDto.getRegionId().intValue())){
                         if (null != statDto.getStatus()){
                             switch (statDto.getStatus().intValue()){
                                 case 0 : st.setPendingNum(statDto.getNum()); break;
@@ -99,9 +99,9 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
         return list;
     }
 
-    private boolean inRegion(int districtId, int regionId ){
+    private boolean inRegion(SysRegionEntity  region, int regionId ){
         boolean rs = false;
-        List<Integer> regionEntities = RegionCacheUtil.getRegionIdList(districtId,RegionCacheUtil.DISTRICT_TYPE);
+        List<Integer> regionEntities = RegionCacheUtil.getRegionIdList(region.getId(),region.getType());
         if (null != regionEntities && regionEntities.size() > 0){
             for (Integer id : regionEntities) {
                 if (regionId == id.intValue()){
@@ -112,4 +112,5 @@ public class StaTaskDayServiceImpl implements StaTaskDayService {
         }
         return rs;
     }
+
 }

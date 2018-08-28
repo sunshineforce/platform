@@ -1,6 +1,7 @@
 package com.platform.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -19,7 +20,7 @@ public class TreeVo implements Serializable {
     private Integer id;
     private String name;
     private Integer pid;
-    List<TreeVo> children;
+    List<TreeVo> children = new ArrayList<>();
 
     public TreeVo() {
     }
@@ -59,6 +60,6 @@ public class TreeVo implements Serializable {
     }
 
     public void setChildren(List<TreeVo> children) {
-        this.children = children;
+        this.children = (children == null ) ? new ArrayList<TreeVo>() : children;
     }
 }
