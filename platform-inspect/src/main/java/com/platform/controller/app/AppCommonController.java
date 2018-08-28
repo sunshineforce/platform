@@ -79,8 +79,7 @@ public class AppCommonController{
     }
 
     @RequestMapping("/upload")
-    public Object upLoad( HttpServletRequest request, HttpServletResponse response)
-            throws UnsupportedEncodingException {
+    public Object upLoad( HttpServletRequest request, HttpServletResponse response) throws UnsupportedEncodingException {
         //设置字符编码防止乱码
         request.setCharacterEncoding("UTF-8");
         response.setCharacterEncoding("UTF-8");
@@ -91,7 +90,7 @@ public class AppCommonController{
         String dirFolderName = multipartRequest.getParameter("dirFolderName");
         List<UploadVo> uploadFiles  = null;
         try {
-            uploadFiles  = FtpUpload.upload(fileList,"",dirFolderName,PropertiesUtil.getInstance("/upload.properties"));
+            uploadFiles  = FtpUpload.upload(fileList,platformCode,dirFolderName,PropertiesUtil.getInstance("/upload.properties"));
             R r = new R();
             r.put("code",ErrorCode.SUCCEED.getCode());
             StringBuilder urls = new StringBuilder();
