@@ -1,5 +1,6 @@
 package com.platform.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.platform.dao.SysRegionDao;
 import com.platform.entity.SysRegionEntity;
 import com.platform.service.SysRegionService;
@@ -84,6 +85,8 @@ public class SysRegionServiceImpl implements SysRegionService {
         List<WeixinTreeVo> rootList = sysRegionDao.queryAllRegionForWeixin(null);
         WeixinTreeBuilder treeBuilder = new WeixinTreeBuilder(rootList);
         List<WeixinTreeVo> list = treeBuilder.buildTree();
+        String json = JSON.toJSONString(list);
+        list = JSON.parseArray(json,WeixinTreeVo.class);
         return list;
     }
 }
