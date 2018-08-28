@@ -89,6 +89,12 @@
 		<if test="realname != null and realname.trim() != ''">
 			AND u.realname LIKE concat('%',#{realname},'%')
 		</if>
+		<if test="username != null and username.trim() != ''">
+			AND u.username LIKE concat('%',#{username},'%')
+		</if>
+		<if test="mobile != null and mobile.trim() != ''">
+			AND u.mobile LIKE concat('%',#{mobile},'%')
+		</if>
 		<if test="identify != null">
 			AND u.identify = #{identify}
 		</if>
@@ -128,6 +134,12 @@
 		WHERE 1=1
 		<if test="realname != null and realname.trim() != ''">
 			AND u.realname LIKE concat('%',#{realname},'%')
+		</if>
+		<if test="username != null and username.trim() != ''">
+			AND u.username LIKE concat('%',#{username},'%')
+		</if>
+		<if test="mobile != null and mobile.trim() != ''">
+			AND u.mobile LIKE concat('%',#{mobile},'%')
 		</if>
 		<if test="identify != null">
 			AND u.identify = #{identify}

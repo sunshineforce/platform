@@ -49,6 +49,9 @@ public class SysAppUserController extends AbstractController {
             params.put("regionIdList",regionIdList);
         }
         params.put("regionId",null);
+        if(null != params.get("identify") && StringUtils.isBlank(String.valueOf(params.get("identify")))){
+            params.put("identify",null);
+        }
 
         if (null != params.get("enterpriseIds") && StringUtils.isNotBlank(String.valueOf(params.get("enterpriseIds")))){
             String[] enterpriseIdss = String.valueOf(params.get("enterpriseIds")).split(",");

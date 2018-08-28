@@ -102,18 +102,22 @@ var vm = new Vue({
             roleIdList:[]
         },
 		ruleValidate: {
-			userName: [
+            enterpriseId: [
+                {type:'number',required: true, message: '请选所属企业', trigger: 'change'}
+            ],
+            realname: [
 				{required: true, message: '姓名不能为空', trigger: 'blur'}
 			],
             mobile: [
-                {required: true, message: '手机号不能为空', trigger: 'blur'}
+                {required: true, message: '手机号不能为空', trigger: 'blur'},
+                { type: 'string',pattern:/^0?(13|15|18|14)[0-9]{9}$/, message:'手机号不符合规范', trigger:'blur'},
             ],
-            account: [
+            username: [
                 {required: true, message: '帐号不能为空', trigger: 'blur'}
             ],
-            // identify: [
-            //     {required: true, message: '请选择身份', trigger: 'change'}
-            // ],
+            identify: [
+                {type:'number',required: true, message: '请选择身份', trigger: 'change'}
+            ],
             password: [
                 {required: true, message: '请设置初始密码', trigger: 'blur'}
             ]
@@ -128,6 +132,7 @@ var vm = new Vue({
         },
         enabled:'0',
         identifyList: [
+            {id:"",name:"选择身份"},
             {id:0,name:"安全员"},
             {id:1,name:"领导"},
         ],
@@ -264,6 +269,10 @@ var vm = new Vue({
 
 		},
 		saveOrUpdate: function (event) {
+            if(vm.appUser.regionId == null || vm.appUser.regionId == ""){
+                alert("请选择用户所在地区，谢谢！");
+                return;
+            }
             var url = vm.appUser.id == null ? "../sys/app/user/save" : "../sys/app/user/update";
             vm.appUser.superior = vm.superiorArr.join(",");
 			$.ajax({
@@ -339,8 +348,19 @@ var vm = new Vue({
             }
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
+            var identify = null;
+            if (vm.q.identify === 0 || vm.q.identify === 1){
+                identify = parseInt(vm.q.identify);
+            }
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'realname': vm.q.name,'regionId':vm.q.regionId,'enterpriseIds':enterpriseIdsArr.join(","),},
+                postData: {
+                    'realname': vm.q.realname,
+                    'username': vm.q.username,
+                    'mobile': vm.q.mobile,
+                    'identify': identify,
+                    'regionId':vm.q.regionId,
+                    'enterpriseIds':enterpriseIdsArr.join(","),
+                },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
