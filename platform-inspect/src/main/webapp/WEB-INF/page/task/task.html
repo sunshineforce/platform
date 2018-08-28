@@ -11,7 +11,7 @@
             <i-col span="3">
                 <i-input v-model="q.name" @on-enter="query" placeholder="任务名称"/>
             </i-col>
-            <i-col span="2">
+            <i-col span="3">
                 <i-select v-model="q.taskGroupId" filterable placeholder="选择任务组">
                     <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
                     </i-option>
