@@ -2,8 +2,10 @@ package com.platform.controller.app;
 
 import com.platform.cache.RegionCacheUtil;
 import com.platform.entity.SysRegionEntity;
+import com.platform.service.SysRegionService;
 import com.platform.service.stat.IStatService;
 import com.platform.utils.R;
+import com.platform.vo.WeixinTreeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,6 +30,9 @@ public class AppStatController {
     @Autowired
     private IStatService iStatService;
 
+    @Autowired
+    private SysRegionService sysRegionService;
+
 
     /**
      *  统计获取统计工单和异常数据
@@ -45,7 +50,10 @@ public class AppStatController {
      */
     @RequestMapping("/getAllCity")
     public R getAllCity(@RequestParam(name = "areaId" , required = false) Integer areaId) {
-        List<SysRegionEntity> list = RegionCacheUtil.getChildrenCity(areaId);
-        return R.succeed().put("list", list);
+        SysRegionEntity regionEntity = new SysRegionEntity();
+        // regionEntity.setParentId(provinceId);
+        regionEntity.setType(1);
+        List<WeixinTreeVo> weixinTreeVos = sysRegionService.buildCascadeTree(regionEntity);
+        return R.succeed().put("list", weixinTreeVos);
     }
 }
