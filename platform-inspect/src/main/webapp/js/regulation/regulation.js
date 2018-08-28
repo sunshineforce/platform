@@ -66,7 +66,7 @@ var vm = new Vue({
         title: null,
 		regulation: {},
 		ruleValidate: {
-			name: [
+            knowledgeName: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
 			]
 		},
@@ -200,7 +200,8 @@ var vm = new Vue({
             });
         },
         handleSuccessPicUrl: function (res, file) {
-            vm.regulation.url = file.response.url;
+            //vm.regulation.url = file.response.url;
+            Vue.set(vm.regulation,"url",file.response.url);
         },
         eyeImagePicUrl: function () {
             var url = vm.regulation.url;
