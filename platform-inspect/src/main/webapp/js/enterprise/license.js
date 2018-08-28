@@ -49,8 +49,8 @@ var vm = new Vue({
             expireDate:''
         },
 		rules: {
-            licenseType: [
-                {required: true, message: '请选择证照类型', trigger: 'change'}
+            licenseTypeId: [
+                {type:'number',required: true, message: '请选择证照类型', trigger: 'change'},
             ],
             licenseName: [
                 {required: true, message: '名称不能为空', trigger: 'blur'}
@@ -64,17 +64,31 @@ var vm = new Vue({
 
 		},
 		q: {
-		    name: ''
+		    name: '',
+            timeArr:[],
 		},
 		licenseTypeList:[]
 	},
+    created:function () {
+        $.get("../licenseType/queryAll", function (r) {
+            vm.licenseTypeList = [];
+            vm.licenseTypeList = r.list;
+            if (vm.licenseTypeList){
+                vm.licenseTypeList.unshift({id:"",licenseType:'选择证照类型'})
+            }
+        });
+    },
 	methods: {
 		query: function () {
 			vm.reload();
 		},
         loadAllLicenseType: function () {
             $.get("../licenseType/queryAll", function (r) {
+                vm.licenseTypeList = [];
                 vm.licenseTypeList = r.list;
+                if (vm.licenseTypeList){
+                    vm.licenseTypeList.unshift({id:"",licenseType:'选择证照类型'})
+                }
             });
         },
 		add: function () {
@@ -148,7 +162,12 @@ var vm = new Vue({
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'name': vm.q.name},
+                postData: {
+                    'name': vm.q.name,
+                    'licenseTypeId':vm.q.licenseTypeId,
+                    'startTime':(vm.q.timeArr.length > 0 && vm.q.timeArr[0] != null) ? DateUtils.date2String(new Date(vm.q.timeArr[0]),1)  : null,
+                    'endTime':(vm.q.timeArr.length > 0 && vm.q.timeArr[1] != null) ? DateUtils.date2String(new Date(vm.q.timeArr[1]),1) : null,
+                },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
@@ -174,7 +193,8 @@ var vm = new Vue({
             });
         },
         handleSuccessPicUrl: function (res, file) {
-            vm.license.url = file.response.url;
+           // vm.license.url = file.response.url;
+            Vue.set(vm.license,"url",file.response.url);
         },
         eyeImagePicUrl: function () {
             var url = vm.license.url;

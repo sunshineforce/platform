@@ -69,6 +69,11 @@ public class DateUtils {
         return null;
     }
 
+    public static String formAtTime(Object str,String formatStr) {
+        if (null == str) return null;
+        return format(parseDate(str,formatStr),formatStr);
+    }
+
     public static String format(Date date) {
         return format(date, DATE_PATTERN);
     }

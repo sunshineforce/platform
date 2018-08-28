@@ -392,7 +392,8 @@ var vm = new Vue({
             });
         },
         handleSuccessPicUrl: function (res, file) {
-            vm.appUser.certificateUrl = file.response.url;
+            //vm.appUser.certificateUrl = file.response.url;
+            Vue.set(vm.appUser,"certificateUrl",file.response.url);
         },
         eyeImagePicUrl: function () {
             var url = vm.appUser.certificateUrl;

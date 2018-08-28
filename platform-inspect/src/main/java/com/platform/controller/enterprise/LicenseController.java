@@ -7,9 +7,11 @@ import com.platform.entity.enterprise.LicenseTypeEntity;
 import com.platform.entity.enterprise.LicenseVo;
 import com.platform.service.enterprise.ILicenseService;
 import com.platform.service.enterprise.ILicenseTypeService;
+import com.platform.utils.DateUtils;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -47,6 +49,21 @@ public class LicenseController   extends AbstractController {
         SysUserEntity user = getUser();
         if (user != null && user.getEnterpriseId() != null){
             params.put("enterpriseId",user.getEnterpriseId());
+        }
+        if (null != params.get("startTime") && StringUtils.isNotBlank(String.valueOf(params.get("startTime")))){
+            params.put("startTime",
+                    DateUtils.formAtTime(String.valueOf(params.get("startTime")),DateUtils.DATE_PATTERN));
+        }else {
+            params.put("startTime",null);
+        }
+        if (null != params.get("endTime") && StringUtils.isNotBlank(String.valueOf(params.get("endTime")))){
+            params.put("endTime",
+                    DateUtils.formAtTime(String.valueOf(params.get("endTime")),DateUtils.DATE_PATTERN));
+        }else {
+            params.put("endTime",null);
+        }
+        if (null != params.get("licenseTypeId") && StringUtils.isBlank(String.valueOf(params.get("licenseTypeId")))){
+            params.put("licenseTypeId",null);
         }
         //查询列表数据
         Query query = new Query(params);

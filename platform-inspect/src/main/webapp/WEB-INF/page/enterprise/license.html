@@ -9,7 +9,15 @@
 	<div v-show="showList">
         <Row :gutter="16">
             <i-col span="4">
-                <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
+                <i-input v-model="q.name" @on-enter="query" placeholder="证件名称"/>
+            </i-col>
+            <i-col span="4">
+                <i-select v-model="q.licenseTypeId" placeholder="证照类型">
+                    <i-option v-for="licenseType in licenseTypeList" :value="licenseType.id" :key="licenseType.id">{{licenseType.licenseType}}</i-option>
+                </i-select>
+            </i-col>
+            <i-col span="4">
+                <date-picker v-model="q.timeArr" type="daterange"  placement="bottom-end" placeholder="证件到期时间" style="width: 200px"></date-picker>
             </i-col>
             <i-button @click="query">查询</i-button>
 			#if($shiro.hasPermission("license:save"))

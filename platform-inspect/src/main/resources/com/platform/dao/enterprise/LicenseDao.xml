@@ -41,6 +41,12 @@
 		<if test="enterpriseId != null ">
 			AND m.enterprise_id = #{enterpriseId}
 		</if>
+		<if test="licenseTypeId != null ">
+			AND m.license_type_id = #{licenseTypeId}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND ( m.expire_date BETWEEN #{startTime} AND  #{endTime} )
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -55,7 +61,14 @@
 	</select>
 
 	<select id="selectList" resultType="com.platform.entity.enterprise.LicenseVo">
-		select m.id,m.license_type_id as licenseTypeId,s.license_type AS licenseType, m.license_name as licenseName,m.number,m.expire_date as expireDate,m.creator
+		select
+		   m.id,
+		   m.license_type_id as licenseTypeId,
+		   s.license_type AS licenseType,
+		   m.license_name as licenseName,
+		   m.number,
+		   m.expire_date as expireDate,
+		   m.creator
 		from license m left join license_type s on s.id = m. license_type_id
 		WHERE 1=1
 		<if test="name != null and name.trim() != ''">
@@ -63,6 +76,12 @@
 		</if>
 		<if test="enterpriseId != null ">
 			AND m.enterprise_id = #{enterpriseId}
+		</if>
+		<if test="licenseTypeId != null ">
+			AND m.license_type_id = #{licenseTypeId}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND ( m.expire_date BETWEEN #{startTime} AND  #{endTime} )
 		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
@@ -86,6 +105,12 @@
         </if>
 		<if test="enterpriseId != null ">
 			AND m.enterprise_id = #{enterpriseId}
+		</if>
+		<if test="licenseTypeId != null ">
+			AND m.license_type_id = #{licenseTypeId}
+		</if>
+		<if test="startTime != null and endTime != null">
+			AND ( m.expire_date BETWEEN #{startTime} AND  #{endTime} )
 		</if>
 	</select>
 	 
