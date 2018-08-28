@@ -27,6 +27,12 @@
                     <i-col span="4">
                         <i-input v-model="q.name" @on-enter="query" placeholder="名称"/>
                     </i-col>
+                    <i-col span="4">
+                        <i-select v-model="q.status" placeholder="状态">
+                            <i-option v-for="status in statusList" :value="status.id" :key="status.id">{{status.name}}</i-option>
+                        </i-select>
+                    </i-col>
+
                     <i-button @click="query">查询</i-button>
 
                     #if($shiro.hasPermission("material:update"))

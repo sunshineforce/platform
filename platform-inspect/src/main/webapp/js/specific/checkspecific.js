@@ -81,7 +81,7 @@ var vm = new Vue({
         title: null,
 		checkSpecific: {},
 		ruleValidate: {
-			name: [
+            specificName: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
 			]
 		},

@@ -154,7 +154,15 @@ var vm = new Vue({
         eq: {
             name: '',
             regionId:null,
+            status:null,
         },
+        statusList:[
+            {id:"",name:"选择状态"},
+            {id:0,name:"未检查"},
+            {id:1,name:"正常"},
+            {id:2,name:"异常"},
+            {id:3,name:"报废"},
+        ],
 
 	},
     created:function () {
@@ -392,7 +400,13 @@ var vm = new Vue({
                     enterpriseIdsArr[i] = enterpriseArr[i];
                 }
             }
-            return {'name': vm.q.name,'taskGroupId':taskGroupId,'regionId':vm.q.regionId,'enterpriseIds':enterpriseIdsArr.join(",")};
+            return {
+                'materialStatus':(vm.q.status !== "") ? vm.q.status : null,
+                'materialName': vm.q.name,
+                'taskGroupId':taskGroupId,
+                'regionId':vm.q.regionId,
+                'enterpriseIds':enterpriseIdsArr.join(",")
+            };
         },
 		reload: function (event) {
 
@@ -425,7 +439,8 @@ var vm = new Vue({
             });
         },
         handleSuccessPicUrl: function (res, file) {
-            vm.material.qrCode = file.response.url;
+            //vm.material.qrCode = file.response.url;
+            Vue.set(vm.material,"qrCode",file.response.url);
         },
         eyeImagePicUrl: function () {
             var url = vm.material.qrCode;

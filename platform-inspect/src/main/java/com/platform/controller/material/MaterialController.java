@@ -61,6 +61,10 @@ public class MaterialController extends AbstractController {
             params.put("enterpriseList",enterpriseIdss);
         }
 
+        if (null != params.get("materialStatus") && StringUtils.isBlank(String.valueOf(params.get("materialStatus")))){
+            params.put("materialStatus",null);
+        }
+
         //查询列表数据
         Query query = new Query(params);
 

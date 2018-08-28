@@ -123,6 +123,9 @@
 		<if test="enterpriseId != null">
 			AND m.enterprise_id = #{enterpriseId}
 		</if>
+		<if test="materialStatus != null">
+			AND m.`material_status` = #{materialStatus}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -157,6 +160,9 @@
 		</if>
 		<if test="enterpriseId != null">
 			AND m.enterprise_id = #{enterpriseId}
+		</if>
+		<if test="materialStatus != null">
+			AND m.`material_status` = #{materialStatus}
 		</if>
 	</select>
 	 
