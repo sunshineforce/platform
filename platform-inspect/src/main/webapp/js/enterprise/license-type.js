@@ -41,8 +41,8 @@ var vm = new Vue({
         title: null,
 		licenseType: {},
 		ruleValidate: {
-			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
+            licenseType: [
+				{required: true, message: '证照类型不能为空', trigger: 'blur'}
 			]
 		},
 		q: {
