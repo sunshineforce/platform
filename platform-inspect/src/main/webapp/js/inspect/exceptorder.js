@@ -5,7 +5,7 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
-			{label: '物品名称', name: 'materialId', index: 'material_id', align: 'center', width:'80px'},
+            {label: '物品名称', name: 'materialName', index: 'material_id', align: 'center', width:'80px'},
 			{label: '工单状态 ', name: 'status', index: 'status', align: 'center', width:'80px',formatter:formatOrderStatus},
 			{label: '检查时间', name: 'inspectTime', index: 'inspect_time', align: 'center', width:'80px'},
 			{label: '检查人', name: 'userId', index: 'user_id', align: 'center', width:'80px'},
