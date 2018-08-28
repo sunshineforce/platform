@@ -63,13 +63,13 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
 
     @Override
     public int save(EnterpriseEntity enterprise) {
-        AppClientUtils.setEnterpriseDefaultValue(enterprise);
+//        AppClientUtils.setEnterpriseDefaultValue(enterprise);
         return enterpriseDao.save(enterprise);
     }
 
     @Override
     public int update(EnterpriseEntity enterprise) {
-        AppClientUtils.setEnterpriseDefaultValue(enterprise);
+    //    AppClientUtils.setEnterpriseDefaultValue(enterprise);
         return enterpriseDao.update(enterprise);
     }
 

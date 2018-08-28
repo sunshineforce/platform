@@ -109,20 +109,21 @@ public class EnterpriseController extends AbstractController {
             enterprise.setCreator(user.getRealname());
             enterprise.setCreateTime(time);
         }
+        sysUserEntity.setCreateUserId(user.getUserId());
+        //添加企业信息
+        enterpriseService.save(enterprise);
+
         //设置企业用户角色
         List<Long> roleList = new ArrayList<>();
         roleList.add(CommonConstant.COMPANY_ROLE_ID);
         sysUserEntity.setRoleIdList(roleList);
+        sysUserEntity.setEnterpriseId(enterprise.getId());
         sysUserService.save(sysUserEntity);
+        EnterpriseEntity enterpriseEntity = new EnterpriseEntity();
+        enterpriseEntity.setId(enterprise.getId());
         //管理用户表
-        enterprise.setUserId(sysUserEntity.getUserId());
-        //添加企业信息
-        enterpriseService.save(enterprise);
-
-        SysUserEntity userEntity = new SysUserEntity();
-        userEntity.setUserId(sysUserEntity.getUserId());
-        userEntity.setEnterpriseId(enterprise.getId());
-        sysUserService.update(userEntity);
+        enterpriseEntity.setUserId(sysUserEntity.getUserId());
+        enterpriseService.update(enterprise);
         return R.ok();
     }
 
@@ -151,6 +152,10 @@ public class EnterpriseController extends AbstractController {
                 enterprise.setUpdateTime(time);
                 enterprise.setUpdator(user.getRealname());
             }
+            //设置企业用户角色
+            List<Long> roleList = new ArrayList<>();
+            roleList.add(CommonConstant.COMPANY_ROLE_ID);
+            sysUserEntity.setRoleIdList(roleList);
             sysUserService.update(sysUserEntity);
         }
         enterpriseService.update(enterprise);

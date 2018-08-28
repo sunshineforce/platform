@@ -48,12 +48,26 @@ var vm = new Vue({
         title: null,
 		enterprise: {},
 		ruleValidate: {
-			name: [
-				{required: true, message: '名称不能为空', trigger: 'blur'}
-			]
+            enterpriseName: [
+				{required: true, message: '企业名称不能为空', trigger: 'blur'}
+			],
+            mobile: [
+                {required: true, message: '联系电话不能为空', trigger: 'blur'},
+                { type: 'string',pattern:/^0?(13|15|18|14)[0-9]{9}$/, message:'联系电话不符合规范', trigger:'blur'},
+            ],
+            owner: [
+                {required: true, message: '负责人不能为空', trigger: 'blur'}
+            ],
+            account: [
+                {required: true, message: '帐号不能为空', trigger: 'blur'}
+            ],
+            password: [
+                {required: true, message: '密码不能为空', trigger: 'blur'}
+            ]
+
 		},
 		q: {
-		    name: '',
+            enterpriseName: '',
             regionId:'',
 		},
 
@@ -136,6 +150,10 @@ var vm = new Vue({
 
 		},
 		saveOrUpdate: function (event) {
+            if(vm.enterprise.regionId == null || vm.enterprise.regionId == ""){
+                alert("请选择企业所在地区，谢谢！");
+                return;
+            }
             var url = vm.enterprise.id == null ? "../enterprise/save" : "../enterprise/update";
 			$.ajax({
 				type: "POST",
@@ -188,7 +206,13 @@ var vm = new Vue({
 			vm.showList = true;
             var page = $("#jqGrid").jqGrid('getGridParam', 'page');
 			$("#jqGrid").jqGrid('setGridParam', {
-                postData: {'enterpriseName': vm.q.name,'regionId':vm.q.regionId},
+                postData: {
+                    'enterpriseName': vm.q.enterpriseName,
+                    'mobile': vm.q.mobile,
+                    'owner': vm.q.owner,
+                    'account': vm.q.account,
+                    'regionId':vm.q.regionId,
+                },
                 page: page
             }).trigger("reloadGrid");
             vm.handleReset('formValidate');
