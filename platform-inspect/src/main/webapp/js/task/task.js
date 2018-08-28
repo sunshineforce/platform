@@ -97,6 +97,8 @@ var vm = new Vue({
 		q: {
 		    name: '',
 			status:'',
+            regionName:'',
+            enterpriseName:'',
 		},
 		taskGroups:[],
         taskGroupList:[], //查询使用
@@ -323,6 +325,8 @@ var vm = new Vue({
 			$("#jqGrid").jqGrid('setGridParam', {
                 postData: {
                 	'name': vm.q.name,
+                	'regionName': vm.q.regionName,
+                	'enterpriseName': vm.q.enterpriseName,
 					"status":(vm.q.status != "") ? vm.q.status : null,
 					"taskGroupId":(vm.q.taskGroupId != "") ? vm.q.taskGroupId : null,
                     "type":(vm.q.type != "") ? vm.q.type : null,

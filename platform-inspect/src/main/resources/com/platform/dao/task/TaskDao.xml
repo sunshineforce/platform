@@ -82,6 +82,12 @@
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
 		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND r.`name` LIKE concat('%',#{regionName},'%')
+		</if>
+		<if test="enterpriseName != null and enterpriseName.trim() != ''">
+			AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
+		</if>
 		<if test="enterpriseId != null and enterpriseId.trim() != ''">
 			AND t.enterprise_id = #{enterpriseId}
 		</if>
@@ -117,6 +123,12 @@
 		WHERE 1=1 AND t.data_status = 0
 		<if test="name != null and name.trim() != ''">
 			AND t.name LIKE concat('%',#{name},'%')
+		</if>
+		<if test="regionName != null and regionName.trim() != ''">
+			AND r.`name` LIKE concat('%',#{regionName},'%')
+		</if>
+		<if test="enterpriseName != null and enterpriseName.trim() != ''">
+			AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
 		</if>
 		<if test="enterpriseId != null and enterpriseId.trim() != ''">
 			AND t.enterprise_id = #{enterpriseId}

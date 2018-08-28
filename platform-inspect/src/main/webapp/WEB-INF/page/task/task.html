@@ -8,7 +8,10 @@
 <div id="rrapp" v-cloak>
 	<div v-show="showList">
         <Row :gutter="16">
-            <i-col span="4">
+            <i-col span="3">
+                <i-input v-model="q.name" @on-enter="query" placeholder="任务名称"/>
+            </i-col>
+            <i-col span="2">
                 <i-select v-model="q.taskGroupId" filterable placeholder="选择任务组">
                     <i-option v-for="group in taskGroupList" :value="group.id" :key="group.id">{{group.name}}
                     </i-option>
@@ -25,6 +28,12 @@
                     <i-option v-for="s in typeList" :value="s.id" :key="s.id">{{s.name}}
                     </i-option>
                 </i-select>
+            </i-col>
+            <i-col span="3">
+                <i-input v-model="q.regionName" @on-enter="query" placeholder="区域"/>
+            </i-col>
+            <i-col span="3">
+                <i-input v-model="q.enterpriseName" @on-enter="query" placeholder="所属企业"/>
             </i-col>
             <i-button @click="query">查询</i-button>
 			#if($shiro.hasPermission("task:save"))
