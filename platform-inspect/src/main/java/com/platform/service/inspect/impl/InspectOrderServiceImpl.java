@@ -146,13 +146,16 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     public int materialCheck(InspectOrderEntity inspectOrder) {
         //保存异常信息
         setInspectOrder(inspectOrder);
+        int effectRows=0;
         if (inspectOrder.getInspectStatus().intValue() == InspectStatusEnum.NORMAL.getCode().intValue()) {
             inspectOrder.setStatus(InspectOrderStatusEnum.FINISHED.getCode());
+            effectRows = save(inspectOrder);
         }
 
         //保存异常记录
-        int effectRows = save(inspectOrder);
         if (inspectOrder.getInspectStatus().intValue() == InspectStatusEnum.ABNORMAL.getCode().intValue()) {
+            inspectOrder.setStatus(InspectStatusEnum.ABNORMAL.getCode());
+            save(inspectOrder);
             InspectOrderFlowEntity orderFlow = new InspectOrderFlowEntity();
             orderFlow.setOrderId(inspectOrder.getId());
             orderFlow.setMaterialId(inspectOrder.getMaterialId());
