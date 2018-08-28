@@ -111,7 +111,7 @@
 		from exam
 		WHERE 1=1 AND  `enabled` = 0
 		<if test="name != null and name.trim() != ''">
-			AND name LIKE concat('%',#{name},'%')
+			AND exam_name LIKE concat('%',#{name},'%')
 		</if>
 		<if test="enterpriseId != null ">
 			AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)
@@ -133,7 +133,7 @@
 		select count(*) from exam
 		WHERE 1=1 AND  `enabled` = 0
 		<if test="name != null and name.trim() != ''">
-            AND name LIKE concat('%',#{name},'%')
+            AND exam_name LIKE concat('%',#{name},'%')
         </if>
 		<if test="enterpriseId != null ">
 			AND (enterprise_id = #{enterpriseId} OR  enterprise_id IS NULL)

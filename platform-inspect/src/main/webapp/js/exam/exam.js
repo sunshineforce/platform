@@ -91,6 +91,12 @@ var vm = new Vue({
         ruleValidate: {
             examName: [
                 {required: true, message: '试题名称不能为空', trigger: 'blur'}
+            ],
+            beginTime: [
+                {required: true, type: 'date', message: '请选择开始时间', trigger: 'change'}
+            ],
+            endTime: [
+                {required: true, type: 'date', message: '请选择结束时间', trigger: 'change'}
             ]
         },
         q: {
