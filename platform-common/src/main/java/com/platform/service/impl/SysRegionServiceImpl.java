@@ -74,6 +74,8 @@ public class SysRegionServiceImpl implements SysRegionService {
         List<TreeVo> rootList = sysRegionDao.queryRegionSimple(null);
         TreeBuilder treeBuilder = new TreeBuilder(rootList);
         List<TreeVo> list = treeBuilder.buildTree();
+        String json = JSON.toJSONString(list);
+        list = JSON.parseArray(json,TreeVo.class);
         return list;
     }
 
