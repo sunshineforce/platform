@@ -12,18 +12,7 @@ public class WeixinTreeVo implements Serializable{
     private Integer value;
     private Integer pid;
 
-    private List<WeixinTreeVo> children;
-
-    public WeixinTreeVo() {
-        children = new ArrayList<WeixinTreeVo>();
-    }
-
-    public WeixinTreeVo(String label, Integer value, Integer pid, List<WeixinTreeVo> children) {
-        this.label = label;
-        this.value = value;
-        this.pid = pid;
-        this.children = children;
-    }
+    private List<WeixinTreeVo> children = new ArrayList<WeixinTreeVo>();
 
     public String getLabel() {
         return label;
