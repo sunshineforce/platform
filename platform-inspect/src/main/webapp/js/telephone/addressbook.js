@@ -43,8 +43,12 @@ var vm = new Vue({
 		ruleValidate: {
 			name: [
 				{required: true, message: '名称不能为空', trigger: 'blur'}
-			]
-		},
+			],
+            mobile: [
+                { type: 'string',pattern:/^0?(13|15|18|14)[0-9]{9}$/, message:'手机号不符合规范', trigger:'blur'}
+            ]
+
+        },
 		q: {
 		    name: ''
 		}
