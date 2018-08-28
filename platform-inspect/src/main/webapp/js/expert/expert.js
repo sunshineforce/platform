@@ -44,9 +44,16 @@ var vm = new Vue({
         title: null,
 		expert: {},
 		ruleValidate: {
-			name: [
+            expertName: [
 				{required: true, message: '专家名称不能为空', trigger: 'blur'}
-			]
+			],
+            jobTitle: [
+                {required: true, message: '职称不能为空', trigger: 'blur'}
+            ],
+            mobile: [
+                { type: 'string',pattern:/^0?(13|15|18|14)[0-9]{9}$/, message:'手机号不符合规范', trigger:'blur'}
+            ]
+
 		},
 		q: {
 		    name: ''
@@ -148,7 +155,8 @@ var vm = new Vue({
             });
         },
         handleSuccessPicUrl: function (res, file) {
-            vm.expert.avatar = file.response.url;
+            //vm.expert.avatar = file.response.url;
+            Vue.set(vm.expert,"avatar",file.response.url);
         },
         eyeImagePicUrl: function () {
             var url = vm.expert.avatar;
