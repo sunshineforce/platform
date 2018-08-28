@@ -4,6 +4,7 @@ import com.platform.constants.CommonConstant;
 import com.platform.service.SysRegionService;
 import com.platform.service.enterprise.IEnterpriseService;
 import com.platform.service.material.MaterialTypeService;
+import com.platform.utils.ErrorCode;
 import com.platform.utils.FtpUpload;
 import com.platform.utils.PropertiesUtil;
 import com.platform.utils.R;
@@ -88,18 +89,28 @@ public class AppCommonController{
         List<MultipartFile> fileList = multipartRequest.getFiles("file");
         String platformCode = multipartRequest.getParameter("platformCode");
         String dirFolderName = multipartRequest.getParameter("dirFolderName");
-        List<UploadVo> uploadFileInfos  = null;
-        Map<String, Object> returnMap = new HashMap<String, Object>();
+        List<UploadVo> uploadFiles  = null;
         try {
-            uploadFileInfos  = FtpUpload.upload(fileList,"",dirFolderName,PropertiesUtil.getInstance("/upload.properties"));
-
+            uploadFiles  = FtpUpload.upload(fileList,"",dirFolderName,PropertiesUtil.getInstance("/upload.properties"));
+            R r = new R();
+            r.put("code",ErrorCode.SUCCEED.getCode());
+            StringBuilder urls = new StringBuilder();
+            for (UploadVo uploadFile : uploadFiles) {
+                urls.append(uploadFile.getFileServerPath());
+                urls.append(",");
+            }
+            if (urls.length()>0) {
+                urls.setLength(urls.length()-1);
+            }
+            r.put("url",urls);
+            return r;
         } catch (Exception e) {
-            e.printStackTrace();
+            R r = new R();
+            r.put("code",ErrorCode.FAILURE.getCode());
+            return r;
         }
-        returnMap.put("uploadRst", uploadFileInfos);
-        returnMap.put("url", uploadFileInfos.get(0).getFileServerPath());
 
-        return returnMap;
+
     }
 
 }
