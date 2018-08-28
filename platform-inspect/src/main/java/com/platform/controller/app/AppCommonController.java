@@ -86,11 +86,9 @@ public class AppCommonController{
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
 
         List<MultipartFile> fileList = multipartRequest.getFiles("file");
-        String platformCode = multipartRequest.getParameter("platformCode");
-        String dirFolderName = multipartRequest.getParameter("dirFolderName");
         List<UploadVo> uploadFiles  = null;
         try {
-            uploadFiles  = FtpUpload.upload(fileList,platformCode,dirFolderName,PropertiesUtil.getInstance("/upload.properties"));
+            uploadFiles  = FtpUpload.upload(fileList,"inspect","materials",PropertiesUtil.getInstance("/upload.properties"));
 
             StringBuilder urls = new StringBuilder();
             for (UploadVo uploadFile : uploadFiles) {
