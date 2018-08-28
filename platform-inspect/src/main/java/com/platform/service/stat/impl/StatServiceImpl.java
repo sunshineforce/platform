@@ -34,19 +34,44 @@ public class StatServiceImpl implements IStatService {
     public R stat(Map<String, Object> params) {
         String startTime = String.valueOf(params.get("startTime"));
         String endTime = String.valueOf(params.get("endTime"));
-        int cityId = 12718; // 默认是杭州市
-        if (null != params.get("regionId")){
-            cityId = Integer.parseInt(String.valueOf(params.get("regionId")));
+        int regionId = 12718; // 默认是杭州市
+        int type = RegionCacheUtil.CITY_TYPE; //默认城市类型
+        String regions = null;
+        List<Integer> regionIdList = null;
+        List<SysRegionEntity> districtList = null;
+        if (null != params.get("regions")){
+            regions =String.valueOf(params.get("regions"));
+            String[] regionArr = regions.split(",");
+            regionId = Integer.parseInt(regionArr[regionArr.length - 1]);
+            switch (regionArr.length){
+                case 1 :
+                    districtList = RegionCacheUtil.getChildrenDistrict(regionId);
+                    type = RegionCacheUtil.CITY_TYPE; break;
+                case 2 :
+                    districtList = RegionCacheUtil.getChildrenByParentId(regionId);
+                    type = RegionCacheUtil.DISTRICT_TYPE; break;
+                case 3 :
+                    districtList = new ArrayList<>();
+                    districtList.add(RegionCacheUtil.getAreaByAreaId(regionId));
+                    type = 4; break; //自身
+            }
+
+            if (type == 4){
+                regionIdList = new ArrayList<>();
+                regionIdList.add(regionId);
+            }else {
+                regionIdList = RegionCacheUtil.getRegionIdList(regionId, type);
+            }
         }
 
-        List<SysRegionEntity> districtList = RegionCacheUtil.getChildrenDistrict(cityId);
+
         List<StaTaskDayEntity> tasks = null;
         List<StaExceptionDayEntity> orders = null;
 
 
         if (null != districtList && districtList.size() > 0){
-            params.put("cityId",cityId);
-            params.put("regionIdList", RegionCacheUtil.getRegionIdList(cityId,RegionCacheUtil.CITY_TYPE));
+            params.put("cityId",regionId);
+            if (null != regionIdList){params.put("regionIdList",regionIdList);}
             params.put("startTime", startTime);
             params.put("endTime",endTime);
             orders = staExceptionDayService.statExceptionOrder(params,districtList);

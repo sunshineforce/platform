@@ -1,5 +1,7 @@
 package com.platform.entity;
 
+import java.util.List;
+
 /**
  * @author admin
  *
@@ -23,6 +25,11 @@ public class SysRegionEntity extends Tree<SysRegionEntity> {
      */
     //父级名称
     private String parentName;
+
+    /**
+     * 子集区域
+     */
+    private List<SysRegionEntity> childRegions;
 
     public Integer getId() {
         return id;
@@ -72,4 +79,11 @@ public class SysRegionEntity extends Tree<SysRegionEntity> {
         this.parentName = parentName;
     }
 
+    public List<SysRegionEntity> getChildRegions() {
+        return childRegions;
+    }
+
+    public void setChildRegions(List<SysRegionEntity> childRegions) {
+        this.childRegions = childRegions;
+    }
 }

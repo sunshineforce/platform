@@ -7,6 +7,7 @@ import com.platform.service.SysRegionService;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
+import com.platform.vo.WeixinTreeVo;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -110,6 +111,21 @@ public class SysRegionController {
         List<SysRegionEntity> list = RegionCacheUtil.getAllProviceByParentId(areaId);
         return R.ok().put("list", list);
     }
+
+    /**
+     * 查询省份下级联
+     * @param provinceId
+     * @return
+     */
+    @RequestMapping("/queryRegionCascade")
+    public R queryRegionCascade(@RequestParam(name = "provinceId" , required = false) Integer provinceId) {
+        SysRegionEntity regionEntity = new SysRegionEntity();
+       // regionEntity.setParentId(provinceId);
+        regionEntity.setType(1);
+        List<WeixinTreeVo> weixinTreeVos = sysRegionService.buildCascadeTree(regionEntity);
+        return R.ok().put("list", weixinTreeVos);
+    }
+
 
     /**
      * 查询所有城市

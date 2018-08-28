@@ -115,18 +115,24 @@ function statExceptions(xData,pendingData,reviewData,finishData) {
 var vm = new Vue({
     el: '#rrapp',
     data: {
-        regionId:12718,
+        regionId:['12718'],
         startTime: DateUtils.date2String(DateUtils.getCurrentMonthFirst(),1),
         endTime:DateUtils.date2String(new Date(),1),
-        cityList:[],
+        cityList:[
+            {
+                value: '12718',
+                label: '杭州市',
+                children: []
+            }
+        ],
     },
     created:function () {
         $.ajax({
             type: "GET",
-            url: "../sys/region/getAllCity",
+            url: "../sys/region/queryRegionCascade",
             contentType: "application/json",
             data: {
-                areaId:12717 //浙江省
+                provinceId:12717 //浙江省
             },
             success: function (r) {
                 if (r.code == 0 && r.list) {
@@ -146,7 +152,7 @@ var vm = new Vue({
                url: "../stat/statTaskAndOrder",
                contentType: "application/json",
                data: {
-                   regionId:vm.regionId,
+                   regions:vm.regionId.length > 0 ? vm.regionId.join(",") : null,
                    startTime:DateUtils.date2String(new Date(vm.startTime),1),
                    endTime:DateUtils.date2String(new Date(vm.endTime),1)
                },

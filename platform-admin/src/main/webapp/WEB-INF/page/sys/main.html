@@ -12,10 +12,11 @@
             <Row>
                 <div style="width: 300px; float: left;">
                     <Form-item label="统计节点" prop="superior">
-                        <i-select v-model="regionId" filterable >
-                            <i-option v-for="city in cityList" :value="city.id" :key="city.id">{{city.name}}
-                            </i-option>
-                        </i-select>
+                        <!--<i-select v-model="regionId" filterable >-->
+                            <!--<i-option v-for="city in cityList" :value="city.id" :key="city.id">{{city.name}}-->
+                            <!--</i-option>-->
+                        <!--</i-select>-->
+                        <Cascader :data="cityList" v-model="regionId" change-on-select></Cascader>
                     </Form-item>
                 </div>
 
