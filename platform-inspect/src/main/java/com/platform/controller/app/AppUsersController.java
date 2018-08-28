@@ -97,9 +97,8 @@ public class AppUsersController extends AbstractController{
      */
     @RequestMapping(value="/user/info", method = RequestMethod.POST)
     public R info() {
-//        Subject subject = ShiroUtils.getSubject();
-//        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
-        AppUserEntity appUser = appUserService.queryObject(9L);
+//        AppUserEntity appUserEntity = commonService.getCurrentLoginUser();
+        AppUserEntity appUser = appUserService.queryObject(11L);
         appUser.setRegionName(commonService.getRegionName(appUser.getRegionId()));
 
         AppUserVo userVo = new AppUserVo();
@@ -131,20 +130,8 @@ public class AppUsersController extends AbstractController{
 
     @RequestMapping(value = "/user/superior")
     public R querySuperior(){
-        Subject subject = ShiroUtils.getSubject();
-//        AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
-        AppUserEntity appUser = appUserService.queryObject(9L);
-        List<SelectVo> userList = null;
-        if (appUser != null && StringUtils.isNotEmpty(appUser.getSuperior())) {
-            String[] arr = appUser.getSuperior().split(",");
-            userList = new ArrayList<SelectVo>(arr.length);
-            for (String s : arr) {
-                AppUserEntity user = appUserService.queryObject(Long.valueOf(s));
-                SelectVo selectVo = new SelectVo(Integer.valueOf(String.valueOf(user.getId())),user.getRealname());
-                userList.add(selectVo);
-            }
-        }
-        return R.succeed().put("data",userList);
+        List<SelectVo> superior = commonService.getSuperior();
+        return R.succeed().put("data",superior);
     }
 
     @RequestMapping(value = "/user/knowledge")

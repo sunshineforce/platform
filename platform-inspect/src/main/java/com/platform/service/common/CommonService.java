@@ -7,9 +7,13 @@ import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysRegionEntity;
 import com.platform.utils.ShiroUtils;
 import com.platform.utils.StringUtils;
+import com.platform.vo.SelectVo;
 import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service("commonService")
 public class CommonService {
@@ -72,6 +76,22 @@ public class CommonService {
         Subject subject = ShiroUtils.getSubject();
         AppUserEntity appUser = (AppUserEntity) subject.getSession().getAttribute(CommonConstant.APP_LOGIN_USER);
         return appUser;
+    }
+
+    public List<SelectVo> getSuperior(){
+        List<SelectVo> userList = null;
+//        AppUserEntity appUser = getCurrentLoginUser();
+        AppUserEntity appUser = appUserDao.queryObject(11L);
+        if (appUser != null && StringUtils.isNotEmpty(appUser.getSuperior())) {
+            String[] arr = appUser.getSuperior().split(",");
+            userList = new ArrayList<SelectVo>(arr.length);
+            for (String s : arr) {
+                AppUserEntity user = appUserDao.queryObject(Long.valueOf(s));
+                SelectVo selectVo = new SelectVo(Integer.valueOf(String.valueOf(user.getId())),user.getRealname());
+                userList.add(selectVo);
+            }
+        }
+        return userList;
     }
 
 }

@@ -21,7 +21,7 @@ public class MaterialCheckVo implements Serializable {
 
     private static final long serialVersionUID = -2013341668455294475L;
 
-    private Long id;
+    private Integer id;
 
     private String qrCode;
 
@@ -50,11 +50,11 @@ public class MaterialCheckVo implements Serializable {
     private List<SelectVo> cheifs;
 
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

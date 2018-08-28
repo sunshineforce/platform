@@ -88,11 +88,12 @@ public class MaterialServiceImpl implements MaterialService {
     public MaterialCheckVo materialInfo(String qrCode) {
         MaterialEntity materialEntity = queryMaterialByQrCode(qrCode);
         MaterialCheckVo result = new MaterialCheckVo();
+
         BeanUtils.copyProperties(materialEntity,result);
         result.setRegion(commonService.getRegionName(Integer.valueOf(String.valueOf(materialEntity.getRegionId()))));
         List<SelectVo> list = checkSpecificItemDao.queryListSimple(Long.valueOf(String.valueOf(materialEntity.getCheckSpecificId())));
         result.setCheckSpecificItems(list);
-        List<SelectVo> chiefs = new ArrayList<>();
+        List<SelectVo> chiefs = commonService.getSuperior();
         result.setCheifs(chiefs);
         return result;
     }
