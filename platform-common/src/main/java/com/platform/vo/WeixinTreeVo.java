@@ -1,6 +1,7 @@
 package com.platform.vo;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class WeixinTreeVo implements Serializable{
@@ -10,7 +11,19 @@ public class WeixinTreeVo implements Serializable{
     private String label;
     private Integer value;
     private Integer pid;
+
     private List<WeixinTreeVo> children;
+
+    public WeixinTreeVo() {
+        children = new ArrayList<WeixinTreeVo>();
+    }
+
+    public WeixinTreeVo(String label, Integer value, Integer pid, List<WeixinTreeVo> children) {
+        this.label = label;
+        this.value = value;
+        this.pid = pid;
+        this.children = children;
+    }
 
     public String getLabel() {
         return label;
