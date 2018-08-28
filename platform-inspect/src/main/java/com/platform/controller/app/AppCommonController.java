@@ -91,8 +91,7 @@ public class AppCommonController{
         List<UploadVo> uploadFiles  = null;
         try {
             uploadFiles  = FtpUpload.upload(fileList,platformCode,dirFolderName,PropertiesUtil.getInstance("/upload.properties"));
-            R r = new R();
-            r.put("code",ErrorCode.SUCCEED.getCode());
+
             StringBuilder urls = new StringBuilder();
             for (UploadVo uploadFile : uploadFiles) {
                 urls.append(uploadFile.getFileServerPath());
@@ -101,6 +100,8 @@ public class AppCommonController{
             if (urls.length()>0) {
                 urls.setLength(urls.length()-1);
             }
+            R r = new R();
+            r.put("code",ErrorCode.SUCCEED.getCode());
             r.put("url",urls);
             return r;
         } catch (Exception e) {
