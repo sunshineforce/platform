@@ -37,7 +37,9 @@ public class SysRegionServiceImpl implements SysRegionService {
 
     @Override
     public List<TreeVo> queryAllRegion() {
-        return sysRegionDao.queryAllRegion();
+        List<TreeVo> treeVos = sysRegionDao.queryAllRegion();
+        String json = JSON.toJSONString(treeVos);
+        return JSON.parseArray(json,TreeVo.class);
     }
 
     @Override
