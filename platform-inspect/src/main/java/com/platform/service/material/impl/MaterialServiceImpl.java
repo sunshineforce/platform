@@ -110,6 +110,14 @@ public class MaterialServiceImpl implements MaterialService {
 
     @Override
     public int save(MaterialEntity material) {
+        material.setCreateTime(new Date());
+//        AppUserEntity appUser = commonService.getCurrentLoginUser();
+//        material.setCreatorId(appUser.getId());
+//        material.setCreator(appUser.getRealname());
+
+        material.setCreatorId(11L);
+        material.setCreator("小六");        
+
         return materialDao.save(material);
     }
 
