@@ -19,6 +19,8 @@ public class TaskDetailEntity implements Serializable {
     private Long id;
     //任务id
     private Integer taskId;
+    //任务组id
+    private Integer taskGroupId;
     //区域id
     private Integer regionId;
 
@@ -43,7 +45,7 @@ public class TaskDetailEntity implements Serializable {
 
 
 
-    public TaskDetailEntity(Integer taskId,Integer regionId, Integer enterpriseId,Integer status, Date startTime, Date endTime,Date updateTime) {
+    public TaskDetailEntity(Integer taskId,Integer taskGroupId,Integer regionId, Integer enterpriseId,Integer status, Date startTime, Date endTime,Date updateTime) {
         this.taskId = taskId;
         this.regionId = regionId;
         this.status = status;
@@ -51,6 +53,7 @@ public class TaskDetailEntity implements Serializable {
         this.endTime = endTime;
         this.updateTime = updateTime;
         this.enterpriseId = enterpriseId;
+        this.taskGroupId = taskGroupId;
     }
 
     /**
@@ -154,5 +157,13 @@ public class TaskDetailEntity implements Serializable {
 
     public void setEnterpriseId(Integer enterpriseId) {
         this.enterpriseId = enterpriseId;
+    }
+
+    public Integer getTaskGroupId() {
+        return taskGroupId;
+    }
+
+    public void setTaskGroupId(Integer taskGroupId) {
+        this.taskGroupId = taskGroupId;
     }
 }

@@ -2,6 +2,8 @@ package com.platform.service.task;
 
 
 import com.platform.entity.task.TaskDetailEntity;
+import com.platform.entity.task.vo.TaskDetailStatVo;
+import com.platform.entity.task.vo.TaskDetailVo;
 
 import java.util.List;
 import java.util.Map;
@@ -83,4 +85,33 @@ public interface TaskDetailService {
      * @return
      */
     int syncTask();
+
+    /**
+     * 查询任务详情信息
+     * @param map
+     * @return
+     */
+    List<TaskDetailVo> queryTaskDetailList(Map<String, Object> map);
+
+    /**
+     * 总条数
+     * @param map
+     * @return
+     */
+    int queryTaskDetailToatal(Map<String, Object> map);
+
+    /**
+     * 统计具体任务执行情况
+     * @param map
+     * @return
+     */
+    List<TaskDetailStatVo> statTaskDetail(Map<String, Object> map);
+
+    /**
+     * 总条数
+     * @param map
+     * @return
+     */
+    int statTaskDetailTotal(Map<String, Object> map);
+
 }

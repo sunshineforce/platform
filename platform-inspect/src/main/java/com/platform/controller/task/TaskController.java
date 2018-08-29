@@ -10,6 +10,7 @@ import com.platform.service.AppUserService;
 import com.platform.service.task.TaskDetailService;
 import com.platform.service.task.TaskService;
 import com.platform.util.TaskUtils;
+import com.platform.utils.DateUtils;
 import com.platform.utils.PageUtils;
 import com.platform.utils.Query;
 import com.platform.utils.R;
@@ -52,19 +53,20 @@ public class TaskController extends AbstractController {
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
         params.put("dataStatus",CommonConstant.USEABLE_STATUS);
-        //查询列表数据
-        Query query = new Query(params);
+
 
         Map<String, Object> params1 = new HashMap<>();
         SysUserEntity user = getUser();
         ///如果是企业用户登录，查询该企业下的用户
         if (null != user && null != user.getEnterpriseId()){
+            params.put("enterpriseId",user.getEnterpriseId());
             params1.put("enterpriseId",user.getEnterpriseId());
         }
         params1.put("identify",0);
         List<AppUserEntity> userList = appUserService.queryList(params1); //查询安全列表
 
-
+        //查询列表数据
+        Query query = new Query(params);
         List<TaskEntity> taskList = taskService.queryTaskList(query);
         int total = taskService.queryTaskTotal(query);
 
@@ -120,8 +122,23 @@ public class TaskController extends AbstractController {
     @RequiresPermissions("task:save")
     @ResponseBody
     public R save(@RequestBody TaskEntity task) {
+        int status = TaskStatusEnum.PENDING.getCode();
+        if (task.getStartTime() != null){
+            String now = DateUtils.format(new Date());
+            String startTime = DateUtils.format(task.getStartTime());
+            if( DateUtils.parseDate(startTime,DateUtils.DATE_PATTERN).getTime() - DateUtils.parseDate(now,DateUtils.DATE_PATTERN).getTime()  < 0){
+               return R.error("开始时间必须大于或等于今天");
+            }
+            if( DateUtils.parseDate(startTime,DateUtils.DATE_PATTERN).getTime()
+                    - DateUtils.parseDate(now,DateUtils.DATE_PATTERN).getTime()  == 0){
+                status = TaskStatusEnum.EXECUTING.getCode();
+            }
+        }else{
+            return R.paramsIllegal();
+        }
         Date time = new Date();
         task.setCreateTime(time);
+        task.setStatus(status);
         task.setDataStatus(CommonConstant.USEABLE_STATUS);
         if (CommonConstant.TASK_CIRCLE_TYPE == task.getType().intValue()){ //循环任务
             task.setNextTime(TaskUtils.calNexStartTime(task.getStartTime(),task.getScheduleCycle()));
@@ -131,7 +148,7 @@ public class TaskController extends AbstractController {
         if (CommonConstant.TASK_CIRCLE_TYPE == task.getType().intValue()){ //循环任务
             endTime = TaskUtils.calCircleTaskEndTime(task.getStartTime(),task.getSchedule());
         }
-        TaskDetailEntity detail = new TaskDetailEntity(task.getId(), task.getRegionId() ,task.getEnterpriseId(), TaskStatusEnum.PENDING.getCode(),task.getStartTime(),endTime,new Date());
+        TaskDetailEntity detail = new TaskDetailEntity(task.getId(),task.getTaskGroupId(), task.getRegionId() ,task.getEnterpriseId(), status,task.getStartTime(),endTime,new Date());
         taskDetailService.save(detail);
         return R.ok();
     }

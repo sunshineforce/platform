@@ -23,6 +23,15 @@ public class InspectOrderEntity implements Serializable {
     //物料ID
     private Integer materialId;
 
+    //物品类型Id
+    private Integer materialTypeId;
+
+    //任务组id
+    private Integer taskDetailId;
+
+    //任务组id
+    private Integer taskGroupId;
+
     //物品所属区域Id
     private Long regionId;
 
@@ -290,5 +299,29 @@ public class InspectOrderEntity implements Serializable {
 
     public void setEnterpriseId(Integer enterpriseId) {
         this.enterpriseId = enterpriseId;
+    }
+
+    public Integer getMaterialTypeId() {
+        return materialTypeId;
+    }
+
+    public void setMaterialTypeId(Integer materialTypeId) {
+        this.materialTypeId = materialTypeId;
+    }
+
+    public Integer getTaskDetailId() {
+        return taskDetailId;
+    }
+
+    public void setTaskDetailId(Integer taskDetailId) {
+        this.taskDetailId = taskDetailId;
+    }
+
+    public Integer getTaskGroupId() {
+        return taskGroupId;
+    }
+
+    public void setTaskGroupId(Integer taskGroupId) {
+        this.taskGroupId = taskGroupId;
     }
 }

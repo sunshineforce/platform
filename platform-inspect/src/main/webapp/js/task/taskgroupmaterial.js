@@ -4,6 +4,7 @@ $(function () {
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
+            {label: 'taskGroupId', name: 'taskGroupId', index: 'task_group_id', key: true, hidden: true},
 			{label: '任务组', name: 'groupName', index: 'task_group_id',  align: 'center', width: '100px'},
             {label: '物品名称', name: 'materialName', index: 'name', align: 'center',width: '120px'},
             {label: '物品类型', name: 'materialTypeName', index: 'material_type_name', align: 'center',width: '60px'},
@@ -73,6 +74,17 @@ var vm = new Vue({
         });
     },
 	methods: {
+	    toAddM:function () {
+            var id = getSelectedRow();
+            if (id == null) {
+                return;
+            }
+            var data = getSelectedRowData();
+            if (data){
+                window.location.href = "../material/material.html?id="+data.taskGroupId+"&source=1";
+            }
+
+        },
 		query: function () {
 			vm.reload();
 		},

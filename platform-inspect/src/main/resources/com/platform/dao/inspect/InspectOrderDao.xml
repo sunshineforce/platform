@@ -6,6 +6,9 @@
     <resultMap type="com.platform.entity.inspect.InspectOrderEntity" id="inspectOrderMap">
         <result property="id" column="id"/>
         <result property="materialId" column="material_id"/>
+        <result property="materialTypeId" column="material_type_id"/>
+        <result property="taskDetailId" column="task_detail_id"/>
+        <result property="taskGroupId" column="task_group_id"/>
         <result property="regionId" column="region_id"/>
 		<result property="enterpriseId" column="enterprise_id"/>
         <result property="status" column="status"/>
@@ -26,6 +29,9 @@
 		select
 			`id`,
 			`material_id`,
+			 material_type_id,
+			 task_detail_id,
+			 task_group_id,
 			`region_id`,
 			enterprise_id,
 			`status`,
@@ -48,6 +54,9 @@
 		SELECT
 			o.id,
 			o.material_id,
+			o.material_type_id,
+			o.task_detail_id,
+			o.task_group_id,
 			o.region_id,
 		    o.enterprise_id,
 			o.`status`,
@@ -170,6 +179,9 @@
 	<insert id="save" parameterType="com.platform.entity.inspect.InspectOrderEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into inspect_order(
 			`material_id`,
+			 material_type_id,
+			 task_detail_id,
+			 task_group_id,
 			`region_id`,
 			enterprise_id,
 			`status`,
@@ -186,6 +198,9 @@
 			`data_status`)
 		values(
 			#{materialId},
+			#{materialTypeId},
+			#{taskDetailId},
+			#{taskGroupId},
 			#{regionId},
 			#{enterpriseId},
 			#{status},
@@ -206,6 +221,9 @@
 		update inspect_order 
 		<set>
 			<if test="materialId != null">`material_id` = #{materialId}, </if>
+			<if test="materialTypeId != null">`material_type_id` = #{materialTypeId}, </if>
+			<if test="taskDetailId != null">`task_detail_id` = #{taskDetailId}, </if>
+			<if test="taskGroupId != null">`task_group_id` = #{taskGroupId}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>
 			<if test="status != null">`status` = #{status}, </if>

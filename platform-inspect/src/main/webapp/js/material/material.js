@@ -202,7 +202,8 @@ var vm = new Vue({
             vm.reloadEnterprise();
         },
         retunList:function () {
-            window.location.href="/task/taskgroup.html";
+            //window.location.href="/task/taskgroup.html";
+            history.back();
         },
         add2TaskGroup:function(tgId,mId){
             $.ajax({
