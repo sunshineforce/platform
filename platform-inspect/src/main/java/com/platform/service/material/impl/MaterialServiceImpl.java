@@ -116,7 +116,7 @@ public class MaterialServiceImpl implements MaterialService {
 //        material.setCreator(appUser.getRealname());
 
         material.setCreatorId(11L);
-        material.setCreator("小六");        
+        material.setCreator("小六");
 
         return materialDao.save(material);
     }
