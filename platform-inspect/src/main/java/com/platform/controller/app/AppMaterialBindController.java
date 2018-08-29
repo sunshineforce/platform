@@ -7,7 +7,12 @@ import com.platform.service.enterprise.IEnterpriseService;
 import com.platform.service.material.MaterialService;
 import com.platform.utils.R;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created with IntelliJ IDEA
@@ -55,6 +60,13 @@ public class AppMaterialBindController extends AbstractController {
         //绑定设备
         materialService.materialBind(customer);
         return R.succeed();
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+        binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, true));
     }
 
 }
