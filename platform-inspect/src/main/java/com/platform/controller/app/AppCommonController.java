@@ -10,21 +10,18 @@ import com.platform.utils.PropertiesUtil;
 import com.platform.utils.R;
 import com.platform.utils.upload.UploadVo;
 import com.platform.vo.TreeVo;
-import org.apache.commons.beanutils.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA
@@ -107,8 +104,6 @@ public class AppCommonController{
             r.put("code",ErrorCode.FAILURE.getCode());
             return r;
         }
-
-
     }
 
 }
