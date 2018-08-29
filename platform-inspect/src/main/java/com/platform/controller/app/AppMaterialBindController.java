@@ -36,7 +36,7 @@ public class AppMaterialBindController extends AbstractController {
 
     @RequestMapping(value = "/material/bind",method = RequestMethod.POST)
     @ResponseBody
-    public R materialBind(@RequestBody MaterialEntity entity){
+    public R materialBind(@ModelAttribute MaterialEntity entity){
          materialService.save(entity);
         return R.succeed();
     }
