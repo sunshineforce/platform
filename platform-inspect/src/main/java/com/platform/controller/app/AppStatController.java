@@ -1,6 +1,5 @@
 package com.platform.controller.app;
 
-import com.platform.cache.RegionCacheUtil;
 import com.platform.entity.SysRegionEntity;
 import com.platform.service.SysRegionService;
 import com.platform.service.stat.IStatService;
