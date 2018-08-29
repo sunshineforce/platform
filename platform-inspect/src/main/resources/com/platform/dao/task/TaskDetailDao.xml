@@ -141,7 +141,7 @@
 	<!-- 任务超时 -->
 	<update id="taskTimeOut">
 		UPDATE
-		task
+		task_detail
 		SET `status` = 3, `update_time` = now()
 		WHERE
 		`status` = 1
@@ -151,7 +151,7 @@
 	<!-- 同步任务状态 -->
 	<update id="syncTask">
 		UPDATE task AS t
-		LEFT JOIN (
+		INNER JOIN (
 			SELECT
 				task_id,
 				`status`
@@ -159,7 +159,7 @@
 				task_detail
 			WHERE
 				(
-					TO_DAYS(NOW()) - TO_DAYS(end_time)
+					TO_DAYS(NOW()) - TO_DAYS(update_time)
 				) = 0
 		) AS d ON t.id = d.task_id
 		SET t.`status` = d.`status`
