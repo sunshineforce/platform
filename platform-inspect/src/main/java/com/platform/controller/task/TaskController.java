@@ -53,19 +53,20 @@ public class TaskController extends AbstractController {
     @ResponseBody
     public R list(@RequestParam Map<String, Object> params) {
         params.put("dataStatus",CommonConstant.USEABLE_STATUS);
-        //查询列表数据
-        Query query = new Query(params);
+
 
         Map<String, Object> params1 = new HashMap<>();
         SysUserEntity user = getUser();
         ///如果是企业用户登录，查询该企业下的用户
         if (null != user && null != user.getEnterpriseId()){
+            params.put("enterpriseId",user.getEnterpriseId());
             params1.put("enterpriseId",user.getEnterpriseId());
         }
         params1.put("identify",0);
         List<AppUserEntity> userList = appUserService.queryList(params1); //查询安全列表
 
-
+        //查询列表数据
+        Query query = new Query(params);
         List<TaskEntity> taskList = taskService.queryTaskList(query);
         int total = taskService.queryTaskTotal(query);
 
@@ -147,7 +148,7 @@ public class TaskController extends AbstractController {
         if (CommonConstant.TASK_CIRCLE_TYPE == task.getType().intValue()){ //循环任务
             endTime = TaskUtils.calCircleTaskEndTime(task.getStartTime(),task.getSchedule());
         }
-        TaskDetailEntity detail = new TaskDetailEntity(task.getId(), task.getRegionId() ,task.getEnterpriseId(), status,task.getStartTime(),endTime,new Date());
+        TaskDetailEntity detail = new TaskDetailEntity(task.getId(),task.getTaskGroupId(), task.getRegionId() ,task.getEnterpriseId(), status,task.getStartTime(),endTime,new Date());
         taskDetailService.save(detail);
         return R.ok();
     }

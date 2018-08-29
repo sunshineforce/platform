@@ -57,7 +57,6 @@ public class TaskEntity implements Serializable {
     //任务超时原因
     private String delayReason;
 
-
     //区域名称
     private String regionName;
 

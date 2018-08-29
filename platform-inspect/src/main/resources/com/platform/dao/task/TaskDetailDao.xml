@@ -6,6 +6,7 @@
     <resultMap type="com.platform.entity.task.TaskDetailEntity" id="taskDetailMap">
         <result property="id" column="id"/>
         <result property="taskId" column="task_id"/>
+		<result property="taskGroupId" column="task_group_id"/>
 		<result property="enterpriseId" column="enterprise_id"/>
         <result property="status" column="status"/>
         <result property="delayReason" column="delay_reason"/>
@@ -18,6 +19,7 @@
 	<select id="queryObject" resultType="com.platform.entity.task.TaskDetailEntity">
 		select
 			`id`,
+			task_group_id,
 			`task_id`,
 			`status`,
 			`delay_reason`,
@@ -33,6 +35,7 @@
 	<select id="queryList" resultType="com.platform.entity.task.TaskDetailEntity">
 		select
     		`id`,
+		     task_group_id,
     		`task_id`,
     		`status`,
     		`delay_reason`,
@@ -67,6 +70,121 @@
         </if>
 	</select>
 
+    <!-- 查询任务详情信息 -->
+	<select id="selectTaskDetailList" resultType="com.platform.entity.task.vo.TaskDetailVo">
+		SELECT
+			d.id,
+			t.`name`,
+			t.remark,
+			t.task_group_id AS taskGroupId,
+		    t.`user_ids` AS  userIds,
+			g.`name` AS taskGroupName,
+			e.enterprise_name AS enterpriseName,
+			r.`name` AS regionName,
+			d.`status`,
+			d.delay_reason AS delayReason,
+			d.start_time AS startTime,
+			d.end_time AS endTime,
+			o.inspect_time AS inspectTime
+		FROM
+		  task_detail AS d
+		LEFT JOIN task AS t ON d.task_id = t.id
+		LEFT JOIN task_group AS g ON t.task_group_id  = g.id
+		LEFT JOIN enterprise AS e ON e.id = t.enterprise_id
+		LEFT JOIN sys_region AS r ON r.id = t.region_id
+		LEFT JOIN (
+			SELECT
+			tmp.task_detail_id,
+			tmp.inspect_time
+			FROM (
+				SELECT
+				task_detail_id,
+				inspect_time
+				FROM inspect_order
+				ORDER BY inspect_time DESC
+		    ) AS tmp
+		    GROUP BY tmp.task_detail_id
+		) AS o ON d.id = o.task_detail_id
+
+		<where>
+			<if test="name != null and name.trim() != ''">
+				AND t.`name` LIKE concat('%',#{name},'%')
+			</if>
+			<if test="regionName != null and regionName.trim() != ''">
+				AND r.`name` LIKE concat('%',#{regionName},'%')
+			</if>
+			<if test="enterpriseName != null and enterpriseName.trim() != ''">
+				AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
+			</if>
+			<if test="enterpriseId != null">
+				AND t.enterprise_id = #{enterpriseId}
+			</if>
+			<if test="taskGroupId != null and taskGroupId.trim() != ''">
+				AND t.`task_group_id` = #{taskGroupId}
+			</if>
+			<if test="status != null and status.trim() != ''">
+				AND d.`status` = #{status}
+			</if>
+		</where>
+		<choose>
+			<when test="sidx != null and sidx.trim() != ''">
+				order by ${sidx} ${order}
+			</when>
+			<otherwise>
+				order by id desc
+			</otherwise>
+		</choose>
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+
+	<select id="selectTaskDetailToatal" resultType="int">
+		SELECT
+		   COUNT(*)
+		FROM
+		task_detail AS d
+		LEFT JOIN task AS t ON d.task_id = t.id
+		LEFT JOIN task_group AS g ON t.task_group_id  = g.id
+		LEFT JOIN enterprise AS e ON e.id = t.enterprise_id
+		LEFT JOIN sys_region AS r ON r.id = t.region_id
+		LEFT JOIN (
+		SELECT
+		tmp.task_detail_id,
+		tmp.inspect_time
+		FROM (
+		SELECT
+		task_detail_id,
+		inspect_time
+		FROM inspect_order
+		ORDER BY inspect_time DESC
+		) AS tmp
+		GROUP BY tmp.task_detail_id
+		) AS o ON d.id = o.task_detail_id
+
+		<where>
+			<if test="name != null and name.trim() != ''">
+				AND t.`name` LIKE concat('%',#{name},'%')
+			</if>
+			<if test="regionName != null and regionName.trim() != ''">
+				AND r.`name` LIKE concat('%',#{regionName},'%')
+			</if>
+			<if test="enterpriseName != null and enterpriseName.trim() != ''">
+				AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
+			</if>
+			<if test="enterpriseId != null">
+				AND t.enterprise_id = #{enterpriseId}
+			</if>
+			<if test="taskGroupId != null and taskGroupId.trim() != ''">
+				AND t.`task_group_id` = #{taskGroupId}
+			</if>
+			<if test="status != null and status.trim() != ''">
+				AND d.`status` = #{status}
+			</if>
+		</where>
+	</select>
+
 	<!-- 任务统计 -->
 	<select id="statTask" resultType="com.platform.entity.dto.StatDto">
 		SELECT
@@ -91,10 +209,101 @@
 		<if test="enterpriseId != null"> AND  `enterprise_id` = #{enterpriseId} </if>
 		GROUP BY  region_id,`status`
 	</select>
+
+	<!--统计具体任务执行情况-->
+	<select id="statTaskDetail" resultType="com.platform.entity.task.vo.TaskDetailStatVo">
+		SELECT
+		   tp.`name`,
+		   mt.material_type_id AS materialTypeId,
+		   CONCAT_WS('/',mt.num,CASE WHEN (t.exceptNum IS NULL OR t.nomarlNum IS NULL) THEN 0 ELSE t.exceptNum + t.nomarlNum END) AS progress,
+		   CASE WHEN (t.exceptNum IS NULL ) THEN 0 ELSE t.exceptNum END AS exceptNum,
+		   CASE WHEN (t.nomarlNum IS NULL ) THEN 0 ELSE t.nomarlNum END AS nomarlNum
+		FROM
+			(
+				SELECT
+					m.material_type_id,
+					COUNT(*) AS num
+				FROM
+					task_group_material AS g
+				LEFT JOIN material AS m ON g.material_id = m.id
+				WHERE
+					task_group_id = #{taskGroupId}
+				GROUP BY
+					m.material_type_id
+			) AS mt
+		LEFT JOIN (
+			SELECT
+				o.material_type_id,
+				COUNT(
+					CASE
+					WHEN o.inspect_status = 0 THEN o.inspect_status
+					END
+				) AS nomarlNum,
+				COUNT(
+					CASE
+					WHEN o.inspect_status = 1 THEN
+						o.inspect_status
+					END
+				) AS exceptNum
+			FROM
+				inspect_order AS o
+			WHERE
+				o.task_detail_id = #{taskDetailId}
+			GROUP BY
+				o.material_type_id
+		) AS t ON mt.material_type_id = t.material_type_id
+		LEFT JOIN material_type AS tp ON mt.material_type_id = tp.id
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+
+	<select id="statTaskDetailTotal" resultType="int">
+		SELECT
+		  COUNT(*)
+		FROM
+			(
+				SELECT
+					m.material_type_id,
+					COUNT(*) AS num
+				FROM
+					task_group_material AS g
+				LEFT JOIN material AS m ON g.material_id = m.id
+				WHERE
+					task_group_id = #{taskGroupId}
+				GROUP BY
+					m.material_type_id
+			) AS mt
+		LEFT JOIN (
+			SELECT
+				o.material_type_id,
+				COUNT(
+					CASE
+					WHEN o.inspect_status = 0 THEN o.inspect_status
+					END
+				) AS nomarlNum,
+				COUNT(
+					CASE
+					WHEN o.inspect_status = 1 THEN
+						o.inspect_status
+					END
+				) AS exceptNum
+			FROM
+				inspect_order AS o
+			WHERE
+				o.task_detail_id = #{taskDetailId}
+			GROUP BY
+				o.material_type_id
+		) AS t ON mt.material_type_id = t.material_type_id
+		LEFT JOIN material_type AS tp ON mt.material_type_id = tp.id
+
+	</select>
 	 
 	<insert id="save" parameterType="com.platform.entity.task.TaskDetailEntity" useGeneratedKeys="true" keyProperty="id">
 		insert into task_detail(
 			`task_id`,
+			task_group_id,
 			`status`,
 			`delay_reason`,
 			`start_time`,
@@ -104,6 +313,7 @@
 		     region_id)
 		values(
 			#{taskId},
+			#{taskGroupId},
 			#{status},
 			#{delayReason},
 			#{startTime},
@@ -117,6 +327,7 @@
 		update task_detail 
 		<set>
 			<if test="taskId != null">`task_id` = #{taskId}, </if>
+			<if test="taskGroupId != null">`task_group_id` = #{taskGroupId}, </if>
 			<if test="status != null">`status` = #{status}, </if>
 			<if test="regionId != null">`region_id` = #{regionId}, </if>
 			<if test="enterpriseId != null">`enterprise_id` = #{enterpriseId}, </if>

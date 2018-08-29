@@ -15,7 +15,6 @@ $(function () {
             {label: '检查企业', name: 'enterpriseName', index: 'enterprise_id', align: 'center',width: '120px'},
             {label: '检查人', name: 'userNames', index: 'user_names', align: 'center',width: '80px'},
             {label: '状态', name: 'status', index: 'status',align: 'center', width: '60px',formatter:formatStatus},
-            {label: '最后执行时间', name: 'updateTime', index: 'update_time', align: 'center'},
             {label: '备注', name: 'remark', index: 'remark', align: 'center',width: '100px'}
         ],
 		viewrecords: true,
@@ -58,7 +57,7 @@ function formatScheduleCycle(t) {
     return '<span>' + ScheduleCycle[t] + '</span>';
 }
 ///格式化任务状态
-const Status = ["待执行","执行中","已完成"];
+const Status = ["待执行","执行中","已完成","已超时"];
 function formatStatus(t) {
     return '<span>' + Status[t] + '</span>';
 }
@@ -107,6 +106,7 @@ var vm = new Vue({
             {id:"0",name:"待执行"},
             {id:"1",name:"执行中"},
             {id:"2",name:"已完成"},
+            {id:"3",name:"已超时"},
         ],
         typeList:[
             {id:"",name:"类型"},
