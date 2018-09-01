@@ -63,6 +63,7 @@ public class AppTodoListController {
 
     private List<TodoVo> queryAllTodoList(){
         List<TodoVo> list = new ArrayList<TodoVo>();
+
         List<TaskVo> taskTodoList = taskGroupService.queryTaskGroupTodoList();
         for (TaskVo taskVo : taskTodoList) {
             TodoVo todoVo = new TodoVo();
