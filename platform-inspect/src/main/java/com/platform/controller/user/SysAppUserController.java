@@ -117,7 +117,7 @@ public class SysAppUserController extends AbstractController {
     }
 
     @RequestMapping("/appUserList")
-    public R appUserList(@RequestBody AppUserEntity user) {
+    public R appUserList(AppUserEntity user) {
         return R.ok().put("list", getList(user.getIdentify(),user.getEnterpriseId()));
     }
 

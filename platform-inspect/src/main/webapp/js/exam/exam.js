@@ -109,8 +109,20 @@ var vm = new Vue({
     },
     methods: {
         queryUserList:function (id) {
-            $.get("../sys/app/user/appUserListByIdentify/0", function (r) {
-                vm.userList = r.list;
+            // $.get("../sys/app/user/appUserListByIdentify/0", function (r) {
+            //     vm.userList = r.list;
+            // });
+            $.ajax({
+                type: "GET",
+                url: "../sys/app/user/appUserList",
+                contentType: "application/json",
+                success: function (r) {
+                    if (r.code == 0) {
+                        vm.userList = r.list;
+                    } else {
+                        console.log("error msg ---- " + r.msg)
+                    }
+                }
             });
         },
         ///添加问题

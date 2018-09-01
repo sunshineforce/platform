@@ -238,8 +238,17 @@ var vm = new Vue({
             });
         },
 	    querySuperiorList:function () {
-            $.get("../sys/app/user/appUserListByIdentify/1", function (r) {
-                vm.superiorList = r.list;
+            $.ajax({
+                type: "GET",
+                url: "../sys/app/user/appUserList",
+                contentType: "application/json",
+                success: function (r) {
+                    if (r.code == 0) {
+                        vm.superiorList = r.list;
+                    } else {
+                        console.log("error msg ---- " + r.msg)
+                    }
+                }
             });
         },
 		query: function () {
