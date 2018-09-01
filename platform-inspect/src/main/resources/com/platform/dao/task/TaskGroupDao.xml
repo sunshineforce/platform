@@ -125,13 +125,14 @@
 
 	<!-- App接口 部分 -->
 	<select id="selectTaskGroupSimple" resultType="com.platform.entity.task.vo.TaskVo">
-		SELECT g.id AS taskGroupId,t.id AS taskId,g.name,t.start_time as startTime,m.updator_id as checkUserId,
-		t.end_time as endTime,m.region_id as regionId,e.enterprise_name as enterpriseName,t.status
-		FROM task_group g RIGHT JOIN task t ON t.task_group_id = g.id
+		SELECT g.id AS taskGroupId,t.id AS taskId,g.name,t.start_time AS startTime,m.updator_id AS checkUserId,
+		t.end_time AS endTime,m.region_id AS regionId,e.enterprise_name AS enterpriseName,t.status
+		FROM task t LEFT JOIN task_detail td  ON td.task_id = t.id
+		LEFT JOIN task_group g ON g.id = td.task_group_id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = g.id
 		LEFT JOIN material m ON m.id = gm.material_id
 		LEFT JOIN enterprise e ON e.id = m.enterprise_id
-		where 1=1
+		WHERE 1=1
 		<if test="status != null and status.trim() != '' and status==0">
 			AND t.status in (0,1)
 		</if>
@@ -139,7 +140,7 @@
 			AND t.status =#{status}
 		</if>
 		<if test="userId != null">
-			AND FIND_IN_SET(#{userId},g.user_ids)
+			AND FIND_IN_SET(#{userId},t.user_ids)
 		</if>
 		GROUP BY g.id,t.id
 		<choose>
@@ -156,20 +157,24 @@
 	</select>
 
 	<select id="selectTaskGroupSimpleTotal" resultType="java.lang.Integer">
-		SELECT count(1)
+		SELECT COUNT(1)
 		FROM
 		(
-			SELECT g.id AS taskGroupId,t.id AS taskId,g.name,t.start_time as startTime,t.end_time as endTime,m.region_id as regionId,e.enterprise_name as enterpriseName,t.status
-			FROM task_group g RIGHT JOIN task t ON t.task_group_id = g.id
+			SELECT COUNT(1)
+			FROM task t LEFT JOIN task_detail td  ON td.task_id = t.id
+			LEFT JOIN task_group g ON g.id = td.task_group_id
 			LEFT JOIN task_group_material gm ON gm.task_group_id = g.id
 			LEFT JOIN material m ON m.id = gm.material_id
 			LEFT JOIN enterprise e ON e.id = m.enterprise_id
-			where 1=1
+			WHERE 1=1
 			<if test="status != null and status.trim() != '' and status==0">
 				AND t.status in (0,1)
 			</if>
 			<if test="status != null and status.trim() != '' and status!=0">
 				AND t.status =#{status}
+			</if>
+			<if test="userId != null">
+				AND FIND_IN_SET(#{userId},t.user_ids)
 			</if>
 			GROUP BY g.id,t.id
 		) t
@@ -179,26 +184,26 @@
 	<select id="selectTaskGroupProcessRate" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
 		SELECT tg.id,COUNT(tg.id) AS total,
 		COUNT(CASE material_status WHEN 1 THEN 1 END)  AS finish
-		FROM task_group tg LEFT JOIN task t ON t.task_group_id=tg.id
+		FROM task_detail t LEFT JOIN task_group g ON g.id = t.task_group_id
 		LEFT JOIN task_group_material tgm ON tgm.task_group_id =tg.id
 		LEFT JOIN material m ON m.id = tgm.material_id
 		WHERE tg.id=#{taskGroupId} AND t.id=#{taskId}
-		<if test="status != null and status.trim() != '' and status==0">
+		<if test="status != null and status==0">
 			AND t.status IN (0,1)
 		</if>
-		<if test="status != null and status.trim() != '' and status!=0">
+		<if test="status != null and status!=0">
 			AND t.status = #{status}
 		</if>
-		GROUP BY tg.id,t.id
+		GROUP BY t.id,g.id
 	</select>
 
-	<!-- 根据任务id查询任务下的物品种类 -->
+	<!-- 根据任务组id以及任务Id查询任务下的物品种类 -->
 	<select id="selectTaskGroupMaterialType" resultType="com.platform.entity.task.vo.TaskStatisticsVo">
 		  SELECT mt.id,mt.name AS materialType,
 				COUNT(m.id) AS total,
 				COUNT(CASE material_status WHEN 1 THEN 1 END)  AS finish,
 				COUNT(CASE material_status WHEN 2 THEN 1 END)  AS anomaly
-				FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+				FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 				LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 				LEFT JOIN material m ON m.id = gm.material_id
 				LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -223,7 +228,7 @@
 			SELECT mt.id,mt.name AS materialType,COUNT(m.id) AS total,
 					COUNT(CASE material_status WHEN 1 THEN 1 END)  AS finish,
 					COUNT(CASE material_status WHEN 2 THEN 1 END)  AS anomaly
-			FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+			FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 			LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 			LEFT JOIN material m ON m.id = gm.material_id
 			LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -238,7 +243,7 @@
 		COUNT(m.id) AS total,
 		COUNT(CASE material_status WHEN 1 THEN 1 END)  AS finish,
 		COUNT(CASE material_status WHEN 2 THEN 1 END)  AS anomaly
-		FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+		FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 		LEFT JOIN material m ON m.id = gm.material_id
 		LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -264,7 +269,7 @@
 				SELECT r.id,r.name AS region,COUNT(m.id) AS total,
 				COUNT(CASE material_status WHEN 1 THEN 1 END)  AS finish,
 				COUNT(CASE material_status WHEN 2 THEN 1 END)  AS anomaly
-				FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+				FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 				LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 				LEFT JOIN material m ON m.id = gm.material_id
 				LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -277,7 +282,7 @@
 	<!-- 查询物品详情 -->
 	<select id="selectMaterialDetails" resultType="com.platform.entity.task.vo.MaterialDetailsVo">
 		SELECT m.id,mt.name,m.region_id AS regionId,m.material_status AS status
-				FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+				FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 				LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 				LEFT JOIN material m ON m.id = gm.material_id
 				LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -297,7 +302,7 @@
 
 	<select id="selectMaterialDetailsTotal" resultType="java.lang.Integer">
 		SELECT COUNT(1)
-		FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+		FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 		LEFT JOIN material m ON m.id = gm.material_id
 		LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -307,7 +312,7 @@
 
 	<select id="selectTaskGroupRegionDetails" resultType="com.platform.entity.task.vo.MaterialDetailsVo">
 		SELECT m.id,m.material_name AS name,m.region_id AS regionId,m.material_status AS status
-		FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+		FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 		LEFT JOIN material m ON m.id = gm.material_id
 		LEFT JOIN material_type mt ON mt.id = m.material_type_id
@@ -328,7 +333,7 @@
 
 	<select id="selectTaskGroupRegionDetailsTotal" resultType="java.lang.Integer">
 		SELECT COUNT(1)
-		FROM task t LEFT JOIN task_group tg ON t.task_group_id = tg.id
+		FROM task_detail t LEFT JOIN task_group tg ON t.task_group_id = tg.id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = tg.id
 		LEFT JOIN material m ON m.id = gm.material_id
 		LEFT JOIN material_type mt ON mt.id = m.material_type_id
