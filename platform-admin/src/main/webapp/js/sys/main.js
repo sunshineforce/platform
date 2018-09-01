@@ -117,7 +117,7 @@ var vm = new Vue({
     data: {
         regionId:['12718'],
         startTime: DateUtils.date2String(DateUtils.getCurrentMonthFirst(),1),
-        endTime:DateUtils.date2String(new Date(),1),
+        endTime:DateUtils.date2String(DateUtils.getCurrentMonthLast(),1),
         cityList:[
             {
                 value: '12718',
