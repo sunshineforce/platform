@@ -126,6 +126,12 @@ public class TaskGroupServiceImpl implements TaskGroupService {
     public PageUtils queryTaskGroup(Map<String, Object> map) {
         Query query = new Query(map);
         String status = String.valueOf(map.get("status"));
+        Integer taskId;
+        if (map.containsKey("id")) {
+            taskId = Integer.valueOf(String.valueOf(map.get("id")));
+            map.put("taskId",taskId);
+        }
+
         List<TaskVo> taskGroupList = taskGroupDao.selectTaskGroupSimple(query);
         Map<String, Object> processRateQueryMap = new HashMap<String, Object>();
         processRateQueryMap.put("status",status);

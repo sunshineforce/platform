@@ -69,6 +69,7 @@ public class AppTodoListController {
             TodoVo todoVo = new TodoVo();
             todoVo.setId(Integer.valueOf(String.valueOf(taskVo.getTaskId())));
             todoVo.setName("任务-"+taskVo.getName());
+            todoVo.setType(0);
             todoVo.setCreateTime(taskVo.getCreateTime());
             todoVo.setStatus(TaskStatusEnum.getDesc(taskVo.getStatus()));
 
@@ -78,13 +79,16 @@ public class AppTodoListController {
         List<InspectOrderFlowEntity> inspectOrderFlowList = inspectOrderFlowService.queryAnomalyTodoList();
         for (InspectOrderFlowEntity orderFlowEntity : inspectOrderFlowList) {
             TodoVo todoVo = new TodoVo();
-            todoVo.setId(orderFlowEntity.getId());
+
             InspectOrderEntity inspectOrder = inspectOrderService.queryObject(orderFlowEntity.getOrderId());
             MaterialEntity material = materialService.queryObject(inspectOrder.getMaterialId());
             if (orderFlowEntity.getType().intValue() == InspectOrderStatusEnum.PENDING.getCode().intValue()) {
+                todoVo.setId(material.getId());
                 todoVo.setName("异常-"+material.getMaterialName());
+                todoVo.setType(1);
             }else if (orderFlowEntity.getType().intValue() == InspectOrderStatusEnum.REVIEW.getCode().intValue()) {
                 todoVo.setName("复查-"+material.getMaterialName());
+                todoVo.setType(2);
             }
             todoVo.setCreateTime(orderFlowEntity.getCreateTime());
             todoVo.setStatus(InspectOrderStatusEnum.getDesc(orderFlowEntity.getType()));
@@ -102,6 +106,7 @@ public class AppTodoListController {
                 TodoVo todoVo = new TodoVo();
                 todoVo.setId(Integer.valueOf(String.valueOf(examMember.getExamId())));
                 todoVo.setName("考试-"+exam.getExamName());
+                todoVo.setType(3);
                 todoVo.setCreateTime(exam.getCreateTime());
                 todoVo.setStatus("待完成");
 

@@ -69,6 +69,9 @@ public class InspectOrderServiceImpl implements IInspectOrderService {
     @Override
     public PageUtils search(Map<String, Object> map) {
         Query query = new Query(map);
+        if (map.containsKey("id")) {
+            map.put("materialId",map.get("id"));
+        }
         List<AnomalyVo> resultList = inspectOrderDao.search(map);
         Map<String,Object> queryParams = new HashMap<String, Object>();
         for (AnomalyVo anomalyVo : resultList) {

@@ -142,6 +142,9 @@
 		<if test="userId != null">
 			AND FIND_IN_SET(#{userId},t.user_ids)
 		</if>
+		<if test="taskId != null">
+			AND td.task_id = #{taskId}
+		</if>
 		GROUP BY g.id,t.id
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
