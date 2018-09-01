@@ -1,6 +1,16 @@
+var itId = null;
 $(function () {
+
+    itId = T.p('itId');
+    var urlP = "";
+    if (itId != undefined && itId != null){
+        $("#retunListBtn").show();
+        urlP = "?itId="+itId;
+    }else{
+        $("#retunListBtn").hide();
+    }
     $("#jqGrid").jqGrid({
-        url: '../task/list',
+        url: '../task/list' + urlP,
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
@@ -99,6 +109,7 @@ var vm = new Vue({
             regionName:'',
             enterpriseName:'',
 		},
+        itId:null, // 综合任务id
 		taskGroups:[],
         taskGroupList:[], //查询使用
         statusList:[
@@ -127,8 +138,12 @@ var vm = new Vue({
         enterpriseList:[],
         scheduleMin:1,
         scheduleMax:1,
+
+
 	},
     created:function () {
+
+
         $.get("../taskgroup/queryAll", function (r) {
             vm.taskGroupList = r.list;
             if(vm.taskGroupList == null){
@@ -138,6 +153,9 @@ var vm = new Vue({
         });
     },
 	methods: {
+        retunList:function () {
+            history.back();
+        },
         queryAppUserList:function (arr) {
             $.get("../sys/app/user/appUserListByIdentify/0", function (r) {
                 vm.userList = r.list;
@@ -244,6 +262,10 @@ var vm = new Vue({
 			vm.showList = false;
 			vm.title = "新增";
 			vm.task = { type: 0 ,status:0};
+			if(null != itId){
+			    console.log("---itId---------------" + itId)
+			    vm.task.itId = itId;
+            }
 			vm.getTaskGroups(); ///加载任务组
             vm.getRegionTree();
 

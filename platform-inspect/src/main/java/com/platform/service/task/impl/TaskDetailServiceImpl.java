@@ -4,6 +4,7 @@ import com.platform.dao.task.TaskDetailDao;
 import com.platform.entity.task.TaskDetailEntity;
 import com.platform.entity.task.vo.TaskDetailStatVo;
 import com.platform.entity.task.vo.TaskDetailVo;
+import com.platform.entity.task.vo.TaskRelVo;
 import com.platform.service.task.TaskDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -88,5 +89,15 @@ public class TaskDetailServiceImpl implements TaskDetailService {
     @Override
     public int statTaskDetailTotal(Map<String, Object> map) {
         return taskDetailDao.statTaskDetailTotal(map);
+    }
+
+    @Override
+    public List<TaskRelVo> statIntegratedTask(Map<String, Object> map) {
+        return taskDetailDao.statIntegratedTask(map);
+    }
+
+    @Override
+    public int statIntegratedTaskTotal(Map<String, Object> map) {
+        return taskDetailDao.statIntegratedTaskTotal(map);
     }
 }

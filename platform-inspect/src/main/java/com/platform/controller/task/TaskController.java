@@ -6,8 +6,10 @@ import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskDetailEntity;
 import com.platform.entity.task.TaskEntity;
+import com.platform.entity.task.TaskRelEntity;
 import com.platform.service.AppUserService;
 import com.platform.service.task.TaskDetailService;
+import com.platform.service.task.TaskRelService;
 import com.platform.service.task.TaskService;
 import com.platform.util.TaskUtils;
 import com.platform.utils.DateUtils;
@@ -44,6 +46,9 @@ public class TaskController extends AbstractController {
 
     @Autowired
     private TaskDetailService taskDetailService;
+
+    @Autowired
+    private TaskRelService taskRelService;
 
     /**
      * 查看列表
@@ -150,6 +155,14 @@ public class TaskController extends AbstractController {
         }
         TaskDetailEntity detail = new TaskDetailEntity(task.getId(),task.getTaskGroupId(), task.getRegionId() ,task.getEnterpriseId(), status,task.getStartTime(),endTime,new Date());
         taskDetailService.save(detail);
+
+        ///处理任务与综合任务关系
+        if (null != task.getItId()){
+            TaskRelEntity rel = new TaskRelEntity();
+            rel.setItId(task.getItId());
+            rel.setTaskId(task.getId());
+            taskRelService.save(rel);
+        }
         return R.ok();
     }
 

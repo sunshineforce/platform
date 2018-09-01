@@ -1,6 +1,13 @@
+var regionId = T.p('regionId');
 $(function () {
+    var urlP = (regionId != undefined && regionId != null) ? "?regionId=" + regionId : "";
+    if (regionId != undefined && regionId != null){
+        $("#retunListBtn").show();
+    }else{
+        $("#retunListBtn").hide();
+    }
     $("#jqGrid").jqGrid({
-        url: '../taskdetail/list',
+        url: '../taskdetail/list' + urlP,
         datatype: "json",
         colModel: [
 			{label: 'id', name: 'id', index: 'id', key: true, hidden: true},
@@ -129,6 +136,9 @@ var vm = new Vue({
         });
     },
 	methods: {
+        retunList:function () {
+            history.back();
+        },
 		query: function () {
 			vm.reload();
 		},

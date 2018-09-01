@@ -4,6 +4,7 @@ package com.platform.service.task;
 import com.platform.entity.task.TaskDetailEntity;
 import com.platform.entity.task.vo.TaskDetailStatVo;
 import com.platform.entity.task.vo.TaskDetailVo;
+import com.platform.entity.task.vo.TaskRelVo;
 
 import java.util.List;
 import java.util.Map;
@@ -113,5 +114,19 @@ public interface TaskDetailService {
      * @return
      */
     int statTaskDetailTotal(Map<String, Object> map);
+
+    /**
+     * 统计大任务
+     * @param map
+     * @return
+     */
+    List<TaskRelVo> statIntegratedTask(Map<String, Object> map);
+
+    /**
+     * 总条数
+     * @param map
+     * @return
+     */
+    int statIntegratedTaskTotal(Map<String, Object> map);
 
 }

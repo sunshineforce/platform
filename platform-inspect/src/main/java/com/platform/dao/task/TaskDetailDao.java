@@ -5,6 +5,7 @@ import com.platform.entity.dto.StatDto;
 import com.platform.entity.task.TaskDetailEntity;
 import com.platform.entity.task.vo.TaskDetailStatVo;
 import com.platform.entity.task.vo.TaskDetailVo;
+import com.platform.entity.task.vo.TaskRelVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,6 +36,20 @@ public interface TaskDetailDao extends BaseDao<TaskDetailEntity> {
      * @return
      */
     List<StatDto> statTask(Map<String, Object> map);
+
+    /**
+     * 统计大任务
+     * @param map
+     * @return
+     */
+    List<TaskRelVo> statIntegratedTask(Map<String, Object> map);
+
+    /**
+     * 总条数
+     * @param map
+     * @return
+     */
+    int statIntegratedTaskTotal(Map<String, Object> map);
 
     /**
      * 统计具体任务执行情况

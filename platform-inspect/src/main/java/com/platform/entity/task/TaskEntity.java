@@ -83,6 +83,9 @@ public class TaskEntity implements Serializable {
     //物品种类统计
     private List<TaskStatisticsVo> statistics;
 
+    ///综合任务id
+    private Integer  itId;
+
 
     /**
      * 设置：主键id
@@ -372,5 +375,13 @@ public class TaskEntity implements Serializable {
 
     public void setNextTime(Date nextTime) {
         this.nextTime = nextTime;
+    }
+
+    public Integer getItId() {
+        return itId;
+    }
+
+    public void setItId(Integer itId) {
+        this.itId = itId;
     }
 }

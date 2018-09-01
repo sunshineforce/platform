@@ -116,6 +116,9 @@
 			<if test="enterpriseName != null and enterpriseName.trim() != ''">
 				AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
 			</if>
+			<if test="regionId != null">
+				AND t.region_id = #{regionId}
+			</if>
 			<if test="enterpriseId != null">
 				AND t.enterprise_id = #{enterpriseId}
 			</if>
@@ -173,6 +176,9 @@
 			<if test="enterpriseName != null and enterpriseName.trim() != ''">
 				AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
 			</if>
+			<if test="regionId != null">
+				AND t.region_id = #{regionId}
+			</if>
 			<if test="enterpriseId != null">
 				AND t.enterprise_id = #{enterpriseId}
 			</if>
@@ -209,6 +215,59 @@
 		<if test="enterpriseId != null"> AND  `enterprise_id` = #{enterpriseId} </if>
 		GROUP BY  region_id,`status`
 	</select>
+
+	<!-- 大任务统计 -->
+	<select id="statIntegratedTask" resultType="com.platform.entity.task.vo.TaskRelVo">
+		SELECT
+		d.region_id,
+		sr.name,
+		CONCAT_WS("/",COUNT(CASE
+		WHEN d.`status` = 2 THEN d.`status`
+		END) ,COUNT(*)) AS info
+		FROM
+		task_detail AS d
+		LEFT JOIN task AS t ON d.task_id = t.id
+		INNER JOIN task_rel AS r ON r.task_id = t.id
+		LEFT JOIN sys_region AS sr ON d.region_id = sr.id
+		<where>
+			<if test="name != null and name.trim() != ''">
+				AND sr.`name` LIKE concat('%',#{name},'%')
+			</if>
+			<if test="itId != null">
+			  AND  r.it_id = #{itId}
+			</if>
+			<if test="enterpriseId != null">
+				AND  t.`enterprise_id` = #{enterpriseId}
+			</if>
+		</where>
+		GROUP BY d.region_id
+		<if test="offset != null and limit != null">
+			limit #{offset}, #{limit}
+		</if>
+	</select>
+
+	<select id="statIntegratedTaskTotal" resultType="int">
+		SELECT
+		  COUNT (*)
+		FROM
+		task_detail AS d
+		LEFT JOIN task AS t ON d.task_id = t.id
+		INNER JOIN task_rel AS r ON r.task_id = t.id
+		LEFT JOIN sys_region AS sr ON d.region_id = sr.id
+		<where>
+			<if test="name != null and name.trim() != ''">
+				AND sr.`name` LIKE concat('%',#{name},'%')
+			</if>
+			<if test="itId != null">
+				AND  r.it_id = #{itId}
+			</if>
+			<if test="enterpriseId != null">
+				AND  t.`enterprise_id` = #{enterpriseId}
+			</if>
+		</where>
+		GROUP BY d.region_id
+	</select>
+
 
 	<!--统计具体任务执行情况-->
 	<select id="statTaskDetail" resultType="com.platform.entity.task.vo.TaskDetailStatVo">

@@ -45,6 +45,7 @@
 			#if($shiro.hasPermission("task:delete"))
             <i-button type="error" @click="del"><i class="fa fa-trash-o"></i>&nbsp;删除</i-button>
 			#end
+            <i-button id="retunListBtn" type="error" @click="retunList"><i class="fa fa-arrow-circle-o-left"></i>&nbsp;返回</i-button>
         </Row>
 	    <table id="jqGrid"></table>
 	    <div id="jqGridPager"></div>

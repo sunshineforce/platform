@@ -88,7 +88,7 @@
 		<if test="enterpriseName != null and enterpriseName.trim() != ''">
 			AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
 		</if>
-		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+		<if test="enterpriseId != null ">
 			AND t.enterprise_id = #{enterpriseId}
 		</if>
 		<if test="taskGroupId != null and taskGroupId.trim() != ''">
@@ -99,6 +99,11 @@
 		</if>
 		<if test="type != null  and type.trim() != ''">
 			AND t.`type` = #{type}
+		</if>
+		<if test="itId != null">
+			AND t.`id` IN (
+			   SELECT task_id FROM task_rel WHERE it_id = #{itId}
+			)
 		</if>
 		<choose>
 			<when test="sidx != null and sidx.trim() != ''">
@@ -130,7 +135,7 @@
 		<if test="enterpriseName != null and enterpriseName.trim() != ''">
 			AND e.enterprise_name LIKE concat('%',#{enterpriseName},'%')
 		</if>
-		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+		<if test="enterpriseId != null ">
 			AND t.enterprise_id = #{enterpriseId}
 		</if>
 		<if test="taskGroupId != null and taskGroupId.trim() != ''">
@@ -142,6 +147,11 @@
 		<if test="type != null  and type.trim() != ''">
 			AND t.`type` = #{type}
 		</if>
+		<if test="itId != null">
+			AND t.`id` IN (
+			SELECT task_id FROM task_rel WHERE it_id = #{itId}
+			)
+		</if>
 	</select>
 
 	<select id="queryList" resultType="com.platform.entity.task.TaskEntity">
@@ -152,7 +162,7 @@
 		<if test="name != null and name.trim() != ''">
 			AND name LIKE concat('%',#{name},'%')
 		</if>
-		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+		<if test="enterpriseId != null ">
 			AND enterprise_id = #{enterpriseId}
 		</if>
 		<if test="status != null and status.trim() != ''">
@@ -186,7 +196,7 @@
         <if test="name != null and name.trim() != ''">
             AND name LIKE concat('%',#{name},'%')
         </if>
-		<if test="enterpriseId != null and enterpriseId.trim() != ''">
+		<if test="enterpriseId != null ">
 			AND enterprise_id = #{enterpriseId}
 		</if>
 		<if test="status != null and status.trim() != ''">
