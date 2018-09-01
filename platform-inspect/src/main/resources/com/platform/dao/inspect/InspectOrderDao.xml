@@ -89,6 +89,9 @@
 		<if test="enterpriseId != null">
 			AND o.enterprise_id = #{enterpriseId}
 		</if>
+		<if test="userId != null">
+			AND o.user_id = #{userId}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}
@@ -140,6 +143,9 @@
 		</if>
 		<if test="enterpriseId != null">
 			AND o.enterprise_id = #{enterpriseId}
+		</if>
+		<if test="userId != null">
+			AND o.user_id = #{userId}
 		</if>
 	</select>
 
