@@ -1,7 +1,6 @@
 package com.platform.service.task.impl;
 
 import com.platform.dao.task.TaskGroupDao;
-import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskGroupEntity;
 import com.platform.entity.task.vo.MaterialDetailsVo;
