@@ -36,6 +36,8 @@ public class QrCodeApplyController extends AbstractController {
     @Autowired
     private QrCodeDetailService qrCodeDetailService;
 
+    public static final String QR_CODE_URL = "https://i.0t.com.cn/";
+
     /**
      * 查看列表
      */
@@ -117,7 +119,7 @@ public class QrCodeApplyController extends AbstractController {
             InputStream is = null;
             try {
                 String fileName  = idCode+".png";
-                String path = QrCodeCreateUtil.generateQRCode(idCode,300,300,"png","/tmp/"+fileName);
+                String path = QrCodeCreateUtil.generateQRCode(QR_CODE_URL + idCode,300,300,"png","/tmp/"+fileName);
                 File file = new File(path);
                 //is = new FileInputStream(file);
                // qrCode  =  OSSFactory.build().upload(is,QrCodeCreateUtil.getPath("qrCode")); //二维码地址
