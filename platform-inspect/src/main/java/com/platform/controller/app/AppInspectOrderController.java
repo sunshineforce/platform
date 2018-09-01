@@ -48,7 +48,7 @@ public class AppInspectOrderController {
     }
 
     /**
-     * 任务详情
+     * 任务记录
      * @return
      */
     @RequestMapping(value = "/task/detail")
