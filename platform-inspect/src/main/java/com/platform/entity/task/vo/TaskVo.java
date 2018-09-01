@@ -43,6 +43,8 @@ public class TaskVo implements Serializable {
     private Long checkUserId;
     //检查人
     private String checkUser;
+    //创建时间
+    private Date createTime;
 
     public Long getTaskGroupId() {
         return taskGroupId;
@@ -148,6 +150,14 @@ public class TaskVo implements Serializable {
         this.checkUser = checkUser;
     }
 
+    public Date getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Date createTime) {
+        this.createTime = createTime;
+    }
+
     @Override
     public String toString() {
         return "TaskVo{" +
@@ -163,6 +173,7 @@ public class TaskVo implements Serializable {
                 ", status=" + status +
                 ", taskStatus='" + taskStatus + '\'' +
                 ", checkUser='" + checkUser + '\'' +
+                ", createTime='" + createTime + '\'' +
                 '}';
     }
 }

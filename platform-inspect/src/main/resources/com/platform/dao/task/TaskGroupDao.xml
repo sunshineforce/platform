@@ -126,7 +126,7 @@
 	<!-- App接口 部分 -->
 	<select id="selectTaskGroupSimple" resultType="com.platform.entity.task.vo.TaskVo">
 		SELECT g.id AS taskGroupId,t.id AS taskId,g.name,t.start_time AS startTime,m.updator_id AS checkUserId,
-		t.end_time AS endTime,m.region_id AS regionId,e.enterprise_name AS enterpriseName,t.status
+		t.end_time AS endTime,m.region_id AS regionId,e.enterprise_name AS enterpriseName,t.status,t.create_time as createTime
 		FROM task t LEFT JOIN task_detail td  ON td.task_id = t.id
 		LEFT JOIN task_group g ON g.id = td.task_group_id
 		LEFT JOIN task_group_material gm ON gm.task_group_id = g.id

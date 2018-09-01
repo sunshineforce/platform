@@ -111,6 +111,9 @@
 		<if test="examId != null ">
 			AND exam_id = #{examId}
 		</if>
+		<if test="memberId != null ">
+			AND member_id = #{memberId}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

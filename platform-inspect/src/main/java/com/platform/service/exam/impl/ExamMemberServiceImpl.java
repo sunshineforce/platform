@@ -2,11 +2,14 @@ package com.platform.service.exam.impl;
 
 
 import com.platform.dao.exam.ExamMemberDao;
+import com.platform.entity.AppUserEntity;
 import com.platform.entity.exam.ExamMemberEntity;
+import com.platform.service.common.CommonService;
 import com.platform.service.exam.ExamMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,6 +24,9 @@ import java.util.Map;
 public class ExamMemberServiceImpl implements ExamMemberService {
     @Autowired
     private ExamMemberDao examMemberDao;
+
+    @Autowired
+    private CommonService commonService;
 
     @Override
     public ExamMemberEntity queryObject(Long id) {
@@ -70,5 +76,13 @@ public class ExamMemberServiceImpl implements ExamMemberService {
     @Override
     public ExamMemberEntity queryExamMember(ExamMemberEntity examMemberEntity) {
         return examMemberDao.queryExamMember(examMemberEntity);
+    }
+
+    @Override
+    public List<ExamMemberEntity> queryExamTodoList() {
+        AppUserEntity appUser = commonService.getCurrentLoginUser();
+        Map<String,Object> params = new HashMap<String, Object>();
+        params.put("memberId",appUser.getId());
+        return examMemberDao.queryList(params);
     }
 }

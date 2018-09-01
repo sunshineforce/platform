@@ -70,4 +70,10 @@ public interface InspectOrderFlowService {
      * @return 删除条数
      */
     int deleteBatch(Integer[] ids);
+
+    /**
+     * 待办事项
+     * @return
+     */
+    List<InspectOrderFlowEntity> queryAnomalyTodoList();
 }

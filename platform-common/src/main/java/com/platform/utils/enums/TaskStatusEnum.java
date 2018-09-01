@@ -31,7 +31,7 @@ public enum TaskStatusEnum {
                 return c.desc;
             }
         }
-        return null;
+        return "";
     }
 
     public Integer getCode() {

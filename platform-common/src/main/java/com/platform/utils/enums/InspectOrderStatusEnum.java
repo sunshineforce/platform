@@ -24,6 +24,15 @@ public enum InspectOrderStatusEnum {
         this.desc = desc;
     }
 
+    public static String getDesc(Integer value){
+        for (InspectOrderStatusEnum c : InspectOrderStatusEnum.values()) {
+            if (c.getCode() == value) {
+                return c.desc;
+            }
+        }
+        return "";
+    }
+
     public Integer getCode() {
         return code;
     }

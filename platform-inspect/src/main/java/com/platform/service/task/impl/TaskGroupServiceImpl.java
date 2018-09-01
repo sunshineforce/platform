@@ -1,6 +1,7 @@
 package com.platform.service.task.impl;
 
 import com.platform.dao.task.TaskGroupDao;
+import com.platform.entity.AppUserEntity;
 import com.platform.entity.SysUserEntity;
 import com.platform.entity.task.TaskGroupEntity;
 import com.platform.entity.task.vo.MaterialDetailsVo;
@@ -109,6 +110,18 @@ public class TaskGroupServiceImpl implements TaskGroupService {
     }
 
     /************************ APP 查询 *****************************/
+
+    @Override
+    public List<TaskVo> queryTaskGroupTodoList() {
+//        AppUserEntity appUser = commonService.getCurrentLoginUser();
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("status",TaskStatusEnum.EXECUTING.getCode());
+        map.put("userId",11L);
+//        map.put("userId",appUser.getId());
+        List<TaskVo> taskGroupList = taskGroupDao.selectTaskGroupSimple(map);
+        return taskGroupList;
+    }
+
     @Override
     public PageUtils queryTaskGroup(Map<String, Object> map) {
         Query query = new Query(map);

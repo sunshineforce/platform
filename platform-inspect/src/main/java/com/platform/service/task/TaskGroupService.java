@@ -113,4 +113,7 @@ public interface TaskGroupService {
     PageUtils queryTaskGroupMaterialDetails(Map<String, Object> map);
 
     PageUtils queryTaskGroupRegionDetails(Map<String, Object> map);
+
+    //任务组待办事项
+    List<TaskVo> queryTaskGroupTodoList();
 }

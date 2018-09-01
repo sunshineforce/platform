@@ -33,6 +33,12 @@
 		<if test="orderId != null">
 			AND `order_id` = #{orderId}
 		</if>
+		<if test="userId != null">
+			AND FIND_IN_SET(#{userId},chief_ids)
+		</if>
+		<if test="type != null">
+			AND type = #{type}
+		</if>
         <choose>
             <when test="sidx != null and sidx.trim() != ''">
                 order by ${sidx} ${order}

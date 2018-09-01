@@ -89,4 +89,9 @@ public interface ExamMemberService {
 
     ExamMemberEntity queryExamMember(ExamMemberEntity examMemberEntity);
 
+    /**
+     * 考试待办事项
+     * @return
+     */
+    List<ExamMemberEntity> queryExamTodoList();
 }
