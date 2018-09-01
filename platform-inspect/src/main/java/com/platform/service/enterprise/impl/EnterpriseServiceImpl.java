@@ -1,9 +1,12 @@
 package com.platform.service.enterprise.impl;
 
 import com.platform.dao.enterprise.EnterpriseDao;
+import com.platform.dao.enterprise.LicenseDao;
 import com.platform.entity.dto.CustomerVo;
 import com.platform.entity.enterprise.EnterpriseEntity;
 import com.platform.entity.enterprise.EnterpriseVo;
+import com.platform.entity.enterprise.LicenseEntity;
+import com.platform.entity.enterprise.LicenseVo;
 import com.platform.service.enterprise.IEnterpriseService;
 import com.platform.util.AppClientUtils;
 import com.platform.utils.PageUtils;
@@ -30,6 +33,9 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
 
     @Autowired
     private EnterpriseDao enterpriseDao;
+
+    @Autowired
+    private LicenseDao licenseDao;
 
     @Override
     public EnterpriseEntity queryObject(Integer id) {
@@ -92,6 +98,16 @@ public class EnterpriseServiceImpl implements IEnterpriseService {
         if (CollectionUtils.isNotEmpty(enterpriseList)) {
             for (EnterpriseEntity enterpriseEntity : enterpriseList) {
                 EnterpriseVo vo = new EnterpriseVo(enterpriseEntity.getId(),enterpriseEntity.getEnterpriseName());
+                vo.setOwner(enterpriseEntity.getOwner());
+                vo.setMobile(enterpriseEntity.getMobile());
+                vo.setAddress(enterpriseEntity.getAddress());
+                vo.setCreateTime(enterpriseEntity.getCreateTime());
+
+                Map<String,Object> map = new HashMap<String, Object>();
+                map.put("enterpriseId",enterpriseEntity.getId());
+                List<LicenseVo> licenseList = licenseDao.selectList(map);
+                vo.setLicenses(licenseList);
+
                 list.add(vo);
             }
             total = queryTotal(query);
