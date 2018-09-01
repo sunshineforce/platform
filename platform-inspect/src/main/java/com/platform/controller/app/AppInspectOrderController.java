@@ -54,9 +54,10 @@ public class AppInspectOrderController {
     @RequestMapping(value = "/task/detail")
     public R taskDetail(){
         try {
-            AppUserEntity appUser = commonService.getCurrentLoginUser();
+//            AppUserEntity appUser = commonService.getCurrentLoginUser();
             Map<String,Object> map = new HashMap<String, Object>();
-            map.put("userId",appUser.getId());
+//            map.put("userId",appUser.getId());
+            map.put("userId",11);
             Query query = new Query(map);
             List<InspectOrderEntity> list = inspectOrderService.queryList(map);
             Integer total = inspectOrderService.queryTotal(query);
