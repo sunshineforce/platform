@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.platform</groupId>
-            <artifactId>platform-inspect</artifactId>
+            <artifactId>platform-sunshineforce</artifactId>
             <version>1.0.0</version>
             <type>war</type>
         </dependency>
